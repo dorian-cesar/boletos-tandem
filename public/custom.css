@@ -1,0 +1,123 @@
+.justify-around {
+  justify-content: space-around;
+}
+.bg-grey {
+  background-color: rgb(246, 248, 251) !important;
+  color: #333 !important
+}
+.bloque-pasajero {
+  width:100%;
+  padding: 0px;
+  margin-top: 10px;
+  box-shadow: 0px 3px 8px 0px #d4dbec;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.bloque-pasajero .header-pasajero {
+  background-color: #FFF;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  font-size: 15px;
+  padding: 10px;
+  cursor: pointer;
+
+}
+.no-pointer {
+  pointer-events: none;
+  cursor: none;
+}
+.pointer {
+  pointer-events: all;
+}
+.bloque-pasajero.active .header-pasajero {
+  background-color: rgb(246, 248, 251);
+  margin-bottom: 20px;
+  
+}
+.bloque-pasajero .header-pasajero  h5 {
+  font-size: 15px;
+  padding-top: 8px;
+}
+.bloque-pasajero .content-pasajero {
+  height: 0px;
+  overflow: hidden;
+}
+.bloque-pasajero.active .content-pasajero {
+  height: auto
+}
+.flex-col {
+  flex-direction: column;
+}
+
+.react-select__control {
+  background-color: transparent !important;
+  border: none !important
+}
+.fade.show {
+  display: block;
+  background-color: rgba(255,255,255,0.8);
+  
+}
+.modal .close {
+  border-radius: 5px;
+  border: solid 1px #ccc;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal .modal-content {
+  box-shadow: 0px 4px 20px -8px #3365b4;
+  border-radius: 10px;
+  border: none
+
+}
+.sel-input {
+  padding: 8px 6px 8px 45px;
+  border-radius: 10px;
+}
+.patita-over {
+  position: absolute;
+  width: 60px;
+  height: 30px;
+  left: -10px;
+  top: 5px;
+
+}
+.btn-fix {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  align-content: center;
+  text-align: left;
+  line-height: 18px;
+  width: 100%;
+  padding: 18px 8px;
+}
+.btn-fix img {margin-right: 8px; margin-left: 8px;}
+.search-row {
+  align-items: end;
+  display: flex;
+}
+.search-row .col-12 ,.search-row .col-6{
+  flex-grow: 1;
+  width: 20%;
+}
+.search-row .grupo-campos, .search-row input{
+  margin-bottom: 0px;
+}
+.tipologia img {margin-right: 5px;}
+@media (max-width: 991px) {
+  .search-row {flex-wrap: wrap;}
+  .search-row .col-12 {
+    width: 100%
+  }
+  .search-row .col-6 {
+    width: 50%
+  }
+  .pasajes-compra .bloque-filtro {
+    display: none;
+  }
+}

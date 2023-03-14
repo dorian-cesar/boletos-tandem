@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <g id="Grupo_1747" data-name="Grupo 1747" transform="translate(4 -0.147)">
+    <g id="Grupo_763" data-name="Grupo 763" transform="translate(-4.428 0)">
+      <g id="Grupo_671" data-name="Grupo 671" transform="translate(0 0.147)">
+        <g id="Rectángulo_600" data-name="Rectángulo 600" transform="translate(0.428 0)" fill="none" stroke="#bebebe" stroke-width="1">
+          <rect width="36" height="36" rx="4" stroke="none"/>
+          <rect x="0.5" y="0.5" width="35" height="35" rx="3.5" fill="none"/>
+        </g>
+      </g>
+    </g>
+    <g id="noun-bathroom-1444730" transform="translate(0.586 3.96)">
+      <path id="Trazado_31632" data-name="Trazado 31632" d="M143.231,262.716H132.838a1.32,1.32,0,0,1-1.285-1.623l.4-1.691a3.885,3.885,0,0,0-1.4-3.889c-.433-.356-1.076-.78-1.757-1.229-2.206-1.455-4.951-3.266-4.951-5.457v-1.536a.591.591,0,0,1,.591-.591h23.646a.591.591,0,0,1,.591.591v1.536a8.62,8.62,0,0,1-3.161,6.682,3.884,3.884,0,0,0-1.4,3.888l.4,1.7a1.32,1.32,0,0,1-1.285,1.623Zm-18.2-14.833v.945c0,1.555,2.554,3.24,4.42,4.47.707.466,1.376.907,1.856,1.3a5.058,5.058,0,0,1,1.8,5.073l-.4,1.691a.137.137,0,0,0,.134.169h10.393a.138.138,0,0,0,.134-.169l-.4-1.7a5.057,5.057,0,0,1,1.8-5.073,7.443,7.443,0,0,0,2.73-5.769v-.945Z" transform="translate(-123.847 -234.341)" fill="#ccc"/>
+      <path id="Trazado_31633" data-name="Trazado 31633" d="M473.778,35.082h-4.729a.591.591,0,0,1-.591-.591V22.131a.591.591,0,0,1,.591-.591h4.729a.591.591,0,0,1,.591.591V34.491A.591.591,0,0,1,473.778,35.082ZM469.64,33.9h3.547V22.722H469.64Z" transform="translate(-449.542 -21.54)" fill="#ccc"/>
+      <path id="Trazado_31634" data-name="Trazado 31634" d="M509.441,69.606a.591.591,0,0,1-.591-.591V67.161a.591.591,0,1,1,1.182,0v1.854A.591.591,0,0,1,509.441,69.606Z" transform="translate(-487.717 -64.098)" fill="#ccc"/>
+    </g>
+  </g>
+</svg>
