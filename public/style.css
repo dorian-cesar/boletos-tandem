@@ -519,9 +519,26 @@ a {
   background-color: var(--naranjo);
 }
 
+.btn-disabled {
+  width: 100%;
+  padding: 13px 15px;
+  font-size: 15px;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 17px;
+  color: #fff;
+  background-color: var(--gris);
+  cursor: not-allowed;
+}
+
 .btn:hover {
   color: #fff;
   background-color: #ff9952;
+}
+
+.btn-disabled:hover {
+  color: #fff;
+  background-color: var(--gris);
 }
 
 .btn-morado {
