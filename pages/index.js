@@ -99,7 +99,7 @@ export default function Home(props) {
                                         </h1>
                                     </div>
                                     <div className="col-12 col-md-6">
-                                        <div className="d-flex w-100 justify-content-end align-items-center" onClick={() => setMascota(!mascota_allowed) }>
+                                        <div className="d-flex w-100 justify-content-end align-items-center" onClick={ () => setMascota(!mascota_allowed) }>
                                             <img src="img/icon-patita.svg" style={{ marginRight: "5px" }} />
                                             <span>Mascota a bordo</span>
                                             <label className={ "switch " + (mascota_allowed ? "checked" : "") }>
