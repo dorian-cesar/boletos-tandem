@@ -121,3 +121,12 @@
     display: none;
   }
 }
+.btn-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  line-height: 18px;
+  width: 100%;
+}
