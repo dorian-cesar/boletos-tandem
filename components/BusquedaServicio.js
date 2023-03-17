@@ -5,6 +5,7 @@ import Link from "next/link";
 import Input from "../components/Input";
 import { useEffect, useState, forwardRef } from "react";
 import es from "date-fns/locale/es";
+import { useRouter } from "next/router";
 
 registerLocale("es", es);
 
@@ -13,7 +14,7 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
 ));
 
 const BusquedaServicio = (props) => {
-    const { origenes, dias } = props;
+    const { origenes, dias, isShowMascota = false } = props;
 
     const [mascota_allowed, setMascota] = useState(false);
     const [origen, setOrigen] = useState(null);
@@ -21,6 +22,15 @@ const BusquedaServicio = (props) => {
     const [destinos, setDestinos] = useState([]);
 	const [startDate, setStartDate] = useState(dayjs().toDate());
     const [endDate, setEndDate] = useState(null);
+
+    const router = useRouter();
+
+    async function redireccionarBuscarServicio() {
+        await router.push(`/comprar?origen=${ origen }&destino=${ destino }&startDate=${ startDate && dayjs(startDate).format('YYYY-MM-DD') }&endDate=${ endDate && dayjs(startDate).format('YYYY-MM-DD')}`);
+        if(router.asPath.includes('comprar')) {
+            router.reload();
+        }
+    }
 
     async function getDestinos() {
         if (origen !== null) {
@@ -84,7 +94,7 @@ const BusquedaServicio = (props) => {
                                     Detalles de tu viaje
                                 </h1>
                             </div>
-                            <div className="col-12 col-md-6">
+                            { isShowMascota && <div className="col-12 col-md-6">
                                 <div className="d-flex w-100 justify-content-end align-items-center" onClick={ () => setMascota(!mascota_allowed) }>
                                     <img src="img/icon-patita.svg" style={{ marginRight: "5px" }} />
                                     <span>Mascota a bordo</span>
@@ -92,7 +102,7 @@ const BusquedaServicio = (props) => {
                                         <span className="slider round"></span>
                                     </label>
                                 </div>
-                            </div>
+                            </div> }
                         </div>
                         <div className="row search-row">
                             <div className="col-12 col-md-6 col-lg-3">
@@ -156,15 +166,10 @@ const BusquedaServicio = (props) => {
                                 </div>
                             </div>
                             <div className="col-12 col-md-12 col-lg-2">
-                                <Link 
-                                    href={ origen && destino ? `/comprar?origen=${ origen }&destino=${ destino }&startDate=${ startDate && dayjs(startDate).format('YYYY-MM-DD') }&endDate=${ endDate && dayjs(startDate).format('YYYY-MM-DD')}` : "#" }
-                                    legacyBehavior
-                                >
-                                    <a className={ origen && destino ? "btn" : "btn btn-disabled" } href="">
-                                        <img src="img/icon-buscar-blanco.svg" />{" "}
-                                        Buscar servicios
-                                    </a>
-                                </Link>
+                                <div className={ origen && destino ? "btn" : "btn btn-disabled" } onClick={ (origen && destino) && redireccionarBuscarServicio }>
+                                    <img src="img/icon-buscar-blanco.svg" />{" "}
+                                    Buscar servicios
+                                </div>
                             </div>
                         </div>
                     </div>
