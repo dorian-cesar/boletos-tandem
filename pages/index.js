@@ -28,7 +28,7 @@ export default function Home(props) {
                 <div className="img-principal d-block d-md-none">
                     <img src="/banner-mobile.png" />
                 </div>
-                <BusquedaServicio origenes={ origenes } dias={ props.dias }/>
+                <BusquedaServicio origenes={ origenes } dias={ props.dias } isShowMascota={ true }/>
             </div>
             <Footer />
         </Layout>
