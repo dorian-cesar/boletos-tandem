@@ -1,6 +1,7 @@
 import axios from "axios";
 import Layout from "components/Layout";
 import Boleto from "components/Boleto";
+import BusquedaServicio from 'components/BusquedaServicio';
 import Image from "next/image";
 import { useEffect, useState, forwardRef, useRef } from "react";
 import { withIronSessionSsr } from "iron-session/next";
@@ -729,140 +730,7 @@ export default function Home(props) {
                 <title>PullmanBus | Compra Boleto</title>
             </Head>
             <div className="pasajes">
-                <div className="container">
-                    <div className="row py-5">
-                        <div className="row mb-3">
-                            <div className="col-12 col-md-6">
-                                <h1 className="titulo-azul">
-                                    Detalles de tu viaje
-                                </h1>
-                            </div>
-                            <div className="col-12 col-md-6"></div>
-                        </div>
-                        <div className="row search-row">
-                            <div className="col-12 col-md-6 col-lg-3">
-                                <div className="grupo-campos">
-                                    <label className="label-input">
-                                        ¿De dónde viajamos?
-                                    </label>
-                                    <Input
-                                        className="sel-input origen"
-                                        placeholder="Origen"
-                                        items={ciudades.map((i) => {
-                                            return {
-                                                value: i.codigo,
-                                                label: i.nombre,
-                                            };
-                                        })}
-                                        selected={
-                                            origen
-                                                ? [
-                                                      ciudades.find(
-                                                          (i) =>
-                                                              i.codigo == origen
-                                                      ),
-                                                  ].map((i) => {
-                                                      return {
-                                                          value: i.codigo,
-                                                          label: i.nombre,
-                                                      };
-                                                  })
-                                                : ""
-                                        }
-                                        setSelected={setOrigen}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-12 col-md-6 col-lg-3">
-                                <div className="grupo-campos">
-                                    <label className="label-input">
-                                        ¿A dónde viajamos?
-                                    </label>
-                                    <Input
-                                        className="sel-input destino"
-                                        placeholder="Destino"
-                                        items={destinos.map((i) => {
-                                            return {
-                                                value: i.codigo,
-                                                label: i.nombre,
-                                            };
-                                        })}
-                                        selected={
-                                            destino && destinos.length > 0
-                                                ? [
-                                                      destinos.find(
-                                                          (i) =>
-                                                              i.codigo ==
-                                                              destino
-                                                      ),
-                                                  ].map((i) => {
-                                                      return {
-                                                          value: i.codigo,
-                                                          label: i.nombre,
-                                                      };
-                                                  })
-                                                : ""
-                                        }
-                                        setSelected={setDestino}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-6 col-md-6 col-lg-2">
-                                <div className="grupo-campos">
-                                    <label className="label-input">
-                                        ¿Fecha de ida?
-                                    </label>
-                                    <DatePicker
-                                        selected={startDate}
-                                        onChange={(date) => setStartDate(date)}
-                                        filterDate={isValidStart}
-                                        dateFormat="dd/MM/yyyy"
-                                        locale={"es"}
-                                        placeholderText={""}
-                                        customInput={<CustomInput />}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-6 col-md-6 col-lg-2">
-                                <div className="grupo-campos">
-                                    <label className="label-input">
-                                        ¿Fecha de regreso?
-                                    </label>
-                                    <DatePicker
-                                        selected={endDate}
-                                        onChange={(date) => setEndDate(date)}
-                                        filterDate={isValidAfter}
-                                        locale={"es"}
-                                        placeholderText={""}
-                                        dateFormat="dd/MM/yyyy"
-                                        customInput={<CustomInput />}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-12 col-md-12 col-lg-2">
-                                <a
-                                    className="btn btn-fix"
-                                    href={`/comprar?origen=${origen}&destino=${destino}&startDate=${
-                                        startDate
-                                            ? dayjs(startDate).format(
-                                                  "YYYY-MM-DD"
-                                              )
-                                            : ""
-                                    }&endDate=${
-                                        endDate
-                                            ? dayjs(endDate).format(
-                                                  "YYYY-MM-DD"
-                                              )
-                                            : ""
-                                    }`}
-                                >
-                                    <img src="img/icon-buscar-blanco.svg" />{" "}
-                                    Buscar servicios
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <BusquedaServicio origenes={ props.ciudades } dias={ props.dias }/>
             </div>
             <div className="pasajes-compra py-5">
                 <div className="container">
