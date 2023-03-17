@@ -707,10 +707,6 @@ export default function Home(props) {
     useEffect(() => {
         payment_form.current?.submit();
     }, [payment]);
-
-    useEffect(() => {
-        console.log(parrilla);
-    }, [parrilla]);
     
     useEffect(() => {
         setDestinos(props.destinos);
