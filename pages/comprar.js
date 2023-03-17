@@ -35,10 +35,6 @@ const ASIENTO_TIPO_MASCOTA = 'pet';
 const ASIENTO_TIPO_ASOCIADO = 'asociado';
 const ASIENTO_OCUPADO = 'ocupado';
 
-const CustomInput = forwardRef(({ value, onClick }, ref) => (
-    <input type="text" className="fecha-input form-control" onClick={ onClick } ref={ ref } value={ value } />
-));
-
 const isSame = (array1, array2) => array1.length === array2.length && array1.every((value, index) => value === array2[index]);
 
 const stages = [
