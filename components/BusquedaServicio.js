@@ -22,12 +22,6 @@ const BusquedaServicio = (props) => {
 	const [startDate, setStartDate] = useState(dayjs().toDate());
     const [endDate, setEndDate] = useState(null);
 
-	useEffect(() => {
-        if (endDate && dayjs(startDate).isAfter(dayjs(endDate))) {
-            setEndDate(dayjs(startDate).toDate());
-        }
-    }, [startDate]);
-
     async function getDestinos() {
         if (origen !== null) {
             try {
@@ -72,6 +66,12 @@ const BusquedaServicio = (props) => {
     useEffect(() => {
         (async () => await getDestinos())();
     }, [origen]);
+
+    useEffect(() => {
+        if (endDate && dayjs(startDate).isAfter(dayjs(endDate))) {
+            setEndDate(dayjs(startDate).toDate());
+        }
+    }, [startDate]);
 
     return (
         <div className="container pb-5">
