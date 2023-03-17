@@ -311,24 +311,26 @@ export default function Home(props) {
         ));
     }
 
-    const toggleTipo = (tipo) => {
-        let filter_tipo_temp = [...filter_tipo];
+    function toggleTipo(tipo) {
+        let listaTipoTemporal = [...filter_tipo];
         if (filter_tipo.includes(tipo)) {
-            filter_tipo_temp = filter_tipo.filter((i) => i != tipo);
+            listaTipoTemporal = filter_tipo.filter((i) => i != tipo);
         } else {
-            filter_tipo_temp.push(tipo);
+            listaTipoTemporal.push(tipo);
         }
-        setFilterTipo(filter_tipo_temp);
+        setFilterTipo(listaTipoTemporal);
     };
-    const toggleHoras = (horas) => {
-        let filter_horas_temp = [...filter_horas];
+
+    function toggleHoras(horas) {
+        let listaHorasTemporal = [...filter_horas];
         if (filter_horas.includes(horas)) {
-            filter_horas_temp = filter_horas_temp.filter((i) => i != horas);
+            listaHorasTemporal = listaHorasTemporal.filter((i) => i != horas);
         } else {
-            filter_horas_temp.push(horas);
+            listaHorasTemporal.push(horas);
         }
-        setFilterHoras(filter_horas_temp);
+        setFilterHoras(listaHorasTemporal);
     };
+
     const openPasajero = (k, tipo) => {
         let carro_temp = { ...carro };
         if (tipo == "ida") {
