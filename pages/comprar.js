@@ -21,13 +21,18 @@ import es from "date-fns/locale/es";
 import { ObtenerParrillaServicioDTO } from "./dto/ParrillaDTO";
 import { BuscarPlanillaVerticalDTO } from "./dto/MapaAsientosDTO";
 import { PasajeConvenioDTO } from "./dto/PasajesDTO";
-import { TomaAsientoDTO } from "./dto/TomaAsientoDTO";
+import { LiberarAsientoDTO, TomaAsientoDTO } from "./dto/TomaAsientoDTO";
+import { AsientoDTO } from "./dto/AsientoDTO";
 
 registerLocale("es", es);
 
 const ASIENTO_LIBRE = 'libre';
 const ASIENTO_LIBRE_MASCOTA = 'pet-free';
 const MAXIMO_COMPRA_ASIENTO = 4;
+const STAGE_INICIAL = 0;
+const ASIENTO_TIPO_MASCOTA = 'pet';
+const ASIENTO_TIPO_ASOCIADO = 'asociado';
+const ASIENTO_OCUPADO = 'ocupado';
 
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <input type="text" className="fecha-input form-control" onClick={ onClick } ref={ ref } value={ value } />
@@ -174,7 +179,7 @@ export default function Home(props) {
             const parrillaModificada = [...parrilla];
             parrillaTemporal[indexParrilla].loadingAsientos = true;
             setParrilla(parrillaTemporal);
-            stage == 0 ? setAsientosIda([]) : setAsientosVuelta([]);
+            stage == STAGE_INICIAL ? setAsientosIda([]) : setAsientosVuelta([]);
             setOpenPane(parrilla[indexParrilla].id);
             const { data } = await axios.post('/api/mapa-asientos', 
                 new BuscarPlanillaVerticalDTO(parrillaTemporal[indexParrilla], stage, startDate, endDate, parrilla[indexParrilla]));
@@ -210,192 +215,75 @@ export default function Home(props) {
         }
     };
 
+    function validarMaximoAsientos(asientos) {
+        if( asientos.length >= MAXIMO_COMPRA_ASIENTO ) {
+            toast.warn(`Máximo ${ MAXIMO_COMPRA_ASIENTO } pasajes`, {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false
+            });
+            return false;
+        }
+        return true;
+    }
+
+    async function servicioTomarAsiento(parrillaServicio, asiento, piso, asientosTemporal, isMascota = false) {
+        try {
+            const { data } = await axios.post('/api/tomar-asiento', new TomaAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage));
+            const reserva = data;           
+            if( reserva.estadoReserva ) {
+                if( isMascota ) setModalMab(true);
+                asientosTemporal.push(new AsientoDTO(reserva, parrillaServicio, asiento, piso))
+                stage == STAGE_INICIAL ? setAsientosIda(asientosTemporal) : setAsientosVuelta(asientosTemporal);
+                return asientosTemporal;
+            }
+        } catch ({ message }) {
+            throw new Error(`Error al reservar asociado/mascota [${ message }]`);
+        }
+    }
+
+    async function servicioLiberarAsiento(parrillaServicio, asiento, piso, codigoReserva) {
+        try {
+            const { data } = await axios.post('/api/liberar-asiento', new LiberarAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage, codigoReserva))
+        } catch ({ message }) {
+            throw new Error(`Error al liberar asiento [${ message }]`);
+        }
+    }
     
     async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
         try {
-            const asientosTemporal = stage == 0 ? [...asientosIda] : [...asientosVuelta];
+            let asientosTemporal = stage == STAGE_INICIAL ? [...asientosIda] : [...asientosVuelta];
+            const asientoSeleccionado = asientosTemporal.find((asientoBusqueda) => asiento.asiento == asientoBusqueda.asiento);
 
             if( asiento.estado == ASIENTO_LIBRE || asiento.estado == ASIENTO_LIBRE_MASCOTA ) {
-                if( asientosTemporal.length >= MAXIMO_COMPRA_ASIENTO ) {
-                    toast.warn(`Máximo ${ MAXIMO_COMPRA_ASIENTO } pasajes`, {
-                        position: 'top-right',
-                        autoClose: 5000,
-                        hideProgressBar: false
-                    });
-                    return false;
+                if( !validarMaximoAsientos ) return;
+                asientosTemporal = await servicioTomarAsiento(parrilla[indexParrilla], asiento.asiento, piso, asientosTemporal);
+
+                if( asiento.tipo == ASIENTO_TIPO_ASOCIADO || asiento.tipo == ASIENTO_TIPO_MASCOTA ) {
+                    asientosTemporal = await servicioTomarAsiento(parrilla[indexParrilla], asiento.asientoAsociado, piso, asientosTemporal, true);
                 }
+
+                await reloadPane(indexParrilla);
+                return;
+            }
+
+            if( asiento.estado == ASIENTO_OCUPADO && asientoSeleccionado ) {
+                await servicioLiberarAsiento(parrilla[indexParrilla], asiento.asiento, asientoSeleccionado.codigoReserva);
                 
-                const { data } = await axios.post('/api/tomar-asiento', new TomaAsientoDTO(parrilla[indexParrilla], startDate, endDate, asiento, piso, stage));
-                const reserva = data;
-                
-                if( reserva.estadoReserva ) {
-                    
+                if( asiento.tipo == ASIENTO_TIPO_ASOCIADO || asiento.tipo == ASIENTO_TIPO_MASCOTA ) {
+                    await servicioLiberarAsiento(parrilla[indexParrilla], asiento.asientoAsociado, piso, asientoSeleccionado.codigoReserva);
                 }
+
+                await reloadPane(indexParrilla);
+                asientosTemporal = asientosTemporal.filter((asientoBusqueda) => asientoBusqueda.asiento != asiento.asiento);
+                if( asiento.tipo == ASIENTO_TIPO_ASOCIADO || asiento.tipo == ASIENTO_TIPO_MASCOTA ) {
+                    asientosTemporal = asientosTemporal.filter(({ asiento }) => asiento != asiento.asientoAsociado);
+                }
+
+                stage == STAGE_INICIAL ? setAsientosIda(asientosTemporal) : setAsientosVuelta(asientosTemporal);
             }
         } catch ({ message }) {
             console.error(`Error al tomar asiento [${ message }]`);
-        }
-
-        let asientos_temp;
-        if (stage == 0) {
-            asientos_temp = [...asientosIda];
-        } else {
-            asientos_temp = [...asientosVuelta];
-        }
-
-        if (asiento.estado == "libre" || asiento.estado == "pet-free") {
-            if (asientos_temp.length >= 4) {
-                toast.warn("Maximo 4 pasajes", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                });
-                return false;
-            }
-
-            const reserva = await axios.post("/api/tomar-asiento", {
-                servicio: parrilla[indexParrilla].idServicio,
-                bus: piso == 1 ? parrilla[indexParrilla].busPiso1 : parrilla[indexParrilla].busPiso2,
-                fecha:
-                    stage == 0
-                        ? dayjs(startDate).format("DD/MM/YYYY")
-                        : dayjs(endDate).format("DD/MM/YYYY"),
-                origen: parrilla[indexParrilla].idTerminalOrigen,
-                destino: parrilla[indexParrilla].idTerminalDestino,
-                integrador: parrilla[indexParrilla].integrador,
-                asiento: asiento.asiento,
-                tarifa:
-                    piso == 1
-                        ? parrilla[indexParrilla].tarifaPrimerPisoInternet
-                        : parrilla[indexParrilla].tarifaSegundoPisoInternet,
-            });
-            if (reserva.data.estadoReserva) {
-                asientos_temp.push({
-                    asiento: asiento.asiento,
-                    codigoReserva: reserva.data.codigoReserva,
-                    piso: piso,
-                    tarifa:
-                        piso == 1
-                            ? parrilla[indexParrilla].tarifaPrimerPisoInternet
-                            : parrilla[indexParrilla].tarifaSegundoPisoInternet,
-                });
-                if (stage == 0) {
-                    setAsientosIda(asientos_temp);
-                } else {
-                    setAsientosVuelta(asientos_temp);
-                }
-            }
-            if (asiento.tipo == "asociado" || asiento.tipo == "pet") {
-                const reserva = await axios.post("/api/tomar-asiento", {
-                    servicio: parrilla[indexParrilla].idServicio,
-                    fecha:
-                        stage == 0
-                            ? dayjs(startDate).format("DD/MM/YYYY")
-                            : dayjs(endDate).format("DD/MM/YYYY"),
-                    origen: parrilla[indexParrilla].idTerminalOrigen,
-                    destino: parrilla[indexParrilla].idTerminalDestino,
-                    integrador: parrilla[indexParrilla].integrador,
-                    asiento: asiento.asientoAsociado,
-
-                    bus:
-                        piso == 1 ? parrilla[indexParrilla].busPiso1 : parrilla[indexParrilla].busPiso2,
-                    tarifa:
-                        piso == 1
-                            ? parrilla[indexParrilla].tarifaPrimerPisoInternet
-                            : parrilla[indexParrilla].tarifaSegundoPisoInternet,
-                });
-                if (reserva.data.estadoReserva) {
-                    setModalMab(true);
-                    asientos_temp.push({
-                        asiento: asiento.asientoAsociado,
-                        pet: true,
-                        asociado: asiento.asiento,
-                        codigoReserva: reserva.data.codigoReserva,
-                        piso: piso,
-                        tarifa:
-                            piso == 1
-                                ? parrilla[indexParrilla].tarifaPrimerPisoInternet
-                                : parrilla[indexParrilla].tarifaSegundoPisoInternet,
-                    });
-                    if (stage == 0) {
-                        setAsientosIda(asientos_temp);
-                    } else {
-                        setAsientosVuelta(asientos_temp);
-                    }
-                }
-            }
-            reloadPane(indexParrilla);
-        } else if (
-            asiento.estado == "ocupado" &&
-            asientos_temp.find((i) => asiento.asiento == i.asiento)
-        ) {
-            let asiento_selected = asientos_temp.find(
-                (i) => asiento.asiento == i.asiento
-            );
-
-            const reserva = await axios.post("/api/liberar-asiento", {
-                servicio: parrilla[indexParrilla].idServicio,
-                fecha: dayjs(startDate).format("DD/MM/YYYY"),
-                origen: parrilla[indexParrilla].idTerminalOrigen,
-                destino: parrilla[indexParrilla].idTerminalDestino,
-                integrador: parrilla[indexParrilla].integrador,
-                asiento: asiento.asiento,
-                tarifa:
-                    piso == 1
-                        ? parrilla[indexParrilla].tarifaPrimerPisoInternet
-                        : parrilla[indexParrilla].tarifaSegundoPisoInternet,
-                codigoReserva: asiento_selected.codigoReserva,
-            });
-            if (asiento.tipo == "asociado" || asiento.tipo == "pet") {
-                await axios.post("/api/liberar-asiento", {
-                    servicio: parrilla[indexParrilla].idServicio,
-                    fecha: dayjs(startDate).format("DD/MM/YYYY"),
-                    origen: parrilla[indexParrilla].idTerminalOrigen,
-                    destino: parrilla[indexParrilla].idTerminalDestino,
-                    integrador: parrilla[indexParrilla].integrador,
-                    asiento: asiento.asientoAsociado,
-                    tarifa:
-                        piso == 1
-                            ? parrilla[indexParrilla].tarifaPrimerPisoInternet
-                            : parrilla[indexParrilla].tarifaSegundoPisoInternet,
-                    codigoReserva: asiento_selected.codigoReserva,
-                });
-            }
-            reloadPane(indexParrilla);
-            let parrilla_temp = [...parrilla];
-            let asientos1 = await axios.post("/api/mapa-asientos", {
-                idServicio: parrilla_temp[indexParrilla].idServicio,
-                tipoBusPiso1: parrilla_temp[indexParrilla].busPiso1,
-                tipoBusPiso2: parrilla_temp[indexParrilla].busPiso2,
-                fechaServicio:
-                    stage == 0
-                        ? dayjs(startDate).format("DD/MM/YYYY")
-                        : dayjs(endDate).format("DD/MM/YYYY"),
-                idOrigen: parrilla[indexParrilla].idTerminalOrigen,
-                idDestino: parrilla[indexParrilla].idTerminalDestino,
-                integrador: parrilla[indexParrilla].integrador,
-            });
-            let parrilla_mod = [...parrilla];
-            parrilla_mod[indexParrilla].loadingAsientos = false;
-            parrilla_mod[indexParrilla].asientos1 = asientos1.data[1];
-            if (parrilla_temp[indexParrilla].busPiso2) {
-                parrilla_mod[indexParrilla].asientos2 = asientos1.data[2];
-            }
-            await setParrilla(parrilla_mod);
-
-            asientos_temp = asientos_temp.filter(
-                (i) => i.asiento != asiento.asiento
-            );
-            if (asiento.tipo == "asociado" || asiento.tipo == "pet") {
-                asientos_temp = asientos_temp.filter(
-                    (i) => i.asiento != asiento.asientoAsociado
-                );
-            }
-            if (stage == 0) {
-                setAsientosIda(asientos_temp);
-            } else {
-                setAsientosVuelta(asientos_temp);
-            }
         }
     };
 
@@ -501,7 +389,7 @@ export default function Home(props) {
     };
     const setPasaje = (pasaje) => {
         let carro_temp = { ...carro };
-        if (stage == 0) {
+        if (stage == STAGE_INICIAL) {
             carro_temp.clientes_ida = asientosIda.map((i, k) => {
                 return {
                     idServicio: pasaje.idServicio,
@@ -1333,7 +1221,7 @@ export default function Home(props) {
                                                                     openPane
                                                                 }
                                                                 asientos_selected={
-                                                                    stage == 0
+                                                                    stage == STAGE_INICIAL
                                                                         ? asientosIda
                                                                         : asientosVuelta
                                                                 }
