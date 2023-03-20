@@ -1,25 +1,20 @@
 import axios from "axios";
 import Layout from "components/Layout";
 import BusquedaServicio from 'components/BusquedaServicio';
-import Image from "next/image";
-import { useEffect, useState, forwardRef, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import getConfig from "next/config";
 import dayjs from "dayjs";
-import DatePicker, { registerLocale } from "react-datepicker";
-import Link from "next/link";
+import { registerLocale } from "react-datepicker";
 import { useRouter } from "next/router";
 import Check from "../components/Check";
 import Rut from "rutjs";
-import Loader from "../components/Loader";
 import Head from "next/head";
-import Input from "../components/Input";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
 import { ObtenerParrillaServicioDTO } from "./dto/ParrillaDTO";
-import { BuscarPlanillaVerticalDTO } from "./dto/MapaAsientosDTO";
 import { PasajeConvenioDTO } from "./dto/PasajesDTO";
 import StagePasajes from "../components/StagePasajes";
 
