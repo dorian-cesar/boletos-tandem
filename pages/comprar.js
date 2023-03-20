@@ -118,38 +118,15 @@ export default function Home(props) {
             const stage_active = in_stage ?? stage;
             setLoadingParrilla(true);
             const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
-            setParrilla(parrilla.data.map((p, index) => {
+            setParrilla(parrilla.data.map((parrillaMapped, index) => {
                 return {
-                    ...p,
+                    ...parrillaMapped,
                     id: index + 1
                 }
             }));
             setLoadingParrilla(false);   
         } catch ({ message }) {
             console.error(`Error al obtener parrilla [${ message }]`)
-        }
-    };
-    
-    function isValidStart(date) {
-        try {
-            return (
-                dayjs(date).isAfter(dayjs().subtract(1, "day")) &&
-                dayjs(date).isBefore(dayjs().add(props.dias, "day"))
-            );
-        } catch ({ message }) {
-            console.error(`Error al validar fecha de inicio [${ message }]`)
-            return false;
-        }
-    };
-
-    function isValidAfter(date) {
-        try {
-            return (
-                dayjs(date).isAfter(dayjs(startDate).subtract(1, "day")) &&
-                dayjs(date).isBefore(dayjs().add(props.dias, "day"))
-            );
-        } catch({ message }) {
-            console.error(`Error al validar fecha de fin [${ message }]`);
         }
     };
     
@@ -727,124 +704,90 @@ export default function Home(props) {
             <div className="pasajes-compra py-5">
                 <div className="container">
                     <div className="d-flex flex-row justify-content-around">
-                        {stages
-                            .filter(
-                                (i, k) =>
-                                    endDate ||
-                                    (!endDate && i.kind != "pasajes_2")
-                            )
-                            .map((i, k) => {
-                                return (
-                                    <div
-                                        className={
-                                            "seleccion text-center " +
-                                            (k == stage ? "active" : "")
-                                        }
-                                    >
-                                        <div className="numeros">
-                                            <div className="numero">
-                                                {k + 1}
+                        {
+                            stages.map((stageMaped, indexStage) => {
+                                if( endDate || (!endDate && stageMaped.kind != "pasajes_2") ) {
+                                    return(
+                                        <div className={ "seleccion text-center " + (indexStage == stage ? "active" : "")}>
+                                            <div className="numeros">
+                                                <div className="numero">
+                                                    { indexStage + 1 }
+                                                </div>
                                             </div>
+                                            <h3>{stageMaped.name}</h3>
                                         </div>
-                                        <h3>{i.name}</h3>
-                                    </div>
-                                );
-                            })}
+                                    )
+                                }
+                            })
+                        }
                     </div>
-                    {stages_active[stage].kind == "pasajes_1" ||
-                    stages_active[stage].kind == "pasajes_2" ? (
-                        <div className="row">
-                            <div className="col-12 col-md-3" key={stage + "it"}>
-                                <div className="bloque-filtro">
-                                    <h2>Filtrar por:</h2>
-                                    <div className="w-100 mb-4">
-                                        <span>Tipo de servicio</span>
-                                        {tipos_servicio
-                                            .filter((i) => i)
-                                            .map((i, k) => {
-                                                return (
-                                                    <div className="custom-control custom-checkbox">
-                                                        <input
-                                                            type="checkbox"
-                                                            className="custom-control-input"
-                                                            id={"tipoCheck" + k}
-                                                            onClick={() =>
-                                                                toggleTipo(i)
-                                                            }
-                                                            value={i}
-                                                            checked={filter_tipo.includes(
-                                                                i
-                                                            )}
-                                                        />
-                                                        <label
-                                                            className="custom-control-label"
-                                                            for={
-                                                                "tipoCheck" + k
-                                                            }
-                                                        >
-                                                            &nbsp;{i}
-                                                        </label>
-                                                    </div>
-                                                );
-                                            })}
-                                    </div>
-                                    <div className="w-100 mb-4">
-                                        <span>Horarios</span>
-
-                                        <div className="custom-control custom-checkbox">
-                                            <input
-                                                type="checkbox"
-                                                className="custom-control-input"
-                                                id={"horaCheck1"}
-                                                checked={filter_horas.includes(
-                                                    "6-12"
-                                                )}
-                                                onClick={() =>
-                                                    toggleHoras("6-12")
-                                                }
-                                            />
+                    {
+                        stages_active[stage].kind == "pasajes_1" || stages_active[stage].kind == "pasajes_2" ? (
+                            <div className="row">
+                                <div className="col-12 col-md-3" key={stage + "it"}>
+                                    <div className="bloque-filtro">
+                                        <h2>Filtrar por:</h2>
+                                        <div className="w-100 mb-4">
+                                            <span>Tipo de servicio</span>
+                                            {
+                                                tipos_servicio.map((tipoServicioMapped, indexTipoServicio) => {
+                                                    return (
+                                                        <div className="custom-control custom-checkbox">
+                                                            <input 
+                                                                type="checkbox" 
+                                                                className="custom-control-input" 
+                                                                id={"tipoCheck" + indexTipoServicio}
+                                                                onClick={ () => toggleTipo(tipoServicioMapped) }
+                                                                alue={ tipoServicioMapped }
+                                                                checked={ filter_tipo.includes(tipoServicioMapped) }/>
+                                                            <label
+                                                                className="custom-control-label"
+                                                                for={ "tipoCheck" + indexTipoServicio }>
+                                                                &nbsp;{ tipoServicioMapped }
+                                                            </label>
+                                                        </div>
+                                                    );
+                                                })
+                                            }
+                                        </div>
+                                        <div className="w-100 mb-4">
+                                            <span>Horarios</span>
+                                            <div className="custom-control custom-checkbox">
+                                                <input
+                                                    id="horaCheck1"
+                                                    type="checkbox"
+                                                    className="custom-control-input"
+                                                    checked={ filter_horas.includes("6-12") }
+                                                    onClick={ () => toggleHoras("6-12") }/>
                                             <label
                                                 className="custom-control-label"
-                                                for={"horaCheck1"}
-                                            >
+                                                for={"horaCheck1"}>
                                                 &nbsp;6:00 AM a 11:59 AM
                                             </label>
                                         </div>
                                         <div className="custom-control custom-checkbox">
                                             <input
+                                                id="horaCheck2"
                                                 type="checkbox"
                                                 className="custom-control-input"
-                                                id={"horaCheck2"}
-                                                checked={filter_horas.includes(
-                                                    "12-20"
-                                                )}
-                                                onClick={() =>
-                                                    toggleHoras("12-20")
-                                                }
-                                            />
+                                                checked={ filter_horas.includes("12-20") }
+                                                onClick={ () => toggleHoras("12-20") }/>
                                             <label
                                                 className="custom-control-label"
-                                                for={"horaCheck2"}
-                                            >
+                                                for="horaCheck2">
                                                 &nbsp;12 PM a 19:59 PM
                                             </label>
                                         </div>
                                         <div className="custom-control custom-checkbox">
                                             <input
+                                                id="horaCheck3"
                                                 type="checkbox"
                                                 className="custom-control-input"
-                                                id={"horaCheck3"}
-                                                checked={filter_horas.includes(
-                                                    "20-6"
-                                                )}
-                                                onClick={() =>
-                                                    toggleHoras("20-6")
-                                                }
-                                            />
+                                                checked={ filter_horas.includes("20-6") }
+                                                onClick={() => toggleHoras("20-6") }/>
                                             <label
                                                 className="custom-control-label"
-                                                for={"horaCheck3"}
-                                            >
+                                                for="horaCheck3">
                                                 &nbsp;20:00 PM en adelante
                                             </label>
                                         </div>
@@ -854,70 +797,42 @@ export default function Home(props) {
                             <div className="col-12 col-md-9">
                                 <div className="bloque-header">
                                     <div className="row">
+                                        // TODO: se puede componentizar con lo de abajo
                                         <div
                                             className="col-4 text-center"
-                                            onClick={() =>
-                                                setSort(
-                                                    sort == "precio-up"
-                                                        ? "precio-down"
-                                                        : "precio-up"
-                                                )
-                                            }
-                                        >
+                                            onClick={ () => setSort(sort == "precio-up" ? "precio-down": "precio-up")}>
                                             <span>
-                                                <img
-                                                    className="mr-2"
-                                                    src="img/icon-peso.svg"
-                                                    alt=""
-                                                />
+                                                <img className="mr-2" src="img/icon-peso.svg" alt=""/>
                                                 Rango de Precio &nbsp;
-                                                {sort == "precio-up" ? (
-                                                    <img
-                                                        src="img/icon-flecha-arriba.svg"
+                                                { sort != '' ? 
+                                                    <img 
+                                                        src='img/icon-flecha-arriba.svg'
                                                         alt=""
-                                                    />
-                                                ) : (
-                                                    ""
-                                                )}
-                                                {sort == "precio-down" ? (
-                                                    <img
-                                                        src="img/icon-flecha-arriba.svg"
-                                                        style={{
-                                                            transform:
-                                                                "rotate(180deg)",
-                                                        }}
-                                                        alt=""
-                                                    />
-                                                ) : (
-                                                    ""
-                                                )}
+                                                        style={ sort == 'precio-down' ? {
+                                                            transform: 'rotate(180deg)'
+                                                        } : ''} /> 
+                                                    : '' 
+                                                }
                                             </span>
                                         </div>
                                         <div
                                             className="col-4 text-center"
-                                            onClick={() =>
-                                                setSort(
-                                                    sort == "hora-up"
-                                                        ? "hora-down"
-                                                        : "hora-up"
-                                                )
-                                            }
-                                        >
+                                            onClick={() => setSort(sort == "hora-up" ? "hora-down" : "hora-up")}>
                                             <span>
                                                 <img
                                                     className="mr-2"
                                                     src="img/icon-hora.svg"
-                                                    alt=""
-                                                />
+                                                    alt=""/>
                                                 Horario de salida &nbsp;
-                                                {sort == "hora-up" ? (
-                                                    <img
-                                                        src="img/icon-flecha-arriba.svg"
+                                                { sort != '' ? 
+                                                    <img 
+                                                        src='img/icon-flecha-arriba.svg'
                                                         alt=""
-                                                    />
-                                                ) : (
-                                                    ""
-                                                )}
+                                                        style={ sort == 'precio-down' ? {
+                                                            transform: 'rotate(180deg)'
+                                                        } : ''} /> 
+                                                    : '' 
+                                                }
                                                 {sort == "hora-down" ? (
                                                     <img
                                                         src="img/icon-flecha-arriba.svg"
@@ -2603,25 +2518,26 @@ export default function Home(props) {
     );
 }
 
-export const getServerSideProps = withIronSessionSsr(async function ({
-    req,
-    res,
-    query,
-}) {
+export const getServerSideProps = withIronSessionSsr(async function ({ req, res, query }) {
     let ciudades = await axios.get(
         publicRuntimeConfig.site_url + "/api/ciudades"
     );
+
     let destinos = await axios.post(
         publicRuntimeConfig.site_url + "/api/destinos",
         { id_ciudad: query.origen }
     );
+
     let dias = await axios.get(publicRuntimeConfig.site_url + "/api/dias");
+
     let nacionalidades = await axios.get(
         publicRuntimeConfig.site_url + "/api/nacionalidades"
     );
+
     let convenios = await axios.get(
         publicRuntimeConfig.site_url + "/api/convenios"
     );
+
     let mediosDePago = await axios.get(
         publicRuntimeConfig.site_url + "/api/medios-de-pago"
     );
@@ -2636,5 +2552,4 @@ export const getServerSideProps = withIronSessionSsr(async function ({
             destinos: destinos.data,
         },
     };
-},
-sessionOptions);
+}, sessionOptions);
