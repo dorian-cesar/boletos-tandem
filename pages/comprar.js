@@ -1,6 +1,5 @@
 import axios from "axios";
 import Layout from "components/Layout";
-import Boleto from "components/Boleto";
 import BusquedaServicio from 'components/BusquedaServicio';
 import Image from "next/image";
 import { useEffect, useState, forwardRef, useRef } from "react";
@@ -22,18 +21,9 @@ import es from "date-fns/locale/es";
 import { ObtenerParrillaServicioDTO } from "./dto/ParrillaDTO";
 import { BuscarPlanillaVerticalDTO } from "./dto/MapaAsientosDTO";
 import { PasajeConvenioDTO } from "./dto/PasajesDTO";
-import { LiberarAsientoDTO, TomaAsientoDTO } from "./dto/TomaAsientoDTO";
-import { AsientoDTO } from "./dto/AsientoDTO";
+import StagePasajes from "../components/StagePasajes";
 
 registerLocale("es", es);
-
-const ASIENTO_LIBRE = 'libre';
-const ASIENTO_LIBRE_MASCOTA = 'pet-free';
-const MAXIMO_COMPRA_ASIENTO = 4;
-const STAGE_INICIAL = 0;
-const ASIENTO_TIPO_MASCOTA = 'pet';
-const ASIENTO_TIPO_ASOCIADO = 'asociado';
-const ASIENTO_OCUPADO = 'ocupado';
 
 const isSame = (array1, array2) => array1.length === array2.length && array1.every((value, index) => value === array2[index]);
 
@@ -57,20 +47,19 @@ const stages = [
 ];
 
 export default function Home(props) {
-    const ciudades = props.ciudades;
-
+    
     const router = useRouter();
+
+    const startDate = dayjs(router.query.startDate).isValid() ? dayjs(router.query.startDate).toDate(): null;
+    const endDate = dayjs(router.query.endDate).isValid() ? dayjs(router.query.endDate).toDate() : null;
+    const origen = router.query.origen;
+    const destino = router.query.destino != "null" ? router.query.destino : null;
+
     const payment_form = useRef(null);
     const [payment, setPayment] = useState({});
     const [modalMab, setModalMab] = useState(false);
-    const [mascota_allowed, setMascota] = useState(false);
-    const [origen, setOrigen] = useState(router.query.origen);
     const [parrilla, setParrilla] = useState([]);
     const [loadingParrilla, setLoadingParrilla] = useState(true);
-    const [destinos, setDestinos] = useState([]);
-    const [destino, setDestino] = useState(router.query.destino != "null" ? router.query.destino : null);
-    const [asientosIda, setAsientosIda] = useState([]);
-    const [asientosVuelta, setAsientosVuelta] = useState([]);
     const [carro, setCarro] = useState({
         clientes_ida: [],
         pasaje_ida: null,
@@ -83,35 +72,6 @@ export default function Home(props) {
     const [convenioSelected, setConvenioSelected] = useState(null);
     const [convenio, setConvenio] = useState(null);
     const [convenioActive, setConvenioActive] = useState(null);
-    const [filter_tipo, setFilterTipo] = useState([]);
-    const [filter_horas, setFilterHoras] = useState([]);
-    const [openPane, setOpenPane] = useState(false);
-    const [sort, setSort] = useState(null);
-    const [startDate, setStartDate] = useState(dayjs(router.query.startDate).isValid() ? dayjs(router.query.startDate).toDate(): null);
-    const [endDate, setEndDate] = useState(dayjs(router.query.endDate).isValid() ? dayjs(router.query.endDate).toDate() : null);
-
-    async function getConvenio() {
-        try {
-            const convenio_response = await axios.post("/api/convenio", {
-                idConvenio: convenioSelected,
-            });
-            setConvenio(convenio_response.data);
-            setConvenioFields({});
-        } catch ({ message }) {
-            console.error(`Error al obtener convenio [${ message }]`);
-        }
-    };
-
-    async function getDestinos() {
-        try {
-            const destinos = await axios.post("/api/destinos", {
-                id_ciudad: origen,
-            });
-            setDestinos(destinos.data);
-        } catch ({ message }) {
-            console.error(`Error al obtener destinos [${ message }]`);
-        }
-    };
 
     async function searchParrilla(in_stage) {
         try {
@@ -129,42 +89,16 @@ export default function Home(props) {
             console.error(`Error al obtener parrilla [${ message }]`)
         }
     };
-    
-    async function reloadPane(indexParrilla) {
-        try {
-            const parrillaTemporal = [...parrilla];
-            const parrillaModificada = [...parrilla];
-            const { data } = await axios.post('/api/mapa-asientos', 
-                new BuscarPlanillaVerticalDTO(parrillaTemporal[indexParrilla], stage, startDate, endDate, parrilla[indexParrilla]));
-            parrillaModificada[indexParrilla].loadingAsientos = false;
-            parrillaModificada[indexParrilla].asientos1 = data[1];
-            if( !!parrillaTemporal[indexParrilla].busPiso2 ) {
-                parrillaModificada[indexParrilla].asientos1 = data[2];
-            }
-            setParrilla(parrillaModificada);
-        } catch ({ message }) {
-            console.error(`Error al recargar panel [${ message }]`);
-        }
-    };
 
-    async function setOpenPaneRoot(indexParrilla) {
+    async function getConvenio() {
         try {
-            const parrillaTemporal = [...parrilla];
-            const parrillaModificada = [...parrilla];
-            parrillaTemporal[indexParrilla].loadingAsientos = true;
-            setParrilla(parrillaTemporal);
-            stage == STAGE_INICIAL ? setAsientosIda([]) : setAsientosVuelta([]);
-            setOpenPane(parrilla[indexParrilla].id);
-            const { data } = await axios.post('/api/mapa-asientos', 
-                new BuscarPlanillaVerticalDTO(parrillaTemporal[indexParrilla], stage, startDate, endDate, parrilla[indexParrilla]));
-            parrillaModificada[indexParrilla].loadingAsientos = false;
-            parrillaModificada[indexParrilla].asientos1 = data[1];
-            if( !!parrillaTemporal[indexParrilla].busPiso2 ) {
-                parrillaModificada[indexParrilla].asientos1 = data[2];
-            }
-            setParrilla(parrillaModificada);
+            const convenio_response = await axios.post("/api/convenio", {
+                idConvenio: convenioSelected,
+            });
+            setConvenio(convenio_response.data);
+            setConvenioFields({});
         } catch ({ message }) {
-            console.error(`Error al abrir el panel [${ message }]`);
+            console.error(`Error al obtener convenio [${ message }]`);
         }
     };
 
@@ -186,78 +120,6 @@ export default function Home(props) {
             }   
         } catch ({ message }) {
             console.error(`Error al validar convenio [${ message }]`)
-        }
-    };
-
-    function validarMaximoAsientos(asientos) {
-        if( asientos.length >= MAXIMO_COMPRA_ASIENTO ) {
-            toast.warn(`Máximo ${ MAXIMO_COMPRA_ASIENTO } pasajes`, {
-                position: 'top-right',
-                autoClose: 5000,
-                hideProgressBar: false
-            });
-            return false;
-        }
-        return true;
-    }
-
-    async function servicioTomarAsiento(parrillaServicio, asiento, piso, asientosTemporal, isMascota = false) {
-        try {
-            const { data } = await axios.post('/api/tomar-asiento', new TomaAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage));
-            const reserva = data;           
-            if( reserva.estadoReserva ) {
-                if( isMascota ) setModalMab(true);
-                asientosTemporal.push(new AsientoDTO(reserva, parrillaServicio, asiento, piso))
-                stage == STAGE_INICIAL ? setAsientosIda(asientosTemporal) : setAsientosVuelta(asientosTemporal);
-                return asientosTemporal;
-            }
-        } catch ({ message }) {
-            throw new Error(`Error al reservar asociado/mascota [${ message }]`);
-        }
-    }
-
-    async function servicioLiberarAsiento(parrillaServicio, asiento, piso, codigoReserva) {
-        try {
-            const { data } = await axios.post('/api/liberar-asiento', new LiberarAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage, codigoReserva))
-        } catch ({ message }) {
-            throw new Error(`Error al liberar asiento [${ message }]`);
-        }
-    }
-    
-    async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
-        try {
-            let asientosTemporal = stage == STAGE_INICIAL ? [...asientosIda] : [...asientosVuelta];
-            const asientoSeleccionado = asientosTemporal.find((asientoBusqueda) => asiento.asiento == asientoBusqueda.asiento);
-
-            if( asiento.estado == ASIENTO_LIBRE || asiento.estado == ASIENTO_LIBRE_MASCOTA ) {
-                if( !validarMaximoAsientos ) return;
-                asientosTemporal = await servicioTomarAsiento(parrilla[indexParrilla], asiento.asiento, piso, asientosTemporal);
-
-                if( asiento.tipo == ASIENTO_TIPO_ASOCIADO || asiento.tipo == ASIENTO_TIPO_MASCOTA ) {
-                    asientosTemporal = await servicioTomarAsiento(parrilla[indexParrilla], asiento.asientoAsociado, piso, asientosTemporal, true);
-                }
-
-                await reloadPane(indexParrilla);
-                return;
-            }
-
-            if( asiento.estado == ASIENTO_OCUPADO && asientoSeleccionado ) {
-                await servicioLiberarAsiento(parrilla[indexParrilla], asiento.asiento, asientoSeleccionado.codigoReserva);
-                
-                if( asiento.tipo == ASIENTO_TIPO_ASOCIADO || asiento.tipo == ASIENTO_TIPO_MASCOTA ) {
-                    await servicioLiberarAsiento(parrilla[indexParrilla], asiento.asientoAsociado, piso, asientoSeleccionado.codigoReserva);
-                }
-
-                await reloadPane(indexParrilla);
-                asientosTemporal = asientosTemporal.filter((asientoBusqueda) => asientoBusqueda.asiento != asiento.asiento);
-                if( asiento.tipo == ASIENTO_TIPO_ASOCIADO || asiento.tipo == ASIENTO_TIPO_MASCOTA ) {
-                    asientosTemporal = asientosTemporal.filter(({ asiento }) => asiento != asiento.asientoAsociado);
-                }
-
-                stage == STAGE_INICIAL ? setAsientosIda(asientosTemporal) : setAsientosVuelta(asientosTemporal);
-            }
-        } catch ({ message }) {
-            console.error(`Error al tomar asiento [${ message }]`);
         }
     };
 
@@ -284,26 +146,6 @@ export default function Home(props) {
             boleto.piso == piso
         ));
     }
-
-    function toggleTipo(tipo) {
-        let listaTipoTemporal = [...filter_tipo];
-        if (filter_tipo.includes(tipo)) {
-            listaTipoTemporal = filter_tipo.filter((i) => i != tipo);
-        } else {
-            listaTipoTemporal.push(tipo);
-        }
-        setFilterTipo(listaTipoTemporal);
-    };
-
-    function toggleHoras(horas) {
-        let listaHorasTemporal = [...filter_horas];
-        if (filter_horas.includes(horas)) {
-            listaHorasTemporal = listaHorasTemporal.filter((i) => i != horas);
-        } else {
-            listaHorasTemporal.push(horas);
-        }
-        setFilterHoras(listaHorasTemporal);
-    };
 
     const openPasajero = (k, tipo) => {
         let carro_temp = { ...carro };
@@ -363,100 +205,7 @@ export default function Home(props) {
         convenioFieldsTemp[e.target.name] = e.target.value;
         setConvenioFields(convenioFieldsTemp);
     };
-    const setPasaje = (pasaje) => {
-        let carro_temp = { ...carro };
-        if (stage == STAGE_INICIAL) {
-            carro_temp.clientes_ida = asientosIda.map((i, k) => {
-                return {
-                    idServicio: pasaje.idServicio,
-                    fechaServicio: pasaje.fechaServicio,
-                    fechaSalida: pasaje.fechaSalida,
-                    fechaLlegada: pasaje.fechaLlegada,
-                    integrador: pasaje.integrador,
-                    horaSalida: pasaje.horaSalida,
-                    empresa: pasaje.empresa,
-                    bus: i.piso == 1 ? pasaje.busPiso1 : pasaje.busPiso2,
-                    origen: pasaje.idTerminalOrigen,
-                    destino: pasaje.idTerminalDestino,
-                    codigoReserva: 1,
-                    clase: pasaje.idClaseBusPisoUno,
-                    tarifa:
-                        i.piso == 1
-                            ? pasaje.tarifaPrimerPisoInternet
-                            : pasaje.tarifaSegundoPisoInternet,
-                    servicio:
-                        i.piso == 1
-                            ? pasaje.servicioPrimerPiso
-                            : pasaje.servicioSegundoPiso,
-                    piso: i.piso,
-                    pet: i.pet,
-                    asiento: i.asiento,
-                    open: k == 0 ? true : false,
-                    extras: pasaje,
-                    pasajero: {
-                        tipoRut: "rut",
-                        nacionalidad: "CHL",
-                        errors: [],
-                    },
-                };
-            });
-            carro_temp.pasaje_ida = pasaje;
-            setStage(1);
-            setCarro(carro_temp);
 
-            setOpenPane(null);
-
-            searchParrilla(1);
-        }
-        if (stage == 1) {
-            carro_temp.clientes_vuelta = asientosVuelta.map((i, k) => {
-                return {
-                    idServicio: pasaje.idServicio,
-                    fechaServicio: pasaje.fechaServicio,
-                    fechaSalida: pasaje.fechaSalida,
-                    fechaLlegada: pasaje.fechaLlegada,
-                    integrador: pasaje.integrador,
-                    horaSalida: pasaje.horaSalida,
-                    empresa: pasaje.empresa,
-                    bus: i.piso == 1 ? pasaje.busPiso1 : pasaje.busPiso2,
-                    origen: pasaje.idTerminalOrigen,
-                    destino: pasaje.idTerminalDestino,
-                    codigoReserva: 1,
-                    clase: pasaje.idClaseBusPisoUno,
-                    piso: i.piso,
-                    pet: i.pet,
-                    asiento: i.asiento,
-                    tarifa:
-                        i.piso == 1
-                            ? pasaje.tarifaPrimerPisoInternet
-                            : pasaje.tarifaSegundoPisoInternet,
-                    servicio:
-                        i.piso == 1
-                            ? pasaje.servicioPrimerPiso
-                            : pasaje.servicioSegundoPiso,
-                    open: k == 0 ? true : false,
-                    extras: pasaje,
-                    pasajero: {
-                        tipoRut: "rut",
-                        nacionalidad: "CHL",
-                        errors: [],
-                    },
-                };
-            });
-            carro_temp.pasaje_vuelta = pasaje;
-            setStage(2);
-            setCarro(carro_temp);
-        }
-    };
-    const tipos_servicio = parrilla.reduce((a, b) => {
-        if (!a.includes(b.servicioPrimerPiso) && b.servicioPrimerPiso != "") {
-            a.push(b.servicioPrimerPiso);
-        }
-        if (!a.includes(b.servicioSegundoPiso) && b.servicioSegundoPiso != "") {
-            a.push(b.servicioSegundoPiso);
-        }
-        return a;
-    }, []);
     const isPaymentValid = () => {
         let valid = true;
         let ida = carro.clientes_ida.reduce((a, b, k) => {
@@ -674,24 +423,12 @@ export default function Home(props) {
     }, [convenioSelected]);
 
     useEffect(() => {
-        (async () => await getDestinos())();
-    }, [origen]);
-
-    useEffect(() => {
         payment_form.current?.submit();
     }, [payment]);
-    
-    useEffect(() => {
-        setDestinos(props.destinos);
-        searchParrilla();
-    }, []);
 
     useEffect(() => {
-        if (endDate && dayjs(startDate).isAfter(dayjs(endDate))) {
-            console.log("endf");
-            setEndDate(dayjs(startDate).toDate());
-        }
-    }, [startDate]);
+        searchParrilla();
+    }, []);
 
     return (
         <Layout>
@@ -705,333 +442,34 @@ export default function Home(props) {
                 <div className="container">
                     <div className="d-flex flex-row justify-content-around">
                         {
-                            stages.map((stageMaped, indexStage) => {
-                                if( endDate || (!endDate && stageMaped.kind != "pasajes_2") ) {
-                                    return(
-                                        <div className={ "seleccion text-center " + (indexStage == stage ? "active" : "")}>
-                                            <div className="numeros">
-                                                <div className="numero">
-                                                    { indexStage + 1 }
-                                                </div>
+                            stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
+                                return(
+                                    <div key={ `stage-${ indexStage }` } className={ "seleccion text-center " + (indexStage == stage ? "active" : "")}>
+                                        <div className="numeros">
+                                            <div className="numero">
+                                                { indexStage + 1 }
                                             </div>
-                                            <h3>{stageMaped.name}</h3>
                                         </div>
-                                    )
-                                }
+                                        <h3>{stageMaped.name}</h3>
+                                    </div>
+                                )
                             })
                         }
                     </div>
-                    {
-                        stages_active[stage].kind == "pasajes_1" || stages_active[stage].kind == "pasajes_2" ? (
-                            <div className="row">
-                                <div className="col-12 col-md-3" key={stage + "it"}>
-                                    <div className="bloque-filtro">
-                                        <h2>Filtrar por:</h2>
-                                        <div className="w-100 mb-4">
-                                            <span>Tipo de servicio</span>
-                                            {
-                                                tipos_servicio.map((tipoServicioMapped, indexTipoServicio) => {
-                                                    return (
-                                                        <div className="custom-control custom-checkbox">
-                                                            <input 
-                                                                type="checkbox" 
-                                                                className="custom-control-input" 
-                                                                id={"tipoCheck" + indexTipoServicio}
-                                                                onClick={ () => toggleTipo(tipoServicioMapped) }
-                                                                alue={ tipoServicioMapped }
-                                                                checked={ filter_tipo.includes(tipoServicioMapped) }/>
-                                                            <label
-                                                                className="custom-control-label"
-                                                                for={ "tipoCheck" + indexTipoServicio }>
-                                                                &nbsp;{ tipoServicioMapped }
-                                                            </label>
-                                                        </div>
-                                                    );
-                                                })
-                                            }
-                                        </div>
-                                        <div className="w-100 mb-4">
-                                            <span>Horarios</span>
-                                            <div className="custom-control custom-checkbox">
-                                                <input
-                                                    id="horaCheck1"
-                                                    type="checkbox"
-                                                    className="custom-control-input"
-                                                    checked={ filter_horas.includes("6-12") }
-                                                    onClick={ () => toggleHoras("6-12") }/>
-                                            <label
-                                                className="custom-control-label"
-                                                for={"horaCheck1"}>
-                                                &nbsp;6:00 AM a 11:59 AM
-                                            </label>
-                                        </div>
-                                        <div className="custom-control custom-checkbox">
-                                            <input
-                                                id="horaCheck2"
-                                                type="checkbox"
-                                                className="custom-control-input"
-                                                checked={ filter_horas.includes("12-20") }
-                                                onClick={ () => toggleHoras("12-20") }/>
-                                            <label
-                                                className="custom-control-label"
-                                                for="horaCheck2">
-                                                &nbsp;12 PM a 19:59 PM
-                                            </label>
-                                        </div>
-                                        <div className="custom-control custom-checkbox">
-                                            <input
-                                                id="horaCheck3"
-                                                type="checkbox"
-                                                className="custom-control-input"
-                                                checked={ filter_horas.includes("20-6") }
-                                                onClick={() => toggleHoras("20-6") }/>
-                                            <label
-                                                className="custom-control-label"
-                                                for="horaCheck3">
-                                                &nbsp;20:00 PM en adelante
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-12 col-md-9">
-                                <div className="bloque-header">
-                                    <div className="row">
-                                        // TODO: se puede componentizar con lo de abajo
-                                        <div
-                                            className="col-4 text-center"
-                                            onClick={ () => setSort(sort == "precio-up" ? "precio-down": "precio-up")}>
-                                            <span>
-                                                <img className="mr-2" src="img/icon-peso.svg" alt=""/>
-                                                Rango de Precio &nbsp;
-                                                { sort != '' ? 
-                                                    <img 
-                                                        src='img/icon-flecha-arriba.svg'
-                                                        alt=""
-                                                        style={ sort == 'precio-down' ? {
-                                                            transform: 'rotate(180deg)'
-                                                        } : ''} /> 
-                                                    : '' 
-                                                }
-                                            </span>
-                                        </div>
-                                        <div
-                                            className="col-4 text-center"
-                                            onClick={() => setSort(sort == "hora-up" ? "hora-down" : "hora-up")}>
-                                            <span>
-                                                <img
-                                                    className="mr-2"
-                                                    src="img/icon-hora.svg"
-                                                    alt=""/>
-                                                Horario de salida &nbsp;
-                                                { sort != '' ? 
-                                                    <img 
-                                                        src='img/icon-flecha-arriba.svg'
-                                                        alt=""
-                                                        style={ sort == 'precio-down' ? {
-                                                            transform: 'rotate(180deg)'
-                                                        } : ''} /> 
-                                                    : '' 
-                                                }
-                                                {sort == "hora-down" ? (
-                                                    <img
-                                                        src="img/icon-flecha-arriba.svg"
-                                                        style={{
-                                                            transform:
-                                                                "rotate(180deg)",
-                                                        }}
-                                                        alt=""
-                                                    />
-                                                ) : (
-                                                    ""
-                                                )}
-                                            </span>
-                                        </div>
-                                        <div className="col-4">
-                                            <div
-                                                className="d-flex w-100 justify-content-end"
-                                                onClick={() =>
-                                                    setMascota(!mascota_allowed)
-                                                }
-                                            >
-                                                <img
-                                                    className="mr-2"
-                                                    src="img/icon-mascota-blanco.svg"
-                                                />
-                                                <span>Mascota a bordo</span>
-                                                <label
-                                                    className={
-                                                        "switch " +
-                                                        (mascota_allowed
-                                                            ? "checked"
-                                                            : "")
-                                                    }
-                                                >
-                                                    <span className="slider round"></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {loadingParrilla ? (
-                                    <Loader />
-                                ) : (
-                                    <>
-                                        {parrilla.length > 0 ? (
-                                            <>
-                                                {" "}
-                                                {parrilla
-                                                    .sort((a, b) => {
-                                                        if (!sort) {
-                                                            return 1;
-                                                        } else {
-                                                            if (
-                                                                sort ==
-                                                                "precio-up"
-                                                            ) {
-                                                                return (
-                                                                    a.tarifaPrimerPisoInternet -
-                                                                    b.tarifaPrimerPisoInternet
-                                                                );
-                                                            } else if (
-                                                                sort ==
-                                                                "precio-down"
-                                                            ) {
-                                                                return (
-                                                                    b.tarifaPrimerPisoInternet -
-                                                                    a.tarifaPrimerPisoInternet
-                                                                );
-                                                            } else if (
-                                                                sort ==
-                                                                "hora-up"
-                                                            ) {
-                                                                return (
-                                                                    Number(
-                                                                        a.horaSalida.replace(
-                                                                            ":",
-                                                                            ""
-                                                                        )
-                                                                    ) -
-                                                                    Number(
-                                                                        b.horaSalida.replace(
-                                                                            ":",
-                                                                            ""
-                                                                        )
-                                                                    )
-                                                                );
-                                                            } else {
-                                                                return (
-                                                                    Number(
-                                                                        b.horaSalida.replace(
-                                                                            ":",
-                                                                            ""
-                                                                        )
-                                                                    ) -
-                                                                    Number(
-                                                                        a.horaSalida.replace(
-                                                                            ":",
-                                                                            ""
-                                                                        )
-                                                                    )
-                                                                );
-                                                            }
-                                                        }
-                                                    })
-                                                    .map((i, k) => {
-                                                        if (
-                                                            filter_tipo.length >
-                                                                0 &&
-                                                            !filter_tipo.includes(
-                                                                i.servicioPrimerPiso
-                                                            ) &&
-                                                            !filter_tipo.includes(
-                                                                i.servicioSegundoPiso
-                                                            )
-                                                        ) {
-                                                            return;
-                                                        }
-                                                        if (
-                                                            mascota_allowed &&
-                                                            i.mascota == 0
-                                                        ) {
-                                                            return;
-                                                        }
-                                                        if (
-                                                            filter_horas.length >
-                                                            0
-                                                        ) {
-                                                            let isTime =
-                                                                filter_horas.reduce(
-                                                                    (a, b) => {
-                                                                        if (
-                                                                            !a
-                                                                        ) {
-                                                                            let hora_filtro =
-                                                                                b.split(
-                                                                                    "-"
-                                                                                );
-                                                                            let hora_viaje =
-                                                                                i.horaSalida.split(
-                                                                                    "-"
-                                                                                );
-                                                                            if (
-                                                                                hora_viaje[0] <=
-                                                                                    hora_filtro[1] &&
-                                                                                hora_viaje[0] >=
-                                                                                    hora_filtro[0]
-                                                                            ) {
-                                                                                a = true;
-                                                                            }
-                                                                        }
-                                                                        return a;
-                                                                    },
-                                                                    false
-                                                                );
-                                                            if (!isTime) {
-                                                                return;
-                                                            }
-                                                        }
-                                                        return (
-                                                            <Boleto
-                                                                {...i}
-                                                                openPane={
-                                                                    openPane
-                                                                }
-                                                                asientos_selected={
-                                                                    stage == STAGE_INICIAL
-                                                                        ? asientosIda
-                                                                        : asientosVuelta
-                                                                }
-                                                                stage={stage}
-                                                                setPasaje={
-                                                                    setPasaje
-                                                                }
-                                                                tomarAsiento={
-                                                                    tomarAsiento
-                                                                }
-                                                                setOpenPane={
-                                                                    setOpenPaneRoot
-                                                                }
-                                                                k={k}
-                                                            />
-                                                        );
-                                                    })}
-                                            </>
-                                        ) : (
-                                            <>
-                                                <h5 className="p-2">
-                                                    Lo sentimos, no existen
-                                                    resultados para su búsqueda
-                                                </h5>
-                                            </>
-                                        )}
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                    ) : (
-                        ""
-                    )}
+                    { 
+                        stages_active[stage].kind == "pasajes_1" || stages_active[stage].kind == "pasajes_2" ? 
+                        <StagePasajes 
+                            stage={ stage } 
+                            parrilla={ parrilla } 
+                            loadingParrilla={ loadingParrilla } 
+                            setParrilla={ setParrilla } 
+                            startDate={ startDate } 
+                            endDate={ endDate }
+                            carro={ carro }
+                            setCarro={ setCarro }
+                            setStage={ setStage }
+                            searchParrilla={ searchParrilla }/> : '' 
+                    }
                     {stages_active[stage].kind == "pago" ? (
                         <div className="pago">
                             <div className="container">
@@ -2202,15 +1640,6 @@ export default function Home(props) {
                                                                 </>
                                                             ));
                                                         }.call(this)}
-
-                                                        {/* <div className="row">
-                            <div className="col-8">
-                              <span>Adicionales “Nombre Adicional”</span>
-                            </div>
-                            <div className="col-4 d-flex justify-content-end">
-                               <span>$0</span>
-                            </div>
-                        </div>*/}
                                                     </div>
                                                 </div>
                                             ) : (
@@ -2523,11 +1952,6 @@ export const getServerSideProps = withIronSessionSsr(async function ({ req, res,
         publicRuntimeConfig.site_url + "/api/ciudades"
     );
 
-    let destinos = await axios.post(
-        publicRuntimeConfig.site_url + "/api/destinos",
-        { id_ciudad: query.origen }
-    );
-
     let dias = await axios.get(publicRuntimeConfig.site_url + "/api/dias");
 
     let nacionalidades = await axios.get(
@@ -2548,8 +1972,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({ req, res,
             dias: dias.data,
             nacionalidades: nacionalidades.data,
             convenios: convenios.data,
-            mediosDePago: mediosDePago.data,
-            destinos: destinos.data,
+            mediosDePago: mediosDePago.data
         },
     };
 }, sessionOptions);
