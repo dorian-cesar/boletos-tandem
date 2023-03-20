@@ -17,3 +17,32 @@ export class PasajeConvenioDTO {
         this.promocion = data?.promocion || '0';
     }
 }
+
+export class PasajeDTO {
+    constructor(pasaje, asiento, isOpen = true) {
+        this.idServicio = pasaje?.idServicio || '';
+        this.fechaServicio = pasaje?.fechaServicio || '';
+        this.fechaSalida = pasaje?.fechaSalida || '';
+        this.fechaLlegada = pasaje?.fechaLlegada || '';
+        this.integrador = pasaje?.integrador || 0;
+        this.horaSalida = pasaje?.horaSalida || '';
+        this.empresa = pasaje?.empresa || '';
+        this.bus = asiento?.piso == 1 ? pasaje?.busPiso1 : pasaje?.busPiso2;
+        this.origen = pasaje?.idTerminalOrigen || '';
+        this.destino = pasaje?.idTerminalDestino || '';
+        this.codigoReserva = 1;
+        this.clase = pasaje?.idClaseBusPisoUno || '';
+        this.tarifa = asiento?.piso == 1 ? pasaje?.tarifaPrimerPisoInternet : tarifaSegundoPisoInternet;
+        this.servicio = asiento?.piso == 1 ? pasaje?.servicioPrimerPiso : pasaje?.servicioSegundoPiso; 
+        this.piso = asiento?.piso || 1;
+        this.pet = asiento?.pet || '';
+        this.asiento = asiento || '';
+        this.open = isOpen;
+        this.extras = pasaje;
+        this.pasajero = {
+            tipo: 'rut',
+            nacionalidad: 'CHL',
+            errors: []
+        }
+    }
+}
