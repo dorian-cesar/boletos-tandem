@@ -121,3 +121,7 @@
     display: none;
   }
 }
+
+.rotate-icon {
+  transform: rotate(180deg);
+}
