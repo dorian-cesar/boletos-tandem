@@ -47,6 +47,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
 
   const { formState: registro, onInputChange } = useForm(registroFormFields);
   const [fechaNacimiento, setFechaNacimiento] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({
     errorMsg: '',
     status: false
@@ -72,6 +73,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
     const formStatus = await validarForm();
     if(formStatus){
       try{
+        setIsLoading(true);
         const res = await axios.post("/api/registro-usuario", {...registro});
         if(res.data.status){
           onChangeAlert({
@@ -82,6 +84,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
           changeMode();
         }
       } catch (e) {
+        setIsLoading(false);
         if(!!e.response){
           const { message } = e.response?.data;
           setError({ status: true, errorMsg: message });
@@ -146,6 +149,13 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
             </div>:''
             }
             </div>
+            {isLoading ? 
+            <div className="d-flex justify-content-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden"></span>
+              </div>
+            </div>:''
+            }
             <div className="row mt-2">
               <div className="col-6">
                 <div className="row">

@@ -1,8 +1,51 @@
-const RecuperarPassword = ({onChangeMode}) => {
+import { useState } from "react";
+import { useForm } from "/hooks/useForm";
+import axios from "axios";
 
-    const changeMode = () => {
-        onChangeMode("0");
+const recuperarPasswordFormFields = {
+  correo:""
+}
+const RecuperarPassword = ({ onChangeMode,  onChangeAlert }) => {
+  const { formState: recuperar, onInputChange } = useForm(recuperarPasswordFormFields);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState({
+    errorMsg: '',
+    status: false
+  });
+
+  const changeMode = () => {
+    onChangeMode("0");
+  };
+
+  const recuperarPassword = async () => {
+    if(recuperar.correo == '') {
+      return setError({
+        errorMsg: 'Se requiere ingresar un correo electrónico para recuperar la contraseña',
+        status: true
+      })
     }
+
+    try{
+      setIsLoading(true);
+      const res = await axios.post("/api/recuperar-password", {...recuperar});
+      if(res.data.status){
+        onChangeAlert({
+          msg: res.data.message,
+          visible: true,
+          type: 'alert-success'
+        })
+        changeMode();
+      }
+    } catch (e) {
+      setIsLoading(false);
+      if(!!e.response){
+        const { message } = e.response?.data;
+        setError({ status: true, errorMsg: message });
+      } else {
+        setError({ status: true, errorMsg: 'Ocurrió un error inesperado.' });
+      }
+    }
+  }
 
   return (
     <>
@@ -16,26 +59,49 @@ const RecuperarPassword = ({onChangeMode}) => {
               <h4 className="titulo-azul">Recuperación de Contraseña</h4>
             </div>
             <div className="d-flex justify-content-center text-center">
-              Ingresa un correo electrónico para enviarte un email con una contraseña provisoria
+              Ingresa un correo electrónico para enviarte un email con una
+              contraseña provisoria
             </div>
-            <div className="row mt-4">
+            <div className="row mt-2">
+              {error.status ?  
+              <div className="alert alert-danger" role="alert">
+                { error?.errorMsg }
+              </div>:''
+              }
+            </div>
+            {isLoading ? 
+            <div className="d-flex justify-content-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden"></span>
+              </div>
+            </div>:''
+            }
+            <div className="row mt-2">
               <div className="col-12">
                 <label className="label-input">Correo electrónico</label>
                 <input
                   type="text"
                   placeholder="Ej: example@example.com"
                   className="form-control"
-                  name="email"
+                  name="correo"
+                  value={recuperar?.correo}
+                  onChange={ onInputChange }
                 />
               </div>
             </div>
           </div>
         </div>
         <div className="modal-footer">
-          <button type="button" className="btn btn-modal-primary">
+          <button type="button" className="btn btn-modal-primary" onClick={(e) => recuperarPassword()}>
             Enviar
           </button>
-          <button type="button" className="btn btn-modal-secondary" onClick={changeMode}>Volver</button>
+          <button
+            type="button"
+            className="btn btn-modal-secondary"
+            onClick={changeMode}
+          >
+            Volver
+          </button>
         </div>
       </div>
     </>

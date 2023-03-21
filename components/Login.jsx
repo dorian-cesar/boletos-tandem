@@ -2,6 +2,7 @@ import { useState } from "react";
 import RecuperarPassword from 'components/RecuperarPassword'
 import Registro from 'components/Registro'
 import { useForm } from "/hooks/useForm";
+import { useLocalStorage } from "/hooks/useLocalStorage";
 import axios from "axios";
 
 const loginFormFields = {
@@ -11,6 +12,7 @@ const loginFormFields = {
 
 const Login = () => {
     const { formState: login, onInputChange } = useForm(loginFormFields);
+    const { setItem } = useLocalStorage();
     const [mode, setMode] = useState("0");
     const [isLoading, setIsLoading] = useState(false);
     const [alert, setAlert] = useState({
@@ -42,14 +44,12 @@ const Login = () => {
             setIsLoading(true);
             const res = await axios.post("/api/validar-login", {...login});
             const { token, usuario } = res.data.object;
-            localStorage.setItem("user", usuario);
-            localStorage.setItem("token", token);
+            setItem('user', usuario);
+            setItem('token', token);
             setIsLoading(false);
-            setAlert({
-                msg: 'Sesión iniciada',
-                visible: true,
-                type: 'alert-success'
-            });
+            const myModal = document.getElementById("loginModal");
+            myModal.hidden = true;
+            window.location.reload(false);
         } catch (e){
             console.log(e);
             setIsLoading(false);
@@ -96,8 +96,8 @@ const Login = () => {
                                     }
                                 </div>
                                 {isLoading ? <div className="d-flex justify-content-center">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="visually-hidden"></span>
+                                    <div className="spinner-border text-primary" role="status">
+                                        <span clasNames="visually-hidden"></span>
                                     </div>
                                 </div>:''}
                                 <div className="row mt-2">
@@ -139,7 +139,7 @@ const Login = () => {
                             <button type="button" className="btn btn-modal-secondary" data-bs-dismiss="modal" aria-label="Close">Seguir como invitado</button>
                         </div>
                     </div>
-                    : mode == "1" ? <RecuperarPassword onChangeMode={changeMode}></RecuperarPassword> : <Registro onChangeMode={changeMode} onChangeAlert={changeAlert}></Registro>}
+                    : mode == "1" ? <RecuperarPassword onChangeMode={changeMode} onChangeAlert={changeAlert}></RecuperarPassword> : <Registro onChangeMode={changeMode} onChangeAlert={changeAlert}></Registro>}
                 </div>  
             </div>
         </>
