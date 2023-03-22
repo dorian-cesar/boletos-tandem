@@ -1,7 +1,7 @@
 import useUser from 'lib/useUser'
 import { useRouter } from 'next/router'
 import Login from 'components/Login'
-import { useLocalStorage } from "/hooks/useLocalStorage";
+import { useLocalStorage } from '/hooks/useLocalStorage';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
@@ -26,13 +26,13 @@ export default function Header({
       <div className="menu">
         <div className="container">
           <div className="row">
-            <div className="col-2">
+            <div className="col-2 col-sm-2">
               <span style={{fontSize:"30px",cursor:"pointer",color:"#eb7f33"}} onClick={openNav}>☰</span>
             </div>
-            <div className="col-8 d-flex align-items-center justify-content-center">
+            <div className="col-6 col-sm-8 d-flex align-items-center justify-content-center">
               <a href="/"><img src="/img/logo-pullmanbus.svg" className="img-fluid" /></a>
             </div>
-            <div className="col-2 d-flex justify-content-end">
+            <div className="col-4 col-sm-2 d-flex justify-content-end">
             {user == null ? (
                   <button type="button" className="btn btn-login" data-bs-toggle="modal" data-bs-target="#loginModal">
                     Iniciar sesión
@@ -47,7 +47,7 @@ export default function Header({
 
                 </a> */}
                 <button  className="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  Mi cuenta
+                  <span className='text-login'>Mi cuenta</span>
                   <img src="img/icon-user.svg" width={30} className="m-1"/>
                 </button>
                 <ul className="dropdown-menu">

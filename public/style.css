@@ -1679,9 +1679,40 @@ select.form-control.seleccion {
   display: block;
 }
 
+.btn-table {
+  height: 30px;
+  padding: 2px 2px;
+}
 
+th {
+  color: #fff;
+}
 
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+ background-color: rgb(255, 239, 216);
+}
 
+.fondo-naranja {
+  background-color: var(--naranjo) !important;
+}
+
+.btn-paginador {
+  border-radius: 10px;
+  width: 30px;
+  padding: 2px 2px;
+  margin: 2px;
+}
+
+.btn-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  line-height: 18px;
+  width: 100%;
+}
 
 
 
@@ -1851,6 +1882,14 @@ footer .item a {
 
   .pullman-mas p {
     padding-right: 0px;
+  }
+
+  .btn-login {
+    padding: 5px;
+  }
+
+  .text-login {
+    color: #fff !important;
   }
 }
 

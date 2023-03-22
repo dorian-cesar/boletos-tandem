@@ -73,7 +73,7 @@ const Login = () => {
 
     return (
         <>
-            <div className="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id="loginModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className={'modal-dialog modal-dialog-centered modal-dialog-scrollable'+ (mode == '2' ? ' modal-lg':'')}>
                     {mode == "0" ?
                     <div className="modal-content">
