@@ -463,7 +463,7 @@ export default function Home(props) {
                             carro={ carro }
                             setCarro={ setCarro }
                             setStage={ setStage }
-                            searchParrilla={ searchParrilla }/> : '' 
+                            searchParrilla={ searchParrilla }/> : ('') 
                     }
                     {stages_active[stage].kind == "pago" ? (
                         <div className="pago">
@@ -569,7 +569,7 @@ export default function Home(props) {
                                                 >
                                                     <h5>
                                                         Pasajero {k + 1} -
-                                                        Asiento {i.asiento} -
+                                                        Asiento {i.asiento.asiento} -
                                                         Piso {i.piso}
                                                     </h5>
                                                     {isValidPasajero(
@@ -1947,6 +1947,11 @@ export const getServerSideProps = withIronSessionSsr(async function ({ req, res,
         publicRuntimeConfig.site_url + "/api/ciudades"
     );
 
+    let destinos = await axios.post(
+        publicRuntimeConfig.site_url + "/api/destinos",
+        { id_ciudad: query.origen }
+    );
+
     let dias = await axios.get(publicRuntimeConfig.site_url + "/api/dias");
 
     let nacionalidades = await axios.get(
@@ -1967,7 +1972,8 @@ export const getServerSideProps = withIronSessionSsr(async function ({ req, res,
             dias: dias.data,
             nacionalidades: nacionalidades.data,
             convenios: convenios.data,
-            mediosDePago: mediosDePago.data
+            mediosDePago: mediosDePago.data,
+            destinos: destinos.data
         },
     };
 }, sessionOptions);
