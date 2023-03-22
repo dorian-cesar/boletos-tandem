@@ -230,6 +230,7 @@ const StagePasajes = (props) => {
 
             return (
                 <Boleto
+                    key={ `key-boleto-${ indexParrilla }`}
                     {...mappedParrilla }
                     k={ indexParrilla }
                     openPane={ openPane }
