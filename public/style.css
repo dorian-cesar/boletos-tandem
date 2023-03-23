@@ -598,6 +598,24 @@ a {
   color: var(--naranjo);
 }
 
+.btn-limpiar {
+  width: 100%;
+  padding: 13px 15px;
+  font-size: 15px;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 17px;
+  color: #EB7F33;
+  display: block;
+  background-color: #FDEFE5;
+  text-decoration: none;
+  
+}
+.btn-limpiar:hover {
+  color: #EB7F33;
+  background-color: #FDEFE5;
+}
+
 label {
   text-transform: uppercase;
   font-size: 14px;
