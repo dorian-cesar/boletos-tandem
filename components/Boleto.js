@@ -18,7 +18,7 @@ const Boleto = (props) => {
         return (props.asientos_selected.find((i) => i.asiento == asiento.asiento && asiento.tipo != 'pet-busy')?"seleccion":"")+ " "+(props.asientos_selected.find((i) => i.asiento == asiento.asiento && asiento.estado == 'pet-busy')?"m-seleccion":"")+" "+(asiento.tipo == 'pet' && asiento.estado == 'ocupado'?"m-disponible":"")+ " " +(asiento.tipo == 'pet' && asiento.estado == 'pet-free'?"m-disponible":"")+ " " +(asiento.estado == "pet-busy" && !props.asientos_selected.find((i) => i.asiento == asiento.asiento)?"m-reservado":"") +" " +(asiento.estado == "ocupado"?"reservado":"") + " " +(asiento.estado == "libre"?"disponible":"") + " " + (asiento.asiento == 'B1' || asiento.asiento == "B2"?"bano":"");
     }
     return (<div className="boleto" >
-    <input type="checkbox" checked={props.openPane == props.id}/>
+    <input type="checkbox" checked={props.openPane == props.id} readOnly/>
   
     <div className="block">
       <div className="content-block">
