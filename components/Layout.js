@@ -34,6 +34,7 @@ export default function Layout({ children }) {
               <div className="card-body">
               <Link href="/confirmacion-boleto" legacyBehavior ><a href="/confirmacion-boleto">Confirmación de boleto</a></Link>
               <Link href="/cambio-boleto" legacyBehavior ><a href="/cambio-boleto">Cambio de boleto</a></Link>
+              <Link href="/devolucion" legacyBehavior ><a href="/cambio-boleto">Devolución de boletos</a></Link>
               </div>
             </div>
           </div>
