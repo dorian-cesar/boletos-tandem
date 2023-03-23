@@ -46,3 +46,54 @@ export class PasajeDTO {
         }
     }
 }
+
+export class PasajePagoDTO {
+    constructor(pasaje, pasajero, extras, convenioActivo, precio, datoConvenio) {
+        this.servicio = pasaje?.idServicio || '';
+        this.fechaServicio = extras?.fechaServicio || '';
+        this.fechaPasada = extras?.fechaLlegada || '';
+        this.fechaLlegada = extras?.fechaLlegada || '';
+        this.horaSalida = pasaje?.horaSalida || '';
+        this.horaLlegada = extras?.horaLlegada || '';
+        this.origen = pasaje?.origen || '';
+        this.destino = pasaje?.destino || '';
+        this.codigoReserva = '1';
+        this.descuento = 0;
+        this.empresa = extras?.empresa || '';
+        this.clase = pasaje?.clase || '';
+        this.bus = pasaje?.bus || '';
+        this.integrador = 1000;
+        this.monto = pasaje?.tarifa.replace(',', '') || '';
+        this.precio = precio;
+        this.idaVuelta = false;
+        this.piso = pasaje?.piso || '';
+        this.asiento = pasaje?.asiento || '';
+        this.datoConvenio = datoConvenio || '';
+        this.convenio = convenioActivo || '';
+        this.pasajero = {
+            comunaDestino: "14000001",
+            comunaOrigen: "14000001",
+            documento: pasajero?.rut.replace(".", "").replace(".", ""),
+            email: pasajero?.email || '',
+            nacionalidad: pasajero?.nacionalidad || '',
+            nombre: pasajero?.nombre || '',
+            apellido: pasajero?.apellido || '',
+            telefono: pasajero?.telefono || '',
+            telefonoEmergencia: "955555555",
+            tipoDocumento: "R",
+        };
+        this.tipoServicio = null;
+        this.asientoAsociado = null;
+    }
+}
+
+export class GuardarCarroDTO {
+    constructor(email, rut, total, carrito) {
+        this.email = email || '';
+        this.rut = rut.replace(".", "").replace(".", "") || '';
+        this.medioDePago = 'WBPAY';
+        this.montoTotal = total;
+        this.idSistema = 7;
+        this.listaCarrito = carrito;
+    }
+} 
