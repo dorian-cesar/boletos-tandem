@@ -111,6 +111,7 @@ export default function Home(props) {
                     { 
                         stages_active[stage].kind == "pasajes_1" || stages_active[stage].kind == "pasajes_2" ? 
                         <StagePasajes 
+                            key={ `stage-pasajes-${ stages_active[stage].kind }` }
                             stage={ stage } 
                             parrilla={ parrilla } 
                             loadingParrilla={ loadingParrilla } 
@@ -125,6 +126,7 @@ export default function Home(props) {
                     {
                         stages_active[stage].kind == "pago" ?  
                         <StagePago 
+                            key={ 'stage-pago' }
                             carro={ carro }
                             nacionalidades={ props.nacionalidades }
                             convenios={ props.convenios }
