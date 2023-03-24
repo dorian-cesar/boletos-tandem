@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 registerLocale("es", es);
 
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
-    <input type="text" className="fecha-input form-control" onClick={ onClick } ref={ ref } value={ value }/>
+    <input type="text" className="fecha-input form-control" onClick={ onClick } ref={ ref } defaultValue={ value }/>
 ));
 
 const BusquedaServicio = (props) => {
