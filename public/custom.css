@@ -88,7 +88,7 @@
 }
 .btn-fix {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   align-content: center;
   text-align: left;
@@ -98,7 +98,7 @@
 }
 .btn-fix img {margin-right: 8px; margin-left: 8px;}
 .search-row {
-  align-items: end;
+  align-items: flex-end;
   display: flex;
 }
 .search-row .col-12 ,.search-row .col-6{

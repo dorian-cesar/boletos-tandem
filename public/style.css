@@ -1346,7 +1346,7 @@ select.form-control.seleccion {
 } 
 
 .ofertas .foto-header {
-  justify-content: end;
+  justify-content: flex-end;
   display: flex
 }
 
