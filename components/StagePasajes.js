@@ -254,18 +254,18 @@ const StagePasajes = (props) => {
                             tipos_servicio.map((tipoServicioMapped, indexTipoServicio) => {
                                 if( tipoServicioMapped != '' ) {
                                     return (
-                                        <div className="custom-control custom-checkbox">
+                                        <div key={ `tipo-servicio-${ indexTipoServicio }` } className="custom-control custom-checkbox">
                                             <input 
                                                 key={ `check-${ tipoServicioMapped }-key` }
                                                 type="checkbox" 
                                                 className="custom-control-input" 
                                                 id={"tipoCheck" + indexTipoServicio}
                                                 onClick={ () => toggleTipo(tipoServicioMapped) }
-                                                alue={ tipoServicioMapped }
-                                                checked={ filter_tipo.includes(tipoServicioMapped) }/>
+                                                defaultValue={ tipoServicioMapped }
+                                                defaultChecked={ filter_tipo.includes(tipoServicioMapped) }/>
                                             <label
                                                 className="custom-control-label"
-                                                for={ "tipoCheck" + indexTipoServicio }>
+                                                htmlFor={ "tipoCheck" + indexTipoServicio }>
                                                 &nbsp;{ tipoServicioMapped }
                                             </label>
                                         </div>
@@ -281,11 +281,11 @@ const StagePasajes = (props) => {
                                 id="horaCheck1"
                                 type="checkbox"
                                 className="custom-control-input"
-                                checked={ filter_horas.includes("6-12") }
+                                defaultChecked={ filter_horas.includes("6-12") }
                                 onClick={ () => toggleHoras("6-12") }/>
                             <label
                                 className="custom-control-label"
-                                for={"horaCheck1"}>
+                                htmlFor={"horaCheck1"}>
                                 &nbsp;6:00 AM a 11:59 AM
                             </label>
                         </div>
@@ -294,11 +294,11 @@ const StagePasajes = (props) => {
                                 id="horaCheck2"
                                 type="checkbox"
                                 className="custom-control-input"
-                                checked={ filter_horas.includes("12-20") }
+                                defaultChecked={ filter_horas.includes("12-20") }
                                 onClick={ () => toggleHoras("12-20") }/>
                             <label
                                 className="custom-control-label"
-                                for="horaCheck2">
+                                htmlFor="horaCheck2">
                                 &nbsp;12 PM a 19:59 PM
                             </label>
                         </div>
@@ -307,11 +307,11 @@ const StagePasajes = (props) => {
                                 id="horaCheck3"
                                 type="checkbox"
                                 className="custom-control-input"
-                                checked={ filter_horas.includes("20-6") }
+                                defaultChecked={ filter_horas.includes("20-6") }
                                 onClick={() => toggleHoras("20-6") }/>
                             <label
                                 className="custom-control-label"
-                                for="horaCheck3">
+                                htmlFor="horaCheck3">
                                 &nbsp;20:00 PM en adelante
                             </label>
                         </div>
