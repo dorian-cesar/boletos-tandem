@@ -237,6 +237,64 @@ const StagePago = (props) => {
         }
     };
 
+    function retornarFormularioConvenio() {
+        const formularioConvenio = convenio.map((formularioConvenio, indexFormularioConvenio) => (
+            <div key={ `frm-convenio-key-${ indexFormularioConvenio }` } className='grupo-campos mt-5'>
+                <label>
+                    { formularioConvenio.tipo }
+                </label>
+                <input
+                    onChange={ (e) => convenioField(e.target) }
+                    value={ convenioFields[formularioConvenio.tipo] }
+                    type={ formularioConvenio.tipoInput }
+                    name={ formularioConvenio.tipo }
+                    className='form-control' />
+            </div>)
+        );
+        return (
+            <>
+                { formularioConvenio }
+                <a className='btn' href='#' onClick={ (e) => { e.preventDefault(); validarConvenio(); }}>
+                    Validar Convenio
+                </a>
+
+            </>
+        )
+    }
+
+    function obtenerCantidadAsientos(tipoClientes) {
+        const listaServicios = carro[tipoClientes].reduce((valorInicial, valorActual) => {
+            if ( !valorInicial[valorActual.servicio] ) {
+                valorInicial[valorActual.servicio] = [];
+            }
+            valorInicial[valorActual.servicio].push(valorActual);
+            return valorInicial;
+        }, {});
+
+        return Object.keys(listaServicios).map((servicio) => (
+            <>
+                <div className='row'>
+                    <div className='col-8'>
+                        <h4>{ listaServicios[servicio].length }X boleto{' '}{ servicio }</h4>
+                    </div>
+                    <div className='col-4 d-flex justify-content-end'>
+                        <h3>${ getSubtotal(listaServicios[servicio]).toLocaleString('es') }</h3>
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-8'>
+                        <p>Precio Normal</p>
+                    </div>
+                    <div className='col-4 d-flex justify-content-end'>
+                        <h4 className='tachado'>
+                            ${ (Math.round((getSubtotal(listaServicios[servicio], true) * 1.12) / 100) * 100).toLocaleString('es') }
+                        </h4>
+                    </div>
+                </div>
+            </>
+        ));
+    }
+
     useEffect(() => {
         (async () => await getConvenio())();
     }, [convenioSelected]);
@@ -320,28 +378,7 @@ const StagePago = (props) => {
                                 </select>
                             </div>
                             { 
-                                convenio ? (
-                                    <>
-                                        { 
-                                            convenio.map((formularioConvenio) => (
-                                                <div className='grupo-campos mt-5'>
-                                                    <label>
-                                                        {formularioConvenio.tipo}
-                                                    </label>
-                                                    <input
-                                                        onChange={ (e) => convenioField(e.target) }
-                                                        value={ convenioFields[formularioConvenio.tipo] }
-                                                        type={ formularioConvenio.tipoInput }
-                                                        name={ formularioConvenio.tipo }
-                                                        className='form-control' />
-                                                </div>
-                                            ))
-                                        }
-                                        <a className='btn' href='#' onClick={ (e) => { e.preventDefault(); validarConvenio(); }}>
-                                            Validar Convenio
-                                        </a>
-                                    </>
-                                ) : ('')
+                                convenio ? retornarFormularioConvenio() : ('')
                             }
                         </div>
                     </div>
@@ -350,213 +387,50 @@ const StagePago = (props) => {
                     <h2>Resumen de compra</h2>
                     <div className='row'>
                         <div className='col-12 col-md-7'>
-                            { carro.clientes_ida ? (
-                                <div className='row cantidad-asiento mb-5'>
-                                    <div className='col-8'>
-                                        <div className='row'>
-                                            <div className='col-12'>
-                                                <strong>IDA</strong>
+                            { 
+                                carro.clientes_ida ? (
+                                    <div className='row cantidad-asiento mb-5'>
+                                        <div className='col-8'>
+                                            <div className='row'>
+                                                <div className='col-12'>
+                                                    <strong>IDA</strong>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className='row'>
-                                            <div className='col-8'>
-                                                <h5>Cantidad de asientos</h5>
+                                            <div className='row'>
+                                                <div className='col-8'>
+                                                    <h5>Cantidad de asientos</h5>
+                                                </div>
+                                                <div className='col-4'></div>
                                             </div>
-                                            <div className='col-4'></div>
+                                            {
+                                                obtenerCantidadAsientos('clientes_ida')
+                                            }
                                         </div>
-                                        {
-                                            function () {
-                                                let servicios = carro.clientes_ida.reduce((a, b) => {
-                                                    if ( !a[b.servicio] ) {
-                                                        a[b.servicio] = [];
-                                                    }
-                                                    a[b.servicio].push(b);
-                                                    return a;
-                                                }, {});
-
-                                                return Object.keys(servicios).map((i) => (
-                                                <>
-                                                    <div className='row'>
-                                                        <div className='col-8'>
-                                                            <h4>
-                                                                {
-                                                                    servicios[
-                                                                        i
-                                                                    ]
-                                                                        .length
-                                                                }
-                                                                X
-                                                                boleto{' '}
-                                                                {
-                                                                    i
-                                                                }
-                                                            </h4>
-                                                        </div>
-                                                        <div className='col-4 d-flex justify-content-end'>
-                                                            <h3>
-                                                                $
-                                                                {getSubtotal(
-                                                                    servicios[
-                                                                        i
-                                                                    ]
-                                                                ).toLocaleString(
-                                                                    'es'
-                                                                )}
-                                                            </h3>
-                                                        </div>
-                                                    </div>
-                                                    <div className='row'>
-                                                        <div className='col-8'>
-                                                            <p>
-                                                                Precio
-                                                                Normal
-                                                            </p>
-                                                        </div>
-                                                        <div className='col-4 d-flex justify-content-end'>
-                                                            <h4 className='tachado'>
-                                                                $
-                                                                {(
-                                                                    Math.round(
-                                                                        (getSubtotal(
-                                                                            servicios[
-                                                                                i
-                                                                            ],
-                                                                            true
-                                                                        ) *
-                                                                            1.12) /
-                                                                            100
-                                                                    ) *
-                                                                    100
-                                                                ).toLocaleString(
-                                                                    'es'
-                                                                )}
-                                                            </h4>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            ));
-                                        }.call(this)}
                                     </div>
-                                </div>
-                            ) : (
-                                ''
-                            )}
-
-                            {carro.clientes_vuelta ? (
-                                <div className='row cantidad-asiento mb-5'>
-                                    <div className='col-8'>
-                                        <div className='row'>
-                                            <div className='col-12'>
-                                                <strong>
-                                                    VUELTA
-                                                </strong>
+                                ) : ('')
+                            }
+                            { 
+                                carro.clientes_vuelta ? (
+                                    <div className='row cantidad-asiento mb-5'>
+                                        <div className='col-8'>
+                                            <div className='row'>
+                                                <div className='col-12'>
+                                                    <strong>VUELTA</strong>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className='row'>
-                                            <div className='col-8'>
-                                                <h5>
-                                                    Cantidad de
-                                                    asientos
-                                                </h5>
+                                            <div className='row'>
+                                                <div className='col-8'>
+                                                    <h5>Cantidad de asientos</h5>
+                                                </div>
+                                                <div className='col-4'></div>
                                             </div>
-                                            <div className='col-4'></div>
+                                            {
+                                                obtenerCantidadAsientos('clientes_vuelta')
+                                            }
                                         </div>
-                                        {function () {
-                                            let servicios =
-                                                carro.clientes_vuelta.reduce(
-                                                    (a, b) => {
-                                                        if (
-                                                            !a[
-                                                                b
-                                                                    .servicio
-                                                            ]
-                                                        ) {
-                                                            a[
-                                                                b.servicio
-                                                            ] =
-                                                                [];
-                                                        }
-                                                        a[
-                                                            b
-                                                                .servicio
-                                                        ].push(
-                                                            b
-                                                        );
-                                                        return a;
-                                                    },
-                                                    {}
-                                                );
-                                            return Object.keys(
-                                                servicios
-                                            ).map((i) => (
-                                                <>
-                                                    <div className='row'>
-                                                        <div className='col-8'>
-                                                            <h4>
-                                                                {
-                                                                    servicios[
-                                                                        i
-                                                                    ]
-                                                                        .length
-                                                                }
-                                                                X
-                                                                boleto{' '}
-                                                                {
-                                                                    i
-                                                                }
-                                                            </h4>
-                                                        </div>
-                                                        <div className='col-4 d-flex justify-content-end'>
-                                                            <h3>
-                                                                $
-                                                                {getSubtotal(
-                                                                    servicios[
-                                                                        i
-                                                                    ]
-                                                                ).toLocaleString(
-                                                                    'es'
-                                                                )}
-                                                            </h3>
-                                                        </div>
-                                                    </div>
-                                                    {
-                                                        <div className='row'>
-                                                            <div className='col-8'>
-                                                                <p>
-                                                                    Precio
-                                                                    Normal
-                                                                </p>
-                                                            </div>
-                                                            <div className='col-4 d-flex justify-content-end'>
-                                                                <h4 className='tachado'>
-                                                                    $
-                                                                    {(
-                                                                        Math.round(
-                                                                            (getSubtotal(
-                                                                                servicios[
-                                                                                    i
-                                                                                ],
-                                                                                true
-                                                                            ) *
-                                                                                1.12) /
-                                                                                100
-                                                                        ) *
-                                                                        100
-                                                                    ).toLocaleString(
-                                                                        'es'
-                                                                    )}
-                                                                </h4>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                </>
-                                            ));
-                                        }.call(this)}
                                     </div>
-                                </div>
-                            ) : (
-                                ''
-                            )}
+                                ) : ('')
+                            }
                         </div>
                         <div className='col-12 col-md-5 total-pagar'>
                             <div className='row'>
@@ -564,57 +438,33 @@ const StagePago = (props) => {
                                     <h3>Total a pagar:</h3>
                                 </div>
                                 <div className='col-6 d-flex justify-content-end'>
-                                    <h2>
-                                        $
-                                        {getTotal().toLocaleString(
-                                            'es'
-                                        )}
-                                    </h2>
+                                    <h2>${ getTotal().toLocaleString('es') }</h2>
                                 </div>
                             </div>
                             <div className='row my-5'>
                                 <div className='col-12'>
-                                    {mediosDePago.map(
-                                        (i) => (
-                                            <img
-                                                src={
-                                                    'data:image/png;base64,' +
-                                                    i.imagen
-                                                }
-                                            />
-                                        )
-                                    )}
+                                    { 
+                                        mediosDePago.map(({ imagen }, indexImagen) => (
+                                            <img 
+                                                key={ `key-imagen-medio-pago-${ indexImagen }`} 
+                                                src={'data:image/png;base64,' + imagen }/>
+                                        ))
+                                    }
                                 </div>
                                 <div className='col-12 p-2'>
                                     <label className='d-flex align-items-baseline mb-3 mt-3'>
-                                        <input
-                                            type='checkbox'
-                                            className='mr-2'
-                                        />
+                                        <input type='checkbox' className='mr-2'/>
                                         <small>
                                             He leido los{' '}
-                                            <a
-                                                href='/terminos'
-                                                target='_blank'
-                                            >
-                                                Terminos y
-                                                Condiciones
+                                            <a href='/terminos' target='_blank'>
+                                                Terminos y Condiciones
                                             </a>{' '}
                                             de la compra
                                         </small>
                                     </label>
                                     <label className='d-flex align-items-baseline'>
-                                        <input
-                                            type='checkbox'
-                                            className='mr-2'
-                                        />
-                                        <small>
-                                            Me gustaria recibir
-                                            noticias,
-                                            actualizaciones o
-                                            información de
-                                            Pullman Bus
-                                        </small>
+                                        <input type='checkbox' className='mr-2'/>
+                                        <small>Me gustaria recibir noticias, actualizaciones o información de Pullman Bus</small>
                                     </label>
                                 </div>
                             </div>
@@ -622,37 +472,18 @@ const StagePago = (props) => {
                                 <div className='col-12'>
                                     <a
                                         href='#'
-                                        className={
-                                            'btn ' +
-                                            (!isPaymentValid()
-                                                ? 'disabled'
-                                                : '')
-                                        }
-                                        disabled={
-                                            !isPaymentValid()
-                                        }
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            sendToPayment();
+                                        className={ 'btn ' + (!isPaymentValid() ? 'disabled' : '') }
+                                        disabled={ !isPaymentValid() }
+                                        onClick={ (e) => { 
+                                            e.preventDefault(); 
+                                            sendToPayment(); 
                                         }}
                                     >
                                         Pagar
                                     </a>
 
-                                    <form
-                                        ref={payment_form}
-                                        style={{
-                                            display: 'none',
-                                        }}
-                                        method='POST'
-                                        action={payment.url}
-                                    >
-                                        <input
-                                            name='TBK_TOKEN'
-                                            value={
-                                                payment.token
-                                            }
-                                        />
+                                    <form ref={ payment_form } style={{ display: 'none', }} method='POST' action={ payment.url }>
+                                        <input name='TBK_TOKEN' value={ payment.token }/>
                                     </form>
                                 </div>
                             </div>
