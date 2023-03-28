@@ -7,7 +7,7 @@ const Footer = () => (
                 <div className="row">
                     <div className="col-4">
                         <h3>
-                            <img className="mr-2" src="/img/icon-ubi.svg" alt=""/>
+                            <img className="mr-2 img-contacto-footer" src="/img/icon-ubi.svg" alt=""/>
                             Contacto
                         </h3>
                         <div className="w-100" style={{ paddingLeft: "25px", borderLeft: "1px solid" }}>

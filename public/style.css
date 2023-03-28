@@ -1891,3 +1891,7 @@ footer .item a {
 
 /* xs */
 @media (max-width: 575.98px) {}
+
+.img-contacto-footer {
+  margin-left: -10px;
+}
