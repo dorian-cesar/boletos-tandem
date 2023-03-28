@@ -21,16 +21,7 @@ export default async (req, res) => {
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
-        })
-        console.log({
-                "idServicio": req.body.idServicio,
-                "tipoBusPiso1":req.body.tipoBusPiso1,
-                "tipoBusPiso2":req.body.tipoBusPiso2,
-                "fechaServicio": req.body.fechaServicio,
-                "idOrigen":req.body.idOrigen,
-                "idDestino":req.body.idDestino,
-                "integrador": req.body.integrador
-            })
+        });
         res.status(200).json(data.data);
     } catch(e){
         console.log(e)
