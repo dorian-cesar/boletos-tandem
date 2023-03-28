@@ -531,6 +531,24 @@ a {
   cursor: not-allowed;
 }
 
+.btn-outline {
+  display: inline-block;
+  width: 100%;
+  padding: 13px 15px;
+  font-size: 15px;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 17px;
+  color: var(--naranjo);
+  background-color: #fff;
+  border: 2px solid var(--naranjo);
+}
+
+.btn-outline:hover {
+  color: #fff;
+  background-color: var(--naranjo);
+}
+
 .btn:hover {
   color: #fff;
   background-color: #ff9952;
