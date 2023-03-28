@@ -1,5 +1,6 @@
 import axios from "axios";
 import Layout from "components/Layout";
+import Footer from 'components/Footer';
 import BusquedaServicio from 'components/BusquedaServicio';
 import { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
@@ -198,6 +199,7 @@ export default function Home(props) {
                 ""
             )}
             <ToastContainer />
+            <Footer />
         </Layout>
     );
 }
