@@ -17,7 +17,7 @@ const Footer = () => (
                             </a>
                             <h4>
                                 Call Center <br />
-                                600 600 0018
+                                (+56) 2 3304 8912
                             </h4>
                         </div>
                     </div>
