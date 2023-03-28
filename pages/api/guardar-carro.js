@@ -3,24 +3,18 @@ import getConfig from 'next/config'
 import axios from "axios"
 const {serverRuntimeConfig} = getConfig();
 const config = serverRuntimeConfig;
+import { WebpayPlus, Environment, Options } from 'transbank-sdk';
 
 export default async (req, res) => {
 
     try {
-       
         let token = await doLogin();
         let data = await axios.post(config.service_url + `/integracion/guardarTransaccion`,req.body,{
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
         })
-        console.log(data.data, req.body)
         if(data.data.exito){
-            const WebpayPlus = require('transbank-sdk').WebpayPlus;
-            const Environment = require('transbank-sdk').Environment;
-            const Options = require('transbank-sdk').Options;
-     
-    
             let commerceCode = 597035840877;
             let apiKey = '4c69649914993ff286f7888fb7f4366c';
             let tx;
