@@ -30,6 +30,8 @@ const StagePasajes = (props) => {
     const [mascota_allowed, setMascota] = useState(false);
     const [asientosIda, setAsientosIda] = useState([]);
     const [asientosVuelta, setAsientosVuelta] = useState([]);
+    const [servcioIda, setServicioIda] = useState(null);
+    const [servicioVuelta, setServicioVuelta] = useState(null);
 
     function toggleTipo(tipo) {
         let listaTipoTemporal = [...filter_tipo];
@@ -143,24 +145,48 @@ const StagePasajes = (props) => {
                 if( asiento.tipo == ASIENTO_TIPO_ASOCIADO || asiento.tipo == ASIENTO_TIPO_MASCOTA ) {
                     asientosTemporal = asientosTemporal.filter(({ asiento }) => asiento != asiento.asientoAsociado);
                 }
-
-                stage == STAGE_BOLETO_IDA ? setAsientosIda(asientosTemporal) : setAsientosVuelta(asientosTemporal);
+            }
+            
+            if( stage == STAGE_BOLETO_IDA ) {
+                setAsientosIda(asientosTemporal);
+                setServicioIda(parrilla[indexParrilla]);
+            } else {
+                setAsientosVuelta(asientosTemporal);
+                setServicioVuelta(parrilla[indexParrilla]);
             }
         } catch ({ message }) {
             console.error(`Error al tomar asiento [${ message }]`);
         }
     };
 
+    async function liberarAsientosPanel() {
+        if( stage == STAGE_BOLETO_IDA ) {
+            asientosIda.forEach(async (asientoIda) => await servicioLiberarAsiento(servcioIda, asientoIda.asiento, asientoIda.piso, asientoIda.codigoReserva));
+            setAsientosIda([]);
+        }
+        if( stage == STAGE_BOLETO_VUELTA ) {
+            asientosVuelta.forEach(async (asientoVuelta) => await servicioLiberarAsiento(servicioVuelta, asientoVuelta.asiento, asientoVuelta.piso, asientoVuelta.codigoReserva));
+            setAsientosVuelta([]);
+        }
+    }
+
     async function setOpenPaneRoot(indexParrilla) {
         try {
             const parrillaTemporal = [...parrilla];
             const parrillaModificada = [...parrilla];
             parrillaTemporal[indexParrilla].loadingAsientos = true;
+            // TODO: verificar que el servicio sea el mismo F1184 -> HJ233
+            await liberarAsientosPanel();
+            // ╰(*°▽°*)╯
             setParrilla(parrillaTemporal);
             stage == STAGE_BOLETO_IDA ? setAsientosIda([]) : setAsientosVuelta([]);
+            if( parrilla[indexParrilla].id == openPane ) {
+                setOpenPane(null);
+                return;
+            }
             setOpenPane(parrilla[indexParrilla].id);
             const { data } = await axios.post('/api/mapa-asientos', 
-                new BuscarPlanillaVerticalDTO(parrillaTemporal[indexParrilla], stage, startDate, endDate, parrilla[indexParrilla]));
+            new BuscarPlanillaVerticalDTO(parrillaTemporal[indexParrilla], stage, startDate, endDate, parrilla[indexParrilla]));
             parrillaModificada[indexParrilla].loadingAsientos = false;
             parrillaModificada[indexParrilla].asientos1 = data[1];
             if( !!parrillaTemporal[indexParrilla].busPiso2 ) {
