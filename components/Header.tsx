@@ -1,7 +1,7 @@
 import useUser from 'lib/useUser'
 import { useRouter } from 'next/router'
 import Login from 'components/Login'
-import { useLocalStorage } from '/hooks/useLocalStorage';
+import { useLocalStorage } from 'hooks/useLocalStorage';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
