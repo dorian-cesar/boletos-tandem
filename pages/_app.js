@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import '../public/style.css'
 import 'react-datepicker/dist/react-datepicker.min.css'
 import '../public/custom.css'
+import '../public/modal.css'
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from "react";
 function MyApp({ Component, pageProps }) {

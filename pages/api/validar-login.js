@@ -5,18 +5,13 @@ const {serverRuntimeConfig} = getConfig();
 const config = serverRuntimeConfig;
 
 export default async (req, res) => {
-
     try {
-        let token = await doLogin();
-        let data = await axios.get(config.service_url + `/convenio/buscarBotonPago`,{
-        headers: {
-            'Authorization': `Bearer ${token.token}`
-        }
-        })
+        const postData = req.body;
+        //let token = await doLogin();
+        let data = await axios.post(config.service_url + `/usuarioPortal/validarLogin`, postData)
         res.status(200).json(data.data);
-    } catch(e){
-        console.log(e)
-        res.status(400).json(e)
+    } catch(error){
+        res.status(400).json(error.response.data);
     }
     
 }   

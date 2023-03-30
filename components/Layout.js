@@ -13,7 +13,8 @@ export default function Layout({ children }) {
   return (
     <>
       <Head>
-        <title>With Iron Session</title>
+        <meta charset="UTF-8"/>
+        <title>Pullman Bus</title>
       </Head>
     
       <Header openNav={openNav} />
@@ -22,7 +23,7 @@ export default function Layout({ children }) {
         {children}
       </main>
       <div id="myNav" className={"overlay " + (open ? "open":"")}>
-      <a href="javascript:void(0)" className="closebtn" onClick={closeNav}>×</a>
+      <a className="closebtn" onClick={closeNav}>×</a>
       <div className="overlay-content">
         <div className="links-menu">
           <div className="w-100"><Link href="/comprar" legacyBehavior ><a href="/comprar" className="compra">Compra</a></Link></div>
@@ -34,6 +35,7 @@ export default function Layout({ children }) {
               <div className="card-body">
               <Link href="/confirmacion-boleto" legacyBehavior ><a href="/confirmacion-boleto">Confirmación de boleto</a></Link>
               <Link href="/cambio-boleto" legacyBehavior ><a href="/cambio-boleto">Cambio de boleto</a></Link>
+              <Link href="/devolucion" legacyBehavior ><a href="/cambio-boleto">Devolución de boletos</a></Link>
               </div>
             </div>
           </div>

@@ -8,7 +8,7 @@ export default async (req, res) => {
 
     try {
         let token = await doLogin();
-        let data = await axios.get(config.service_url + `/convenio/buscarBotonPago`,{
+        let data = await axios.post(config.service_url + `/parametros/obtenerBancos`,{
         headers: {
             'Authorization': `Bearer ${token.token}`
         }

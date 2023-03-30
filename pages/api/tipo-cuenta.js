@@ -8,10 +8,13 @@ export default async (req, res) => {
 
     try {
         let token = await doLogin();
-        let data = await axios.get(config.service_url + `/convenio/buscarBotonPago`,{
+        let data = await axios.post(config.service_url + `/parametros/obtenerTipoCuenta`,
+        {
+            "codigo":req.body.codigo
+        },{
         headers: {
             'Authorization': `Bearer ${token.token}`
-        }
+            }   
         })
         res.status(200).json(data.data);
     } catch(e){
