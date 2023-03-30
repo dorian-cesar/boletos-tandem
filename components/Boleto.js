@@ -18,7 +18,7 @@ const Boleto = (props) => {
         return (props.asientos_selected.find((i) => i.asiento == asiento.asiento && asiento.tipo != 'pet-busy')?"seleccion":"")+ " "+(props.asientos_selected.find((i) => i.asiento == asiento.asiento && asiento.estado == 'pet-busy')?"m-seleccion":"")+" "+(asiento.tipo == 'pet' && asiento.estado == 'ocupado'?"m-disponible":"")+ " " +(asiento.tipo == 'pet' && asiento.estado == 'pet-free'?"m-disponible":"")+ " " +(asiento.estado == "pet-busy" && !props.asientos_selected.find((i) => i.asiento == asiento.asiento)?"m-reservado":"") +" " +(asiento.estado == "ocupado"?"reservado":"") + " " +(asiento.estado == "libre"?"disponible":"") + " " + (asiento.asiento == 'B1' || asiento.asiento == "B2"?"bano":"");
     }
     return (<div className="boleto" >
-    <input type="checkbox" checked={props.openPane == props.id}/>
+    <input type="checkbox" checked={props.openPane == props.id} readOnly/>
   
     <div className="block">
       <div className="content-block">
@@ -155,14 +155,12 @@ const Boleto = (props) => {
                                 {
                                     props.asientos1?(<>
                                         {
-                                            props.asientos1.map((i)=>{
-                                                return <div className="fila">
+                                            props.asientos1.map((i, k)=>{
+                                                return <div key={ `fila-asiento-${ k }` } className="fila">
                                                     {
-                                                        i.map((ii)=> 
+                                                        i.map((ii, kk)=> 
                                                         { 
-                                                           
-                                                            
-                                                            return (<div onClick={(e)=>{ e.stopPropagation();props.tomarAsiento(ii, props,props.k,1, props.stage)}} className={"columna " +asientoClass(ii)}><span>{ii.asiento != "B1" && ii.asiento != 'B2' && ii.estado != "sinasiento" && ii.tipo != "pet"?ii.asiento:""}</span></div>)
+                                                            return (<div key={ `columna-asiento-${ kk }` } onClick={(e)=>{ e.stopPropagation();props.tomarAsiento(ii, props,props.k,1, props.stage)}} className={"columna " +asientoClass(ii)}><span>{ii.asiento != "B1" && ii.asiento != 'B2' && ii.estado != "sinasiento" && ii.tipo != "pet"?ii.asiento:""}</span></div>)
                                                         })
                                                     }
                                                 </div>
@@ -174,7 +172,7 @@ const Boleto = (props) => {
                                                 let n = 0;
                                                 let liens = []
                                                 while(n < max){
-                                                    liens.push(<div className="fila" ></div>);
+                                                    liens.push(<div key={ `fila-asiento-${ n }` } className="fila"></div>);
                                                     n++;                                                }
                                                 return liens;
                                             }.call(this)
@@ -219,13 +217,13 @@ const Boleto = (props) => {
                             {
                                     props.asientos2?(<>
                                         {
-                                            props.asientos2.map((i)=>{
-                                                return <div className="fila">
+                                            props.asientos2.map((i, k)=>{
+                                                return <div key={ `fila-asientos2-${ k }`} className="fila">
                                                     {
-                                                        i.map((ii)=> 
+                                                        i.map((ii, kk)=> 
                                                         { 
                                                            
-                                                            return (<div className={"columna " +asientoClass(ii)} onClick={(e)=>{ e.stopPropagation();props.tomarAsiento(ii, props,props.k,2, props.stage)}}><span>{ii.asiento != "B1" && ii.asiento != 'B2' && ii.estado != "sinasiento" && ii.tipo != "pet"?ii.asiento:""}</span></div>)
+                                                            return (<div key={ `columna-asientos2-${ kk }` } className={"columna " +asientoClass(ii)} onClick={(e)=>{ e.stopPropagation();props.tomarAsiento(ii, props,props.k,2, props.stage)}}><span>{ii.asiento != "B1" && ii.asiento != 'B2' && ii.estado != "sinasiento" && ii.tipo != "pet"?ii.asiento:""}</span></div>)
                                                         })
                                                     }
                                                 </div>

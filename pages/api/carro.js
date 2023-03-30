@@ -25,7 +25,8 @@ export default async (req, res) => {
             WebpayPlus.environment = Environment.Production;     
             
         }
-        let commit = await tx.commit(req.body.token_ws);
+        let commit = await tx.commit(req.body.token_ws || '');
+        console.log('COMMIT::::', commit);
         let dataCerrar;
         if(commit.status == 'AUTHORIZED'){
             let dataSentCerrar = {
