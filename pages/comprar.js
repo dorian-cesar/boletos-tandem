@@ -13,7 +13,7 @@ import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
-import { ObtenerParrillaServicioDTO } from "./dto/ParrillaDTO";
+import { ObtenerParrillaServicioDTO } from "dto/ParrillaDTO";
 import StagePasajes from "../components/StagePasajes";
 import StagePago from "../components/StagePago";
 

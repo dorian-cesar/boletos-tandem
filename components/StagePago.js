@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import Rut from 'rutjs';
 
-import { PasajeConvenioDTO } from 'pages/dto/PasajesDTO';
-import { GuardarCarroDTO, PasajePagoDTO } from '../pages/dto/PasajesDTO';
+import { PasajeConvenioDTO } from 'dto/PasajesDTO';
+import { GuardarCarroDTO, PasajePagoDTO } from 'dto/PasajesDTO';
 import ResumenPasaje from './ResumenPasaje';
 import InformacionPasajero from './InformacionPasajero';
 import InformacionComprador from './InformacionComprador';
