@@ -30,7 +30,7 @@ const StagePasajes = (props) => {
     const [mascota_allowed, setMascota] = useState(false);
     const [asientosIda, setAsientosIda] = useState([]);
     const [asientosVuelta, setAsientosVuelta] = useState([]);
-    const [servcioIda, setServicioIda] = useState(null);
+    const [servicioIda, setServicioIda] = useState(null);
     const [servicioVuelta, setServicioVuelta] = useState(null);
 
     function toggleTipo(tipo) {
@@ -130,7 +130,6 @@ const StagePasajes = (props) => {
                 }
 
                 await reloadPane(indexParrilla);
-                return;
             }
 
             if( asiento.estado == ASIENTO_OCUPADO && asientoSeleccionado ) {
@@ -146,7 +145,7 @@ const StagePasajes = (props) => {
                     asientosTemporal = asientosTemporal.filter(({ asiento }) => asiento != asiento.asientoAsociado);
                 }
             }
-            
+
             if( stage == STAGE_BOLETO_IDA ) {
                 setAsientosIda(asientosTemporal);
                 setServicioIda(parrilla[indexParrilla]);
@@ -161,7 +160,7 @@ const StagePasajes = (props) => {
 
     async function liberarAsientosPanel() {
         if( stage == STAGE_BOLETO_IDA ) {
-            asientosIda.forEach(async (asientoIda) => await servicioLiberarAsiento(servcioIda, asientoIda.asiento, asientoIda.piso, asientoIda.codigoReserva));
+            asientosIda.forEach(async (asientoIda) => await servicioLiberarAsiento(servicioIda, asientoIda.asiento, asientoIda.piso, asientoIda.codigoReserva));
             setAsientosIda([]);
         }
         if( stage == STAGE_BOLETO_VUELTA ) {
@@ -172,12 +171,11 @@ const StagePasajes = (props) => {
 
     async function setOpenPaneRoot(indexParrilla) {
         try {
+            // ╰(*°▽°*)╯
             const parrillaTemporal = [...parrilla];
             const parrillaModificada = [...parrilla];
             parrillaTemporal[indexParrilla].loadingAsientos = true;
-            // TODO: verificar que el servicio sea el mismo F1184 -> HJ233
             await liberarAsientosPanel();
-            // ╰(*°▽°*)╯
             setParrilla(parrillaTemporal);
             stage == STAGE_BOLETO_IDA ? setAsientosIda([]) : setAsientosVuelta([]);
             if( parrilla[indexParrilla].id == openPane ) {
