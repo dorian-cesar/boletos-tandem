@@ -17,115 +17,61 @@ import { ToastContainer, toast } from "react-toastify";
 import Rut from "rutjs";
 import Check from "../components/Check";
 import Head from "next/head";
+import { isValidPasajero } from 'utils/user-pasajero';
+
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
-  <input
-    type="text"
-    className="fecha-input form-control"
-    onClick={onClick}
-    ref={ref}
-    value={value}
-  />
+  <input type="text" className="fecha-input form-control" onClick={ onClick } ref={ ref } value={ value }/>
 ));
 
-const isSame = (array1, array2) =>
-  array1.length === array2.length &&
-  array1.every((value, index) => value === array2[index]);
+const isSame = (array1, array2) => array1.length === array2.length && array1.every((value, index) => value === array2[index]);
+
 export default function CambioBoleto(props) {
-  const ciudades = props.ciudades;
-  const payment_form = useRef(null);
-  const [payment, setPayment] = useState({});
-  const [carro, setCarro] = useState({
-    clientes_ida: [],
-    pasaje_ida: null,
-    datos: { tipoRut: "rut" },
-  });
-  const [stage, setStage] = useState(0);
-  const [boleto, setBoleto] = useState(null);
-  const [boletoValido, setBoletoValido] = useState(null);
-  const [mascota_allowed, setMascota] = useState(false);
-  const [origen, setOrigen] = useState(null);
-  const [startDate, setStartDate] = useState(dayjs().toDate());
-  const [parrilla, setParrilla] = useState([]);
-  const [loadingParrilla, setLoadingParrilla] = useState(false);
-  const [destinos, setDestinos] = useState([]);
-  const [destino, setDestino] = useState(null);
-  const [asientosIda, setAsientosIda] = useState([]);
-  const [openPane, setOpenPane] = useState(false);
-  const [sort, setSort] = useState(null);
-  const setDataPasaje = (e, k, tipo) => {
-    let carro_temp = { ...carro };
-    let value = e.target.value;
-    console.log(e.target.name);
-    if (e.target.name == "rut") {
-      if (value.length > 2) {
-        let rut = new Rut(value);
-        value = new Rut(rut.getCleanRut().replace("-", "")).getNiceRut(true);
-      }
-    }
+	const ciudades = props.ciudades;
+	const payment_form = useRef(null);
+	const [payment, setPayment] = useState({});
+	const [carro, setCarro] = useState({
+		clientes_ida: [],
+		pasaje_ida: null,
+		datos: { tipoRut: "rut" },
+	});
 
-    carro_temp.clientes_ida[k].pasajero[e.target.name] = value;
+	const [stage, setStage] = useState(0);
+	const [boleto, setBoleto] = useState(null);
+	const [boletoValido, setBoletoValido] = useState(null);
+	const [mascota_allowed, setMascota] = useState(false);
+	const [origen, setOrigen] = useState(null);
+	const [startDate, setStartDate] = useState(dayjs().toDate());
+	const [parrilla, setParrilla] = useState([]);
+	const [loadingParrilla, setLoadingParrilla] = useState(false);
+	const [destinos, setDestinos] = useState([]);
+	const [destino, setDestino] = useState(null);
+	const [asientosIda, setAsientosIda] = useState([]);
+	const [openPane, setOpenPane] = useState(false);
+	const [sort, setSort] = useState(null);
 
-    setCarro(carro_temp);
-  };
+	function setDataPasaje({ value, name }, indexCliente){
+		let carro_temp = { ...carro };
+		if ( name == 'rut' && value.length > 2) {
+			let rut = new Rut(value);
+			value = new Rut(rut.getCleanRut().replace("-", "")).getNiceRut(true);
+		}
+		carro_temp.clientes_ida[indexCliente].pasajero[name] = value;
+		setCarro(carro_temp);
+	};
 
-  const isValidPasajero = (p, k, dir) => {
-    let valid = true;
-    let errors = [...p.errors];
-    let carro_temp = { ...carro };
-    let error_temp = [];
-    if (!p.nombre || p.nombre == "") {
-      valid = false;
-    } else {
-    }
-    if (!p.apellido || p.apellido == "") {
-      valid = false;
-    }
-    if (!p.email || p.email == "") {
-      valid = false;
-    } else {
-      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(p.email)) {
-        error_temp.push("email");
-      }
-    }
-    if (!p.email_2 || p.email_2 == "") {
-      valid = false;
-    } else {
-      if (p.email != p.email_2) {
-        error_temp.push("email_2");
-      }
-    }
-
-    if (!p.rut || p.rut == "") {
-      valid = false;
-    } else {
-      let rut = new Rut(p.rut);
-      if (!rut.isValid) {
-        valid = false;
-
-        error_temp.push("rut");
-      }
-    }
-    if (!isSame(error_temp, errors)) {
-      carro_temp[`clientes_${dir}`][k].pasajero.errors = error_temp;
-      setCarro(carro_temp);
-    }
-
-    return valid;
-  };
-
-  const validarBoleto = async () => {
-    let resp = await axios.post("/api/validar-cambio", { boleto });
-    if (resp.data.boleto) {
-      setBoletoValido(resp.data);
-      setStage(1);
-    } else {
-      toast.error(resp.data.error, {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-      });
-    }
-  };
+	async function validarBoleto() {
+		const { data } = await axios.post("/api/validar-cambio", { boleto });
+		if (data.boleto) {
+			setBoletoValido(data);
+			setStage(1);
+		} else {
+			toast.error(data.error, {
+				position: "bottom-center",
+				autoClose: 5000,
+				hideProgressBar: false,
+			});
+		}
+	};
   const getDestinos = async() => {
     if( origen !== null ) {
       let { data } = await axios.post("/api/destinos",{ id_ciudad: origen });
@@ -317,7 +263,7 @@ export default function CambioBoleto(props) {
     let valid = true;
     let ida = carro.clientes_ida.reduce((a, b, k) => {
       console.log(b);
-      if (!isValidPasajero(b.pasajero, k, "ida")) {
+      if (!isValidPasajero(b.pasajero, k, 'ida', setCarro)) {
         a = false;
       }
       return a;
@@ -566,7 +512,6 @@ export default function CambioBoleto(props) {
                     <input
                       type="text"
                       name=""
-                      placeholder="Ej: 9465hdiaikeba"
                       onChange={(e) => setBoleto(e.target.value)}
                       className="form-control"
                     />
@@ -648,7 +593,6 @@ export default function CambioBoleto(props) {
                     <label className="label-input">¿De dónde viajamos?</label>
                     <Input
                       className="sel-input origen"
-                      placeholder="Origen"
                       items={ciudades.map((i) => {
                         return { value: i.codigo, label: i.nombre };
                       })}
@@ -668,7 +612,6 @@ export default function CambioBoleto(props) {
                     <label className="label-input">¿A dónde viajamos?</label>
                     <Input
                       className="sel-input destino"
-                      placeholder="Destino"
                       items={destinos.map((i) => {
                         return { value: i.codigo, label: i.nombre };
                       })}
@@ -691,7 +634,6 @@ export default function CambioBoleto(props) {
                       selected={startDate}
                       onChange={(date) => setStartDate(date)}
                       filterDate={isValidStart}
-                      placeholderText={""}
                       locale={"es"}
                       dateFormat="dd/MM/yyyy"
                       customInput={<CustomInput />}
@@ -838,7 +780,7 @@ export default function CambioBoleto(props) {
                       <h5>
                         Pasajero {k + 1} - Asiento {i.asiento} - Piso {i.piso}
                       </h5>{" "}
-                      {isValidPasajero(i.pasajero, k, "ida") ? <Check /> : ""}
+                      {isValidPasajero(i.pasajero, k, 'ida', setCarro) ? <Check /> : ""}
                     </div>
                     <div className="content-pasajero d-flex justify-content-center">
                       <div className="col-12 col-md-8">
@@ -848,11 +790,10 @@ export default function CambioBoleto(props) {
                               <label className="label-input">Nombres</label>
                               <input
                                 type="text"
-                                placeholder="Ej: Juan Andrés"
                                 value={i.pasajero["nombre"]}
                                 className="form-control"
                                 name="nombre"
-                                onChange={(e) => setDataPasaje(e, k, "ida")}
+                                onChange={(e) => setDataPasaje(e.target, k)}
                               />
                             </div>
                           </div>
@@ -861,11 +802,10 @@ export default function CambioBoleto(props) {
                               <label className="label-input">Apellidos</label>
                               <input
                                 type="text"
-                                placeholder="Ej: Espinoza Arcos"
                                 value={i.pasajero["apellido"]}
                                 className="form-control"
                                 name="apellido"
-                                onChange={(e) => setDataPasaje(e, k, "ida")}
+                                onChange={(e) => setDataPasaje(e.target, k)}
                               />
                             </div>
                           </div>
@@ -888,7 +828,7 @@ export default function CambioBoleto(props) {
                                         e.target.value,
                                         e.target.name
                                       );
-                                      setDataPasaje(e, k, "ida");
+                                      setDataPasaje(e.target, k);
                                     }}
                                   />
                                   <span className="checkmark"></span>
@@ -906,7 +846,7 @@ export default function CambioBoleto(props) {
                                     }
                                     value={"pasaporte"}
                                     name="tipoRut"
-                                    onChange={(e) => setDataPasaje(e, k, "ida")}
+                                    onChange={(e) => setDataPasaje(e.target, k)}
                                   />
                                   <span className="checkmark"></span>
                                 </label>
@@ -915,7 +855,6 @@ export default function CambioBoleto(props) {
                             <div className="grupo-campos">
                               <input
                                 type="text"
-                                placeholder="Ej: 111111111"
                                 value={i.pasajero["rut"]}
                                 className={
                                   "form-control " +
@@ -924,7 +863,7 @@ export default function CambioBoleto(props) {
                                     : "")
                                 }
                                 name="rut"
-                                onChange={(e) => setDataPasaje(e, k, "ida")}
+                                onChange={(e) => setDataPasaje(e.target, k)}
                               />
                             </div>
                           </div>
@@ -938,7 +877,7 @@ export default function CambioBoleto(props) {
                                 id="cars"
                                 className="form-control seleccion"
                                 value={i.pasajero["nacionalidad"]}
-                                onChange={(e) => setDataPasaje(e, k, "ida")}
+                                onChange={(e) => setDataPasaje(e.target, k)}
                               >
                                 {props.nacionalidades.map((ii) => (
                                   <option value={ii.valor}>
@@ -954,9 +893,8 @@ export default function CambioBoleto(props) {
                               <input
                                 type="email"
                                 name="email"
-                                onChange={(e) => setDataPasaje(e, k, "ida")}
+                                onChange={(e) => setDataPasaje(e.target, k)}
                                 value={i.pasajero["email"]}
-                                placeholder="Ingresa tu email de contacto"
                                 className={
                                   "form-control " +
                                   (i.pasajero.errors.includes("email")
@@ -974,9 +912,8 @@ export default function CambioBoleto(props) {
                               <input
                                 type="email"
                                 name="email_2"
-                                onChange={(e) => setDataPasaje(e, k, "ida")}
+                                onChange={(e) => setDataPasaje(e.target, k)}
                                 value={i.pasajero["email_2"]}
-                                placeholder="Confirma tu e-mail"
                                 className={
                                   "form-control " +
                                   (i.pasajero.errors.includes("email_2")
@@ -986,13 +923,6 @@ export default function CambioBoleto(props) {
                               />
                             </div>
                           </div>
-
-                          {/* <div className="col-12 col-md-6 offset-md-6">
-                                    <div className="custom-control custom-checkbox">
-                                        <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                                        <label className="custom-control-label" for="customCheck1">Guardar en mi perfil de registro de pasajeros</label>
-                                      </div> 
-                       </div> */}
                         </div>
                       </div>
                     </div>
