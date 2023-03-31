@@ -5,10 +5,10 @@ import { toast } from "react-toastify";
 import Boleto from "./Boleto";
 import Loader from "./Loader";
 
-import { LiberarAsientoDTO, TomaAsientoDTO } from "pages/dto/TomaAsientoDTO";
-import { BuscarPlanillaVerticalDTO } from "pages/dto/MapaAsientosDTO";
-import { AsientoDTO } from "pages/dto/AsientoDTO";
-import { PasajeDTO } from "../pages/dto/PasajesDTO";
+import { LiberarAsientoDTO, TomaAsientoDTO } from "dto/TomaAsientoDTO";
+import { BuscarPlanillaVerticalDTO } from "dto/MapaAsientosDTO";
+import { AsientoDTO } from "dto/AsientoDTO";
+import { PasajeDTO } from "dto/PasajesDTO";
 
 const ASIENTO_LIBRE = 'libre';
 const ASIENTO_LIBRE_MASCOTA = 'pet-free';
