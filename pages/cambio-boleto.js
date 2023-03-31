@@ -1,5 +1,6 @@
 import axios from "axios";
 import Layout from "components/Layout";
+import Footer from 'components/Footer';
 import { useEffect, useState, forwardRef, useRef } from "react";
 import { withIronSessionSsr } from "iron-session/next";
 import getConfig from "next/config";
@@ -60,12 +61,13 @@ export default function CambioBoleto(props) {
 	};
 
 	async function validarBoleto() {
-		const { data } = await axios.post("/api/validar-cambio", { boleto });
-		if (data.boleto) {
+		try {
+			const { data } = await axios.post("/api/validar-cambio", { boleto });
 			setBoletoValido(data);
 			setStage(1);
-		} else {
-			toast.error(data.error, {
+		} catch ({ response }) {
+			const { message } = response.data;
+			toast.error(message, {
 				position: "bottom-center",
 				autoClose: 5000,
 				hideProgressBar: false,
@@ -1037,6 +1039,7 @@ export default function CambioBoleto(props) {
         ""
       )}
       <ToastContainer />
+	  <Footer />
     </Layout>
   );
 }
