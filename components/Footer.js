@@ -5,7 +5,7 @@ const Footer = () => (
         <footer className="psjes">
             <div className="container">
                 <div className="row">
-                    <div className="col-4">
+                    <div className="col-3">
                         <h3>
                             <img className="mr-2 img-contacto-footer" src="/img/icon-ubi.svg" alt=""/>
                             Contacto
@@ -55,18 +55,18 @@ const Footer = () => (
                             </ul>
                         </div>
                     </div>
-                    <div className="col-2 pt-4">
+                    <div className="col-2 pt-4 d-flex justify-content-around">
 						<a target="_blank" href="https://www.facebook.com/Pullman.cl/">
-                        	<img src="/img/icon-fb-blanco.svg" className="mr-2" alt=""/>
+                        	<img src="/img/icon-fb-blanco.svg" alt=""/>
 						</a>
 						<a target="_blank" href="https://www.instagram.com/pullmanbus/">
-                        	<img src="/img/icon-ig-blanco.svg" className="mr-2" alt=""/>
+                        	<img src="/img/icon-ig-blanco.svg" alt=""/>
 						</a>
 						<a target="_blank" href="https://www.linkedin.com/company/pullman-bus/">
-                        	<img src="/img/icon-in-blanco.svg" className="mr-2" alt=""/>
+                        	<img src="/img/icon-in-blanco.svg" alt=""/>
 						</a>
                     </div>
-                    <div className="col-3">
+                    <div className="col-4 d-flex justify-content-end">
                         <img src="/img/webpay.svg" className="img-fluid" alt=""/>
                     </div>
                 </div>
