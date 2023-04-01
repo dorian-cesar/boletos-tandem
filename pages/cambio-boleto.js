@@ -7,7 +7,6 @@ import getConfig from "next/config";
 import dayjs from "dayjs";
 import DatePicker, { registerLocale } from "react-datepicker";
 import { sessionOptions } from "lib/session";
-import Link from "next/link";
 import Input from "../components/Input";
 const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
