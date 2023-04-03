@@ -8,8 +8,7 @@ import ResumenPasaje from './ResumenPasaje';
 import InformacionPasajero from './InformacionPasajero';
 import InformacionComprador from './InformacionComprador';
 import { isValidPasajero } from 'utils/user-pasajero';
-
-const isSame = (array1, array2) => array1.length === array2.length && array1.every((value, index) => value === array2[index]);
+import { toast } from 'react-toastify';
 
 const StagePago = (props) => {
 
@@ -119,14 +118,14 @@ const StagePago = (props) => {
             let isValid = true;
     
             const pasajerosIda = carro.clientes_ida.reduce((valorIncial, pasajeroRecorrido, indexPasajero) => {
-                if ( !isValidPasajero(pasajeroRecorrido.pasajero, indexPasajero, 'ida', setCarro) ) {
+                if ( !isValidPasajero(pasajeroRecorrido.pasajero, indexPasajero, 'ida', setCarro, carro) ) {
                     valorIncial = false;
                 }
                 return valorIncial;
             }, true);
     
             const pasajerosVuelta = carro.clientes_vuelta.reduce((valorIncial, pasajeroRecorrido, indexPasajero) => {
-                if ( !isValidPasajero(pasajeroRecorrido.pasajero, indexPasajero, 'vuelta', setCarro) ) {
+                if ( !isValidPasajero(pasajeroRecorrido.pasajero, indexPasajero, 'vuelta', setCarro, carro) ) {
                     valorIncial = false;
                 }
                 return valorIncial;
@@ -172,17 +171,28 @@ const StagePago = (props) => {
 
             const { email, rut } = carro.datos;
 
-            const response = await axios.post('/api/guardar-carro', new GuardarCarroDTO(email, rut, getTotal(), pasajes));
-
-            if ( !response.data.error ) {
-                setPayment({
-                    ...payment,
-                    url: response.data.url,
-                    token: response.data.token,
+            const { data } = await axios.post('/api/guardar-carro', new GuardarCarroDTO(email, rut, getTotal(), pasajes));
+            
+            if ( Boolean(data.error) ) {
+                toast.error( data.error.message || 'Error al completar la transacción', {
+                    position: "bottom-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
                 });
+                return;
             }
-        } catch ({ message }) {
-            console.error(`Error al enviar pago [${ message }]`);   
+
+            setPayment({
+                ...payment,
+                url: data.url,
+                token: data.token,
+            });
+        } catch ({ response }) {
+            toast.error( response.data.message || 'Error al completar la transacción', {
+				position: "bottom-center",
+				autoClose: 5000,
+				hideProgressBar: false,
+			});
         }
     };
 
