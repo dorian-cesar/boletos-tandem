@@ -67,7 +67,7 @@ export class PasajePagoDTO {
         this.precio = precio;
         this.idaVuelta = false;
         this.piso = pasaje?.piso || '';
-        this.asiento = pasaje?.asiento || '';
+        this.asiento = pasaje?.asiento?.asiento || '';
         this.datoConvenio = datoConvenio || '';
         this.convenio = convenioActivo || '';
         this.pasajero = {
