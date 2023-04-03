@@ -9,12 +9,12 @@ export default async (req, res) => {
 
     try {
         let token = await doLogin();
-        let data = await axios.post(config.service_url + `/integracion/guardarTransaccion`,req.body,{
+        let { data } = await axios.post(config.service_url + `/integracion/guardarTransaccion`,req.body,{
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
         })
-        if(data.data.exito){
+        if(data.status){
             let commerceCode = 597035840877;
             let apiKey = '4c69649914993ff286f7888fb7f4366c';
             let tx;
@@ -30,15 +30,14 @@ export default async (req, res) => {
             }
            
             tx.create(
-                data.data.codigo,
-               
-                data.data.codigo,
+                data.object.codigo,
+                data.object.codigo,
                 req.body.montoTotal,
-                serverRuntimeConfig.site_url + "/respuesta-transaccion/"+data.data.codigo).then(async (data) => {
+                serverRuntimeConfig.site_url + "/respuesta-transaccion/"+ data.object.codigo).then(async ({ url, token }) => {
                 
              
-                console.log({url: data.url, token: data.token, inputName: "TBK_TOKEN"})
-                res.status(200).json({ url: data.url, token: data.token, inputName: "TBK_TOKEN" });
+                console.log({url, token, inputName: "TBK_TOKEN"})
+                res.status(200).json({ url, token, inputName: "TBK_TOKEN" });
               
               }).catch((e)=>{
                   console.log(e);
@@ -49,9 +48,8 @@ export default async (req, res) => {
             res.status(200).json({error: {message:'Hubo un error'}});
         }
       
-    } catch(e){
-        console.log(e)
-        res.status(400).json(e)
+    } catch({ response }){
+        res.status(400).json(response.data);
     }
     
 }   
