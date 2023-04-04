@@ -73,6 +73,7 @@ export default function CambioBoleto(props) {
 			});
 		}
 	};
+
   const getDestinos = async() => {
     if( origen !== null ) {
       let { data } = await axios.post("/api/destinos",{ id_ciudad: origen });
@@ -470,14 +471,14 @@ export default function CambioBoleto(props) {
       <Head>
         <title>PullmanBus | Confirmación Boleto</title>
       </Head>
-      <div className="pullman-mas mb-5">
+      <div className="pullman-mas">
         <div className="container">
           <div className="row py-4">
             <div className="col-12">
               <span>Home &gt; Te ayudamos &gt; Cambio de boleto </span>
             </div>
           </div>
-          <div className="row pb-5">
+          <div className="row">
             <div className="col-md-6 col-12 d-flex align-items-center">
               <div>
                 <img src="img/icon-estrella-mas.svg" alt="" />
@@ -485,11 +486,6 @@ export default function CambioBoleto(props) {
                   Te Ayudamos con tu
                   <br /> <strong>cambio de Boleto</strong>
                 </h1>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna
-                  aliqualabore et dolor
-                </p>
               </div>
             </div>
             <div className="col-md-6 col-12 foto-header">
