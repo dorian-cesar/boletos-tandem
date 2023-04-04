@@ -7,8 +7,8 @@ import { GuardarCarroDTO, PasajePagoDTO } from 'dto/PasajesDTO';
 import ResumenPasaje from './ResumenPasaje';
 import InformacionPasajero from './InformacionPasajero';
 import InformacionComprador from './InformacionComprador';
-
-const isSame = (array1, array2) => array1.length === array2.length && array1.every((value, index) => value === array2[index]);
+import { isValidPasajero } from 'utils/user-pasajero';
+import { toast } from 'react-toastify';
 
 const StagePago = (props) => {
 
@@ -113,71 +113,19 @@ const StagePago = (props) => {
         }
     };
 
-    function isValidPasajero(pasajero, indexPasajero, direccionRecorrido) {
-        try {
-            let isValid = true;
-            let errors = [...pasajero.errors];
-            let carroTemporal = { ...carro };
-            let errorTemporal = [];
-
-            if ( !pasajero.nombre || pasajero.nombre == '' ) {
-                isValid = false;
-            }
-
-            if ( !pasajero.apellido || pasajero.apellido == '' ) {
-                isValid = false;
-            }
-
-            if ( !pasajero.email || pasajero.email == '' ) {
-                isValid = false;
-            } else {
-                if ( !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(pasajero.email) ) {
-                    errorTemporal.push('email');
-                }
-            }
-
-            if ( !pasajero.email_2 || pasajero.email_2 == '' ) {
-                isValid = false;
-            } else {
-                if ( pasajero.email != pasajero.email_2 ) {
-                    errorTemporal.push('email_2');
-                }
-            }
-    
-            if (!pasajero.rut || pasajero.rut == '') {
-                isValid = false;
-            } else {
-                const rutValidacion = new Rut(pasajero.rut);
-                if ( !rutValidacion.isValid ) {
-                    isValid = false;
-                    errorTemporal.push('rut');
-                }
-            }
-
-            if (!isSame(errorTemporal, errors)) {
-                carroTemporal[`clientes_${direccionRecorrido}`][indexPasajero].pasajero.errors = errorTemporal;
-                setCarro(carroTemporal);
-            }
-    
-            return isValid;
-        } catch ({ message }) {
-            console.error(`Error al validar pasajero [${ message }]`);
-        }
-    };
-
     function isPaymentValid() {
         try {
             let isValid = true;
     
             const pasajerosIda = carro.clientes_ida.reduce((valorIncial, pasajeroRecorrido, indexPasajero) => {
-                if ( !isValidPasajero(pasajeroRecorrido.pasajero, indexPasajero, 'ida') ) {
+                if ( !isValidPasajero(pasajeroRecorrido.pasajero, indexPasajero, 'ida', setCarro, carro) ) {
                     valorIncial = false;
                 }
                 return valorIncial;
             }, true);
     
             const pasajerosVuelta = carro.clientes_vuelta.reduce((valorIncial, pasajeroRecorrido, indexPasajero) => {
-                if ( !isValidPasajero(pasajeroRecorrido.pasajero, indexPasajero, 'vuelta') ) {
+                if ( !isValidPasajero(pasajeroRecorrido.pasajero, indexPasajero, 'vuelta', setCarro, carro) ) {
                     valorIncial = false;
                 }
                 return valorIncial;
@@ -223,17 +171,28 @@ const StagePago = (props) => {
 
             const { email, rut } = carro.datos;
 
-            const response = await axios.post('/api/guardar-carro', new GuardarCarroDTO(email, rut, getTotal(), pasajes));
-
-            if ( !response.data.error ) {
-                setPayment({
-                    ...payment,
-                    url: response.data.url,
-                    token: response.data.token,
+            const { data } = await axios.post('/api/guardar-carro', new GuardarCarroDTO(email, rut, getTotal(), pasajes));
+            
+            if ( Boolean(data.error) ) {
+                toast.error( data.error.message || 'Error al completar la transacción', {
+                    position: "bottom-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
                 });
+                return;
             }
-        } catch ({ message }) {
-            console.error(`Error al enviar pago [${ message }]`);   
+
+            setPayment({
+                ...payment,
+                url: data.url,
+                token: data.token,
+            });
+        } catch ({ response }) {
+            toast.error( response.data.message || 'Error al completar la transacción', {
+				position: "bottom-center",
+				autoClose: 5000,
+				hideProgressBar: false,
+			});
         }
     };
 

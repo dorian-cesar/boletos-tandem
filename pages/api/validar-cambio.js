@@ -7,27 +7,17 @@ const config = serverRuntimeConfig;
 export default async (req, res) => {
 
     try {
-       
+        const { boleto } = req.body;
         let token = await doLogin();
-        const sendData = {
-                "boleto":req.body.boleto,
-                "idSistema": 1
-            }
-        let data = await axios.post(config.service_url + `/operacion/validarBoletoCambio`,sendData,{
+        let { data } = await axios.post(config.service_url + `/operacion/validarBoletoCambio`, { boleto, idSistema: 1 },{
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
         })
-        console.log(data.data)
-        if(data.data.resultado.exito){
-            res.status(200).json(data.data.boleto);
-        } else {
-            res.status(200).json({valido: false, error: data.data.resultado.mensaje});
-        }
-       
-    } catch(e){
-        console.log(e)
-        res.status(400).json(e)
+
+        res.status(200).json(data.object.boleto);
+    } catch({ response }){
+        res.status(400).json(response.data)
     }
     
 }   
