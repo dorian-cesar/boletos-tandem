@@ -15,11 +15,7 @@ export default async (req, res) => {
             }
         })
 
-        if(data.resultado.exito){
-            res.status(200).json(data.boleto);
-        } else {
-            res.status(200).json({ valido: false, error: data.resultado.mensaje });
-        }
+        res.status(200).json(data.object.boleto);
     } catch({ response }){
         res.status(400).json(response.data)
     }
