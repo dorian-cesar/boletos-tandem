@@ -32,7 +32,7 @@ export class PasajeDTO {
         this.destino = pasaje?.idTerminalDestino || '';
         this.codigoReserva = 1;
         this.clase = pasaje?.idClaseBusPisoUno || '';
-        this.tarifa = asiento?.piso == 1 ? pasaje?.tarifaPrimerPisoInternet : tarifaSegundoPisoInternet;
+        this.tarifa = asiento?.piso == 1 ? pasaje?.tarifaPrimerPisoInternet : pasaje?.tarifaSegundoPisoInternet;
         this.servicio = asiento?.piso == 1 ? pasaje?.servicioPrimerPiso : pasaje?.servicioSegundoPiso; 
         this.piso = asiento?.piso || 1;
         this.pet = asiento?.pet || '';

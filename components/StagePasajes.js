@@ -62,7 +62,7 @@ const StagePasajes = (props) => {
             parrillaModificada[indexParrilla].loadingAsientos = false;
             parrillaModificada[indexParrilla].asientos1 = data[1];
             if( !!parrillaTemporal[indexParrilla].busPiso2 ) {
-                parrillaModificada[indexParrilla].asientos1 = data[2];
+                parrillaModificada[indexParrilla].asientos2 = data[2];
             }
             setParrilla(parrillaModificada);
         } catch ({ message }) {
@@ -82,6 +82,7 @@ const StagePasajes = (props) => {
 
     async function servicioTomarAsiento(parrillaServicio, asiento, piso, asientosTemporal, isMascota = false) {
         try {
+            console.log('tomar asiento', parrillaServicio, asiento, piso)
             const { data } = await axios.post('/api/tomar-asiento', new TomaAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage));
             const reserva = data;           
             if( reserva.estadoReserva ) {
@@ -170,6 +171,7 @@ const StagePasajes = (props) => {
     }
 
     async function setOpenPaneRoot(indexParrilla) {
+       
         try {
             // ╰(*°▽°*)╯
             const parrillaTemporal = [...parrilla];
@@ -185,10 +187,11 @@ const StagePasajes = (props) => {
             setOpenPane(parrilla[indexParrilla].id);
             const { data } = await axios.post('/api/mapa-asientos', 
             new BuscarPlanillaVerticalDTO(parrillaTemporal[indexParrilla], stage, startDate, endDate, parrilla[indexParrilla]));
+            console.log('mapa asiento', data)
             parrillaModificada[indexParrilla].loadingAsientos = false;
             parrillaModificada[indexParrilla].asientos1 = data[1];
             if( !!parrillaTemporal[indexParrilla].busPiso2 ) {
-                parrillaModificada[indexParrilla].asientos1 = data[2];
+                parrillaModificada[indexParrilla].asientos2 = data[2];
             }
             setParrilla(parrillaModificada);
         } catch ({ message }) {

@@ -212,9 +212,20 @@ const Boleto = (props) => {
        
                           </div>
                           <div className="col-9">
-       
-                            <div className="bus">
-                            {
+                            <div className="bus piso-2">
+                            <div className="fila">
+                                <div className="columna conductor">
+                                </div>
+                                <div className="columna">
+                                </div>
+                                <div className="columna">
+                                </div>
+                                <div className="columna">
+                                </div>
+                                <div className="columna">
+                                </div>
+                              </div>
+                                {
                                     props.asientos2?(<>
                                         {
                                             props.asientos2.map((i, k)=>{
@@ -229,10 +240,22 @@ const Boleto = (props) => {
                                                 </div>
                                             })
                                         }
+
+                                        {
+                                            function(){
+                                                let max = 10 - props.asientos2.length 
+                                                let n = 0;
+                                                let liens = []
+                                                while(n < max){
+                                                    liens.push(<div key={ `fila-asiento-${ n }` } className="fila"></div>);
+                                                    n++;                                                }
+                                                return liens;
+                                            }.call(this)
+                                        }
                                     </>):""
                                 }
-                            </div>
-                            
+                               
+                              </div>
                           </div>
                         </div>
                       </div>
