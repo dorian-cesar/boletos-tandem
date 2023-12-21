@@ -28,7 +28,7 @@ const InformacionPasajero = (props) => {
             const tipoCliente = tipo == 'ida' ? 'clientes_ida' : 'clientes_vuelta';
             value = validarFormatoRut(name, value);
             carroTemporal[tipoCliente][indexCliente].pasajero[name] = value;
-            setCarro(carroTemporal);    
+            setCarro(carroTemporal);  
         } catch ({ message }) {
             console.error(`Error al agregar información al pasajero [${ message }]`);
         }
@@ -92,6 +92,7 @@ const InformacionPasajero = (props) => {
                 <h5>{ `Pasajero ${ index + 1 } - Asiento ${ cliente.asiento.asiento } - Piso ${ cliente.piso }` }</h5>
                 { 
                     isValidPasajero(cliente.pasajero, index, tipoViaje) ? (<Check />) : ('') 
+                    
                 }
                 { 
                     cliente.pet ? (

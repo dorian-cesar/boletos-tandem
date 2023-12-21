@@ -1,7 +1,7 @@
 import Rut from 'rutjs';
 
 const InformacionComprador = (props) => {
-    const { setCarro, carro, validarFormatoRut } = props;
+    const { setCarro, carro, cliente, validarFormatoRut } = props;
 
     function setDataComprador({ name, value }) {
         try {
@@ -26,6 +26,7 @@ const InformacionComprador = (props) => {
                         </label>
                         <input
                             type='text'
+                            value={ carro.datos['nombre'] }
                             name='nombre'
                             placeholder='Ej: Juan Andrés'
                             className='form-control'
@@ -39,6 +40,7 @@ const InformacionComprador = (props) => {
                         </label>
                         <input
                             type='text'
+                            value={ carro.datos['apellido'] }
                             name='apellido'
                             placeholder='Ej: Espinoza Arcos'
                             className='form-control'
@@ -73,11 +75,12 @@ const InformacionComprador = (props) => {
                         </div>
                     </div>
                     <div className='grupo-campos'>
-                        <input
+                       <input
                             type='text'
+                            value={ carro.datos['rut'] }
                             name='rut'
                             placeholder='Ej: 111111111'
-                            className='form-control'
+                            className={`form-control ${Array.isArray(carro.datos.errors) && carro.datos.errors.includes('rut') ? 'is-invalid' : ''}`}
                             onChange={ (e) => setDataComprador(e.target) } />
                     </div>
                 </div>
@@ -88,6 +91,7 @@ const InformacionComprador = (props) => {
                         </label>
                         <input
                             type='email'
+                            value={ carro.datos['email'] }
                             name='email'
                             placeholder='Ingresa tu email de contacto'
                             className='form-control'

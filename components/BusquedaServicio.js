@@ -10,7 +10,12 @@ import { useRouter } from "next/router";
 registerLocale("es", es);
 
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
-    <input type="text" className="fecha-input form-control" onClick={ onClick } ref={ ref } defaultValue={ value }/>
+    <input type="text" className="fecha-input form-control" 
+    onClick={ onClick } 
+    ref={ ref } 
+    defaultValue={ value }
+    readOnly={ true }
+    />
 ));
 
 const BusquedaServicio = (props) => {
@@ -127,7 +132,7 @@ const BusquedaServicio = (props) => {
                                     <Input
                                         className="sel-input destino"
                                         placeholder="Destino"
-                                        items={ retornaCiudadesSelect(destinos) }
+                                        items={ retornaCiudadesSelect([...destinos, { codigo: "NO_OPTIONS", nombre: "Por favor seleccione un origen" }]) }
                                         selected={ destino && destinos.length > 0 && retornaCiudadesSelect([destinos.find((i) => i.codigo == destino)]) }
                                         setSelected={ setDestino }
                                     />
@@ -145,7 +150,7 @@ const BusquedaServicio = (props) => {
                                         locale={ "es" }
                                         minDate={ new Date() }
                                         dateFormat="dd/MM/yyyy"
-                                        customInput={ <CustomInput /> }
+                                        customInput={ <CustomInput /> }                                       
                                     />
                                 </div>
                             </div>

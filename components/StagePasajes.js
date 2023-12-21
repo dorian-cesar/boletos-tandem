@@ -32,6 +32,7 @@ const StagePasajes = (props) => {
     const [asientosVuelta, setAsientosVuelta] = useState([]);
     const [servicioIda, setServicioIda] = useState(null);
     const [servicioVuelta, setServicioVuelta] = useState(null);
+    const [modalMab, setModalMab] = useState(false);
 
     function toggleTipo(tipo) {
         let listaTipoTemporal = [...filter_tipo];
@@ -82,8 +83,7 @@ const StagePasajes = (props) => {
 
     async function servicioTomarAsiento(parrillaServicio, asiento, piso, asientosTemporal, isMascota = false) {
         try {
-            console.log('tomar asiento', parrillaServicio, asiento, piso)
-            const { data } = await axios.post('/api/tomar-asiento', new TomaAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage));
+           const { data } = await axios.post('/api/tomar-asiento', new TomaAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage));
             const reserva = data;           
             if( reserva.estadoReserva ) {
                 if( isMascota ) setModalMab(true);
@@ -229,9 +229,9 @@ const StagePasajes = (props) => {
 
             if( sort == 'precio-down' ) return (actValue.tarifaPrimerPisoInternet - prevValue.tarifaPrimerPisoInternet);
 
-            if( sort == 'hora-up' ) return (Number(prevValue.replace(':', '')) - Number(actValue.replace(':', '')));
+            if( sort == 'hora-up' ) return (Number(prevValue.horaSalida.replace(':', '')) - Number(actValue.horaSalida.replace(':', '')));
 
-            return (Number(actValue.replace(':', '')) - Number(prevValue.replace(':', '')));
+            return (Number(actValue.horaSalida.replace(':', '')) - Number(prevValue.horaSalida.replace(':', '')));
         })
     }
 
@@ -279,7 +279,7 @@ const StagePasajes = (props) => {
                         <span>Tipo de servicio</span>
                         {
                             tipos_servicio.map((tipoServicioMapped, indexTipoServicio) => {
-                                if( tipoServicioMapped != '' ) {
+                                if (tipoServicioMapped !== undefined && tipoServicioMapped !== '') {
                                     return (
                                         <div key={ `tipo-servicio-${ indexTipoServicio }` } className="custom-control custom-checkbox">
                                             <input 
@@ -297,6 +297,8 @@ const StagePasajes = (props) => {
                                             </label>
                                         </div>
                                     );
+                                } else {
+                                    return null; 
                                 }
                             })
                         }
@@ -373,7 +375,7 @@ const StagePasajes = (props) => {
                                     <img 
                                         src='img/icon-flecha-arriba.svg'
                                         alt=""
-                                        className={ sort == 'precio-down' ? 'rotate-icon' : '' } /> 
+                                        className={ sort == 'hora-up' ? 'rotate-icon' : '' } /> 
                                     : '' 
                                 }
                             </span>

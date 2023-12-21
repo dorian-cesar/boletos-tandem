@@ -14,9 +14,38 @@ const Boleto = (props) => {
     duracion = Math.floor(duracion/60) + " hrs " + duracion%60+ " min"
     const [piso, setPiso] = useState(1)
     const asientoClass = (asiento) => {
+      const isSelected = props.asientos_selected.find((i) => i.asiento === asiento.asiento && asiento.tipo !== 'pet-busy');
+      const isPetSelected = props.asientos_selected.find((i) => i.asiento === asiento.asiento && asiento.estado === 'pet-busy');
     
-        return (props.asientos_selected.find((i) => i.asiento == asiento.asiento && asiento.tipo != 'pet-busy')?"seleccion":"")+ " "+(props.asientos_selected.find((i) => i.asiento == asiento.asiento && asiento.estado == 'pet-busy')?"m-seleccion":"")+" "+(asiento.tipo == 'pet' && asiento.estado == 'ocupado'?"m-disponible":"")+ " " +(asiento.tipo == 'pet' && asiento.estado == 'pet-free'?"m-disponible":"")+ " " +(asiento.estado == "pet-busy" && !props.asientos_selected.find((i) => i.asiento == asiento.asiento)?"m-reservado":"") +" " +(asiento.estado == "ocupado"?"reservado":"") + " " +(asiento.estado == "libre"?"disponible":"") + " " + (asiento.asiento == 'B1' || asiento.asiento == "B2"?"bano":"");
-    }
+      let classes = '';
+      if (isSelected) {
+        classes += 'seleccion ';
+      }
+      if (isPetSelected) {
+        classes += 'm-seleccion ';
+      }
+      if (asiento.tipo === 'pet' && asiento.estado === 'ocupado') {
+        classes += 'm-disponible ';
+      }
+      if (asiento.tipo === 'pet' && asiento.estado === 'pet-free') {
+        classes += 'm-disponible ';
+      }
+      if (asiento.estado === 'pet-busy' && !props.asientos_selected.find((i) => i.asiento === asiento.asiento)) {
+        classes += 'm-reservado ';
+      }
+      if (asiento.estado === 'ocupado') {
+        classes += 'reservado ';
+      }
+      if (asiento.estado === 'libre') {
+        classes += 'disponible ';
+      }
+      if (asiento.asiento === 'B1' || asiento.asiento === 'B2') {
+        classes += 'bano ';
+      }
+    
+      return classes.trim(); // Eliminar espacios en blanco adicionales al final
+    };
+    
     return (<div className="boleto" >
     <input type="checkbox" checked={props.openPane == props.id} readOnly/>
   
@@ -77,7 +106,20 @@ const Boleto = (props) => {
               </div>
               <div className="col-12 col-md-5  d-flex justify-content-center align-center">
                 <div className="px-3 px-md-0 mt-3 mt-md-0 w-100">
-                  <a href="#" onClick={(e)=>{e.stopPropagation();props.setPasaje(props)}} className={"btn " +(props.asientos_selected.length == 0?"disabled":"")}>Comprar </a>
+            
+                                <a
+                href="#"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (Array.isArray(props.asientos_selected)) {
+                    props.setPasaje(props);
+                  }
+                }}
+                className={`btn ${Array.isArray(props.asientos_selected) && props.asientos_selected.length === 0 ? 'disabled' : ''}`}
+              >
+                Comprar
+              </a>
+               
                 </div>
               </div>
             </div>
@@ -259,7 +301,7 @@ const Boleto = (props) => {
                           </div>
                         </div>
                       </div>
-                      <p className="text-center py-1">Cantidad de asientos: <strong>{props.asientos_selected.length}</strong></p>
+                      <p className="text-center py-1">Cantidad de asientos: <strong>{Array.isArray(props.asientos_selected) ? props.asientos_selected.length : 0}</strong></p>
                     </div>
                     <div className="col-12  d-flex justify-content-center mb-3">
                 <div className="px-3 px-md-0 mt-3 mt-md-0 col-12 col-md-6">
