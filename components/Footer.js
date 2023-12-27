@@ -7,23 +7,24 @@ const Footer = () => (
                 <div className="row">
                     <div className="col-3">
                         <h3>
-                            <img className="mr-2 img-contacto-footer" src="/img/icon-ubi.svg" alt=""/>
+                            <img className="mr-2 img-contacto-footer" src="img/icon/chat/location-outline.svg" alt=""/>
                             Contacto
                         </h3>
                         <div className="w-100" style={{ paddingLeft: "25px", borderLeft: "1px solid" }}>
-                            <p>San Borja 235 , Estación Central, Santiago</p>
+                            <p>San Borja 235 , Estación Central, <br />
+                            Santiago</p>
                             <a href="mailto:clientes@pullmanbus.cl">
                                 clientes@pullmanbus.cl
                             </a>
                             <h4>
                                 Call Center <br />
-                                (+56) 2 3304 8912
+                                600 600 0018
                             </h4>
                         </div>
                     </div>
                     <div className="col-3">
                         <h3>
-                            <img className="mr-2" src="/img/icon-info.svg" alt=""/>
+                            <img className="mr-2" src="img/icon/chat/chatbox-ellipses-outline.svg" alt=""/>
                             Información
                         </h3>
                         <div className="w-100" style={{ paddingLeft: "25px", borderLeft: "1px solid" }}>
@@ -57,17 +58,27 @@ const Footer = () => (
                     </div>
                     <div className="col-2 pt-4 d-flex justify-content-around">
 						<a target="_blank" href="https://www.facebook.com/Pullman.cl/">
-                        	<img src="/img/icon-fb-blanco.svg" alt=""/>
+                        	<img src="img/icon/chat/logo-facebook.svg" alt=""/>
 						</a>
 						<a target="_blank" href="https://www.instagram.com/pullmanbus/">
-                        	<img src="/img/icon-ig-blanco.svg" alt=""/>
+                        	<img src="img/icon/chat/logo-instagram.svg" alt=""/>
 						</a>
 						<a target="_blank" href="https://www.linkedin.com/company/pullman-bus/">
-                        	<img src="/img/icon-in-blanco.svg" alt=""/>
+                        	<img src="img/icon/chat/logo-linkedin.svg" alt=""/>
 						</a>
                     </div>
-                    <div className="col-4 d-flex justify-content-end">
-                        <img src="/img/webpay.svg" className="img-fluid" alt=""/>
+                    <div className="col-3">
+                        <h3>
+                             <img src="img/icon/chat/Group.svg" className="img-fluid" alt=""/>
+                        </h3>
+                        <div className="w-100">
+                            <br />
+                            <p>EMPRESAS PULLMAN <br />
+                            PULLMAN CARGO I TÁNDEM I LOGIK</p>
+                        </div>
+                    </div>
+                    <div className="col-2 pt-4 d-flex justify-content-around">
+                        
                     </div>
                 </div>
             </div>

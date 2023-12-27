@@ -33,7 +33,7 @@
   top: 0;
   left: 0;
   background-color: rgb(0,0,0);
-  background-color: #F1F4F9;
+  background: var(--Azul-fondo, #E6ECF6);
   overflow-x: hidden;
   transition: 0.5s;
 }
@@ -42,6 +42,7 @@
   position: relative;
   top: 0;
   width: 100%;
+  background: var(--Azul-fondo, #E6ECF6);
   /* text-align: center; */
   margin-top: 30px;
   padding: 30px 30px 30px 40px;
@@ -76,22 +77,67 @@
   width: 100%;
 }
 
-.overlay .links-menu a.compra {background-image: url(img/menu/icon-compra.svg);}
+.overlay .links-menu a.compra {
+  background-image: url(img/icon/nav/ticket-outline.svg);
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;}
+.overlay .links-menu a.agencias {
+  background-image: url(img/icon/nav/navigate-outline.svg);
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;}
 .overlay .links-menu a.ofertas {background-image: url(img/menu/icon-oferta.svg);}
-.overlay .links-menu a.conf-pasajes {background-image: url(img/menu/icon-confirmacion-pasajes.svg);}
-.overlay .links-menu a.te-ayudamos {background: url(img/menu/icon-te-ayudamos.svg) 0 center no-repeat, url(img/menu/icon-flecha.svg) center right no-repeat;}
-.overlay .links-menu a.cliente-empresa {background-image: url(img/menu/icon-cliente-empresas.svg);}
-.overlay .links-menu a.viajes-espaciales {background-image: url(img/menu/icon-viajes-especiales.svg);}
+.overlay .links-menu a.conf-pasajes {
+  background-image: url(img/menu/icon-confirmacion-pasajes.svg);
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;}
+.overlay .links-menu a.te-ayudamos {
+  background: url(img/icon/nav/help-circle-outline.svg) 0 center no-repeat, url(img/menu/icon-flecha.svg) center right no-repeat;
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;}
+.overlay .links-menu a.cliente-empresa {
+  background-image: url(img/icon/nav/business-outline.svg);
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;}
+.overlay .links-menu a.viajes-especiales {
+  background-image: url(img/icon/nav/trail-sign-outline.svg);
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;}
 .overlay .links-menu a.beneficios {background: url(img/menu/icon-beneficios.svg) 0 center no-repeat, url(img/menu/icon-flecha.svg) center right no-repeat;}
 .overlay .links-menu a.conocenos {background: url(img/menu/icon-conocenos.svg) 0 center no-repeat, url(img/menu/icon-flecha.svg) center right no-repeat;}
 .overlay .links-menu a.asistencia-viaje {background-image: url(img/menu/icon-asistencia-viaje.svg);}
 
 
 .overlay .contactanos-menu span {
-  font-size: 13px;
-  text-transform: uppercase;
-  color: #6086C4;
-  font-weight: 700;
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 .overlay .contactanos-menu a {
   width: 100%;
@@ -489,9 +535,13 @@ a {
 }
 
 .titulo-azul {
-  color: var(--celeste) ;
+  color: var(--azul-100, #3365B4);
+
+  font-family: Titillium Web;
+  font-size: 24px;
+  font-style: normal;
   font-weight: 700;
-  font-size: 26px;
+  line-height: 26px; 
 }
 
 .titulo-negro {
@@ -652,7 +702,6 @@ a {
 }
 
 label {
-  text-transform: uppercase;
   font-size: 14px;
   font-weight: 600;
 }
@@ -683,27 +732,20 @@ label.label-input.input-op {
     border: 1px solid var(--naranjo);
 }
 
-select.form-control,input.fecha-input, .sel-input  {
-    background-color: var(--celeste-pastel);
-    color: #87787b;
-    background-image: url(http://placehold.it/40x40);
-    background-position: 14px center;
-    background-repeat: no-repeat;
-    padding-left: 40px;
-    background-size: 20px 20px;
-    
-}
-
-select.form-control.origen,.sel-input.origen {
-  background-image: url(img/icon-select-ciudad.svg);
-}
-
-select.form-control.destino,.sel-input.destino  {
-  background-image: url(img/icon-select-destino.svg);
-}
-
-select.form-control.fecha,input.fecha-input {
-  background-image: url(img/icon-select-fecha.svg);
+select.form-control,
+input.fecha-input,
+.sel-input {
+  background: var(--azul-15, #E1E8F4);
+  border-radius: 16px;
+  width: 190px;
+  height: 40px;
+  color: var(--azul-100, #3365B4);
+  font-family: Titillium Web;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border: 1px solid var(--color-borde, #CCCCCC); 
 }
 
 select.form-control.seleccion {
@@ -874,6 +916,10 @@ select.form-control.seleccion {
 .menu {
   background-color: #fff;
   padding: 10px;
+}
+
+.home {
+  background: var(--Azul-fondo, #E6ECF6);
 }
 
 .home .img-principal img {
@@ -1951,4 +1997,276 @@ footer .item a {
 
 .img-contacto-footer {
   margin-left: -10px;
+}
+
+.container {
+  width: 100%; 
+}
+
+.container .banner-container {
+  position: relative;
+  width: 100%; 
+  max-height: 600px;
+  margin: 0 auto; /* Centra el contenedor horizontalmente */
+  overflow: hidden; /* Para recortar contenido que desborde */
+  transition: opacity 1s ease-in-out; /* Agrega una transición de desvanecimiento */
+}
+
+.container .ofertas {
+  background: var(--Azul-fondo, #E6ECF6);
+}
+
+.banner-container .img-principal img {
+  width: 100%;
+  
+}
+
+.img-principal {
+  display: none; /* Oculta todas las imágenes por defecto */
+}
+
+.img-principal.active {
+  display: block; /* Muestra la imagen activa */
+}
+
+.img-principal.active img {
+  opacity:1; /* Ajusta según tus preferencias */
+}
+
+.prev-button,
+.next-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #fff; /* Puedes ajustar según tu diseño */
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #333; /* Puedes ajustar según tu diseño */
+}
+
+.prev-button {
+  left: 10px;
+}
+
+.next-button {
+  right: 10px;
+}
+
+.container-busqueda-servicio {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-bottom: 5rem;
+  height: 200px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  background: var(--Blanco, #FFF);
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.20);
+}
+
+.label-titulo-busqueda-servicio {
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.button-busqueda-servicio {
+  display: flex;
+  width: 200px;
+  height: 40px;
+  padding: 0px 52px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  background: var(--naranjo-100, #FF6500);
+
+  color: var(--Blanco, #FFF);
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.button-busqueda-servicio-disabled {
+  display: flex;
+  width: 240px;
+  height: 40px;
+  padding: 0px 52px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  background: var(--naranjo-100, );
+
+  color: var(--gris, #333);
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.card-ofertas {
+  width: 320px;
+  height: 511px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  background: #FFF;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.20);
+}
+
+.card-ofertas .imagen {
+  width: 320px;
+  height: 144px;
+  flex-shrink: 0;
+  border-radius: 16px 16px 0px 0px;
+  background: url(img/icon/images/antofagasta.jpeg), lightgray 50% / cover no-repeat;
+}
+
+.card-ofertas .title-tramo {
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -30px;
+}
+
+.card-ofertas .title-ciudades {
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px; 
+}
+
+.card-ofertas .title-vigencia {
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.card-ofertas .title-tipo-bus {
+  color: var(--gris-50, #7F7F7F);
+  font-family: Titillium Web;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.card-ofertas .title-persona {
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -40px;
+}
+
+.card-ofertas .title-valor {
+  color: var(--naranjo-100, #FF6500);
+  font-family: Titillium Web;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.card-ofertas .title-valor-tachado {
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: line-through;
+}
+
+.card-ofertas .imagen-mascota {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.card-ofertas .dividir {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px; 
+  background-color: #ccc; 
+}
+
+.card-ofertas .oferta-descuento {
+  width: 93px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 0px 0px 0px 30px;
+  background: var(--azul-50, #98B1D9);
+  color: var(--Blanco, #FFF);
+  font-family: Titillium Web;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-ofertas .card-ida-vuelta {
+  width: 128px;
+  height: 29px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--Amarillo, #FFD600);
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -12px;
+}
+
+.card-ofertas .boton {
+  display: block;
+  padding: 8px 72px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  border-radius: 16px;
+  background: var(--naranjo-100, #FF6500);
+  color: var(--Blanco, #FFF);
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

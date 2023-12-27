@@ -90,7 +90,9 @@ export default function Home(props) {
                 <title>PullmanBus | Compra Boleto</title>
             </Head>
             <div className="pasajes">
-                <BusquedaServicio origenes={ props.ciudades } dias={ props.dias }/>
+                <div className="container">
+                    <BusquedaServicio origenes={ props.ciudades } dias={ props.dias }  isShowMascota={true}/>
+                </div>
             </div>
             <div className="pasajes-compra py-5">
                 <div className="container">

@@ -96,42 +96,42 @@ const BusquedaServicio = (props) => {
                         <div className="row mb-3 ">
                             <div className="col-12 col-md-6">
                                 <h1 className="titulo-azul">
-                                    Detalles de tu viaje
+                                    ¿Cúal es tu próximo destino?
                                 </h1>
                             </div>
-                            { isShowMascota && <div className="col-12 col-md-6">
-                                <div className="d-flex w-100 justify-content-end align-items-center" onClick={ () => setMascota(!mascota_allowed) }>
-                                    <img src="img/icon-patita.svg" style={{ marginRight: "5px" }} />
-                                    <span>Mascota a bordo</span>
-                                    <label className={ "switch " + (mascota_allowed ? "checked" : "") }>
-                                        <span className="slider round"></span>
-                                    </label>
+                            {isShowMascota && (
+                            <div className="col-12 col-md-6">
+                                <div className="d-flex w-100 justify-content-end align-items-center" onClick={() => setMascota(!mascota_allowed)}>
+                                <img src={mascota_allowed ? "img/icon/buttons/paw-outline-orange.svg" : "img/icon/buttons/paw-outline.svg"} style={{ marginRight: "5px", color: mascota_allowed ? "var(--color-icon-activo, #00FF00)" : "var(--color-icon-inactivo, #FF0000)" }} />
+                                <span className="label-titulo-busqueda-servicio" >Mascota a bordo</span>
                                 </div>
-                            </div> }
+                            </div>
+                            )}
                         </div>
                         <div className="row search-row">
-                            <div className="col-12 col-md-6 col-lg-3">
+                            <div className="col-12 col-md-6 col-lg-2">
                                 <div className="grupo-campos">
-                                    <label className="label-input">
-                                        ¿De dónde viajamos?
+                                    <label className="label-titulo-busqueda-servicio">
+                                        Origen
                                     </label>
                                     <Input
                                         className="sel-input origen"
-                                        placeholder="Origen"
+                                        placeholder="Seleccione origen"
                                         items={ retornaCiudadesSelect(origenes) }
                                         selected={ origen && retornaCiudadesSelect([origenes.find((i) => i.codigo == origen)]) }
                                         setSelected={ cambiarOrigen }
-                                    />
-                                </div>
+                                    />  
+                                </div>            
                             </div>
-                            <div className="col-12 col-md-6 col-lg-3">
+                            
+                            <div className="col-12 col-md-6 col-lg-2">
                                 <div className="grupo-campos">
-                                    <label className="label-input">
-                                        ¿A dónde viajamos?
+                                    <label className="label-titulo-busqueda-servicio">
+                                        Destino
                                     </label>
                                     <Input
                                         className="sel-input destino"
-                                        placeholder="Destino"
+                                        placeholder="Seleccione destino"
                                         items={ retornaCiudadesSelect([...destinos, { codigo: "NO_OPTIONS", nombre: "Por favor seleccione un origen" }]) }
                                         selected={ destino && destinos.length > 0 && retornaCiudadesSelect([destinos.find((i) => i.codigo == destino)]) }
                                         setSelected={ setDestino }
@@ -140,8 +140,8 @@ const BusquedaServicio = (props) => {
                             </div>
                             <div className="col-6 col-md-6 col-lg-2">
                                 <div className="grupo-campos">
-                                    <label className="label-input">
-                                        ¿Fecha de ida?
+                                    <label className="label-titulo-busqueda-servicio">
+                                        Salida
                                     </label>
                                     <DatePicker
                                         selected={ startDate }
@@ -150,14 +150,15 @@ const BusquedaServicio = (props) => {
                                         locale={ "es" }
                                         minDate={ new Date() }
                                         dateFormat="dd/MM/yyyy"
-                                        customInput={ <CustomInput /> }                                       
+                                        customInput={ <CustomInput /> }
+                                                                        
                                     />
                                 </div>
                             </div>
                             <div className="col-6 col-md-6 col-lg-2">
                                 <div className="grupo-campos">
-                                    <label className="label-input">
-                                        ¿Fecha de regreso?
+                                    <label className="label-titulo-busqueda-servicio">
+                                        Vuelta
                                     </label>
                                     <DatePicker
                                         selected={ endDate }
@@ -171,9 +172,9 @@ const BusquedaServicio = (props) => {
                                 </div>
                             </div>
                             <div className="col-12 col-md-12 col-lg-2">
-                                <div className={ origen && destino ? "btn" : "btn btn-disabled" } onClick={ (origen && destino) && redireccionarBuscarServicio }>
+                                <div className= "button-busqueda-servicio" onClick={ (origen && destino) && redireccionarBuscarServicio }>
                                     <img src="img/icon-buscar-blanco.svg" />{" "}
-                                    Buscar servicios
+                                    Buscar
                                 </div>
                             </div>
                         </div>
