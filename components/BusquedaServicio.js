@@ -20,18 +20,21 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
 
 const BusquedaServicio = (props) => {
     const { origenes, dias, isShowMascota = false } = props;
-
     const [mascota_allowed, setMascota] = useState(false);
     const [origen, setOrigen] = useState(null);
     const [destino, setDestino] = useState(null);
     const [destinos, setDestinos] = useState([]);
 	const [startDate, setStartDate] = useState(dayjs().toDate());
     const [endDate, setEndDate] = useState(null);
-
+    const [datePickerKey, setDatePickerKey] = useState(0);
     const router = useRouter();
 
+    useEffect(() => {
+        setDatePickerKey((prevKey) => prevKey + 1);
+      }, [startDate]);
+
     async function redireccionarBuscarServicio() {
-        await router.push(`/comprar?origen=${ origen }&destino=${ destino }&startDate=${ startDate && dayjs(startDate).format('YYYY-MM-DD') }&endDate=${ endDate && dayjs(startDate).format('YYYY-MM-DD')}`);
+        await router.push(`/comprar?origen=${ origen }&destino=${ destino }&startDate=${ startDate && dayjs(startDate).format('YYYY-MM-DD') }&endDate=${ endDate && dayjs(endDate).format('YYYY-MM-DD')}`);
         if(router.asPath.includes('comprar')) {
             router.reload();
         }
@@ -58,11 +61,10 @@ const BusquedaServicio = (props) => {
     };
 
     async function isValidAfter(date) {
-        return (
-            dayjs(date).isAfter(dayjs(startDate).subtract(1, "day")) &&
-            dayjs(date).isBefore(dayjs().add(dias, "day"))
-        );
-    };
+        return dayjs(date).isAfter(dayjs(startDate).subtract(1, "day")) &&
+            dayjs(date).isBefore(dayjs().add(dias, "day"));
+    }
+    
 
 	function retornaCiudadesSelect(arrayCiudades) {
 		return arrayCiudades.map(ciudad => {
@@ -87,6 +89,25 @@ const BusquedaServicio = (props) => {
             setEndDate(dayjs(startDate).toDate());
         }
     }, [startDate]);
+
+    useEffect(() => {
+        const { origen, destino, startDate, endDate } = router.query;
+        const startDateFromUrl = startDate && startDate !== 'null' && dayjs(startDate).isValid()
+          ? dayjs(startDate).toDate()
+          : null;
+      
+        if (origen) setOrigen(origen);
+        if (destino) setDestino(destino);
+      
+        if (startDateFromUrl) {
+          setStartDate(dayjs(startDateFromUrl).toDate());
+        }
+      
+        if (endDate && endDate !== 'null') {
+          setEndDate(dayjs(endDate).toDate());
+        }
+      }, [router.query]);
+      
 
     return (
         <div className="container pb-5">
@@ -144,6 +165,7 @@ const BusquedaServicio = (props) => {
                                         Salida
                                     </label>
                                     <DatePicker
+                                        key={datePickerKey}
                                         selected={ startDate }
                                         onChange={ (date) => setStartDate(date) }
                                         filterDate={ isValidStart }
@@ -155,7 +177,7 @@ const BusquedaServicio = (props) => {
                                     />
                                 </div>
                             </div>
-                            <div className="col-6 col-md-6 col-lg-2">
+                            <div className="col-12 col-md-6 col-lg-2">
                                 <div className="grupo-campos">
                                     <label className="label-titulo-busqueda-servicio">
                                         Vuelta
@@ -171,7 +193,11 @@ const BusquedaServicio = (props) => {
                                     />
                                 </div>
                             </div>
+                            <br />
                             <div className="col-12 col-md-12 col-lg-2">
+                                    <label className="label-titulo-busqueda-servicio">
+                                        
+                                    </label>
                                 <div className= "button-busqueda-servicio" onClick={ (origen && destino) && redireccionarBuscarServicio }>
                                     <img src="img/icon-buscar-blanco.svg" />{" "}
                                     Buscar

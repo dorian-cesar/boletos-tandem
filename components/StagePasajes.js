@@ -271,12 +271,13 @@ const StagePasajes = (props) => {
     }
 
     return (
+        
         <div className="row">
             <div className="col-12 col-md-3" key={stage + "it"}>
-                <div className="bloque-filtro">
-                    <h2>Filtrar por:</h2>
+                <div className="container-filtro">
+                    <h2 className="container-title">Filtrar por:</h2>
                     <div className="w-100 mb-4">
-                        <span>Tipo de servicio</span>
+                        <span className="container-sub-title">Tipo de servicio</span>
                         {
                             tipos_servicio.map((tipoServicioMapped, indexTipoServicio) => {
                                 if (tipoServicioMapped !== undefined && tipoServicioMapped !== '') {
@@ -300,11 +301,13 @@ const StagePasajes = (props) => {
                                 } else {
                                     return null; 
                                 }
+
                             })
+                            
                         }
                     </div>
                     <div className="w-100 mb-4">
-                        <span>Horarios</span>
+                        <span className="container-sub-title">Horarios</span>
                         <div className="custom-control custom-checkbox">
                             <input
                                 id="horaCheck1"
@@ -401,6 +404,7 @@ const StagePasajes = (props) => {
                 }
             </div>
         </div>
+        
     )
 }
 

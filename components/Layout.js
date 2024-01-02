@@ -41,6 +41,13 @@ export default function Layout({ children }) {
               </Link>
             </div>
             <div className="w-100">
+              <Link href="/cuponera" legacyBehavior>
+                <a href="/cuponera" className="agencias">
+                  Compra tu cuponera
+                </a>
+              </Link>
+            </div>
+            <div className="w-100">
               <Link href="" legacyBehavior>
                 <a href="/comprar" className="viajes-especiales">
                   Viajes especiales

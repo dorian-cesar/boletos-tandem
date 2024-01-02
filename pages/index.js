@@ -3,6 +3,7 @@ import Layout from "components/Layout";
 import Footer from "components/Footer";
 import BusquedaServicio from "components/BusquedaServicio";
 import Ofertas from "components/Ofertas";
+import Cuponera from "pages/cuponera";
 import Head from "next/head";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
@@ -48,7 +49,6 @@ export default function Home(props) {
       <Head>
         <title>PullmanBus | Inicio</title>
       </Head>
-
       <div className="home">
         <div className="img-principal d-none d-md-block">
           <img src="https://pullman.cl/imagenes/fenix/banner/banner-2.png" />
@@ -57,17 +57,24 @@ export default function Home(props) {
           <img src="/banner-mobile.png" />
         </div>
         <BusquedaServicio
-            origenes={origenes}
-            dias={props.dias}
-            isShowMascota={true}
-          />
-          <div className="img-principal d-none d-md-block">
-          <Ofertas />
-        </div>
+          origenes={origenes}
+          dias={props.dias}
+          isShowMascota={true}
+        />
+        
+        <Ofertas />
+  
+        {
+
+          /*  <div className="img-principal d-none d-md-block">
+        <Cuponera />
+        </div> */
+        }
+       
+        
       </div>
       <Footer />
     </Layout>
-    
   );
 }
 

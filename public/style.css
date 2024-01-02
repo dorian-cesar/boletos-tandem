@@ -737,7 +737,7 @@ input.fecha-input,
 .sel-input {
   background: var(--azul-15, #E1E8F4);
   border-radius: 16px;
-  width: 190px;
+  width: 200px;
   height: 40px;
   color: var(--azul-100, #3365B4);
   font-family: Titillium Web;
@@ -1148,9 +1148,9 @@ select.form-control.seleccion {
   border-top:  1px solid #DDDDDD;
 }
 
-/*.pasajes-compra {
-  background-color: #F1F4F9;
-}*/
+.pasajes-compra {
+  background: var(--Azul-fondo, #E6ECF6);
+}
 
 .pasajes-compra .numeros {
   display: flex;
@@ -1204,7 +1204,6 @@ select.form-control.seleccion {
   background-color: #fff;
   border-radius: 10px;
   padding: 40px 20px;
-  margin-top: 25px;
 }
 
 .pasajes-compra .bloque-filtro h2 {
@@ -2095,6 +2094,16 @@ footer .item a {
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+
+  &:active {
+    background: var(--gris-25, #BFBFBF);
+    border-radius: 16px;
+    border: 1px solid;
+    border-color: var(--azul-100, #3365B4);
+  }
+  &:focus {
+    outline: none;
+  }
 }
 
 .button-busqueda-servicio-disabled {
@@ -2120,10 +2129,18 @@ footer .item a {
 .card-ofertas {
   width: 320px;
   height: 511px;
+  margin-left: 45px;
   flex-shrink: 0;
   border-radius: 16px;
   background: #FFF;
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.20);
+}
+
+@media (max-width: 767px) {
+  .card-ofertas.mobile-view {
+    margin-left: 0; /* Elimina el margen izquierdo en vista móvil */
+     /* Ajusta el tamaño de los elementos internos según sea necesario */
+  }
 }
 
 .card-ofertas .imagen {
@@ -2269,4 +2286,70 @@ footer .item a {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.title-ofertas {
+  color: var(--azul-100, #3365B4);
+  font-family: Titillium Web;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sub-title-ofertas {
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pasajes-compra .container-filtro {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 40px 20px;
+  height: 424px;
+  flex-shrink: 0;
+}
+
+.pasajes-compra .container-title {
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.pasajes-compra .container-sub-title {
+  color: #000;
+  font-family: Titillium Web;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.checkbox-forma-blue {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 50% !important;
+  background-image: url(img/icon/checkbox/radio-button-on-outline-azul.svg) !important;;
+}
+
+.checkbox-forma-orange {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 50% !important;
+  background-image: url(img/icon/checkbox/radio-button-on-outline-orange.svg) !important;;
 }

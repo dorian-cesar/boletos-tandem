@@ -36,9 +36,9 @@ export default function Header({ openNav }: { openNav: any }) {
                     <path
                       d="M7.21875 12.4688H34.7812M7.21875 21H34.7812M7.21875 29.5312H34.7812"
                       stroke="#FF6500"
-                      stroke-width="3"
-                      stroke-miterlimit="10"
-                      stroke-linecap="round"
+                      strokeWidth="3"
+                      strokeMiterlimit="10"
+                      strokeLinecap="round"
                     />
                   </svg>
                 </span>
