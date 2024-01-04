@@ -43,7 +43,7 @@ export default function Home(props) {
       (prevIndex) => (prevIndex - 1 + imageUrls.length) % imageUrls.length
     );
   };
-
+  
   return (
     <Layout>
       <Head>
@@ -82,6 +82,8 @@ export const getServerSideProps = withIronSessionSsr(async function ({
   req,
   res,
 }) {
+
+  
   let ciudades = await axios.get(
     publicRuntimeConfig.site_url + "/api/ciudades"
   );

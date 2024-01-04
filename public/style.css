@@ -2353,3 +2353,183 @@ footer .item a {
   border-radius: 50% !important;
   background-image: url(img/icon/checkbox/radio-button-on-outline-orange.svg) !important;;
 }
+
+.tab {
+  cursor: pointer;
+  padding: 10px;
+  margin-right: 10px;
+  margin-top: 0px;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #f1f1f1;
+  display: inline-block;
+  color: var(--azul-100, #3365B4);
+}
+
+.active-tab {
+  background-color: #ddd;
+}
+
+.tab-panel {
+  display: none;
+  padding: 10px;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+.title-mascota-abordo {
+  color: var(--azul-100, #3365B4);
+  font-family: Titillium Web;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  display: flex;
+  align-items: right;
+  justify-content: right;
+}
+
+
+/***********************CUPONERA************************/
+.cuponera {
+ /* background-image: url('img/icon/cuponera/cuponeraTicket.svg');*/
+  display: block;
+  position: relative;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-transform: initial;
+  margin-top: 15px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
+  
+}
+
+.cuponera .barra {
+  background-image: url('img/linea.svg');
+  background-repeat-y: no-repeat;
+  background-position: center center;
+  position: relative;
+  height: 30px;
+  display: block;
+}
+
+.cuponera .cont-barra {
+  padding: 0px 40px;
+  background: url(img/icon-barra-persona.svg) left center, url(img/icon-barra-pin.svg) right center;
+  background-repeat: no-repeat;
+}
+
+.cuponera .block {
+  
+  border-radius: 10px;
+  width: calc(100% + 2px);
+  margin-left: -1px;
+  color: #333333;
+  font-size: 13px;
+}
+
+.cuponera .block .precio {
+  color: var(--naranjo);
+  font-size: 18px;
+}
+
+.cuponera .block .hora {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.cuponera input {
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.cuponera input:checked ~ .block {
+  border: 1px solid var(--naranjo);
+}
+
+.cuponera .block .content-block {
+    padding: 30px;
+    width: calc(100% + 2px);
+    margin-right: -1px;
+    margin-left: -1px;
+    box-shadow: 0px 17px 13px -24px #3365b4;
+}
+
+.cuponera input ~ .block {
+  border: 1px solid #fff;
+  /* padding: 30px; */
+  font-size: 16px;
+}
+
+.cuponera input:checked ~ .block .content-block {
+  background: url('img/circulo-1.svg')  left -2px center no-repeat, url('img/circulo-2.svg') right center no-repeat;
+}
+
+.cuponera input ~ .block .content-block {
+  background: url('img/circulo-blanco-1.svg')  left -2px center no-repeat, url('img/circulo-blanco-2.svg') right center no-repeat;
+}
+
+.cuponera input ~ .block .content-block .barra img {
+  position: absolute;
+  right: auto;
+  left: 0;
+  animation-name: final;
+  animation-duration: 0.5s;
+}
+
+.cuponera input:checked ~ .block .content-block .barra img {
+  position: absolute;
+  left: calc(100% - 30px);
+  animation-name: inicio;
+  animation-duration: 1s;
+}
+
+@keyframes inicio {
+  from {
+    left: 0;
+    transition: all 0.9s ease;
+  }
+  to {
+    left: calc(100% - 30px);
+    transition: all 1.2s ease;
+  }
+}
+
+@keyframes final {
+  0% {
+    opacity: 1;
+    left: calc(100% - 30px);
+    transition: all 0.9s ease;
+  }
+  40%{
+    opacity: 0;
+    left: calc(100% - 30px);
+    transition: all 0.9s ease;
+  }
+  50% {
+    left: 0;
+    opacity: 0;
+  }
+  100% {
+    left: 0;
+    opacity: 1;
+    transition: all 0.9s ease;
+  }
+}
+
+.cuponera span, .boleto strong {
+  display: block;
+  width: 100%;
+}
+
+
+/***********************FIN CUPONERA************************/
