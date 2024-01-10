@@ -54,13 +54,7 @@ export default function Header({ openNav }: { openNav: any }) {
                        data-bs-target="#loginModal"/>
                 ) : (
                   <ul className="nav nav-pills">
-                    {/*                 <li className="nav-item">
-                <h5 className="nav-link">¡Hola <b>{user?.nombres}</b>!</h5>
-                </li> */}
                     <li className="nav-item dropdown">
-                      {/*                 <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-
-                </a> */}
                       <button
                         className="nav-link dropdown-toggle"
                         data-bs-toggle="dropdown"

@@ -2,8 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-import Cuponera from "./Cuponera";
-import Loader from "./Loader";
+import Boleto from "././Boleto";
+import Loader from "../Loader";
 
 import { LiberarAsientoDTO, TomaAsientoDTO } from "dto/TomaAsientoDTO";
 import { BuscarPlanillaVerticalDTO } from "dto/MapaAsientosDTO";
@@ -19,9 +19,9 @@ const ASIENTO_TIPO_ASOCIADO = 'asociado';
 const ASIENTO_OCUPADO = 'ocupado';
 const MAXIMO_COMPRA_ASIENTO = 4;
 
-const StagePasajesCuponera = (props) => {
+const StagePasajes = (props) => {
 
-    const { parrillaCuponera, stage, loadingParrilla, setParrilla, startDate, endDate, carro, setCarro, setStage, searchParrilla } = props;
+    const { parrilla, stage, loadingParrilla, setParrilla, startDate, endDate, carro, setCarro, setStage, searchParrilla } = props;
 
     const [filter_tipo, setFilterTipo] = useState([]);
     const [filter_horas, setFilterHoras] = useState([]);
@@ -56,22 +56,22 @@ const StagePasajesCuponera = (props) => {
 
     async function reloadPane(indexParrilla) {
         try {
-            const parrillaCuponeraTemporal = [...parrillaCuponera];
-            const parrillaCuponeraModificada = [...parrillaCuponera];
+            const parrillaTemporal = [...parrilla];
+            const parrillaModificada = [...parrilla];
             const { data } = await axios.post('/api/mapa-asientos', 
-                new BuscarPlanillaVerticalDTO(parrillaCuponeraTemporal[indexParrilla], stage, startDate, endDate, parrillaCuponera[indexParrilla]));
-            parrillaCuponeraModificada[indexParrilla].loadingAsientos = false;
-            parrillaCuponeraModificada[indexParrilla].asientos1 = data[1];
-            if( !!parrillaCuponeraTemporal[indexParrilla].busPiso2 ) {
-                parrillaCuponeraModificada[indexParrilla].asientos2 = data[2];
+                new BuscarPlanillaVerticalDTO(parrillaTemporal[indexParrilla], stage, startDate, endDate, parrilla[indexParrilla]));
+            parrillaModificada[indexParrilla].loadingAsientos = false;
+            parrillaModificada[indexParrilla].asientos1 = data[1];
+            if( !!parrillaTemporal[indexParrilla].busPiso2 ) {
+                parrillaModificada[indexParrilla].asientos2 = data[2];
             }
-            setParrilla(parrillaCuponeraModificada);
+            setParrilla(parrillaModificada);
         } catch ({ message }) {
             console.error(`Error al recargar panel [${ message }]`);
         }
     };
 
-    const tipos_servicio = parrillaCuponera.reduce((a, b) => {
+    const tipos_servicio = parrilla.reduce((a, b) => {
         if (!a.includes(b.servicioPrimerPiso) && b.servicioPrimerPiso != "") {
             a.push(b.servicioPrimerPiso);
         }
@@ -81,13 +81,13 @@ const StagePasajesCuponera = (props) => {
         return a;
     }, []);
 
-    async function servicioTomarAsiento(parrillaCuponeraServicio, asiento, piso, asientosTemporal, isMascota = false) {
+    async function servicioTomarAsiento(parrillaServicio, asiento, piso, asientosTemporal, isMascota = false) {
         try {
-           const { data } = await axios.post('/api/tomar-asiento', new TomaAsientoDTO(parrillaCuponeraServicio, startDate, endDate, asiento, piso, stage));
+           const { data } = await axios.post('/api/tomar-asiento', new TomaAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage));
             const reserva = data;           
             if( reserva.estadoReserva ) {
                 if( isMascota ) setModalMab(true);
-                asientosTemporal.push(new AsientoDTO(reserva, parrillaCuponeraServicio, asiento, piso))
+                asientosTemporal.push(new AsientoDTO(reserva, parrillaServicio, asiento, piso))
                 stage == STAGE_BOLETO_IDA ? setAsientosIda(asientosTemporal) : setAsientosVuelta(asientosTemporal);
                 return asientosTemporal;
             }
@@ -96,9 +96,9 @@ const StagePasajesCuponera = (props) => {
         }
     }
 
-    async function servicioLiberarAsiento(parrillaCuponeraServicio, asiento, piso, codigoReserva) {
+    async function servicioLiberarAsiento(parrillaServicio, asiento, piso, codigoReserva) {
         try {
-            const { data } = await axios.post('/api/liberar-asiento', new LiberarAsientoDTO(parrillaCuponeraServicio, startDate, endDate, asiento, piso, stage, codigoReserva))
+            const { data } = await axios.post('/api/liberar-asiento', new LiberarAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage, codigoReserva))
             return data;
         } catch ({ message }) {
             throw new Error(`Error al liberar asiento [${ message }]`);
@@ -124,20 +124,20 @@ const StagePasajesCuponera = (props) => {
 
             if( asiento.estado == ASIENTO_LIBRE || asiento.estado == ASIENTO_LIBRE_MASCOTA ) {
                 if( !validarMaximoAsientos(asientosTemporal) ) return;
-                asientosTemporal = await servicioTomarAsiento(parrillaCuponera[indexParrilla], asiento.asiento, piso, asientosTemporal);
+                asientosTemporal = await servicioTomarAsiento(parrilla[indexParrilla], asiento.asiento, piso, asientosTemporal);
 
                 if( asiento.tipo == ASIENTO_TIPO_ASOCIADO || asiento.tipo == ASIENTO_TIPO_MASCOTA ) {
-                    asientosTemporal = await servicioTomarAsiento(parrillaCuponera[indexParrilla], asiento.asientoAsociado, piso, asientosTemporal, true);
+                    asientosTemporal = await servicioTomarAsiento(parrilla[indexParrilla], asiento.asientoAsociado, piso, asientosTemporal, true);
                 }
 
                 await reloadPane(indexParrilla);
             }
 
             if( asiento.estado == ASIENTO_OCUPADO && asientoSeleccionado ) {
-                await servicioLiberarAsiento(parrillaCuponera[indexParrilla], asiento.asiento, asientoSeleccionado.codigoReserva);
+                await servicioLiberarAsiento(parrilla[indexParrilla], asiento.asiento, asientoSeleccionado.codigoReserva);
                 
                 if( asiento.tipo == ASIENTO_TIPO_ASOCIADO || asiento.tipo == ASIENTO_TIPO_MASCOTA ) {
-                    await servicioLiberarAsiento(parrillaCuponera[indexParrilla], asiento.asientoAsociado, piso, asientoSeleccionado.codigoReserva);
+                    await servicioLiberarAsiento(parrilla[indexParrilla], asiento.asientoAsociado, piso, asientoSeleccionado.codigoReserva);
                 }
 
                 await reloadPane(indexParrilla);
@@ -149,10 +149,10 @@ const StagePasajesCuponera = (props) => {
 
             if( stage == STAGE_BOLETO_IDA ) {
                 setAsientosIda(asientosTemporal);
-                setServicioIda(parrillaCuponera[indexParrilla]);
+                setServicioIda(parrilla[indexParrilla]);
             } else {
                 setAsientosVuelta(asientosTemporal);
-                setServicioVuelta(parrillaCuponera[indexParrilla]);
+                setServicioVuelta(parrilla[indexParrilla]);
             }
         } catch ({ message }) {
             console.error(`Error al tomar asiento [${ message }]`);
@@ -174,26 +174,26 @@ const StagePasajesCuponera = (props) => {
        
         try {
             // ╰(*°▽°*)╯
-            const parrillaCuponeraTemporal = [...parrillaCuponera];
-            const parrillaCuponeraModificada = [...parrillaCuponera];
-            parrillaCuponeraTemporal[indexParrilla].loadingAsientos = true;
+            const parrillaTemporal = [...parrilla];
+            const parrillaModificada = [...parrilla];
+            parrillaTemporal[indexParrilla].loadingAsientos = true;
             await liberarAsientosPanel();
-            setParrilla(parrillaCuponeraTemporal);
+            setParrilla(parrillaTemporal);
             stage == STAGE_BOLETO_IDA ? setAsientosIda([]) : setAsientosVuelta([]);
-            if( parrillaCuponera[indexParrilla].id == openPane ) {
+            if( parrilla[indexParrilla].id == openPane ) {
                 setOpenPane(null);
                 return;
             }
-            setOpenPane(parrillaCuponera[indexParrilla].id);
+            setOpenPane(parrilla[indexParrilla].id);
             const { data } = await axios.post('/api/mapa-asientos', 
-            new BuscarPlanillaVerticalDTO(parrillaCuponeraTemporal[indexParrilla], stage, startDate, endDate, parrillaCuponera[indexParrilla]));
+            new BuscarPlanillaVerticalDTO(parrillaTemporal[indexParrilla], stage, startDate, endDate, parrilla[indexParrilla]));
             console.log('mapa asiento', data)
-            parrillaCuponeraModificada[indexParrilla].loadingAsientos = false;
-            parrillaCuponeraModificada[indexParrilla].asientos1 = data[1];
-            if( !!parrillaCuponeraTemporal[indexParrilla].busPiso2 ) {
-                parrillaCuponeraModificada[indexParrilla].asientos2 = data[2];
+            parrillaModificada[indexParrilla].loadingAsientos = false;
+            parrillaModificada[indexParrilla].asientos1 = data[1];
+            if( !!parrillaTemporal[indexParrilla].busPiso2 ) {
+                parrillaModificada[indexParrilla].asientos2 = data[2];
             }
-            setParrilla(parrillaCuponeraModificada);
+            setParrilla(parrillaModificada);
         } catch ({ message }) {
             console.error(`Error al abrir el panel [${ message }]`);
         }
@@ -222,7 +222,7 @@ const StagePasajesCuponera = (props) => {
     };
 
     function returnSortedParrilla() {
-        return parrillaCuponera.sort((prevValue, actValue) => {
+        return parrilla.sort((prevValue, actValue) => {
             if(!sort) return 1;
             
             if( sort == 'precio-up' ) return (prevValue.tarifaPrimerPisoInternet - actValue.tarifaPrimerPisoInternet);
@@ -256,7 +256,7 @@ const StagePasajesCuponera = (props) => {
             }
 
             return (
-                <Cuponera
+                <Boleto
                     key={ `key-boleto-${ indexParrilla }`}
                     {...mappedParrilla }
                     k={ indexParrilla }
@@ -273,8 +273,84 @@ const StagePasajesCuponera = (props) => {
     return (
         
         <div className="row">
-           
-            <div className="col-12 col-md-12">
+            <div className="col-12 col-md-3" key={stage + "it"}>
+                <div className="container-filtro">
+                    <h2 className="container-title">Filtrar por:</h2>
+                    <div className="w-100 mb-4">
+                        <span className="container-sub-title">Tipo de servicio</span>
+                        {
+                            tipos_servicio.map((tipoServicioMapped, indexTipoServicio) => {
+                                if (tipoServicioMapped !== undefined && tipoServicioMapped !== '') {
+                                    return (
+                                        <div key={ `tipo-servicio-${ indexTipoServicio }` } className="custom-control custom-checkbox">
+                                            <input 
+                                                key={ `check-${ tipoServicioMapped }-key` }
+                                                type="checkbox" 
+                                                className="custom-control-input" 
+                                                id={"tipoCheck" + indexTipoServicio}
+                                                onClick={ () => toggleTipo(tipoServicioMapped) }
+                                                defaultValue={ tipoServicioMapped }
+                                                defaultChecked={ filter_tipo.includes(tipoServicioMapped) }/>
+                                            <label
+                                                className="custom-control-label"
+                                                htmlFor={ "tipoCheck" + indexTipoServicio }>
+                                                &nbsp;{ tipoServicioMapped }
+                                            </label>
+                                        </div>
+                                    );
+                                } else {
+                                    return null; 
+                                }
+
+                            })
+                            
+                        }
+                    </div>
+                    <div className="w-100 mb-4">
+                        <span className="container-sub-title">Horarios</span>
+                        <div className="custom-control custom-checkbox">
+                            <input
+                                id="horaCheck1"
+                                type="checkbox"
+                                className="custom-control-input"
+                                defaultChecked={ filter_horas.includes("6-12") }
+                                onClick={ () => toggleHoras("6-12") }/>
+                            <label
+                                className="custom-control-label"
+                                htmlFor={"horaCheck1"}>
+                                &nbsp;6:00 AM a 11:59 AM
+                            </label>
+                        </div>
+                        <div className="custom-control custom-checkbox">
+                            <input
+                                id="horaCheck2"
+                                type="checkbox"
+                                className="custom-control-input"
+                                defaultChecked={ filter_horas.includes("12-20") }
+                                onClick={ () => toggleHoras("12-20") }/>
+                            <label
+                                className="custom-control-label"
+                                htmlFor="horaCheck2">
+                                &nbsp;12 PM a 19:59 PM
+                            </label>
+                        </div>
+                        <div className="custom-control custom-checkbox">
+                            <input
+                                id="horaCheck3"
+                                type="checkbox"
+                                className="custom-control-input"
+                                defaultChecked={ filter_horas.includes("20-6") }
+                                onClick={() => toggleHoras("20-6") }/>
+                            <label
+                                className="custom-control-label"
+                                htmlFor="horaCheck3">
+                                &nbsp;20:00 PM en adelante
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="col-12 col-md-9">
                 <div className="bloque-header">
                     <div className="row">
                         <div
@@ -320,7 +396,7 @@ const StagePasajesCuponera = (props) => {
                         </div>
                     </div>
                 </div>
-                { loadingParrilla ? <Loader /> : parrillaCuponera.length > 0 ? returnMappedParrilla() : 
+                { loadingParrilla ? <Loader /> : parrilla.length > 0 ? returnMappedParrilla() : 
                     <h5 className="p-2">
                         Lo sentimos, no existen
                         resultados para su búsqueda
@@ -332,4 +408,4 @@ const StagePasajesCuponera = (props) => {
     )
 }
 
-export default StagePasajesCuponera;
+export default StagePasajes;

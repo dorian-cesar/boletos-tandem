@@ -1,67 +1,25 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import Login from "components/Login";
+import { useLocalStorage } from "hooks/useLocalStorage";
 var customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
 
 const Cuponera = (props) => {
-  const getSubtotal = (clientes) => {
-    return clientes.reduce((a, b) => {
-      a = parseFloat(a) + parseFloat(b.tarifa.replace(/[^\d.-]/g, ""));
-      return a;
-    }, 0);
-  };
-  let duracion = dayjs(
-    props.fechaLlegada + " " + props.horaLlegada,
-    "DD/MM/YYYY HH:mm"
-  ).diff(
-    dayjs(props.fechaSalida + " " + props.horaSalida, "DD/MM/YYYY HH:mm"),
-    "minute"
-  );
+  const { stage, setCuponera, setOpenPane, cuponeraDatos , setCuponeraCompra} = props;
 
-  duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
-  const [piso, setPiso] = useState(1);
-  const asientoClass = (asiento) => {
-    const isSelected = props.asientos_selected.find(
-      (i) => i.asiento === asiento.asiento && asiento.tipo !== "pet-busy"
-    );
-    const isPetSelected = props.asientos_selected.find(
-      (i) => i.asiento === asiento.asiento && asiento.estado === "pet-busy"
-    );
+  const [user, setUser] = useState();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [piso, setPiso] = useState(1)
+  const [compraDetails, setCompraDetails] = useState(null);
+  const { getItem, clear } = useLocalStorage();
 
-    let classes = "";
-    if (isSelected) {
-      classes += "seleccion ";
-    }
-    if (isPetSelected) {
-      classes += "m-seleccion ";
-    }
-    if (asiento.tipo === "pet" && asiento.estado === "ocupado") {
-      classes += "m-disponible ";
-    }
-    if (asiento.tipo === "pet" && asiento.estado === "pet-free") {
-      classes += "m-disponible ";
-    }
-    if (
-      asiento.estado === "pet-busy" &&
-      !props.asientos_selected.find((i) => i.asiento === asiento.asiento)
-    ) {
-      classes += "m-reservado ";
-    }
-    if (asiento.estado === "ocupado") {
-      classes += "reservado ";
-    }
-    if (asiento.estado === "libre") {
-      classes += "disponible ";
-    }
-    if (asiento.asiento === "B1" || asiento.asiento === "B2") {
-      classes += "bano ";
-    }
+  useEffect(() => {
+    setUser(getItem("user"));
+  }, []);
 
-    return classes.trim(); // Eliminar espacios en blanco adicionales al final
-  };
-
-   const obtenerRespuesta = (condicion) => (condicion ? 'SI' : 'NO');
+  const obtenerRespuesta = (condicion) => (condicion ? 'SI' : 'NO');
 
   function formatearHora(hora) {
     if (!hora || hora.length !== 4) {
@@ -81,14 +39,22 @@ const Cuponera = (props) => {
     ) {
       return "Hora no válida";
     }
-
-    // Formatear la hora en formato '00:00'
+    
     const horaFormateada = `${horas.toString().padStart(2, "0")}:${minutos
       .toString()
       .padStart(2, "0")}`;
 
     return horaFormateada;
   }
+
+  const handleComprarClick = () => {
+      setCompraDetails(props);
+      if (props.setCuponeraCompra) {
+        props.setCuponera(props)
+        props.setCuponeraCompra(props);
+      }
+  };
+
   return (
     <div className="cuponera">
       <input type="checkbox" checked={props.openPane == props.id} readOnly />
@@ -99,11 +65,6 @@ const Cuponera = (props) => {
             <div className="col-12 col-md-6 mb-4 mb-md-0">
               <div className="row">
                 <div className="hora">Cuponera {props.nombreCuponera}</div>
-                {props.mascota == "1" ? (
-                  <img className="patita-over" src="/img/icon-patita.svg" />
-                ) : (
-                  ""
-                )}
                 <div className="col-4">
                   <div className="hora">{props.horaSalida}</div>
                   <strong>{props.terminalSalida}</strong>
@@ -141,33 +102,21 @@ const Cuponera = (props) => {
                 <div className="col-12 col-md-7">
                   <div className="row mb-4">
                     <div className="col-6">
-                      <span>Valor cuponera</span>
+                      <span>Valor por cupón</span>
                       <strong>{props.valorCupon}</strong>
                     </div>
                     <div className="col-6 text-center d-flex align-items-center">
-                      <strong className="precio">${props.valorCupon}</strong>
+                      <strong className="precio">Total ${props.valorTotalCuponera}</strong>
                     </div>
                   </div>
                 </div>
                 <div className="col-12 col-md-5  d-flex justify-content-center align-center">
                   <div className="px-3 px-md-0 mt-3 mt-md-0 w-100">
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (Array.isArray(props.asientos_selected)) {
-                          props.setPasaje(props);
-                        }
-                      }}
-                      className={`btn ${
-                        Array.isArray(props.asientos_selected) &&
-                        props.asientos_selected.length === 0
-                          ? "disabled"
-                          : ""
-                      }`}
-                    >
-                      Comprar
-                    </a>
+                  <a href="#" onClick={(e) => {
+                       handleComprarClick()
+                      }}className="btn">
+            Comprar
+          </a>
                   </div>
                 </div>
               </div>
@@ -175,7 +124,7 @@ const Cuponera = (props) => {
           </div>
           <div className="block-2 pt-1 ">
             {props.loadingAsientos ? (
-              <h5>Cargando</h5>
+              <h5></h5>
             ) : (
               <div className="seleccion-asiento mt-3">
                 <div className="tab-content" id="pills-tabContent">
@@ -215,6 +164,7 @@ const Cuponera = (props) => {
         </div>
       </div>
     </div>
+    
   );
 };
 export default Cuponera;

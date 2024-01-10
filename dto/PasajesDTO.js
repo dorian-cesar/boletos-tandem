@@ -97,3 +97,16 @@ export class GuardarCarroDTO {
         this.listaCarrito = carrito;
     }
 } 
+
+export class GuardarCarroCuponeraDTO {
+    constructor(email, rut, total, carrito) {
+        this.email = email || '';
+        this.rut = rut.replace(".", "").replace(".", "") || '';
+        this.medioDePago = 'WBPAY';
+        this.montoTotal = total;
+        this.idSistema = 7;
+        this.integrador = 1000;
+        this.carroCuponera = carrito;
+       
+    }
+} 

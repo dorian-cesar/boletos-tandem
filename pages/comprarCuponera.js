@@ -14,8 +14,8 @@ import { ToastContainer } from "react-toastify";
 const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
 import { ObtenerParrillaServicioDTO } from "dto/ParrillaDTO";
-import StagePasajesCuponera from "../components/StagePasajeCuponera";
-import StagePago from "../components/StagePago";
+import StagePasajesCuponera from "../components/coupon/StagePasajesCuponera";
+import StagePagoCuponera from "../components/coupon/StagePagoCuponera";
 
 registerLocale("es", es);
 
@@ -26,11 +26,11 @@ const stages = [
     },
     {
         name: "Pago",
-        kind: "pago",
+        kind: "pagoCuponera",
     },
     {
         name: "Confirmación",
-        kind: "confirmacion",
+        kind: "confirmacionCuponera",
     },
 ];
 
@@ -46,6 +46,7 @@ export default function Home(props) {
     const [modalMab, setModalMab] = useState(false);
     const [parrilla, setParrilla] = useState([]);
     const [parrillaCuponera, setParrillaCuponera] = useState([]);
+    const [cuponera, setCuponera] = useState([]);
     const [loadingParrilla, setLoadingParrilla] = useState(true);
     const [carro, setCarro] = useState({
         clientes_ida: [],
@@ -55,14 +56,14 @@ export default function Home(props) {
         datos: { tipoRut: "rut" },
     });
     const [stage, setStage] = useState(0);
-    
+    const [cuponeraComprar ,setCuponeraCompra ] = useState([]);
+
     
     async function searchParrilla(in_stage) {
         try {
             const stage_active = in_stage ?? stage;
             setLoadingParrilla(true);
             const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, '2024-01-05', endDate));
-            console.log('Planilla de asientos', parrilla )
             setParrilla(parrilla.data.map((parrillaMapped, index) => {
                 return {
                     ...parrillaMapped,
@@ -79,7 +80,7 @@ export default function Home(props) {
         try {
             const stage_active = in_stage ?? stage;
             setLoadingParrilla(true);
-            const parrillaCuponera = await axios.post("/api/parrillaCuponera", new ObtenerParrillaServicioDTO(stage_active, origen, destino));
+            const parrillaCuponera = await axios.post("/api/coupon/parrillaCuponera", new ObtenerParrillaServicioDTO(stage_active, origen, destino));
             console.log('Planilla cuponera', parrillaCuponera.data.object )
             setParrillaCuponera(parrillaCuponera.data.object.map((parrillaMapped, index) => {
                 return {
@@ -131,30 +132,33 @@ export default function Home(props) {
                         }
                     </div>
                     { 
-                        stages_active[stage].kind == "cuponera" || stages_active[stage].kind == "pasajes_2" ? 
+                        stages_active[stage].kind == "cuponera"  ? 
                         <StagePasajesCuponera 
                             key={ `stage-pasajes-${ stages_active[stage].kind }` }
                             stage={ stage } 
                             parrillaCuponera={ parrillaCuponera } 
                             loadingParrilla={ loadingParrilla } 
-                            setParrilla={ setParrillaCuponera } 
+                            setParrillaCuponera={ setParrillaCuponera } 
                             startDate={ startDate } 
                             endDate={ endDate }
                             carro={ carro }
                             setCarro={ setCarro }
                             setStage={ setStage }
+                            cuponeraDatos = { setCuponera } 
                             searchParrilla={ searchParrilla }
+                            setCuponeraCompra={setCuponeraCompra}
                             /> : ('') 
                     }
                     {
-                        stages_active[stage].kind == "pago" ?  
-                        <StagePago 
+                        stages_active[stage].kind == "pagoCuponera" ?  
+                        <StagePagoCuponera 
                             key={ 'stage-pago' }
                             carro={ carro }
                             nacionalidades={ props.nacionalidades }
                             convenios={ props.convenios }
                             mediosDePago={ props.mediosDePago }
-                            setCarro={ setCarro }/>: ('')
+                            setCarro={ setCarro }
+                            cuponeraDatos = { props.cuponera } />: ('')
                     }
                 </div>
             </div>

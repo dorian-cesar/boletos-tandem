@@ -2533,3 +2533,8 @@ footer .item a {
 
 
 /***********************FIN CUPONERA************************/
+
+.dotted-line {
+  border-top: 2px dotted #999;
+  margin: 20px 0;
+}

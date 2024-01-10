@@ -92,10 +92,11 @@ const StagePago = (props) => {
     function getSubtotal(clientes, clean) {
         try {
             return clientes.reduce((valorAcumulado, { tarifa, origen, asiento, piso }) => {
+                tarifa = tarifa.replace('.',',')
                 const precio = !clean && convenioActive ? 
                     obtenerPagoConvenioActivo(origen, asiento, piso) :
-                    Number(tarifa.replace(/[^\d.-]/g, ''));
-                valorAcumulado = Number(valorAcumulado) + precio;
+                    Number(tarifa.replace(/[^\d.-]/g, ''))
+                valorAcumulado += precio;
                 return valorAcumulado;
             }, 0);
         } catch ({ message }) {
