@@ -9,7 +9,6 @@ export default function Header({ openNav }: { openNav: any }) {
   const [user, setUser] = useState();
   const router = useRouter();
   const { getItem, clear } = useLocalStorage();
-
   useEffect(() => {
     setUser(getItem("user"));
   }, []);
@@ -45,13 +44,16 @@ export default function Header({ openNav }: { openNav: any }) {
               </div>
               <div className="col-6 col-sm-9 d-flex align-items-center ">
                 <a href="/">
-                  <img src="img/icon/logos/Logo.svg" className="img-fluid" />
+                  <img src="../img/icon/logos/Logo.svg" className="img-fluid" />
                 </a>
               </div>
               <div className="col-4 col-sm-2 d-flex justify-content-end">       
                 {user == null ? (
-                       <img src="img/icon/logos/cuenta.svg" className="img-fluid" data-bs-toggle="modal"
-                       data-bs-target="#loginModal"/>
+                       <img src="../img/icon/logos/cuenta.svg"
+                       className="img-fluid" 
+                       data-bs-toggle="modal"
+                       data-bs-target="#loginModal"
+                        />
                 ) : (
                   <ul className="nav nav-pills">
                     <li className="nav-item dropdown">
@@ -62,31 +64,31 @@ export default function Header({ openNav }: { openNav: any }) {
                       >
                         <span className="text-login">Mi cuenta</span>
                         <img
-                          src="img/icon-user.svg"
+                          src="../img/icon-user.svg"
                           width={30}
                           className="m-1"
                         />
                       </button>
                       <ul className="dropdown-menu">
                         <li>
-                          <Link href="/mi-perfil" legacyBehavior>
+                          <Link href="/profile/mi-perfil" legacyBehavior>
                             <a className="dropdown-item" href="/mi-perfil">
                               Mi perfil
                             </a>
                           </Link>
                         </li>
                         <li>
-                          <Link href="/mis-compras" legacyBehavior>
+                          <Link href="/profile/mis-compras" legacyBehavior>
                             <a className="dropdown-item" href="/mis-compras">
                               Mis compras
                             </a>
                           </Link>
                         </li>
                         <li>
-                          <Link href="/cambio-password" legacyBehavior>
+                          <Link href="/profile/cambio-password" legacyBehavior>
                             <a
                               className="dropdown-item"
-                              href="/cambio-password"
+                              href="/profile/cambio-password"
                             >
                               Cambiar contraseña
                             </a>
@@ -113,7 +115,10 @@ export default function Header({ openNav }: { openNav: any }) {
           </div>
         
       </header>
-      <Login></Login>
+      <Login
+      cuponera={0}>
+
+      </Login>
     </>
   );
 }

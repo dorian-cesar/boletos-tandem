@@ -52,14 +52,23 @@ const BusquedaServicio = (props) => {
   }
 
   async function redireccionarBuscarCuponera() {
-    await router.push(
-      `/comprarCuponera?origen=${origen}&destino=${destino}`
-    );
-    if (router.asPath.includes("comprar")) {
+    await router.push(`/comprarCuponera?origen=${origen}&destino=${destino}`);
+    if (router.asPath.includes("comprarCuponera")) {
       router.reload();
     }
   }
-  
+
+  async function redireccionarBuscarServicioCuponera() {
+    await router.push(
+      `/confirmacionCuponera?origen=${origen}&destino=${destino}&startDate=${
+        startDate && dayjs(startDate).format("YYYY-MM-DD")
+      }`
+    );
+    if (router.asPath.includes("confirmacionCuponera")) {
+      router.reload();
+    }
+  }
+
   async function getDestinos() {
     if (origen !== null) {
       try {
@@ -129,7 +138,6 @@ const BusquedaServicio = (props) => {
       setEndDate(dayjs(endDate).toDate());
     }
   }, [router.query]);
-  
 
   useEffect(() => {
     const savedActiveTab = localStorage.getItem("activeTab");
@@ -153,6 +161,11 @@ const BusquedaServicio = (props) => {
                 <div className="tabs">
                   <Tab
                     label="Búsqueda de Servicio"
+                    activeTab={activeTab}
+                    onClick={handleTabClick}
+                  />
+                  <Tab
+                    label="Confirmar tu cuponera"
                     activeTab={activeTab}
                     onClick={handleTabClick}
                   />
@@ -285,12 +298,115 @@ const BusquedaServicio = (props) => {
                       </div>
                     </div>
                   </TabPanel>
+                  <TabPanel title="Confirmar tu cuponera" activeTab={activeTab}>
+                    <div className="col-12 col-md-12">
+                      <h1 className="titulo-azul">
+                        ¿Cúal es tu próximo destino?
+                      </h1>
+                      {isShowMascota && (
+                        <div
+                          className="title-mascota-abordo"
+                          onClick={() => setMascota(!mascota_allowed)}
+                        >
+                          <img
+                            src={
+                              mascota_allowed
+                                ? "img/icon/buttons/paw-outline-orange.svg"
+                                : "img/icon/buttons/paw-outline.svg"
+                            }
+                            style={{
+                              marginRight: "5px",
+                              color: mascota_allowed
+                                ? "var(--color-icon-activo, #00FF00)"
+                                : "var(--color-icon-inactivo, #FF0000)",
+                            }}
+                          />
+                          <span className="label-titulo-busqueda-servicio">
+                            Mascota a bordo
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="row search-row">
+                      <div className="col-12 col-md-6 col-lg-2">
+                        <div className="grupo-campos">
+                          <label className="label-titulo-busqueda-servicio">
+                            Origen
+                          </label>
+                          <Input
+                            className="sel-input origen"
+                            placeholder="Seleccione origen"
+                            items={retornaCiudadesSelect(origenes)}
+                            selected={
+                              origen &&
+                              retornaCiudadesSelect([
+                                origenes.find((i) => i.codigo == origen),
+                              ])
+                            }
+                            setSelected={cambiarOrigen}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-12 col-md-6 col-lg-2">
+                        <div className="grupo-campos">
+                          <label className="label-titulo-busqueda-servicio">
+                            Destino
+                          </label>
+                          <Input
+                            className="sel-input destino"
+                            placeholder="Seleccione destino"
+                            items={retornaCiudadesSelect([
+                              ...destinos,
+                              {
+                                codigo: "NO_OPTIONS",
+                                nombre: "Por favor seleccione un origen",
+                              },
+                            ])}
+                            selected={
+                              destino &&
+                              destinos.length > 0 &&
+                              retornaCiudadesSelect([
+                                destinos.find((i) => i.codigo == destino),
+                              ])
+                            }
+                            setSelected={setDestino}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-6 col-md-6 col-lg-2">
+                        <div className="grupo-campos">
+                          <label className="label-titulo-busqueda-servicio">
+                            Salida
+                          </label>
+                          <DatePicker
+                            key={datePickerKey}
+                            selected={startDate}
+                            onChange={(date) => setStartDate(date)}
+                            filterDate={isValidStart}
+                            locale={"es"}
+                            minDate={new Date()}
+                            dateFormat="dd/MM/yyyy"
+                            customInput={<CustomInput />}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-12 col-md-12 col-lg-2">
+                        <label className="label-titulo-busqueda-servicio"></label>
+                        <div
+                          className="button-busqueda-servicio"
+                          onClick={
+                            origen && destino && redireccionarBuscarServicioCuponera
+                          }
+                        >
+                          <img src="img/icon-buscar-blanco.svg" /> Buscar
+                        </div>
+                      </div>
+                    </div>
+                  </TabPanel>
                   <TabPanel title="Cuponera" activeTab={activeTab}>
                     <h1 className="titulo-azul">Buscar cuponeras</h1>
-                    <div
-                          className="title-mascota-abordo"
-                        > 
-                    </div>
+                    <div className="title-mascota-abordo"></div>
                     <div className="row search-row">
                       <div className="col-12 col-md-6 col-lg-2 ">
                         <div className="grupo-campos">
@@ -311,7 +427,7 @@ const BusquedaServicio = (props) => {
                           />
                         </div>
                       </div>
-                      <div  className="col-12 col-md-6 col-lg-2 ">
+                      <div className="col-12 col-md-6 col-lg-2 ">
                         <div className="grupo-campos">
                           <label className="label-titulo-busqueda-servicio">
                             Destino

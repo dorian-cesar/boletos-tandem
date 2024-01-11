@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Header from "components/Header";
+import Header from "../components/Header";
 import { useState } from "react";
 import Link from "next/link";
 export default function Layout({ children }) {

@@ -7,7 +7,7 @@ const Footer = () => (
                 <div className="row">
                     <div className="col-3">
                         <h3>
-                            <img className="mr-2 img-contacto-footer" src="img/icon/chat/location-outline.svg" alt=""/>
+                            <img className="mr-2 img-contacto-footer" src="../img/icon/chat/location-outline.svg" alt=""/>
                             Contacto
                         </h3>
                         <div className="w-100" style={{ paddingLeft: "25px", borderLeft: "1px solid" }}>
@@ -24,7 +24,7 @@ const Footer = () => (
                     </div>
                     <div className="col-3">
                         <h3>
-                            <img className="mr-2" src="img/icon/chat/chatbox-ellipses-outline.svg" alt=""/>
+                            <img className="mr-2" src="../img/icon/chat/chatbox-ellipses-outline.svg" alt=""/>
                             Información
                         </h3>
                         <div className="w-100" style={{ paddingLeft: "25px", borderLeft: "1px solid" }}>
@@ -58,18 +58,18 @@ const Footer = () => (
                     </div>
                     <div className="col-2 pt-4 d-flex justify-content-around">
 						<a target="_blank" href="https://www.facebook.com/Pullman.cl/">
-                        	<img src="img/icon/chat/logo-facebook.svg" alt=""/>
+                        	<img src="../img/icon/chat/logo-facebook.svg" alt=""/>
 						</a>
 						<a target="_blank" href="https://www.instagram.com/pullmanbus/">
-                        	<img src="img/icon/chat/logo-instagram.svg" alt=""/>
+                        	<img src="../img/icon/chat/logo-instagram.svg" alt=""/>
 						</a>
 						<a target="_blank" href="https://www.linkedin.com/company/pullman-bus/">
-                        	<img src="img/icon/chat/logo-linkedin.svg" alt=""/>
+                        	<img src="../img/icon/chat/logo-linkedin.svg" alt=""/>
 						</a>
                     </div>
                     <div className="col-3">
                         <h3>
-                             <img src="img/icon/chat/Group.svg" className="img-fluid" alt=""/>
+                             <img src="../img/icon/chat/Group.svg" className="img-fluid" alt=""/>
                         </h3>
                         <div className="w-100">
                             <br />

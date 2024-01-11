@@ -1,6 +1,6 @@
 import axios from "axios";
 import DatePicker, { registerLocale } from "react-datepicker";
-import Layout from "components/Layout";
+import Layout from "../../components/Layout"
 import { useEffect, useState, forwardRef, useRef, useMemo } from "react";
 import { useLocalStorage } from "/hooks/useLocalStorage";
 import { useRouter } from "next/router";
@@ -96,7 +96,7 @@ const ActualizarDatos = () => {
     const formStatus = await validarForm();
     if(formStatus){
       setIsLoading2(true);
-      const res = await axios.post("/api/actualizar-datos-perfil", {
+      const res = await axios.post("../api/actualizar-datos-perfil", {
         ...data,
       });
       if(res.data.status){
@@ -157,7 +157,7 @@ const ActualizarDatos = () => {
               <div className="col-12 col-md-8 bloque flex-column">
                 <div className="row mb-2">
                   <div className="d-flex justify-content-center mt-2">
-                    <img src="img/icon-foto-naranjo.svg" width={120} color={'#eb7f33'}></img>
+                    <img src="/img/icon-foto-naranjo.svg" width={120} color={'#eb7f33'}></img>
                   </div>
                 </div>
                 <h1 className="titulo-azul text-center">

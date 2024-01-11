@@ -5,13 +5,13 @@ import { useLocalStorage } from "hooks/useLocalStorage";
 var customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
-
 const Cuponera = (props) => {
-  const { stage, setCuponera, setOpenPane, cuponeraDatos , setCuponeraCompra} = props;
+  const { stage, setCuponera, setOpenPane, cuponeraDatos, setCuponeraCompra } =
+    props;
 
   const [user, setUser] = useState();
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [piso, setPiso] = useState(1)
+  const [piso, setPiso] = useState(1);
   const [compraDetails, setCompraDetails] = useState(null);
   const { getItem, clear } = useLocalStorage();
 
@@ -19,7 +19,7 @@ const Cuponera = (props) => {
     setUser(getItem("user"));
   }, []);
 
-  const obtenerRespuesta = (condicion) => (condicion ? 'SI' : 'NO');
+  const obtenerRespuesta = (condicion) => (condicion ? "SI" : "NO");
 
   function formatearHora(hora) {
     if (!hora || hora.length !== 4) {
@@ -39,7 +39,7 @@ const Cuponera = (props) => {
     ) {
       return "Hora no válida";
     }
-    
+
     const horaFormateada = `${horas.toString().padStart(2, "0")}:${minutos
       .toString()
       .padStart(2, "0")}`;
@@ -48,11 +48,11 @@ const Cuponera = (props) => {
   }
 
   const handleComprarClick = () => {
-      setCompraDetails(props);
-      if (props.setCuponeraCompra) {
-        props.setCuponera(props)
-        props.setCuponeraCompra(props);
-      }
+    setCompraDetails(props);
+    if (props.setCuponeraCompra) {
+      props.setCuponera(props);
+      props.setCuponeraCompra(props);
+    }
   };
 
   return (
@@ -106,17 +106,35 @@ const Cuponera = (props) => {
                       <strong>{props.valorCupon}</strong>
                     </div>
                     <div className="col-6 text-center d-flex align-items-center">
-                      <strong className="precio">Total ${props.valorTotalCuponera}</strong>
+                      <strong className="precio">
+                        Total ${props.valorTotalCuponera}
+                      </strong>
                     </div>
                   </div>
                 </div>
                 <div className="col-12 col-md-5  d-flex justify-content-center align-center">
                   <div className="px-3 px-md-0 mt-3 mt-md-0 w-100">
-                  <a href="#" onClick={(e) => {
-                       handleComprarClick()
-                      }}className="btn">
-            Comprar
-          </a>
+                    {user == null ? (
+                      <a
+                        href="#"
+                        className="btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#loginModal"
+                        cuponera = { 1 }
+                      >
+                        Comprar
+                      </a>
+                    ) : (
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          handleComprarClick();
+                        }}
+                        className="btn"
+                      >
+                        Comprar
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -138,20 +156,21 @@ const Cuponera = (props) => {
                   >
                     <div className="row">
                       <div className="col-3">
-                        <div className="tipo-a">
-                        </div>
+                        <div className="tipo-a"></div>
                         <div className="tipologia">
                           <div>
                             <img src="img/bullet-disponible.svg" />
-                            Nominativa - { obtenerRespuesta(props.estadoNominativa)}
+                            Nominativa -{" "}
+                            {obtenerRespuesta(props.estadoNominativa)}
                           </div>
                           <div>
                             <img src="img/bullet-elegido.svg" />
-                            Ventanilla - { obtenerRespuesta(props.estadoVentanilla)}
+                            Ventanilla -{" "}
+                            {obtenerRespuesta(props.estadoVentanilla)}
                           </div>
                           <div>
                             <img src="img/bullet-reservado.svg" />
-                            Web - { obtenerRespuesta(props.estadoWeb)}
+                            Web - {obtenerRespuesta(props.estadoWeb)}
                           </div>
                         </div>
                       </div>
@@ -163,8 +182,11 @@ const Cuponera = (props) => {
           </div>
         </div>
       </div>
+      <Login
+      cuponera={1}>
+        
+      </Login>
     </div>
-    
   );
 };
 export default Cuponera;
