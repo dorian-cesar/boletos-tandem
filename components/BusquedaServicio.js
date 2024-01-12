@@ -460,6 +460,7 @@ const BusquedaServicio = (props) => {
                           onClick={
                             origen && destino && redireccionarBuscarCuponera
                           }
+                          
                         >
                           <img src="img/icon-buscar-blanco.svg" /> Buscar
                         </div>

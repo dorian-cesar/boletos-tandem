@@ -14,7 +14,7 @@ module.exports = {
   },
   serverRuntimeConfig: {
     site_url: "http://localhost:3000",
-    service_url: process.env.NODE_ENV == "production"?"http://localhost:8080/integracion-comercio-web/rest":"http://localhost:8080/integracion-comercio-web/rest",
+    service_url: process.env.NODE_ENV == "production"?"http://staging.pullman.cl/integracion-comercio-web/rest":"http://staging.pullman.cl/integracion-comercio-web/rest",
     service_password: process.env.NODE_ENV == "production"?"":"INT0000002",
     clave: process.env.NODE_ENV == "production"?"":"xWL!96JRaWi2lT0jG"
   }

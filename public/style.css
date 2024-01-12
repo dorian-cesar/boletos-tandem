@@ -915,6 +915,11 @@ select.form-control.seleccion {
   margin-bottom: -5px;
 }
 
+.bloque .pago {
+  margin-top: -5px;
+}
+
+
 .menu {
   background-color: #fff;
   padding: 10px;
@@ -2539,4 +2544,14 @@ footer .item a {
 .dotted-line {
   border-top: 2px dotted #999;
   margin: 20px 0;
+}
+
+/***********************PERFIL************************/
+
+
+.container-perfil {
+  height: 240px;
+  border-radius: 16px 16px 0px 0px;
+  background: var(--azul-100, #3365B4);
+
 }
