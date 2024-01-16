@@ -1,17 +1,24 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import Rut from "rutjs";
+import { useRouter } from 'next/router';
 
-import { PasajeConvenioDTO } from "dto/PasajesDTO";
-import { GuardarCarroDTO, PasajePagoDTO } from "dto/PasajesDTO";
+import {
+  GuardarCarroDTO,
+  PasajePagoDTO,
+  ValidarUsoCuponeraDTO,
+  CanjearCuponeraDTO,
+} from "dto/PasajesDTO";
 import ResumenPasaje from "./ResumenPasaje";
 import InformacionPasajero from "./InformacionPasajero";
-import InformacionComprador from "./InformacionComprador";
-import { isValidPasajero } from "utils/user-pasajero";
+import InformacionCuponera from "./InformacionCuponera";
+import { isValidPasajero, isValidCodigoCuponera } from "utils/user-pasajero";
 import { toast } from "react-toastify";
 
 const StagePago = (props) => {
   const { carro, nacionalidades, convenios, mediosDePago, setCarro } = props;
+
+  const router = useRouter();
 
   const [convenioSelected, setConvenioSelected] = useState(null);
   const [convenio, setConvenio] = useState(null);
@@ -19,6 +26,7 @@ const StagePago = (props) => {
   const [convenioActive, setConvenioActive] = useState(null);
   const [convenioFields, setConvenioFields] = useState({});
   const payment_form = useRef(null);
+  const [canjeCuponera, setCanjearCuponera] = useState({});
 
   function validarFormatoRut(name, value) {
     try {
@@ -54,8 +62,7 @@ const StagePago = (props) => {
   function getTotal() {
     try {
       const ida = getSubtotal(carro.clientes_ida);
-      const vuelta = getSubtotal(carro.clientes_vuelta);
-      return Number(ida) + Number(vuelta);
+      return Number(ida);
     } catch ({ message }) {
       console.error(`Error al obtener el total [${message}]`);
     }
@@ -74,10 +81,12 @@ const StagePago = (props) => {
               "ida",
               setCarro,
               carro
-            )
+            ) ||
+            !isValidCodigoCuponera(carro.datos["codigoCuponera"])
           ) {
             valorIncial = false;
           }
+
           return valorIncial;
         },
         true
@@ -93,71 +102,98 @@ const StagePago = (props) => {
     }
   }
 
-  async function sendToPayment() {
+  async function validarUsoCuponera() {
     try {
-      if (!isPaymentValid()) return;
-      let pasajes = [
-        ...carro.clientes_ida.map((clientesIdaMapped, clientesIdaIndex) => {
-          const pasajero = clientesIdaMapped.pet
-            ? carro.clientes_ida[clientesIdaIndex - 1]
-            : clientesIdaMapped.pasajero;
-          const convenioActivo = convenioActive
-            ? convenioActive.idConvenio
-            : "";
-          const datoConvenio = convenioActive
-            ? convenioActive.listaAtributo[0].valor
-            : "";
-          const precioConvenio = convenioActive
-            ? Number(
-                convenioActive.listaBoleto.find(
-                  (boleto) =>
-                    boleto.origen == clientesIdaMapped.origen &&
-                    boleto.asiento == clientesIdaMapped.asiento &&
-                    boleto.piso == clientesIdaMapped.piso
-                ).pago
-              )
-            : clientesIdaMapped.tarifa.replace(",", "");
-          return new PasajePagoDTO(
-            clientesIdaMapped,
-            pasajero,
-            clientesIdaMapped.extras,
-            convenioActivo,
-            precioConvenio,
-            datoConvenio
-          );
-        }),
-      ];
+      const primerCliente = carro.clientes_ida[0];
+      if (!primerCliente) {
+        return false;
+      }
 
-      const { email, rut } = carro.datos;
-
-      const { data } = await axios.post(
-        "/api/guardar-carro",
-        new GuardarCarroDTO(email, rut, getTotal(), pasajes)
+      let fecha = primerCliente.fechaServicio.replace(/\//g, "-");
+      const validarUsoCuponeraDTO = new ValidarUsoCuponeraDTO(
+        primerCliente.origen,
+        primerCliente.destino,
+        fecha,
+        primerCliente.idServicio,
+        carro.datos["codigoCuponera"]
       );
 
-      if (Boolean(data.error)) {
-        toast.error(data.error.message || "Error al completar la transacción", {
-          position: "bottom-center",
+      const { data } = await axios.post(
+        "/api/coupon/validar-cuponera",
+        validarUsoCuponeraDTO
+      );
+      return data.status;
+    } catch (error) {
+      console.error(`Error al validarUsoCuponera [${error.message}]`);
+      return false;
+    }
+  }
+
+  function armarResponseCanjear(datos) {
+    let fechaServicioParse = formatearFecha(datos.fechaServicio);
+    let fechaServicioSalidarParse = formatearFecha(datos.fechaSalida)+datos.horaSalida.replace(':','');
+    let canjearCuponera = {
+      idSistema: 7,
+      idIntegrador: 1000,
+      codigoCuponera: carro.datos["codigoCuponera"],
+      boleto: {
+        asiento: datos.asiento.asiento,
+        clase: datos.clase,
+        idServicio: datos.idServicio,
+        fechaServicio: fechaServicioParse,
+        fechaSalida: fechaServicioSalidarParse,
+        piso: datos.asiento.piso,
+        email: datos.pasajero.email,
+        destino: datos.destino,
+        idOrigen: datos.origen,
+        idDestino: datos.destino,
+      },
+    };
+    setCanjearCuponera(canjearCuponera);
+  }
+
+  function formatearFecha(fecha) {
+    const [dia, mes, año] = fecha.split("/");
+    const mesConCeros = mes.padStart(2, "0");
+    const diaConCeros = dia.padStart(2, "0");
+    const fechaFormateada = `${año}${mesConCeros}${diaConCeros}`;
+    return fechaFormateada;
+  }
+
+  async function sendToPayment() {
+    try {
+      const isValidCuponera = await validarUsoCuponera();
+      if (isValidCuponera) {
+        let datosArmado;
+        let pasajes = [
+          ...carro.clientes_ida.map((clientesIdaMapped, clientesIdaIndex) => {
+            console.log("datos clientes", clientesIdaMapped);        
+            datosArmado = clientesIdaMapped;
+          }),
+        ];
+        armarResponseCanjear(datosArmado);
+        const { email, rut } = carro.datos;
+
+        const { data } = await axios.post(
+          "/api/coupon/canjear-cuponera",canjeCuponera);
+
+    
+        if (data.resultado.exito) {
+          console.log("Tipo de data.voucher:", typeof data.voucher);
+          console.log("Contenido de data.voucher:", data.voucher);
+          const url = `/pages/respuesta-transaccion-canje/${data.voucher.toString()}`;
+          router.push(url);
+        }
+        
+
+      } else {
+        toast.warn(`Cuponera no es valida para uso`, {
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
         });
-        return;
       }
-
-      setPayment({
-        ...payment,
-        url: data.url,
-        token: data.token,
-      });
-    } catch ({ response }) {
-      toast.error(
-        response.data.message || "Error al completar la transacción",
-        {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-        }
-      );
+    } catch ({ response }) { 
     }
   }
 
@@ -233,7 +269,7 @@ const StagePago = (props) => {
             );
           })}
         </div>
-        <InformacionComprador
+        <InformacionCuponera
           setCarro={setCarro}
           carro={carro}
           validarFormatoRut={validarFormatoRut}
@@ -245,25 +281,7 @@ const StagePago = (props) => {
           <h2>Resumen de compra</h2>
           <ResumenPasaje tipoPasaje={"IDA"} pasaje={carro.pasaje_ida} />
           <div className="row">
-            <div className="col-12 col-md-9">
-              <div className="row cantidad-asiento mb-5">
-                <div className="col-8">
-                  <div className="row">
-                    <div className="col-12">
-                      <strong>IDA</strong>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-8">
-                      <h5>Cantidad de asientos</h5>
-                    </div>
-                    <div className="col-4"></div>
-                  </div>
-                  {obtenerCantidadAsientos("clientes_ida")}
-                </div>
-              </div>
-            </div>
-            <div className="col-12 col-md-5 total-pagar">
+            <div className="col-12 col-md-12 total-pagar">
               <div className="row">
                 <div className="col-6 d-flex align-items-center">
                   <h3>Total a pagar:</h3>
@@ -273,14 +291,6 @@ const StagePago = (props) => {
                 </div>
               </div>
               <div className="row my-5">
-                <div className="col-12">
-                  {mediosDePago.map(({ imagen }, indexImagen) => (
-                    <img
-                      key={`key-imagen-medio-pago-${indexImagen}`}
-                      src={"data:image/png;base64," + imagen}
-                    />
-                  ))}
-                </div>
                 <div className="col-12 p-2">
                   <label className="d-flex align-items-baseline mb-3 mt-3">
                     <input type="checkbox" className="mr-2" />

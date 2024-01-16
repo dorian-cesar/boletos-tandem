@@ -7,7 +7,6 @@ const config = serverRuntimeConfig;
 export default async (req, res) => {
 
     try {
-        console.log(doLogin)
         let token = await doLogin();
         let data = await axios.get(config.service_url + `/convenio/buscarConvenios`,{
         headers: {

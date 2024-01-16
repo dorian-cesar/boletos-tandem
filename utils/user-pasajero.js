@@ -53,3 +53,18 @@ export function isValidPasajero(pasajero, indexPasajero, direccionRecorrido, set
         console.error(`Error al validar pasajero [${ message }]`);
     }
 };
+
+export function isValidCodigoCuponera(codigoCuponera) {
+    try {
+        let isValid = true;
+     
+
+        if ( !codigoCuponera || codigoCuponera == '' ) {
+            isValid = false;
+        }
+
+        return isValid;
+    } catch ({ message }) {
+        console.error(`Error al validar codigo cuponera [${ message }]`);
+    }
+};

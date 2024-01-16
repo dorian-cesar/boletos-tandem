@@ -84,6 +84,7 @@ export class PasajePagoDTO {
         };
         this.tipoServicio = null;
         this.asientoAsociado = null;
+        this.codigoCuponera = pasaje.codigoCuponera || '';
     }
 }
 
@@ -108,5 +109,27 @@ export class GuardarCarroCuponeraDTO {
         this.integrador = 1000;
         this.carroCuponera = carrito;
        
+    }
+} 
+
+export class ValidarUsoCuponeraDTO {
+    constructor(origen, destino, fechaServicio, idServicio, codigoCuponera) {
+        this.origen = origen || '';
+        this.destino = destino || '';
+        this.fechaServicio = fechaServicio;
+        this.idServicio = idServicio;
+        this.codigoCuponera = codigoCuponera;    
+    }
+} 
+
+export class CanjearCuponeraDTO {
+    constructor(email, rut, total, carrito, codigoCuponera) {
+        this.email = email || '';
+        this.rut = rut.replace(".", "").replace(".", "") || '';
+        this.medioDePago = 'WBPAY';
+        this.montoTotal = total;
+        this.idSistema = 7;
+        this.listaCarrito = carrito;
+        this.codigoCuponera = codigoCuponera;
     }
 } 

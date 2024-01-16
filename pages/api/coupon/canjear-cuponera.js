@@ -1,4 +1,4 @@
-import doLogin from '../../utils/oauth-token';
+import doLogin from '../../../utils/oauth-token';
 import getConfig from 'next/config'
 import axios from "axios"
 const {serverRuntimeConfig} = getConfig();
@@ -8,11 +8,13 @@ export default async (req, res) => {
 
     try {
         let token = await doLogin();
-        let data = await axios.get(config.service_url + `/parametros/obtenerListaPromocionActiva`,{
-        headers: {
-            'Authorization': `Bearer ${token.token}`
-        }
-        })
+        console.log('body servicios', req.body)
+        let data = await axios.post(config.service_url + `/cuponera/canjearCuponera`, req.body, {
+            headers: {
+                'Authorization': `Bearer ${token.token}`
+            }
+        });
+
         res.status(200).json(data.data);
     } catch(e){
         console.log(e)

@@ -15,8 +15,7 @@ const InformacionPasajero = (props) => {
     setCarro,
     validarFormatoRut,
   } = props;
-  console.log("datos cliente", cliente);
-
+  
   function openPasajero(indexCliente, tipo) {
     try {
       let carroTemporal = { ...carro };

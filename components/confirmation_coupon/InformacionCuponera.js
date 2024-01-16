@@ -1,12 +1,11 @@
 import Rut from 'rutjs';
 
 const InformacionComprador = (props) => {
-    const { setCarro, carro, cliente, validarFormatoRut } = props;
+    const { setCarro, carro, validarFormatoRut } = props;
 
     function setDataComprador({ name, value }) {
         try {
             let carro_temp = { ...carro };
-            value = validarFormatoRut(name, value);
             carro_temp.datos[name] = value;
             setCarro(carro_temp);
         } catch ({ message }) {
@@ -25,8 +24,8 @@ const InformacionComprador = (props) => {
                         </label>
                         <input
                             type='text'
-                            value={ carro.datos['nombre'] }
-                            name='nombre'
+                            value={ carro.datos['codigoCuponera'] }
+                            name='codigoCuponera'
                             placeholder='Ej: CUP00000001'
                             className='form-control'
                             onChange={ (e) => setDataComprador(e.target) } />
