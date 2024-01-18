@@ -158,7 +158,7 @@ const BusquedaServicio = (props) => {
           <div className="bloque m-neg">
             <div className="row mb-3 ">
               <div className="col-12">
-                <div className="tabs">
+                {/* <div className="tabs">
                   <Tab
                     label="Búsqueda de Servicio"
                     activeTab={activeTab}
@@ -174,7 +174,7 @@ const BusquedaServicio = (props) => {
                     activeTab={activeTab}
                     onClick={handleTabClick}
                   />
-                </div>
+                </div> */}
                 <div className="tab-content">
                   <TabPanel title="Búsqueda de Servicio" activeTab={activeTab}>
                     <div className="col-12 col-md-12">
