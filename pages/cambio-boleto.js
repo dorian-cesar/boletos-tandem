@@ -11,7 +11,6 @@ import Input from "../components/Input";
 const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
 import Loader from "../components/Loader";
-import Boleto from "components/Boleto";
 registerLocale("es", es);
 import { ToastContainer, toast } from "react-toastify";
 import Rut from "rutjs";
