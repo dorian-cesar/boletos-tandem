@@ -11,6 +11,8 @@ import getConfig from "next/config";
 import { registerLocale } from "react-datepicker";
 import React, { useState, useEffect } from "react";
 
+import Banner from "components/Banner";
+
 const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
 
@@ -50,12 +52,7 @@ export default function Home(props) {
         <title>PullmanBus | Inicio</title>
       </Head>
       <div className="home">
-        <div className="img-principal d-none d-md-block">
-          <img src="https://pullman.cl/imagenes/fenix/banner/banner-2.png" />
-        </div>
-        <div className="img-principal d-block d-md-none">
-          <img src="/banner-mobile.png" />
-        </div>
+        <Banner />
         <BusquedaServicio
           origenes={origenes}
           dias={props.dias}
