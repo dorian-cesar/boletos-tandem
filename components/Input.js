@@ -1,3 +1,5 @@
+import { useId } from 'react';
+
 import Select from "react-select";
 
 const customStyles = {
@@ -30,6 +32,7 @@ const Input = ({ items, selected, setSelected, className, placeholder }) => {
         onChange={(e, a) => {
           setSelected(e.value);
         }}
+        instanceId={useId()}
       />
     </>
   );
