@@ -179,9 +179,9 @@ const ActualizarDatos = () => {
                         <p>
                           <strong>aaaaaaaa</strong>
                         </p>
-                        <hr class="my-1"></hr>
+                        <hr className="my-1"></hr>
                         <p>jjjjj</p>
-                        <hr class="my-1"></hr>
+                        <hr className="my-1"></hr>
                       </div>
                       <div className="col-12 col-md-6 text-center top">
                         <img src="img/icon-confirmado.svg" alt="" />
@@ -194,9 +194,9 @@ const ActualizarDatos = () => {
                         <p>
                           <strong>aaaaaaaa</strong>
                         </p>
-                        <hr class="my-1"></hr>
+                        <hr className="my-1"></hr>
                         <p>jjjjj</p>
-                        <hr class="my-1"></hr>
+                        <hr className="my-1"></hr>
                       </div>
                     </div>
                   

@@ -13,7 +13,7 @@ export default function Layout({ children }) {
   return (
     <>
       <Head>
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <title>Pullman Bus</title>
       </Head>
 

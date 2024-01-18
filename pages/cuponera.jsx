@@ -59,8 +59,8 @@ export default function cuponera(props) {
                     </div>
                   </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item"></li>
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item"></li>
                   <div className="col-12 col-md-9 col-lg-12">
                     <div className="d-flex justify-content-end align-items-center">
                       <div className="oferta-descuento">20 %</div>

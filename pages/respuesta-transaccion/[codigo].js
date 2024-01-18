@@ -66,7 +66,7 @@ export default function Home(props) {
                             <p>{i.rut}</p>
                           </div>
                         </div>
-                        <div class="dotted-line"></div>
+                        <div className="dotted-line"></div>
                         <div className="row mb-5">
                           <div className="col-6 text-center top">
                             <img src="img/icon-confirmado.svg" alt="" />
@@ -79,9 +79,9 @@ export default function Home(props) {
                             <p>
                               <strong>{i.imprimeVoucher.cliente}</strong>
                             </p>
-                            <hr class="my-1"></hr>
+                            <hr className="my-1"></hr>
                             <p>{i.rut}</p>
-                            <hr class="my-1"></hr>
+                            <hr className="my-1"></hr>
                           </div>
                           <div className="col-6 text-center top">
                             <img src="img/icon-confirmado.svg" alt="" />
@@ -94,12 +94,12 @@ export default function Home(props) {
                             <p>
                               <strong>{i.imprimeVoucher.cliente}</strong>
                             </p>
-                            <hr class="my-1"></hr>
+                            <hr className="my-1"></hr>
                             <p>{i.rut}</p>
-                            <hr class="my-1"></hr>
+                            <hr className="my-1"></hr>
                           </div>
                         </div>
-                        <div class="dotted-line"></div>
+                        <div className="dotted-line"></div>
                         <div className="row mb-1">
                           <div className="col-6 text-center top">
                             <p>
