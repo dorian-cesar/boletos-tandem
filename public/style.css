@@ -2137,9 +2137,9 @@ footer .item a {
 }
 
 .card-ofertas {
-  width: 320px;
-  height: 511px;
-  margin-left: 45px;
+  /* width: 320px; */
+  /* height: 511px; */
+  /* margin-left: 45px; */
   flex-shrink: 0;
   border-radius: 16px;
   background: #FFF;
@@ -2154,11 +2154,7 @@ footer .item a {
 }
 
 .card-ofertas .imagen {
-  width: 320px;
-  height: 144px;
-  flex-shrink: 0;
   border-radius: 16px 16px 0px 0px;
-  background: url(img/icon/images/antofagasta.jpeg), lightgray 50% / cover no-repeat;
 }
 
 .card-ofertas .title-tramo {
@@ -2275,7 +2271,7 @@ footer .item a {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -12px;
+  margin-top: -15px;
 }
 
 .card-ofertas .boton {
