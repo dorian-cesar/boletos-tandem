@@ -14,7 +14,7 @@ const Banner = ( props ) => {
             spaceBetween={ 30 }
             centeredSlides={ true }
             loop={ true }
-            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
             pagination={{ clickable: true }}
             navigation={ true }
             modules={[ Autoplay, Pagination, Navigation ]}
