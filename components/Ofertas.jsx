@@ -143,7 +143,7 @@ const Ofertas = (props) => {
         modules={[Navigation, Autoplay, Pagination]}>
         {
           valoresArregloOfertas.map((firstArray, index) => (
-            <SwiperSlide key={ index } className="row d-flex justify-content-around px-5">
+            <SwiperSlide key={ index } className="row d-flex justify-content-around ps-5">
               { firstArray.map((oferta, index) => (<CardOferta key={ index } {...oferta} />)) }
               { renderCardOferta(firstArray) }
             </SwiperSlide>
