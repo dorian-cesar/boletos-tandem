@@ -6,6 +6,10 @@ import Input from "../components/Input";
 import { useEffect, useState, forwardRef } from "react";
 import es from "date-fns/locale/es";
 import { useRouter } from "next/router";
+import CardOferta from './card-oferta';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import { Navigation, Autoplay, Pagination } from 'swiper/modules';
 
 const customStyles = {
   control: (provided) => ({
@@ -14,206 +18,138 @@ const customStyles = {
   }),
 };
 
+const ofertas = [{
+  origen: 'Santiago',
+  destino: 'La Serena',
+  precioAnterior: '18.000',
+  precio: '15.000',
+  descuento: '20%',
+  tipoBus: 'Semi Cama',
+  mascota: true,
+  vigencia: 'Enero 2024/Febrero 2024',
+  srcImagen: ''
+},
+{
+  origen: 'Santiago',
+  destino: 'La Serena',
+  precioAnterior: '18.000',
+  precio: '15.000',
+  descuento: '20%',
+  tipoBus: 'Semi Cama',
+  mascota: true,
+  vigencia: 'Enero 2024/Febrero 2024',
+  srcImagen: ''
+},
+{
+  origen: 'Santiago',
+  destino: 'La Serena',
+  precioAnterior: '18.000',
+  precio: '15.000',
+  descuento: '20%',
+  tipoBus: 'Semi Cama',
+  mascota: true,
+  vigencia: 'Enero 2024/Febrero 2024',
+  srcImagen: ''
+},
+{
+  origen: 'Santiago',
+  destino: 'La Serena',
+  precioAnterior: '18.000',
+  precio: '15.000',
+  descuento: '20%',
+  tipoBus: 'Semi Cama',
+  mascota: true,
+  vigencia: 'Enero 2024/Febrero 2024',
+  srcImagen: ''
+},
+{
+  origen: 'Santiago',
+  destino: 'La Serena',
+  precioAnterior: '18.000',
+  precio: '15.000',
+  descuento: '20%',
+  tipoBus: 'Semi Cama',
+  mascota: true,
+  vigencia: 'Enero 2024/Febrero 2024',
+  srcImagen: ''
+}]
+
 const Ofertas = (props) => {
+
+  useEffect(() => doSomething(), []);
+  const [valoresArregloOfertas, setValoresArregloOfertas] = useState([]);
+
+
+  function doSomething() {
+    if ( valoresArregloOfertas.length > 0 ) {
+      return;
+    }
+
+    const firstArray = [];
+    let secondArray = [];
+
+    ofertas.map((oferta) => {
+      if( secondArray.length < 3 ) {
+        secondArray.push(oferta);
+      } else {
+        firstArray.push(secondArray);
+        secondArray = [];
+        secondArray.push(oferta);
+      }
+    });
+
+    if ( secondArray.length > 0 ) {
+      firstArray.push(secondArray);
+    }
+
+    setValoresArregloOfertas(firstArray);
+  }
+
+  function renderCardOferta(firstArray) {
+    if ( firstArray.length === 0 ) {
+      return;
+    } else if ( firstArray.length === 1 ) {
+      return (
+        <>
+        <div className="col-12 col-md-6 col-lg-4"></div>
+        <div className="col-12 col-md-6 col-lg-4"></div>
+        </>
+      );
+    } else if ( firstArray.length === 2 ) {
+      return (
+        <>
+        <div className="col-12 col-md-6 col-lg-4"></div>
+        </>
+      );
+
+    }
+  }
+
+
   return (
     <div className="container">
       <div className="title-ofertas">Ofertas destacadas</div>
       <div className="sub-title-ofertas">
         Infórmate sobre nuestros servicios, convenios y otros.
       </div>
-      <br />
-      <div className="row">
-      <div className="col-12 col-md-6 col-lg-4">
-          <div className="card-ofertas mobile-view">
-            <img className="imagen" />
-            <div className="col-12 col-md-12 col-lg-11">
-              <div className="d-flex justify-content-end align-items-center">
-                <div className="card-ida-vuelta">Ida y vuelta</div>
-              </div>
-            </div>
-            <div className="card-body">
-              <h5 className="title-tramo">Tramo</h5>
-              <h5 className="title-ciudades">
-                Santiago <br />
-                La Serena
-              </h5>
-              <h5 className="title-vigencia">
-                Vigencia: Enero 2024/ Febrero 2024
-              </h5>
-              <div className="row">
-                <div className="col-12 col-md-9 col-lg-9">
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="col-4"></div>
-                    <div className="col">
-                      <span className="title-tipo-bus">Bús salon cama</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-12 col-md-9 col-lg-9">
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="col-4">
-                      <img
-                        className="imagen-mascota"
-                        src="img/icon/card/paw-outline-oferta.svg"
-                      />
-                    </div>
-                    <div className="col">
-                      <span className="title-tipo-bus">Mascota a bordo</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item"></li>
-                <div className="col-12 col-md-9 col-lg-12">
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="oferta-descuento">20 %</div>
-                  </div>
-                </div>
-              </ul>
-              <h5 className="title-persona">Precio por persona</h5>
-              <div className="col-12 col-md-9 col-lg-9">
-                <div className="d-flex justify-content-end align-items-center">
-                  <div className="col-8">
-                    <h5 className="title-valor">$24.550</h5>
-                  </div>
-                  <div className="col">
-                    <h5 className="title-valor-tachado">$33.800</h5>
-                  </div>
-                </div>
-              </div>
-              <div className="boton">Me interesa</div>
-            </div>
-          </div>
-        </div>
-        <div className="col-12 col-md-6 col-lg-4">
-          <div className="card-ofertas mobile-view">
-            <img className="imagen" />
-            <div className="col-12 col-md-12 col-lg-11">
-              <div className="d-flex justify-content-end align-items-center">
-                <div className="card-ida-vuelta">Ida y vuelta</div>
-              </div>
-            </div>
-            <div className="card-body">
-              <h5 className="title-tramo">Tramo</h5>
-              <h5 className="title-ciudades">
-                Santiago <br />
-                La Serena
-              </h5>
-              <h5 className="title-vigencia">
-                Vigencia: Enero 2024/ Febrero 2024
-              </h5>
-              <div className="row">
-                <div className="col-12 col-md-9 col-lg-9">
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="col-4"></div>
-                    <div className="col">
-                      <span className="title-tipo-bus">Bús salon cama</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-12 col-md-9 col-lg-9">
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="col-4">
-                      <img
-                        className="imagen-mascota"
-                        src="img/icon/card/paw-outline-oferta.svg"
-                      />
-                    </div>
-                    <div className="col">
-                      <span className="title-tipo-bus">Mascota a bordo</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item"></li>
-                <div className="col-12 col-md-9 col-lg-12">
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="oferta-descuento">20 %</div>
-                  </div>
-                </div>
-              </ul>
-              <h5 className="title-persona">Precio por persona</h5>
-              <div className="col-12 col-md-9 col-lg-9">
-                <div className="d-flex justify-content-end align-items-center">
-                  <div className="col-8">
-                    <h5 className="title-valor">$24.550</h5>
-                  </div>
-                  <div className="col">
-                    <h5 className="title-valor-tachado">$33.800</h5>
-                  </div>
-                </div>
-              </div>
-              <div className="boton">Me interesa</div>
-            </div>
-          </div>
-        </div>
-        <div className="col-12 col-md-6 col-lg-4">
-          <div className="card-ofertas mobile-view">
-            <img className="imagen" />
-            <div className="col-12 col-md-12 col-lg-11">
-              <div className="d-flex justify-content-end align-items-center">
-                <div className="card-ida-vuelta">Ida y vuelta</div>
-              </div>
-            </div>
-            <div className="card-body">
-              <h5 className="title-tramo">Tramo</h5>
-              <h5 className="title-ciudades">
-                Santiago <br />
-                La Serena
-              </h5>
-              <h5 className="title-vigencia">
-                Vigencia: Enero 2024/ Febrero 2024
-              </h5>
-              <div className="row">
-                <div className="col-12 col-md-9 col-lg-9">
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="col-4"></div>
-                    <div className="col">
-                      <span className="title-tipo-bus">Bús salon cama</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-12 col-md-9 col-lg-9">
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="col-4">
-                      <img
-                        className="imagen-mascota"
-                        src="img/icon/card/paw-outline-oferta.svg"
-                      />
-                    </div>
-                    <div className="col">
-                      <span className="title-tipo-bus">Mascota a bordo</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item"></li>
-                <div className="col-12 col-md-9 col-lg-12">
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="oferta-descuento">20 %</div>
-                  </div>
-                </div>
-              </ul>
-              <h5 className="title-persona">Precio por persona</h5>
-              <div className="col-12 col-md-9 col-lg-9">
-                <div className="d-flex justify-content-end align-items-center">
-                  <div className="col-8">
-                    <h5 className="title-valor">$24.550</h5>
-                  </div>
-                  <div className="col">
-                    <h5 className="title-valor-tachado">$33.800</h5>
-                  </div>
-                </div>
-              </div>
-              <div className="boton">Me interesa</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br />
+      <Swiper
+        className="mt-5 pb-5"
+        centeredSlides={ true }
+        loop={ true }
+        autoplay={{ delay: 7000, disableOnInteraction: false }}
+        pagination={{ clickable: true }}
+        slidesPerView={1}
+        spaceBetween={30}
+        modules={[Navigation, Autoplay, Pagination]}>
+        {
+          valoresArregloOfertas.map((firstArray, index) => (
+            <SwiperSlide key={ index } className="row d-flex justify-content-around px-5">
+              { firstArray.map((oferta, index) => (<CardOferta key={ index } {...oferta} />)) }
+              { renderCardOferta(firstArray) }
+            </SwiperSlide>
+          ))
+        }
+        </Swiper>
     </div>
   );
 };
