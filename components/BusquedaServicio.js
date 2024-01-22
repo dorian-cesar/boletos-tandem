@@ -23,7 +23,7 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
 ));
 
 const BusquedaServicio = (props) => {
-  const { origenes, dias, isShowMascota = false } = props;
+  const { origenes, dias, isShowMascota = false, isHomeComponent = true } = props;
   const [mascota_allowed, setMascota] = useState(false);
   const [origen, setOrigen] = useState(null);
   const [destino, setDestino] = useState(null);
@@ -152,10 +152,10 @@ const BusquedaServicio = (props) => {
   };
 
   return (
-    <div className="container pb-5">
+    <div className={ isHomeComponent ? 'container pb-5' : 'container py-1' }>
       <div className="row ">
         <div className="col-12">
-          <div className="bloque m-neg">
+          <div className={ isHomeComponent ? 'bloque m-neg' : 'm-neg'}>
             <div className="row mb-3 ">
               <div className="col-12">
                 {/* <div className="tabs">
@@ -178,9 +178,13 @@ const BusquedaServicio = (props) => {
                 <div className="tab-content">
                   <TabPanel title="Búsqueda de Servicio" activeTab={activeTab}>
                     <div className="col-12 col-md-12">
-                      <h1 className="titulo-azul">
-                        ¿Cúal es tu próximo destino?
-                      </h1>
+                      {
+                        isHomeComponent && (
+                          <h1 className="titulo-azul">
+                            ¿Cúal es tu próximo destino?
+                          </h1>
+                        )
+                      }
                       {isShowMascota && (
                         <div
                           className="title-mascota-abordo"
@@ -206,7 +210,7 @@ const BusquedaServicio = (props) => {
                       )}
                     </div>
                     <div className="row search-row">
-                      <div className="col-12 col-md-6 col-lg-2">
+                      <div className="col-sm-12 col-md-5 col-lg-2 col-xl-2 col-xxl-2">
                         <div className="grupo-campos">
                           <label className="label-titulo-busqueda-servicio">
                             Origen
@@ -226,7 +230,11 @@ const BusquedaServicio = (props) => {
                         </div>
                       </div>
 
-                      <div className="col-12 col-md-6 col-lg-2">
+                      <div className="col-1 d-flex">
+                        <img src="img/repeat-outline.svg" className="m-auto"/>
+                      </div>
+
+                      <div className="col-sm-12 col-md-5 col-lg-2 col-xl-2 col-xxl-2">
                         <div className="grupo-campos">
                           <label className="label-titulo-busqueda-servicio">
                             Destino
@@ -252,7 +260,9 @@ const BusquedaServicio = (props) => {
                           />
                         </div>
                       </div>
-                      <div className="col-6 col-md-6 col-lg-2">
+
+                      {/* <div className="col-md-6 col-lg-2 col-6"> */}
+                      <div className="col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2">
                         <div className="grupo-campos">
                           <label className="label-titulo-busqueda-servicio">
                             Salida
@@ -269,7 +279,8 @@ const BusquedaServicio = (props) => {
                           />
                         </div>
                       </div>
-                      <div className="col-12 col-md-6 col-lg-2">
+
+                      <div className="col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2">
                         <div className="grupo-campos">
                           <label className="label-titulo-busqueda-servicio">
                             Vuelta
@@ -285,7 +296,11 @@ const BusquedaServicio = (props) => {
                           />
                         </div>
                       </div>
-                      <div className="col-12 col-md-12 col-lg-2">
+
+                      <div className="col-1">
+                      </div>
+
+                      <div className="col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2">
                         <label className="label-titulo-busqueda-servicio"></label>
                         <div
                           className="button-busqueda-servicio"

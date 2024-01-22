@@ -91,12 +91,16 @@ export default function Home(props) {
             </Head>
             <div className="pasajes">
                 <div className="container">
-                    <BusquedaServicio origenes={ props.ciudades } dias={ props.dias }  isShowMascota={true}/>
+                    <BusquedaServicio 
+                        origenes={ props.ciudades } 
+                        dias={ props.dias } 
+                        isShowMascota={ false }
+                        isHomeComponent={ false }/>
                 </div>
             </div>
-            <div className="pasajes-compra py-5">
+            <div className="pasajes-compra pb-5">
                 <div className="container">
-                    <div className="d-flex flex-row justify-content-around">
+                    <ul className="d-flex flex-row justify-content-around py-4">
                         {
                             stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
                                 return(
@@ -111,7 +115,7 @@ export default function Home(props) {
                                 )
                             })
                         }
-                    </div>
+                    </ul>
                     { 
                         stages_active[stage].kind == "pasajes_1" || stages_active[stage].kind == "pasajes_2" ? 
                         <StagePasajes 
