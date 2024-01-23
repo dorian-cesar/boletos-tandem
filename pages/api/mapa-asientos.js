@@ -16,7 +16,11 @@ export default async (req, res) => {
                 "fechaServicio": req.body.fechaServicio,
                 "idOrigen":req.body.idOrigen,
                 "idDestino":req.body.idDestino,
-                "integrador": req.body.integrador
+                "integrador": req.body.integrador,
+                "horaServicio": req.body.horaServicio,
+                "clasePiso1": req.body.clasePiso1,
+                "clasePiso2": req.body.clasePiso2,
+                "empresa": req.body.empresa,
             },{
             headers: {
                 'Authorization': `Bearer ${token.token}`
