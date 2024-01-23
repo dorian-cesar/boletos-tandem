@@ -9,5 +9,9 @@ export class BuscarPlanillaVerticalDTO {
         this.idOrigen = parrilla?.idTerminalOrigen || '';
         this.idDestino = parrilla?.idTerminalDestino || '';
         this.integrador = parrilla?.integrador || 0;
+        this.horaServicio = parrilla?.horaSalida.replace(':','') || "";
+        this.clasePiso1 = parrilla?.idClaseBusPisoUno || "";
+        this.clasePiso2 = parrilla?.idClaseBusPisoDos || "";
+        this.empresa = parrilla?.empresa || "";
     }
 }
