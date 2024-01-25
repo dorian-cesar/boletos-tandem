@@ -151,6 +151,13 @@ const BusquedaServicio = (props) => {
     setActiveTab(label);
   };
 
+  function invertirDestinos() {
+    const origenBackup = origen;
+    const destinoBackup = destino;
+    setOrigen(destinoBackup);
+    setDestino(origenBackup);
+  }
+
   return (
     <div className={ isHomeComponent ? 'container pb-5' : 'container py-1' }>
       <div className="row ">
@@ -210,7 +217,7 @@ const BusquedaServicio = (props) => {
                       )}
                     </div>
                     <div className="row search-row">
-                      <div className="col-sm-12 col-md-5 col-lg-2 col-xl-2 col-xxl-2">
+                      <div className="col-sm-12 col-md-10 col-lg-4 col-xl-4 col-xxl-5 d-flex flex-row justify-content-evenly align-items-end">
                         <div className="grupo-campos">
                           <label className="label-titulo-busqueda-servicio">
                             Origen
@@ -228,13 +235,7 @@ const BusquedaServicio = (props) => {
                             setSelected={cambiarOrigen}
                           />
                         </div>
-                      </div>
-
-                      <div className="col-1 d-flex">
-                        <img src="img/repeat-outline.svg" className="m-auto"/>
-                      </div>
-
-                      <div className="col-sm-12 col-md-5 col-lg-2 col-xl-2 col-xxl-2">
+                        <img src="img/repeat-outline.svg" onClick={ () => invertirDestinos() } className="pointer"/>
                         <div className="grupo-campos">
                           <label className="label-titulo-busqueda-servicio">
                             Destino
@@ -295,9 +296,6 @@ const BusquedaServicio = (props) => {
                             customInput={<CustomInput />}
                           />
                         </div>
-                      </div>
-
-                      <div className="col-1">
                       </div>
 
                       <div className="col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2">
