@@ -351,51 +351,6 @@ const StagePasajes = (props) => {
                 </div>
             </div>
             <div className="col-12 col-md-9">
-                <div className="bloque-header">
-                    <div className="row">
-                        <div
-                            className="col-4 text-center"
-                            onClick={ () => setSort(sort == "precio-up" ? "precio-down": "precio-up")}>
-                            <span>
-                                <img className="mr-2" src="img/icon-peso.svg" alt=""/>
-                                Rango de Precio &nbsp;
-                                { sort != '' ? 
-                                    <img 
-                                        src='img/icon-flecha-arriba.svg'
-                                        alt=""
-                                        className={ sort == 'precio-down' ? 'rotate-icon' : '' }/> 
-                                    : '' 
-                                }
-                            </span>
-                        </div>
-                        <div
-                            className="col-4 text-center"
-                            onClick={() => setSort(sort == "hora-up" ? "hora-down" : "hora-up")}>
-                            <span>
-                                <img className="mr-2" src="img/icon-hora.svg" alt=""/>
-                                Horario de salida &nbsp;
-                                { sort != '' ? 
-                                    <img 
-                                        src='img/icon-flecha-arriba.svg'
-                                        alt=""
-                                        className={ sort == 'hora-up' ? 'rotate-icon' : '' } /> 
-                                    : '' 
-                                }
-                            </span>
-                        </div>
-                        <div className="col-4">
-                            <div
-                                className="d-flex w-100 justify-content-end"
-                                onClick={ () => setMascota(!mascota_allowed)}>
-                                <img className="mr-2" src="img/icon-mascota-blanco.svg"/>
-                                <span>Mascota a bordo</span>
-                                <label className={ "switch " + (mascota_allowed ? "checked" : "") }>
-                                    <span className="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 { loadingParrilla ? <Loader /> : parrilla.length > 0 ? returnMappedParrilla() : 
                     <h5 className="p-2">
                         Lo sentimos, no existen
