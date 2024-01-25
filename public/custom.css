@@ -100,6 +100,7 @@
 .search-row {
   align-items: flex-end;
   display: flex;
+  justify-content: space-evenly;
 }
 .search-row .col-12 ,.search-row .col-6{
   flex-grow: 1;

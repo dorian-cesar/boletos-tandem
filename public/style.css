@@ -1,5 +1,5 @@
 /* IMPORT FIX */
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap'); */
 
 :root {
   --azul: #003fa2;
@@ -80,7 +80,7 @@
 .overlay .links-menu a.compra {
   background-image: url(img/icon/nav/ticket-outline.svg);
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -88,7 +88,7 @@
 .overlay .links-menu a.agencias {
   background-image: url(img/icon/nav/navigate-outline.svg);
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -97,7 +97,7 @@
 .overlay .links-menu a.conf-pasajes {
   background-image: url(img/menu/icon-confirmacion-pasajes.svg);
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -105,7 +105,7 @@
 .overlay .links-menu a.te-ayudamos {
   background: url(img/icon/nav/help-circle-outline.svg) 0 center no-repeat, url(img/menu/icon-flecha.svg) center right no-repeat;
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -113,7 +113,7 @@
 .overlay .links-menu a.cliente-empresa {
   background-image: url(img/icon/nav/business-outline.svg);
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -121,7 +121,7 @@
 .overlay .links-menu a.viajes-especiales {
   background-image: url(img/icon/nav/trail-sign-outline.svg);
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -133,7 +133,7 @@
 
 .overlay .contactanos-menu span {
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -383,7 +383,6 @@ input:checked + .slider:before,  .switch.checked .slider::before {
   -ms-user-select: none;
   user-select: none;
   text-transform: initial;
-  margin-top: 15px;
   border-radius: 10px;
   background-color: #fff;
 }
@@ -509,7 +508,7 @@ input:checked + .slider:before,  .switch.checked .slider::before {
 /*************************************FIN BOLETO***************************/
 
 body {
-  font-family: 'Titillium Web', sans-serif;
+  /* font-family: 'Titillium Web', sans-serif; */
   color: var(--negro);
   background-color: #f6f8fb;
 }
@@ -537,7 +536,7 @@ a {
 .titulo-azul {
   color: var(--azul-100, #3365B4);
 
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
@@ -740,7 +739,7 @@ input.fecha-input,
   width: 200px;
   height: 40px;
   color: var(--azul-100, #3365B4);
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -2079,7 +2078,7 @@ footer .item a {
 
 .label-titulo-busqueda-servicio {
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -2099,7 +2098,7 @@ footer .item a {
   background: var(--naranjo-100, #FF6500);
 
   color: var(--Blanco, #FFF);
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -2129,7 +2128,7 @@ footer .item a {
   background: var(--naranjo-100, );
 
   color: var(--gris, #333);
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -2159,7 +2158,7 @@ footer .item a {
 
 .card-ofertas .title-tramo {
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -2169,7 +2168,7 @@ footer .item a {
 
 .card-ofertas .title-ciudades {
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
@@ -2178,7 +2177,7 @@ footer .item a {
 
 .card-ofertas .title-vigencia {
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -2187,7 +2186,7 @@ footer .item a {
 
 .card-ofertas .title-tipo-bus {
   color: var(--gris-50, #7F7F7F);
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -2196,7 +2195,7 @@ footer .item a {
 
 .card-ofertas .title-persona {
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -2206,7 +2205,7 @@ footer .item a {
 
 .card-ofertas .title-valor {
   color: var(--naranjo-100, #FF6500);
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 32px;
   font-style: normal;
   font-weight: 700;
@@ -2215,7 +2214,7 @@ footer .item a {
 
 .card-ofertas .title-valor-tachado {
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -2246,7 +2245,7 @@ footer .item a {
   border-radius: 0px 0px 0px 30px;
   background: var(--azul-50, #98B1D9);
   color: var(--Blanco, #FFF);
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
@@ -2263,7 +2262,7 @@ footer .item a {
   border-radius: 10px;
   background: var(--Amarillo, #FFD600);
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -2284,7 +2283,7 @@ footer .item a {
   border-radius: 16px;
   background: var(--naranjo-100, #FF6500);
   color: var(--Blanco, #FFF);
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -2296,7 +2295,7 @@ footer .item a {
 
 .title-ofertas {
   color: var(--azul-100, #3365B4);
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 32px;
   font-style: normal;
   font-weight: 700;
@@ -2308,7 +2307,7 @@ footer .item a {
 
 .sub-title-ofertas {
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -2328,7 +2327,7 @@ footer .item a {
 
 .pasajes-compra .container-title {
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -2337,7 +2336,7 @@ footer .item a {
 
 .pasajes-compra .container-sub-title {
   color: #000;
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -2389,7 +2388,7 @@ footer .item a {
 
 .title-mascota-abordo {
   color: var(--azul-100, #3365B4);
-  font-family: Titillium Web;
+  /* font-family: Titillium Web; */
   font-size: 32px;
   font-style: normal;
   font-weight: 700;
