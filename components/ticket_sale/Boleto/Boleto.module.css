@@ -1,6 +1,6 @@
 @keyframes inicio {
     from {
-        left: 0;
+        left: 26px;
         transition: all 0.9s ease;
     }
 
