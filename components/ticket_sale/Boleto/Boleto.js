@@ -69,14 +69,8 @@ const Boleto = (props) => {
     setAnimacionDerecha(!animacionDerecha);
   };
 
-  const test = () =>  {
-    debugger;
-    props.setOpenPane(props.k)
-    console.log(props.openPane == props.id);
-  }
-
   return (
-    <section className={ styles['ticket'] } onClick={() => test()}>
+    <section className={ styles['ticket'] }>
       <input type="checkbox" checked={props.openPane == props.id} readOnly/>
       <div className={ styles['ticket-details'] }>
         <div className={ styles['ticket-details__header'] }>
@@ -104,7 +98,7 @@ const Boleto = (props) => {
       <div className={ styles['ticket-price'] }>
         <div className={ styles['ticket-price__detail'] }>
         </div>
-        <button>
+        <button onClick={() => props.setOpenPane(props.k)}>
           Comprar
         </button>
       </div>
