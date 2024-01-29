@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import styles from "./Boleto.module.css";
+
+
 var customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 const Boleto = (props) => {
@@ -60,12 +63,55 @@ const Boleto = (props) => {
     return classes.trim(); // Eliminar espacios en blanco adicionales al final
   };
 
+  const [animacionDerecha, setAnimacionDerecha] = useState(false);
+
+  const manejarClic = () => {
+    setAnimacionDerecha(!animacionDerecha);
+  };
+
+  const test = () =>  {
+    debugger;
+    props.setOpenPane(props.k)
+    console.log(props.openPane == props.id);
+  }
+
   return (
-    <div className="ticket">
-      <div class="left"></div>
-      <div class="right"></div>
-      <div class="ticket-content-wrapper"></div>
-    </div>
+    <section className={ styles['ticket'] } onClick={() => test()}>
+      <input type="checkbox" checked={props.openPane == props.id} readOnly/>
+      <div className={ styles['ticket-details'] }>
+        <div className={ styles['ticket-details__header'] }>
+          <img src="img/logo-pullmanbus.svg" />
+          <img src="img\icon\logos\paw-outline.svg" />
+        </div>
+        <div className={ styles['ticket-details__travel'] }>
+          <div className={ styles['ticket-details__travel-detail'] }>
+            <span className={ styles['bold'] }>{ props.horaSalida }</span>
+            <span className={ styles['bold'] }>{ props.terminalSalida }</span>
+            <span>{ props.fechaSalida }</span>
+          </div>
+          <div className={ styles['ticket-details__travel-detail'] }>
+            <span>Duración</span>
+            <span className={ styles['bold'] }>{ duracion }</span>
+            <a className={ styles['link'] }>Itinerario</a>
+          </div>
+          <div className={ styles['ticket-details__travel-detail'] }>
+            <span className={ styles['bold'] }>{ props.horaLlegada }</span>
+            <span className={ styles['bold'] }>{ props.terminalDestino }</span>
+            <span>{ props.fechaLlegada }</span>
+          </div>
+        </div>
+      </div>
+      <div className={ styles['ticket-price'] }>
+        <div className={ styles['ticket-price__detail'] }>
+        </div>
+        <button>
+          Comprar
+        </button>
+      </div>
+      <div className={ styles['animated-logo'] }>
+        <img src="img/icon-barra.svg" />
+      </div>
+    </section>
 
     // <div className="boleto">
     //   <input type="checkbox" checked={props.openPane == props.id} readOnly />

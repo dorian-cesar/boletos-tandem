@@ -1,0 +1,150 @@
+@keyframes inicio {
+    from {
+        left: 0;
+        transition: all 0.9s ease;
+    }
+
+    to {
+        left: 500px;
+        transition: all 1.2s ease;
+    }
+}
+
+@keyframes final {
+    0% {
+        opacity: 1;
+        left: 500px;
+        transition: all 0.9s ease;
+    }
+
+    40%{
+        opacity: 0;
+        left: 500px;
+        transition: all 0.9s ease;
+    }
+
+    50% {
+        left: 26px;
+        opacity: 0;
+    }
+
+    100% {
+        left: 26px;
+        opacity: 1;
+        transition: all 0.9s ease;
+    }
+}
+
+.ticket {
+    background-image: url(../../../public/img/boleto.svg) !important;
+    height: 168px;
+    width: 776px;
+    fill: var(--Blanco, #FFF);
+    stroke-width: 1px;
+    stroke: var(--gris-15, #D9D9D9);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border-radius: 16px;
+    margin-block-end: 16px;
+    padding-inline: 32px;
+    display: flex;
+    flex-direction: row;
+}
+
+.ticket input {
+    display: none;
+}
+
+.ticket-details {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    border-right: dashed 1px #7F7F7F;
+    margin-block: 10px;
+    width: 500px;
+}
+
+.ticket-details .ticket-details__header {
+    margin-block-start: 12px;
+    margin-inline-end: 12px; 
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gris-oscuro, #4F4F4F);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding-inline-end: 12px;
+}
+
+.ticket-details .ticket-details__travel {
+    border-bottom: dashed 1px #7F7F7F;
+    margin-block-start: 12px;
+    padding-block-end: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.ticket-details .ticket-details__travel .ticket-details__travel-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.ticket-details .ticket-details__travel .ticket-details__travel-detail:nth-child(2) * {
+    margin-inline: auto;
+}
+
+.ticket-details .ticket-details__travel .ticket-details__travel-detail .bold {
+    font-weight: 700;
+}
+
+.ticket-details .ticket-details__travel .ticket-details__travel-detail .link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.ticket .ticket-price {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-inline: auto;
+    padding-block: 12px;
+    padding-inline-start: 13px;
+}
+
+.ticket .ticket-price button {
+    display: flex;
+    width: 204px;
+    padding-block: 8px;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 16px;
+    background: var(--naranjo-100, #FF6500);
+    color: #FFF;
+    border: none;
+    cursor: default;
+}
+
+.ticket .ticket-price button:hover {
+    background: var(--naranjo-80, #FF8A00);
+}
+
+.ticket .animated-logo {
+    position: absolute;
+    top: 125px;
+}
+
+.ticket input ~ .animated-logo {
+    position: absolute;
+    animation-name: final;
+    animation-duration: 0.5s;
+}
+
+.ticket input:checked ~ .animated-logo {
+    position: absolute;
+    left: 500px;
+    animation-name: inicio;
+    animation-duration: 1s;
+}

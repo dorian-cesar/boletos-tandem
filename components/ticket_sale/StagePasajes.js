@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-import Boleto from "././Boleto";
+import Boleto from './Boleto/Boleto';
 import Loader from "../Loader";
 
 import { LiberarAsientoDTO, TomaAsientoDTO } from "dto/TomaAsientoDTO";
