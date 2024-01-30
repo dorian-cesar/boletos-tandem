@@ -9,18 +9,14 @@ export default async (req, res) => {
     try {
        
         let token = await doLogin();
-        let data = await axios.post(config.service_url + `/integracion/liberarAsiento`, {"servicio":req.body.servicio,
-        "fecha":req.body.fecha,
-        "origen":req.body.origen,
-        "destino":req.body.destino,
-        "integrador":req.body.integrador,
-        "asiento":req.body.asiento,
-        "tarifa":req.body.tarifa,
-         "codigoReserva": req.body.codigoReserva},{
+        let data = await axios.post(config.service_url + `/integracion/obtenerItinerario`, {
+            "servicio":req.body.servicio,
+            "integrador":1000
+        }, {
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
-        })
+        });
         res.status(200).json(data.data);
     } catch(e){
         console.log(e)

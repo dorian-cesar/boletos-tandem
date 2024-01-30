@@ -1,4 +1,4 @@
-import doLogin from '../../utils/oauth-token';
+import doLogin from '../../../utils/oauth-token';
 import getConfig from 'next/config'
 import axios from "axios"
 const {serverRuntimeConfig} = getConfig();

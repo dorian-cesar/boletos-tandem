@@ -36,7 +36,7 @@
 }
 
 .ticket {
-    background-image: url(../../../public/img/boleto.svg) !important;
+    background-image: url(../../../public/img/Boleto.svg) !important;
     height: 168px;
     width: 776px;
     fill: var(--Blanco, #FFF);

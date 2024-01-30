@@ -4,9 +4,9 @@ import Rut from 'rutjs';
 
 import { PasajeConvenioDTO } from 'dto/PasajesDTO';
 import { GuardarCarroDTO, PasajePagoDTO } from 'dto/PasajesDTO';
-import ResumenPasaje from './ResumenPasaje';
-import InformacionPasajero from './InformacionPasajero';
-import InformacionComprador from './InformacionComprador';
+import ResumenPasaje from '../../../components/ticket_sale/ResumenPasaje';
+import InformacionPasajero from '../../../components/ticket_sale/InformacionPasajero';
+import InformacionComprador from '../../../components/ticket_sale/InformacionComprador';
 import { isValidPasajero } from 'utils/user-pasajero';
 import { toast } from 'react-toastify';
 

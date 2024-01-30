@@ -58,7 +58,7 @@ const StagePasajes = (props) => {
         try {
             const parrillaTemporal = [...parrilla];
             const parrillaModificada = [...parrilla];
-            const { data } = await axios.post('/api/mapa-asientos', 
+            const { data } = await axios.post('/api/ticket_sale/mapa-asientos', 
                 new BuscarPlanillaVerticalDTO(parrillaTemporal[indexParrilla], stage, startDate, endDate, parrilla[indexParrilla]));
             parrillaModificada[indexParrilla].loadingAsientos = false;
             parrillaModificada[indexParrilla].asientos1 = data[1];
@@ -83,7 +83,7 @@ const StagePasajes = (props) => {
 
     async function servicioTomarAsiento(parrillaServicio, asiento, piso, asientosTemporal, isMascota = false) {
         try {
-           const { data } = await axios.post('/api/tomar-asiento', new TomaAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage));
+           const { data } = await axios.post('/api/ticket_sale/tomar-asiento', new TomaAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage));
             const reserva = data;           
             if( reserva.estadoReserva ) {
                 if( isMascota ) setModalMab(true);
@@ -98,7 +98,7 @@ const StagePasajes = (props) => {
 
     async function servicioLiberarAsiento(parrillaServicio, asiento, piso, codigoReserva) {
         try {
-            const { data } = await axios.post('/api/liberar-asiento', new LiberarAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage, codigoReserva))
+            const { data } = await axios.post('/api/ticket_sale/liberar-asiento', new LiberarAsientoDTO(parrillaServicio, startDate, endDate, asiento, piso, stage, codigoReserva))
             return data;
         } catch ({ message }) {
             throw new Error(`Error al liberar asiento [${ message }]`);
@@ -185,7 +185,7 @@ const StagePasajes = (props) => {
                 return;
             }
             setOpenPane(parrilla[indexParrilla].id);
-            const { data } = await axios.post('/api/mapa-asientos', 
+            const { data } = await axios.post('/api/ticket_sale/mapa-asientos', 
             new BuscarPlanillaVerticalDTO(parrillaTemporal[indexParrilla], stage, startDate, endDate, parrilla[indexParrilla]));
             console.log('mapa asiento', data)
             parrillaModificada[indexParrilla].loadingAsientos = false;
