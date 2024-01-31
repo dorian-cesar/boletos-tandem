@@ -111,7 +111,7 @@ const Boleto = (props) => {
           </div>
         </div>
         <div className={ styles['grill-detail'] }>
-          <Parrilla/>
+          <Parrilla isShowParrilla={ props.openPane == props.id }/>
         </div>
       </section>
     </>

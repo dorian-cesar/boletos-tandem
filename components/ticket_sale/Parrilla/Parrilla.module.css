@@ -1,12 +1,20 @@
-.ticket-detail {
-    display: none;
-    /* display: flex; */
+.grill-detail {
+    display: flex;
     flex-direction: column;
-    margin-block: 10px;
-    background-color: #FFF;
-    width: 776px;
-    border-radius: 16px;
-    /* margin-top: -40px; */
-    padding-inline: 32px;
-    height: 0px;
+    justify-content: center;
+    padding-block-start: 25px;
+}
+
+.cross-container {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.cross-container .cross {
+    display: flex;
+    justify-content: flex-end;
+    padding-inline-end: 20px;
+    padding-block: 20px;
+    cursor: pointer;
 }
