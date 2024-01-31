@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styles from "./Boleto.module.css";
+import Parrilla from "../Parrilla/Parrilla";
 
 
 var customParseFormat = require("dayjs/plugin/customParseFormat");
@@ -70,42 +71,50 @@ const Boleto = (props) => {
   };
 
   return (
-    <section className={ styles['ticket'] }>
-      <input type="checkbox" checked={props.openPane == props.id} readOnly/>
-      <div className={ styles['ticket-details'] }>
-        <div className={ styles['ticket-details__header'] }>
-          <img src="img/logo-pullmanbus.svg" />
-          <img src="img\icon\logos\paw-outline.svg" />
-        </div>
-        <div className={ styles['ticket-details__travel'] }>
-          <div className={ styles['ticket-details__travel-detail'] }>
-            <span className={ styles['bold'] }>{ props.horaSalida }</span>
-            <span className={ styles['bold'] }>{ props.terminalSalida }</span>
-            <span>{ props.fechaSalida }</span>
+    <>
+      <section className={ styles['container-ticket'] }>
+        <input type="checkbox" checked={props.openPane == props.id} readOnly/>
+        <div className={ styles['ticket'] }>
+          <input type="checkbox" checked={props.openPane == props.id} readOnly/>
+          <div className={ styles['ticket-details'] }>
+            <div className={ styles['ticket-details__header'] }>
+              <img src="img/logo-pullmanbus.svg" />
+              <img src="img\icon\logos\paw-outline.svg" />
+            </div>
+            <div className={ styles['ticket-details__travel'] }>
+              <div className={ styles['ticket-details__travel-detail'] }>
+                <span className={ styles['bold'] }>{ props.horaSalida }</span>
+                <span className={ styles['bold'] }>{ props.terminalSalida }</span>
+                <span>{ props.fechaSalida }</span>
+              </div>
+              <div className={ styles['ticket-details__travel-detail'] }>
+                <span>Duración</span>
+                <span className={ styles['bold'] }>{ duracion }</span>
+                <a className={ styles['link'] }>Itinerario</a>
+              </div>
+              <div className={ styles['ticket-details__travel-detail'] }>
+                <span className={ styles['bold'] }>{ props.horaLlegada }</span>
+                <span className={ styles['bold'] }>{ props.terminalDestino }</span>
+                <span>{ props.fechaLlegada }</span>
+              </div>
+            </div>
           </div>
-          <div className={ styles['ticket-details__travel-detail'] }>
-            <span>Duración</span>
-            <span className={ styles['bold'] }>{ duracion }</span>
-            <a className={ styles['link'] }>Itinerario</a>
+          <div className={ styles['ticket-price'] }>
+            <div className={ styles['ticket-price__detail'] }>
+            </div>
+            <button onClick={() => props.setOpenPane(props.k)}>
+              Comprar
+            </button>
           </div>
-          <div className={ styles['ticket-details__travel-detail'] }>
-            <span className={ styles['bold'] }>{ props.horaLlegada }</span>
-            <span className={ styles['bold'] }>{ props.terminalDestino }</span>
-            <span>{ props.fechaLlegada }</span>
+          <div className={ styles['animated-logo'] }>
+            <img src="img/icon-barra.svg" />
           </div>
         </div>
-      </div>
-      <div className={ styles['ticket-price'] }>
-        <div className={ styles['ticket-price__detail'] }>
+        <div className={ styles['grill-detail'] }>
+          <Parrilla/>
         </div>
-        <button onClick={() => props.setOpenPane(props.k)}>
-          Comprar
-        </button>
-      </div>
-      <div className={ styles['animated-logo'] }>
-        <img src="img/icon-barra.svg" />
-      </div>
-    </section>
+      </section>
+    </>
 
     // <div className="boleto">
     //   <input type="checkbox" checked={props.openPane == props.id} readOnly />

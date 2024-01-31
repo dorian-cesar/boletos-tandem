@@ -11,7 +11,7 @@ import getConfig from "next/config";
 import { registerLocale } from "react-datepicker";
 import React, { useState, useEffect } from "react";
 
-import Banner from "components/Banner";
+import Banner from "components/banner";
 
 const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
