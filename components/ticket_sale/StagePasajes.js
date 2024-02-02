@@ -260,7 +260,6 @@ const StagePasajes = (props) => {
                     key={ `key-boleto-${ indexParrilla }`}
                     {...mappedParrilla }
                     k={ indexParrilla }
-                    openPane={ openPane }
                     asientos_selected={ stage == STAGE_BOLETO_IDA ? asientosIda : asientosVuelta }
                     stage={ stage }
                     setPasaje={ setPasaje }

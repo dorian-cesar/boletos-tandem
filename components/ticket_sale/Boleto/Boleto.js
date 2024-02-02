@@ -7,6 +7,9 @@ import Parrilla from "../Parrilla/Parrilla";
 var customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 const Boleto = (props) => {
+
+  const [isOpened, setIsOpened] = useState(false);
+
   const getSubtotal = (clientes) => {
     return clientes.reduce((a, b) => {
       b.tarifa = b.tarifa.replace('.',',')
@@ -24,45 +27,6 @@ const Boleto = (props) => {
 
   duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
   const [piso, setPiso] = useState(1);
-  const asientoClass = (asiento) => {
-    const isSelected = props.asientos_selected.find(
-      (i) => i.asiento === asiento.asiento && asiento.tipo !== "pet-busy"
-    );
-    const isPetSelected = props.asientos_selected.find(
-      (i) => i.asiento === asiento.asiento && asiento.estado === "pet-busy"
-    );
-
-    let classes = "";
-    if (isSelected) {
-      classes += "seleccion ";
-    }
-    if (isPetSelected) {
-      classes += "m-seleccion ";
-    }
-    if (asiento.tipo === "pet" && asiento.estado === "ocupado") {
-      classes += "m-disponible ";
-    }
-    if (asiento.tipo === "pet" && asiento.estado === "pet-free") {
-      classes += "m-disponible ";
-    }
-    if (
-      asiento.estado === "pet-busy" &&
-      !props.asientos_selected.find((i) => i.asiento === asiento.asiento)
-    ) {
-      classes += "m-reservado ";
-    }
-    if (asiento.estado === "ocupado") {
-      classes += "reservado ";
-    }
-    if (asiento.estado === "libre") {
-      classes += "disponible ";
-    }
-    if (asiento.asiento === "B1" || asiento.asiento === "B2") {
-      classes += "bano ";
-    }
-
-    return classes.trim(); // Eliminar espacios en blanco adicionales al final
-  };
 
   const [animacionDerecha, setAnimacionDerecha] = useState(false);
 
@@ -73,9 +37,9 @@ const Boleto = (props) => {
   return (
     <>
       <section className={ styles['container-ticket'] }>
-        <input type="checkbox" checked={props.openPane == props.id} readOnly/>
+        <input type="checkbox" checked={isOpened} readOnly/>
         <div className={ styles['ticket'] }>
-          <input type="checkbox" checked={props.openPane == props.id} readOnly/>
+          <input type="checkbox" checked={isOpened} readOnly/>
           <div className={ styles['ticket-details'] }>
             <div className={ styles['ticket-details__header'] }>
               <img src="img/logo-pullmanbus.svg" />
@@ -102,7 +66,7 @@ const Boleto = (props) => {
           <div className={ styles['ticket-price'] }>
             <div className={ styles['ticket-price__detail'] }>
             </div>
-            <button onClick={() => props.setOpenPane(props.k)}>
+            <button onClick={() => setIsOpened(!isOpened)}>
               Comprar
             </button>
           </div>
@@ -111,13 +75,16 @@ const Boleto = (props) => {
           </div>
         </div>
         <div className={ styles['grill-detail'] }>
-          <Parrilla isShowParrilla={ props.openPane == props.id }/>
+          <Parrilla 
+            isShowParrilla={ isOpened }
+            asientos1={ props.asientos1 }
+            />
         </div>
       </section>
     </>
 
     // <div className="boleto">
-    //   <input type="checkbox" checked={props.openPane == props.id} readOnly />
+    //   <input type="checkbox" checked={isOpened} readOnly />
 
     //   <div className="block">
     //     <div className="content-block">
