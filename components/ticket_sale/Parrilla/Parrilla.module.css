@@ -64,9 +64,14 @@
 }
 
 .bus .fila .columna.disponible {
-  background-image: url(../../../public/img/a-disponible.svg);
+  transform: rotate(0deg);
+  background-image: url(../../../public/img/Asiento.svg);
   color: var(--naranjo);
 }
+
+.bus .fila .columna.disponible span{
+    transform: rotate(0deg);
+  }
 
 .bus .fila .columna.reservado {
   background-image: url(../../../public/img/a-reservado.svg);
@@ -97,4 +102,83 @@
 
 .bus .fila .columna.conductor {
     background-image: url(../../../public/img/conductor.svg);
+}
+
+.button_first_floor {
+    display: flex;
+    width: 88px;
+    height: 28px;
+    padding: 2px 18px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: var(--azul-100, #3365B4);
+}
+
+.button_first_floor span {
+    color: var(--Blanco, #FFF);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.button_second_floor {
+    display: flex;
+    width: 88px;
+    height: 28px;
+    padding: 2px 18px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: var(--azul-50, #98B1D9);
+}
+
+.button_second_floor span {
+    color: var(--Blanco, #FFF);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.button_continue {
+    display: flex;
+    width: 214px;
+    padding: 4px 40px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    background: var(--naranjo-100, #FF6500);
+}
+
+.button_continue span{
+    color: var(--Blanco, #FFF);
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.button_little_car {
+    display: flex;
+    width: 214px;
+    padding: 4px 40px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    border: 1px solid var(--naranjo-100, #FF6500);
+    background: var(--naranjo-25, #FFD8BF);
+}
+
+.button_little_car span{
+    color: var(--naranjo-100, #FF6500);
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 }

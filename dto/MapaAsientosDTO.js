@@ -15,3 +15,19 @@ export class BuscarPlanillaVerticalDTO {
         this.empresa = parrilla?.empresa || "";
     }
 }
+
+export class BuscarPlanillaVerticalOpenPaneDTO {
+    constructor(parrilla) {
+        this.idServicio = parrilla?.idServicio || '';
+        this.tipoBusPiso1 = parrilla?.busPiso1 || '';
+        this.tipoBusPiso2 = parrilla?.busPiso2 || '';
+        this.fechaServicio = parrilla?.fechaServicio || '';
+        this.idOrigen = parrilla?.idTerminalOrigen || '';
+        this.idDestino = parrilla?.idTerminalDestino || '';
+        this.integrador = parrilla?.integrador || 0;
+        this.horaServicio = parrilla?.horaSalida.replace(':','') || "";
+        this.clasePiso1 = parrilla?.idClaseBusPisoUno || "";
+        this.clasePiso2 = parrilla?.idClaseBusPisoDos || "";
+        this.empresa = parrilla?.empresa || "";
+    }
+}

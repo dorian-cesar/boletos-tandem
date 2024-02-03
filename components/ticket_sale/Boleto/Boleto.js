@@ -7,7 +7,6 @@ import Parrilla from "../Parrilla/Parrilla";
 var customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 const Boleto = (props) => {
-
   const [isOpened, setIsOpened] = useState(false);
 
   const getSubtotal = (clientes) => {
@@ -79,6 +78,10 @@ const Boleto = (props) => {
             isShowParrilla={ isOpened }
             asientos1={ props.asientos1 }
             k={ props.k }
+            parrilla={props}
+            stage={props.stage}
+            setParrilla={props.setParrilla}
+            asientos_selected={props.asientos_selected}
             />
         </div>
       </section>
