@@ -43,7 +43,7 @@ const Boleto = (props) => {
           <div className={ styles['ticket-details'] }>
             <div className={ styles['ticket-details__header'] }>
               <img src="img/logo-pullmanbus.svg" />
-              <img src="img\icon\logos\paw-outline.svg" />
+              { props.mascota == '1' && <img src="img\icon\logos\paw-outline.svg" />}
             </div>
             <div className={ styles['ticket-details__travel'] }>
               <div className={ styles['ticket-details__travel-detail'] }>

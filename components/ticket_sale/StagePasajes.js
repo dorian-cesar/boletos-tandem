@@ -26,6 +26,7 @@ const StagePasajes = (props) => {
 
     const [filter_tipo, setFilterTipo] = useState([]);
     const [filter_horas, setFilterHoras] = useState([]);
+    const [filter_mascota, setFilterMascota] = useState([]);
     const [openPane, setOpenPane] = useState(false);
     const [sort, setSort] = useState(null);
     const [mascota_allowed, setMascota] = useState(false);
@@ -277,9 +278,12 @@ const StagePasajes = (props) => {
                 tipos_servicio={ tipos_servicio }
                 filter_tipo={ filter_tipo }
                 filter_horas={ filter_horas }
+                filter_mascota={ filter_mascota }
                 stage={ stage }
                 toggleTipo={ toggleTipo }
                 toggleHoras={ toggleHoras }
+                mascota_allowed={ mascota_allowed }
+                setMascota={ setMascota }
             />
             <div>
                 { loadingParrilla ? <div className="empty-grill"><Loader/></div> : parrilla.length > 0 ? returnMappedParrilla() : 
