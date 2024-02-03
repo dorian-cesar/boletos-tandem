@@ -1,7 +1,15 @@
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./Boleto.module.css";
 import Parrilla from "../Parrilla/Parrilla";
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/effect-flip';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 
 var customParseFormat = require("dayjs/plugin/customParseFormat");
@@ -43,7 +51,7 @@ const Boleto = (props) => {
           <div className={ styles['ticket-details'] }>
             <div className={ styles['ticket-details__header'] }>
               <img src="img/logo-pullmanbus.svg" />
-              { props.mascota == '1' && <img src="img\icon\logos\paw-outline.svg" />}
+              { props.mascota == '1' && <img src="img/icon/logos/paw-outline.svg" />}
             </div>
             <div className={ styles['ticket-details__travel'] }>
               <div className={ styles['ticket-details__travel-detail'] }>
