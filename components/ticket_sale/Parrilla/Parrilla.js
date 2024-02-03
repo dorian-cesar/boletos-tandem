@@ -9,8 +9,6 @@ const Parrilla = (props) => {
   const [parrilla, setParrilla] = useState([]);
 
   useEffect(() => {
-    debugger;
-    console.log('isShowParrilla:::', isShowParrilla);
     if (isShowParrilla && !parrilla.length) {
       setOpenPaneRoot(props.k);
     }

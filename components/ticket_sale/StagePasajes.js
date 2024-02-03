@@ -9,6 +9,7 @@ import { LiberarAsientoDTO, TomaAsientoDTO } from "dto/TomaAsientoDTO";
 import { BuscarPlanillaVerticalDTO } from "dto/MapaAsientosDTO";
 import { AsientoDTO } from "dto/AsientoDTO";
 import { PasajeDTO } from "dto/PasajesDTO";
+import { FiltroServicios } from "./FiltroServicios/FiltroServicios";
 
 const ASIENTO_LIBRE = 'libre';
 const ASIENTO_LIBRE_MASCOTA = 'pet-free';
@@ -271,91 +272,23 @@ const StagePasajes = (props) => {
 
     return (
         
-        <div className="row">
-            <div className="col-12 col-md-3" key={stage + "it"}>
-                <div className="container-filtro">
-                    <h2 className="container-title">Filtrar por:</h2>
-                    <div className="w-100 mb-4">
-                        <span className="container-sub-title">Tipo de servicio</span>
-                        {
-                            tipos_servicio.map((tipoServicioMapped, indexTipoServicio) => {
-                                if (tipoServicioMapped !== undefined && tipoServicioMapped !== '') {
-                                    return (
-                                        <div key={ `tipo-servicio-${ indexTipoServicio }` } className="custom-control custom-checkbox">
-                                            <input 
-                                                key={ `check-${ tipoServicioMapped }-key` }
-                                                type="checkbox" 
-                                                className="custom-control-input" 
-                                                id={"tipoCheck" + indexTipoServicio}
-                                                onClick={ () => toggleTipo(tipoServicioMapped) }
-                                                defaultValue={ tipoServicioMapped }
-                                                defaultChecked={ filter_tipo.includes(tipoServicioMapped) }/>
-                                            <label
-                                                className="custom-control-label"
-                                                htmlFor={ "tipoCheck" + indexTipoServicio }>
-                                                &nbsp;{ tipoServicioMapped }
-                                            </label>
-                                        </div>
-                                    );
-                                } else {
-                                    return null; 
-                                }
-
-                            })
-                            
-                        }
-                    </div>
-                    <div className="w-100 mb-4">
-                        <span className="container-sub-title">Horarios</span>
-                        <div className="custom-control custom-checkbox">
-                            <input
-                                id="horaCheck1"
-                                type="checkbox"
-                                className="custom-control-input"
-                                defaultChecked={ filter_horas.includes("6-12") }
-                                onClick={ () => toggleHoras("6-12") }/>
-                            <label
-                                className="custom-control-label"
-                                htmlFor={"horaCheck1"}>
-                                &nbsp;6:00 AM a 11:59 AM
-                            </label>
-                        </div>
-                        <div className="custom-control custom-checkbox">
-                            <input
-                                id="horaCheck2"
-                                type="checkbox"
-                                className="custom-control-input"
-                                defaultChecked={ filter_horas.includes("12-20") }
-                                onClick={ () => toggleHoras("12-20") }/>
-                            <label
-                                className="custom-control-label"
-                                htmlFor="horaCheck2">
-                                &nbsp;12 PM a 19:59 PM
-                            </label>
-                        </div>
-                        <div className="custom-control custom-checkbox">
-                            <input
-                                id="horaCheck3"
-                                type="checkbox"
-                                className="custom-control-input"
-                                defaultChecked={ filter_horas.includes("20-6") }
-                                onClick={() => toggleHoras("20-6") }/>
-                            <label
-                                className="custom-control-label"
-                                htmlFor="horaCheck3">
-                                &nbsp;20:00 PM en adelante
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="col-12 col-md-9">
-                { loadingParrilla ? <Loader /> : parrilla.length > 0 ? returnMappedParrilla() : 
+        <div className="d-flex justify-content-center">
+            <FiltroServicios 
+                tipos_servicio={ tipos_servicio }
+                filter_tipo={ filter_tipo }
+                filter_horas={ filter_horas }
+                stage={ stage }
+                toggleTipo={ toggleTipo }
+                toggleHoras={ toggleHoras }
+            />
+            <div>
+                { loadingParrilla ? <div className="empty-grill"><Loader/></div> : parrilla.length > 0 ? returnMappedParrilla() : 
                     <h5 className="p-2">
                         Lo sentimos, no existen
                         resultados para su búsqueda
                     </h5>
                 }
+                { parrilla.length < 0 && <div className="empty-grill"></div> }
             </div>
         </div>
         
