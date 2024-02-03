@@ -212,3 +212,12 @@
 .right {
   right: -50px;
 }
+
+.form-check-input:checked {
+  background-color: var(--Naranjo, #FF6500) !important;
+  border-color: var(--Naranjo, #FF6500) !important;
+}
+
+.empty-grill {
+  width: 776px;
+}
