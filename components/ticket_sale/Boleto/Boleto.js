@@ -54,7 +54,7 @@ const Boleto = (props) => {
               <div className={ styles['ticket-details__travel-detail'] }>
                 <span>Duración</span>
                 <span className={ styles['bold'] }>{ duracion }</span>
-                <a className={ styles['link'] }>Itinerario</a>
+                <a className={ styles['link'] } onClick={ () => console.log('PROPS:::', props) }>Itinerario</a>
               </div>
               <div className={ styles['ticket-details__travel-detail'] }>
                 <span className={ styles['bold'] }>{ props.horaLlegada }</span>
@@ -78,6 +78,7 @@ const Boleto = (props) => {
           <Parrilla 
             isShowParrilla={ isOpened }
             asientos1={ props.asientos1 }
+            k={ props.k }
             />
         </div>
       </section>
