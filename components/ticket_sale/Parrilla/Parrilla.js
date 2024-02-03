@@ -53,8 +53,7 @@ const Parrilla = (props) => {
                         className={styles["cross"]}
                     />
                 </div>
-                {/* <div className="bus piso-1"> */}
-                <div className={ styles['bus'] }>
+                <div className={ `${ styles['bus'] } ${ styles['piso-1']}` }>
                   <img src="img/line.svg" alt="piso-1" className={ styles['linea-piso-1'] }/>
                   <div className={ styles['fila'] }>
                       <div className={ styles['columna'] }></div>

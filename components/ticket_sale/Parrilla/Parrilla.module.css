@@ -25,6 +25,8 @@
     border-radius: 10px;
     display: flex;
     flex-direction: row;
+    width: 465px;
+    height: 144px;
 }
 
 .bus img {
@@ -39,7 +41,11 @@
 }
 
 .bus .fila .columna img {
-    width: 100%;
+    width: 24px;
+    height: 24px;
+    transform: rotate(-90deg);
+    flex-shrink: 0;
+    padding-bottom: 20px;
 }
 
 .bus .fila .columna {
