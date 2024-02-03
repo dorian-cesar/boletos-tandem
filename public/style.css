@@ -533,16 +533,6 @@ a {
   margin-right: 20px;
 }
 
-.titulo-azul {
-  color: var(--azul-100, #3365B4);
-
-  /* font-family: Titillium Web; */
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 26px; 
-}
-
 .titulo-negro {
   font-size: 26px;
   padding: 20px 10px;
@@ -1998,15 +1988,6 @@ footer .item a {
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.20);
 }
 
-.label-titulo-busqueda-servicio {
-  color: #000;
-  /* font-family: Titillium Web; */
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
 .button-busqueda-servicio {
   display: flex;
   width: 200px;
@@ -2020,7 +2001,6 @@ footer .item a {
   background: var(--naranjo-100, #FF6500);
 
   color: var(--Blanco, #FFF);
-  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -2307,19 +2287,6 @@ footer .item a {
 .tab-panel.active {
   display: block;
 }
-
-.title-mascota-abordo {
-  color: var(--azul-100, #3365B4);
-  /* font-family: Titillium Web; */
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  display: flex;
-  align-items: right;
-  justify-content: right;
-}
-
 
 /***********************CUPONERA************************/
 .cuponera {

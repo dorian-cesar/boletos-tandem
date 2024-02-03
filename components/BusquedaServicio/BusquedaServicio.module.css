@@ -1,0 +1,53 @@
+
+.grupo-campos {
+    margin-bottom: 5px;
+}
+
+.titulo-azul {
+    color: var(--azul-100, #3365B4);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 26px; 
+}
+
+.title-mascota-abordo {
+    color: var(--azul-100, #3365B4);
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    display: flex;
+    align-items: right;
+    justify-content: right;
+}
+
+.label-titulo-busqueda-servicio {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.button-busqueda-servicio {  
+    display: flex;
+    width: 200px;
+    height: 40px;
+    padding: 0px 52px;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    border: 1px solid;
+    background: var(--naranjo-100, #FF6500);
+
+    color: var(--Blanco, #FFF);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+
+}

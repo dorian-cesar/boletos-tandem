@@ -1,7 +1,7 @@
 import axios from "axios";
 import Layout from "components/Layout";
 import Footer from 'components/Footer';
-import BusquedaServicio from 'components/BusquedaServicio';
+import BusquedaServicio from 'components/BusquedaServicio/BusquedaServicio';
 import { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
