@@ -130,6 +130,7 @@ const StagePasajes = (props) => {
 
             if ( mascota_allowed && mappedParrilla.mascota == 0 ) return;
             
+            // TODO: Filtrar por horas, verificar fucionamiento ya que solo funciona cuando se marca 1 hora en el filtro
             if ( filter_horas.length > 0 ) {
                 let isTime = filter_horas.reduce((prevValue, actValue) => {
                     if ( !prevValue ) {
@@ -177,7 +178,8 @@ const StagePasajes = (props) => {
                 { loadingParrilla ? <div className="empty-grill"><Loader/></div> : parrilla.length > 0 ? returnMappedParrilla() : 
                     <h5 className="p-2">
                         Lo sentimos, no existen
-                        resultados para su búsqueda
+                        resultados para su búsqueda, 
+                        busque en otro horario
                     </h5>
                 }
                 { parrilla.length < 0 && <div className="empty-grill"></div> }
