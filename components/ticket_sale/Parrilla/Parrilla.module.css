@@ -26,11 +26,7 @@
     display: flex;
     flex-direction: row;
     width: 465px;
-    height: 144px;
-}
-
-.bus img {
-    width: 6px;
+    align-items: flex-start;
 }
 
 .bus .fila {
@@ -42,65 +38,87 @@
 .bus .fila .imagen-volante {
     width: 24px;
     flex-shrink: 0;
-    margin: auto 0 20px 8px;
+    margin: auto 0 0 8px;
 }
 
 .bus .fila .columna {
-    width: 38px;
-    height: 38px;
     background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;
     transform: rotate(-90deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-block: 5px;
+    margin-block: 1px;
+}
+
+.contenedor-bus {
+    display: flex;
+    width: 100%;
+    margin-block: 20px;
+}
+
+.bus .fila .columna img {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    transform: rotate(90deg);
+    color: var(--naranjo);
 }
 
 .bus .fila .columna span {
     display: block;
     width: 100%;
-    font-size: 15px;
+    font-size: 10px;
     text-align: center;
-    padding-top: 2px;
+    padding-inline-end: 2px;
     transform: rotate(90deg);
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 }
 
-.bus .fila .columna.disponible {
-  transform: rotate(0deg);
-  background-image: url(../../../public/img/Asiento.svg);
-  color: var(--naranjo);
+.bus .fila .disponible {
+    color: var(--naranjo);
+    cursor: pointer;
 }
 
-.bus .fila .columna.disponible span{
-    transform: rotate(0deg);
-  }
+.bano {
+    color: var(--naranjo);
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+}
 
-.bus .fila .columna.reservado {
+.bus .fila .reservado {
   background-image: url(../../../public/img/a-reservado.svg);
+  cursor: pointer;
   color: #9A9A9A;
 }
 
-.bus .fila .columna.seleccion {
+.bus .fila .seleccion {
   background-image: url(../../../public/img/a-seleccionado.svg);
+  cursor: pointer;
   color: #fff;
 }
 
-.bus .fila .columna.bano {
-    background-image: url(../../../public/img/a-bano.svg);
-    transform: rotate(0deg);
-}
-
-.bus .fila .columna.m-disponible {
+.bus .fila .m-disponible {
     background-image: url(../../../public/img/am-disponible.svg);
+    cursor: pointer;
 }
 
-.bus .fila .columna.m-seleccion {
+.bus .fila .m-seleccion {
     background-image: url(../../../public/img/am-seleccionado.svg);
+    cursor: pointer;
 }
 
-.bus .fila .columna.m-reservado {
+.bus .fila .m-reservado {
     background-image: url(../../../public/img/am-reservado.svg);
+    cursor: pointer;
 }
 
-.bus .fila .columna.conductor {
+.bus .fila .conductor {
     background-image: url(../../../public/img/conductor.svg);
 }
 

@@ -50,31 +50,36 @@ const Parrilla = (props) => {
 
     let classes = "";
     if (isSelected) {
-      classes += "seleccion ";
+      classes += styles['seleccion'] + ' ';
     }
+
     if (isPetSelected) {
-      classes += "m-seleccion ";
+      classes += styles['m-seleccion'] + ' ';
     }
+
     if (asiento.tipo === "pet" && asiento.estado === "ocupado") {
-      classes += "m-disponible ";
+      classes += styles['m-disponible'] + ' ';
     }
+
     if (asiento.tipo === "pet" && asiento.estado === "pet-free") {
-      classes += "m-disponible ";
+      classes += styles['m-disponible'] + ' ';
     }
+
     if (
       asiento.estado === "pet-busy" &&
       !props.asientos_selected.find((i) => i.asiento === asiento.asiento)
     ) {
-      classes += "m-reservado ";
+      classes += styles['m-reservado'] + ' ';
     }
     if (asiento.estado === "ocupado") {
-      classes += "reservado ";
+      classes += styles['reservado'] + ' ';
     }
     if (asiento.estado === "libre") {
-      classes += "disponible ";
+      classes += styles['disponible'] + ' ';
     }
+    debugger;
     if (asiento.asiento === "B1" || asiento.asiento === "B2") {
-      classes += "bano ";
+      classes += styles['bano'] + ' ';
     }
 
     return classes.trim();
@@ -261,6 +266,18 @@ function validarMaximoAsientos(asientos) {
     }
   }
 
+  function getImage( sit ) {
+    if( sit.asiento === 'B1' || sit.asiento === 'B2') {
+      return 'img/a-bano.svg';
+    }
+    if( sit.estado === 'libre' && sit.valorAsiento > 0) {
+      return 'img/Asiento.svg';
+    }
+    if( sit.estado === 'libre' && sit.valorAsiento === 0) {
+      return '';
+    }
+  }
+
   return (
     isShowParrilla && (
       <section className={styles["grill-detail"]}>
@@ -271,94 +288,121 @@ function validarMaximoAsientos(asientos) {
             onClick={() => setIsShowParrilla(!isShowParrilla)}
           />
         </div>
-        <div className={`${styles["bus"]} ${styles["piso-1"]}`}>
-          <img
-            src="img/line.svg"
-            alt="piso-1"
-            className={styles["linea-piso-1"]}
-          />
-          <div className={styles["fila"]}>
+        <div className={ styles['disponibilidad-bus'] }>
+          <div className={`${styles["bus"]} ${styles["piso-1"]}`}>
             <img
-              className={styles["imagen-volante"]}
-              src="img/volante.svg"
-              alt="Volante conductor"
+              src="img/line.svg"
+              alt="piso-1"
+              className={styles["linea-piso-1"]}
             />
-          </div>
-          <div className={styles["fila"]}>
-            <div className={styles["columna"]}></div>
-            <div className={styles["columna"]}></div>
-            <div className={styles["columna"]}></div>
-            <div className={styles["columna"]}></div>
-            <div className={styles["columna"]}></div>
-          </div>
-          {props.asientos1 ? (
-            <>
-              {props.asientos1.map((i, k) => {
-                return (
-                  <div key={`fila-asiento-${k}`} className={styles["fila"]}>
-                    {i.map((ii, kk) => {
-                      return (
+            <div className={ styles['contenedor-bus'] }>
+              <div className={styles["fila"]}>
+                <img
+                  className={styles["imagen-volante"]}
+                  src="img/volante.svg"
+                  alt="Volante conductor"
+                />
+              </div>
+              <div className={ `${ styles["fila"] } ${ styles['fila-vacia'] }`}>
+                <div className={styles["columna"]}></div>
+                <div className={styles["columna"]}></div>
+                <div className={styles["columna"]}></div>
+                <div className={styles["columna"]}></div>
+                <div className={styles["columna"]}></div>
+              </div>
+              {props.asientos1 ? (
+                <>
+                  {function () {
+                    let max = 7 - props.asientos1.length;
+                    let n = 0;
+                    let liens = [];
+                    while (n < max) {
+                      liens.push(
                         <div
-                          key={`columna-asiento-${kk}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            tomarAsiento(
-                              ii,
-                              props,
-                              props.k,
-                              1,
-                              props.stage
-                            );
-                          }}
-                          className={`${styles["columna"]} ${
-                            styles[asientoClass(ii)]
-                          }`}
-                        >
-                          <span>
-                            {ii.asiento != "B1" &&
-                            ii.asiento != "B2" &&
-                            ii.estado != "sinasiento" &&
-                            ii.tipo != "pet"
-                              ? ii.asiento
-                              : ""}
-                          </span>
-                        </div>
+                          key={`fila-asiento-${n}`}
+                          className={styles["fila"]}
+                        ></div>
                       );
-                    })}
-                  </div>
-                );
-              })}
-              {function () {
-                let max = 10 - props.asientos1.length;
-                let n = 0;
-                let liens = [];
-                while (n < max) {
-                  liens.push(
-                    <div
-                      key={`fila-asiento-${n}`}
-                      className={styles["fila"]}
-                    ></div>
-                  );
-                  n++;
-                }
-                return liens;
-              }.call(this)}
-            </>
-          ) : (
-            ""
-          )}
+                      n++;
+                    }
+                    return liens;
+                  }.call(this)}
+                  {props.asientos1.map((i, k) => {
+                    return (
+                      <div key={`fila-asiento-${k}`} className={styles["fila"]}>
+                        {i.map((ii, kk) => {
+                          return (
+                            <div
+                              key={`columna-asiento-${kk}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                tomarAsiento(
+                                  ii,
+                                  props,
+                                  props.k,
+                                  1,
+                                  props.stage
+                                );
+                              }}
+                              className={`${styles["columna"]} ${ asientoClass(ii) } `}
+                            >
+                              { ii.asiento && <img src={ getImage(ii) }/> }
+                              <span>
+                                {ii.asiento != "B1" &&
+                                ii.asiento != "B2" &&
+                                ii.estado != "sinasiento" &&
+                                ii.tipo != "pet"
+                                  ? ii.asiento
+                                  : ""}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                  {function () {
+                    let max = 7 - props.asientos1.length;
+                    let n = 0;
+                    let liens = [];
+                    while (n < max) {
+                      liens.push(
+                        <div
+                          key={`fila-asiento-${n}`}
+                          className={styles["fila"]}
+                        ></div>
+                      );
+                      n++;
+                    }
+                    return liens;
+                  }.call(this)}
+                </>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+          <div className={ styles['estados-disponibilidad'] }>
+
+          </div>
         </div>
-        <div className={styles["button_first_floor"]}>
-          <span>#Piso 1</span>
-        </div>
-        <div className={styles["button_second_floor"]}>
-          <span>#Piso 2</span>
-        </div>
-        <div className={styles["button_continue"]}>
-          <span>Continuar: ${/* valor*/}</span>
-        </div>
-        <div className={styles["button_little_car"]}>
-          <span>Agregar al carro</span>
+        <div className={ styles['botones-inferiores'] }>
+          <div className={ styles['seleccion-pisos']}>
+            <div className={styles["button_first_floor"]}>
+              <span>#Piso 1</span>
+            </div>
+            <div className={styles["button_second_floor"]}>
+              <span>#Piso 2</span>
+            </div>
+          </div>
+          <div className={styles["button_continue"]}>
+            <div className={styles["button_continue"]}>
+              <span>Continuar: ${/* valor*/}</span>
+            </div>
+            <div className={styles["button_little_car"]}>
+              <span>Agregar al carro</span>
+            </div>
+          </div>
         </div>
       </section>
     )
