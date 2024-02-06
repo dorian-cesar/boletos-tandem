@@ -84,15 +84,102 @@
     cursor: pointer;
 }
 
+.linea-piso-1 {
+    margin: auto;
+}
+
+.disponibilidad-bus {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.disponibilidad-bus .estados-disponibilidad {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-left: 16px;
+}
+
+.disponibilidad-bus .estados-disponibilidad div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.disponibilidad-bus .estados-disponibilidad div span {
+    margin-left: 16px;
+}
+
+.disponibilidad-bus .estados-disponibilidad div div {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.disponibilidad-bus .estados-disponibilidad div .asiento-disponible {
+    border: 3px solid #FF6500;
+}
+
+.disponibilidad-bus .estados-disponibilidad div .asiento-seleccionado {
+    border: 3px solid #3365B4;
+}
+
+.disponibilidad-bus .estados-disponibilidad div .asiento-reservado {
+    border: 3px solid #7F7F7F;
+}
+
+.botones-inferiores {
+    display: flex;
+    flex-direction: row;
+}
+
+.botones-inferiores .botones-seleccion-piso {
+    display: flex;
+    flex-direction: row;
+    width: 465px;
+    justify-content: center;
+    margin-block-start: 24px;
+}
+
+.botones-inferiores .botones-seleccion-piso .seleccion-pisos {
+    display: flex;
+    flex-direction: row;
+}
+
+.botones-inferiores .botones-seleccion-piso .seleccion-pisos div {
+    margin-inline: 4px;
+}
+
+.botones-inferiores .botones-pago {
+    display: flex;
+    flex-direction: column;
+    margin-block-start: 20px;
+}
+
+.botones-inferiores .botones-pago div {
+    margin-block: 4px;
+}
+
+.botones-inferiores .botones-pago .texto-cantidad-asientos {
+    color: #000;
+    text-align: center;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
 .bano {
     color: var(--naranjo);
-    cursor: pointer;
     width: 24px;
     height: 24px;
 }
 
 .bus .fila .reservado {
-  background-image: url(../../../public/img/a-reservado.svg);
   cursor: pointer;
   color: #9A9A9A;
 }

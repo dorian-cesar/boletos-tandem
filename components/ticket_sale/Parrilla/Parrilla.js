@@ -102,7 +102,7 @@ const Parrilla = (props) => {
     } catch ({ message }) {
         console.error(`Error al recargar panel [${ message }]`);
     }
-};
+  };
 
   async function servicioTomarAsiento(
     parrillaServicio,
@@ -271,7 +271,10 @@ function validarMaximoAsientos(asientos) {
       return 'img/a-bano.svg';
     }
     if( sit.estado === 'libre' && sit.valorAsiento > 0) {
-      return 'img/Asiento.svg';
+      return 'img/asiento_disponible.svg';
+    }
+    if( sit.clase && sit.estado === 'ocupado' ) {
+      return 'img/asiento_ocupado.svg';
     }
     if( sit.estado === 'libre' && sit.valorAsiento === 0) {
       return '';
@@ -283,7 +286,7 @@ function validarMaximoAsientos(asientos) {
       <section className={styles["grill-detail"]}>
         <div className={styles["cross-container"]}>
           <img
-            src="img/icon/buttons/close-circle-outline.svg"
+            src="img/close.svg"
             className={styles["cross"]}
             onClick={() => setIsShowParrilla(!isShowParrilla)}
           />
@@ -383,24 +386,40 @@ function validarMaximoAsientos(asientos) {
             </div>
           </div>
           <div className={ styles['estados-disponibilidad'] }>
-
+            <div>
+              <div className={styles["asiento-disponible"]}></div>
+              <span>Disponible</span>
+            </div>
+            <div>
+              <div className={styles["asiento-seleccionado"]}></div>
+              <span>Seleccionado</span>
+            </div>
+            <div>
+              <div className={styles["asiento-reservado"]}></div>
+              <span>Reservado</span>
+            </div>
           </div>
         </div>
         <div className={ styles['botones-inferiores'] }>
-          <div className={ styles['seleccion-pisos']}>
-            <div className={styles["button_first_floor"]}>
-              <span>#Piso 1</span>
-            </div>
-            <div className={styles["button_second_floor"]}>
-              <span>#Piso 2</span>
+          <div className={ styles['botones-seleccion-piso'] }>
+            <div className={ styles['seleccion-pisos']}>
+              <div className={styles["button_first_floor"]}>
+                <span>#Piso 1</span>
+              </div>
+              <div className={styles["button_second_floor"]}>
+                <span>#Piso 2</span>
+              </div>
             </div>
           </div>
-          <div className={styles["button_continue"]}>
+          <div className={ styles['botones-pago'] }>
             <div className={styles["button_continue"]}>
               <span>Continuar: ${/* valor*/}</span>
             </div>
             <div className={styles["button_little_car"]}>
               <span>Agregar al carro</span>
+            </div>
+            <div className={ styles['texto-cantidad-asientos'] }>
+              <span>Cantidad de asientos seleccionados: 1</span>
             </div>
           </div>
         </div>
