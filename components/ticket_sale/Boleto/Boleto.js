@@ -3,8 +3,6 @@ import { useState } from "react";
 import styles from "./Boleto.module.css";
 import Parrilla from "../Parrilla/Parrilla";
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/effect-flip';

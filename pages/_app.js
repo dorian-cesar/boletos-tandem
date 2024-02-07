@@ -1,4 +1,6 @@
 import { AppProps } from 'next/app'
+import { store } from 'store/store';
+import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
 import fetchJson from 'lib/fetchJson'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -22,18 +24,20 @@ function MyApp({ Component, pageProps }) {
     import("bootstrap/dist/js/bootstrap");
   }, []);
   return (
-    <SWRConfig
-      value={{
-        fetcher: fetchJson,
-        onError: (err) => {
-          console.error(err)
-        },
-      }}
-    >
-      <main className={titillium.className}>
-        <Component {...pageProps} />
-      </main>
-    </SWRConfig>
+    <Provider store={store}>
+      <SWRConfig
+        value={{
+          fetcher: fetchJson,
+          onError: (err) => {
+            console.error(err)
+          },
+        }}
+      >
+        <main className={titillium.className}>
+          <Component {...pageProps} />
+        </main>
+      </SWRConfig>
+    </Provider>
   )
 }
 

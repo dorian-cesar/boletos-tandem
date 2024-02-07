@@ -7,7 +7,10 @@ import {
 import { LiberarAsientoDTO, TomaAsientoDTO } from "dto/TomaAsientoDTO";
 import styles from "./Parrilla.module.css";
 import { AsientoDTO } from "dto/AsientoDTO";
-import { encryptData, decryptData } from "../../../utils/encrypt-data";
+
+import { useSelector, useDispatch } from 'react-redux'
+import { agregarServicio } from "store/usuario/compra-slice";
+import { toast } from "react-toastify";
 
 const ASIENTO_LIBRE = 'libre';
 const ASIENTO_LIBRE_MASCOTA = 'pet-free';
@@ -19,6 +22,10 @@ const ASIENTO_OCUPADO = 'ocupado';
 const MAXIMO_COMPRA_ASIENTO = 4;
 
 const Parrilla = (props) => {
+
+  const carroCompras = useSelector((state) => state.compra.listaCarrito)
+  const dispatch = useDispatch()
+  
   const {
     isShowParrilla = false,
     parrilla,
@@ -41,16 +48,11 @@ const Parrilla = (props) => {
   }, [isShowParrilla]);
 
   const [piso, setPiso] = useState(1);
+
   const asientoClass = (asiento) => {
     debugger;
 
-    let asientosSeleccionados = [];
-
-    if ( stage == STAGE_BOLETO_IDA ) {
-      asientosSeleccionados = decryptData('SELECTED_SEATS_IDA') || [];
-    } else {
-      asientosSeleccionados = decryptData('SELECTED_SEATS_VUELTA') || [];
-    }
+    let asientosSeleccionados = carroCompras || [];
 
     const isSelected = asientosSeleccionados.find(
       (i) => i.asiento === asiento.asiento && asiento.tipo !== "pet-busy"
@@ -150,36 +152,14 @@ const Parrilla = (props) => {
     }
   }
 
-  function guardarAsiento(asiento) {
-    debugger;
-    asiento.estado = 'seleccionado';
-    if (stage == STAGE_BOLETO_IDA) {
-      const asientosSeleccionadosIda = decryptData('SELECTED_SEATS_IDA') || [];
-      if( asientosSeleccionadosIda.length === 0 ) {
-        encryptData([...asientosSeleccionadosIda, asiento], 'SELECTED_SEATS_IDA', Date.now() + (15 * 60 * 1000));
-      } else {
-        encryptData([...asientosSeleccionadosIda, asiento], 'SELECTED_SEATS_IDA');
-      }
-      // Eliminado por nuevo metodo de compra con carrito
-      // setAsientosIda(asientosSeleccionadosIda);
-      // setServicioIda(parrilla.parilla[indexParrilla]);
-    } else {
-      const asientosSeleccionadosVuelta = decryptData('SELECTED_SEATS_VUELTA') || [];
-      if( asientosSeleccionadosVuelta.length === 0 ) {
-        encryptData([...asientosSeleccionadosVuelta, asiento], 'SELECTED_SEATS_VUELTA', Date.now() + (15 * 60 * 1000));
-      } else {
-        encryptData([...asientosSeleccionadosVuelta, asiento], 'SELECTED_SEATS_VUELTA');
-      }
-      // Eliminado por nuevo metodo de compra con carrito
-      // setAsientosVuelta(asientosTemporal);
-      // setServicioVuelta(parrilla.parilla[indexParrilla]);
-    }
-  }
-
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
       debugger;
-      console.log('asiento datos',asiento)
+      const carrito = {
+        servicio: parrilla.parrilla[indexParrilla],
+        asiento
+      }
+
       let asientosTemporal =
         stage == STAGE_BOLETO_IDA ? [...asientosIda] : [...asientosVuelta];
       const asientoSeleccionado = asientosTemporal.find(
@@ -191,72 +171,74 @@ const Parrilla = (props) => {
         asiento.estado == ASIENTO_LIBRE_MASCOTA
       ) {
         if (!validarMaximoAsientos(asientosTemporal)) return;
-        asientosTemporal = await servicioTomarAsiento(
-          parrilla,
-          asiento.asiento,
-          piso,
-          asientosTemporal
-        );
+        // asientosTemporal = await servicioTomarAsiento(
+        //   parrilla,
+        //   asiento.asiento,
+        //   piso,
+        //   asientosTemporal
+        // );
 
-        if (
-          asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
-          asiento.tipo == ASIENTO_TIPO_MASCOTA
-        ) {
-          asientosTemporal = await servicioTomarAsiento(
-            parrilla,
-            asiento.asientoAsociado,
-            piso,
-            asientosTemporal,
-            true
-          );
-        }
+        // if (
+        //   asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
+        //   asiento.tipo == ASIENTO_TIPO_MASCOTA
+        // ) {
+        //   asientosTemporal = await servicioTomarAsiento(
+        //     parrilla,
+        //     asiento.asientoAsociado,
+        //     piso,
+        //     asientosTemporal,
+        //     true
+        //   );
+        // }
 
-        guardarAsiento(asiento);
+        dispatch(agregarServicio(carrito));
+        return;
 
-        await reloadPane(indexParrilla);
+        // await reloadPane(indexParrilla);
       }
 
       if (asiento.estado == ASIENTO_OCUPADO && asientoSeleccionado) {
-        await servicioLiberarAsiento(
-          parrilla.parilla[indexParrilla],
-          asiento.asiento,
-          asientoSeleccionado.codigoReserva
-        );
+        // await servicioLiberarAsiento(
+        //   parrilla.parilla[indexParrilla],
+        //   asiento.asiento,
+        //   asientoSeleccionado.codigoReserva
+        // );
 
-        if (
-          asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
-          asiento.tipo == ASIENTO_TIPO_MASCOTA
-        ) {
-          await servicioLiberarAsiento(
-            parrilla.parilla[indexParrilla],
-            asiento.asientoAsociado,
-            piso,
-            asientoSeleccionado.codigoReserva
-          );
-        }
+        // if (
+        //   asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
+        //   asiento.tipo == ASIENTO_TIPO_MASCOTA
+        // ) {
+        //   await servicioLiberarAsiento(
+        //     parrilla.parilla[indexParrilla],
+        //     asiento.asientoAsociado,
+        //     piso,
+        //     asientoSeleccionado.codigoReserva
+        //   );
+        // }
 
-        await reloadPane(indexParrilla);
-        asientosTemporal = asientosTemporal.filter(
-          (asientoBusqueda) => asientoBusqueda.asiento != asiento.asiento
-        );
-        if (
-          asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
-          asiento.tipo == ASIENTO_TIPO_MASCOTA
-        ) {
-          asientosTemporal = asientosTemporal.filter(
-            ({ asiento }) => asiento != asiento.asientoAsociado
-          );
-        }
+        // // await reloadPane(indexParrilla);
+        // // asientosTemporal = asientosTemporal.filter(
+        // //   (asientoBusqueda:any) => asientoBusqueda.asiento != asiento.asiento
+        // // );
+        // if (
+        //   asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
+        //   asiento.tipo == ASIENTO_TIPO_MASCOTA
+        // ) {
+        //   asientosTemporal = asientosTemporal.filter(
+        //     ({ asiento }:any) => asiento != asiento.asientoAsociado
+        //   );
+        // }
       }
+      
 
-      guardarAsiento(asiento);
-
+      dispatch(agregarServicio(carrito));
+      return;
     } catch ({ message }) {
       console.error(`Error al tomar asiento [${message}]`);
     }
   }
 
-  async function servicioLiberarAsiento(parrillaServicio, asiento, piso, codigoReserva) {
+  async function servicioLiberarAsiento(parrillaServicio, asiento, piso, codigoReserva = '') {
     try {
         const { data } = await axios.post('/api/ticket_sale/liberar-asiento', new LiberarAsientoDTO(parrillaServicio, '', '', asiento, piso, stage, codigoReserva))
         return data;
@@ -265,17 +247,17 @@ const Parrilla = (props) => {
     }
 }
 
-function validarMaximoAsientos(asientos) {
-    if( asientos.length >= MAXIMO_COMPRA_ASIENTO ) {
-        toast.warn(`Máximo ${ MAXIMO_COMPRA_ASIENTO } pasajes`, {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false
-        });
-        return false;
-    }
-    return true;
-}
+  function validarMaximoAsientos(asientos) {
+      if( asientos.length >= MAXIMO_COMPRA_ASIENTO ) {
+          toast.warn(`Máximo ${ MAXIMO_COMPRA_ASIENTO } pasajes`, {
+              position: 'top-right',
+              autoClose: 5000,
+              hideProgressBar: false
+          });
+          return false;
+      }
+      return true;
+  }
 
   async function setOpenPaneRoot(indexParrilla) {
     try {
@@ -326,7 +308,7 @@ function validarMaximoAsientos(asientos) {
           <img
             src="img/close.svg"
             className={styles["cross"]}
-            onClick={() => setIsShowParrilla(!isShowParrilla)}
+            // onClick={() => setIsShowParrilla(!isShowParrilla)}
           />
         </div>
         <div className={ styles['disponibilidad-bus'] }>
@@ -381,8 +363,7 @@ function validarMaximoAsientos(asientos) {
                                   ii,
                                   props,
                                   props.k,
-                                  1,
-                                  props.stage
+                                  1
                                 );
                               }}
                               className={`${styles["columna"]} ${ asientoClass(ii) } `}
