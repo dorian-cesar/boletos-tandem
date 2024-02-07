@@ -185,9 +185,8 @@
 }
 
 .bus .fila .seleccion {
-  background-image: url(../../../public/img/a-seleccionado.svg);
   cursor: pointer;
-  color: #fff;
+  color: #3365B4;
 }
 
 .bus .fila .m-disponible {

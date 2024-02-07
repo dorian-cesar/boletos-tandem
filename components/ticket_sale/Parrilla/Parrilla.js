@@ -7,6 +7,7 @@ import {
 import { LiberarAsientoDTO, TomaAsientoDTO } from "dto/TomaAsientoDTO";
 import styles from "./Parrilla.module.css";
 import { AsientoDTO } from "dto/AsientoDTO";
+import { encryptData, decryptData } from "../../../utils/encrypt-data";
 
 const ASIENTO_LIBRE = 'libre';
 const ASIENTO_LIBRE_MASCOTA = 'pet-free';
@@ -41,10 +42,20 @@ const Parrilla = (props) => {
 
   const [piso, setPiso] = useState(1);
   const asientoClass = (asiento) => {
-    const isSelected = props.asientos_selected.find(
+    debugger;
+
+    let asientosSeleccionados = [];
+
+    if ( stage == STAGE_BOLETO_IDA ) {
+      asientosSeleccionados = decryptData('SELECTED_SEATS_IDA') || [];
+    } else {
+      asientosSeleccionados = decryptData('SELECTED_SEATS_VUELTA') || [];
+    }
+
+    const isSelected = asientosSeleccionados.find(
       (i) => i.asiento === asiento.asiento && asiento.tipo !== "pet-busy"
     );
-    const isPetSelected = props.asientos_selected.find(
+    const isPetSelected = asientosSeleccionados.find(
       (i) => i.asiento === asiento.asiento && asiento.estado === "pet-busy"
     );
 
@@ -67,7 +78,7 @@ const Parrilla = (props) => {
 
     if (
       asiento.estado === "pet-busy" &&
-      !props.asientos_selected.find((i) => i.asiento === asiento.asiento)
+      !asientosSeleccionados.find((i) => i.asiento === asiento.asiento)
     ) {
       classes += styles['m-reservado'] + ' ';
     }
@@ -77,7 +88,7 @@ const Parrilla = (props) => {
     if (asiento.estado === "libre") {
       classes += styles['disponible'] + ' ';
     }
-    debugger;
+
     if (asiento.asiento === "B1" || asiento.asiento === "B2") {
       classes += styles['bano'] + ' ';
     }
@@ -139,8 +150,35 @@ const Parrilla = (props) => {
     }
   }
 
+  function guardarAsiento(asiento) {
+    debugger;
+    asiento.estado = 'seleccionado';
+    if (stage == STAGE_BOLETO_IDA) {
+      const asientosSeleccionadosIda = decryptData('SELECTED_SEATS_IDA') || [];
+      if( asientosSeleccionadosIda.length === 0 ) {
+        encryptData([...asientosSeleccionadosIda, asiento], 'SELECTED_SEATS_IDA', Date.now() + (15 * 60 * 1000));
+      } else {
+        encryptData([...asientosSeleccionadosIda, asiento], 'SELECTED_SEATS_IDA');
+      }
+      // Eliminado por nuevo metodo de compra con carrito
+      // setAsientosIda(asientosSeleccionadosIda);
+      // setServicioIda(parrilla.parilla[indexParrilla]);
+    } else {
+      const asientosSeleccionadosVuelta = decryptData('SELECTED_SEATS_VUELTA') || [];
+      if( asientosSeleccionadosVuelta.length === 0 ) {
+        encryptData([...asientosSeleccionadosVuelta, asiento], 'SELECTED_SEATS_VUELTA', Date.now() + (15 * 60 * 1000));
+      } else {
+        encryptData([...asientosSeleccionadosVuelta, asiento], 'SELECTED_SEATS_VUELTA');
+      }
+      // Eliminado por nuevo metodo de compra con carrito
+      // setAsientosVuelta(asientosTemporal);
+      // setServicioVuelta(parrilla.parilla[indexParrilla]);
+    }
+  }
+
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
+      debugger;
       console.log('asiento datos',asiento)
       let asientosTemporal =
         stage == STAGE_BOLETO_IDA ? [...asientosIda] : [...asientosVuelta];
@@ -172,6 +210,8 @@ const Parrilla = (props) => {
             true
           );
         }
+
+        guardarAsiento(asiento);
 
         await reloadPane(indexParrilla);
       }
@@ -209,13 +249,8 @@ const Parrilla = (props) => {
         }
       }
 
-      if (stage == STAGE_BOLETO_IDA) {
-        setAsientosIda(asientosTemporal);
-        setServicioIda(parrilla.parilla[indexParrilla]);
-      } else {
-        setAsientosVuelta(asientosTemporal);
-        setServicioVuelta(parrilla.parilla[indexParrilla]);
-      }
+      guardarAsiento(asiento);
+
     } catch ({ message }) {
       console.error(`Error al tomar asiento [${message}]`);
     }
@@ -275,6 +310,9 @@ function validarMaximoAsientos(asientos) {
     }
     if( sit.clase && sit.estado === 'ocupado' ) {
       return 'img/asiento_ocupado.svg';
+    }
+    if( sit.clase && sit.estado === 'seleccion' ) {
+      return 'img/asiento_seleccionado.svg';
     }
     if( sit.estado === 'libre' && sit.valorAsiento === 0) {
       return '';
@@ -419,7 +457,7 @@ function validarMaximoAsientos(asientos) {
               <span>Agregar al carro</span>
             </div>
             <div className={ styles['texto-cantidad-asientos'] }>
-              <span>Cantidad de asientos seleccionados: 1</span>
+              <span>Cantidad de asientos seleccionados: { asientosIda.length }</span>
             </div>
           </div>
         </div>
