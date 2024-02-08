@@ -3,12 +3,16 @@ import { useRouter } from "next/router";
 import Login from "components/Login";
 import { useLocalStorage } from "hooks/useLocalStorage";
 import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux'
 import Link from "next/link";
 
 export default function Header({ openNav }: { openNav: any }) {
   const [user, setUser] = useState();
   const router = useRouter();
   const { getItem, clear } = useLocalStorage();
+
+  const carroCompras = useSelector((state:any) => state.compra.listaCarrito)
+  
   useEffect(() => {
     setUser(getItem("user"));
   }, []);
@@ -49,11 +53,11 @@ export default function Header({ openNav }: { openNav: any }) {
               </div>
               <div className="col-4 col-sm-2 d-flex justify-content-end">       
                 {user == null ? (
-                       <img src="../img/icon/logos/cuenta.svg"
-                       className="img-fluid" 
-                       data-bs-toggle="modal"
-                       data-bs-target="#loginModal"
-                        />
+                  <img src="../img/icon/logos/cuenta.svg"
+                  className="img-fluid" 
+                  data-bs-toggle="modal"
+                  data-bs-target="#loginModal"
+                  />
                 ) : (
                   <ul className="nav nav-pills">
                     <li className="nav-item dropdown">
@@ -110,6 +114,14 @@ export default function Header({ openNav }: { openNav: any }) {
                     </li>
                   </ul>
                 )}
+                <Link href="/carrito" legacyBehavior>
+                  <a className="d-flex align-items-center">
+                    <img src="../img/cart-outline.svg" width={30} />
+                    <span className="badge bg-primary rounded-pill">
+                      {carroCompras.length}
+                    </span>
+                  </a>
+                </Link>
               </div>
             </div>
           </div>
