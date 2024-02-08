@@ -55,7 +55,7 @@ const Parrilla = (props) => {
       if( carro.servicio.idServicio === parrilla.parrilla[indexParrilla].idServicio ) {
         returnedArray.push({
           ...carro.asiento,
-          estado: 'seleccion'
+          estado: carro.asiento.tipo !== 'pet' ? 'seleccion' : 'seleccion-mascota'
         });
       }
     });
@@ -84,12 +84,11 @@ const Parrilla = (props) => {
 
 
       let classes = "";
-      if (isSelected) {
-        debugger;
+      if (asiento.estado === 'seleccion') {
         classes += styles['seleccion'] + ' ';
       }
 
-      if (isPetSelected) {
+      if (asiento.estado === 'seleccion-mascota') {
         classes += styles['m-seleccion'] + ' ';
       }
 
