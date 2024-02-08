@@ -49,80 +49,98 @@ const Parrilla = (props) => {
 
   const [piso, setPiso] = useState(1);
 
-  function obtenerAsientosSeleccionados() {
-    const asientosSeleccionados = carroCompras.map((carro) => {
-      if( carro.servicio.idServicio === parrilla.idServicio ) {
-        return {
+  function obtenerAsientosSeleccionados(indexParrilla) {
+    const returnedArray = []
+    carroCompras.filter((carro) => {
+      if( carro.servicio.idServicio === parrilla.parrilla[indexParrilla].idServicio ) {
+        returnedArray.push({
           ...carro.asiento,
           estado: 'seleccion'
-        };
+        });
       }
     });
 
-    return asientosSeleccionados;
+    return returnedArray;
   }
 
-  const asientoClass = (asiento) => {
-    let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
+  const asientoClass = (asiento, indexParrilla) => {
+    try {
+      let asientosSeleccionados = obtenerAsientosSeleccionados(indexParrilla) || [];
 
-    const isSelected = asientosSeleccionados.find(
-      (i) => i.asiento === asiento.asiento && asiento.tipo !== "pet-busy"
-    );
-    const isPetSelected = asientosSeleccionados.find(
-      (i) => i.asiento === asiento.asiento && asiento.estado === "pet-busy"
-    );
+      let isSelected = false, isPetSelected = false;
 
-    let classes = "";
-    if (isSelected) {
-      classes += styles['seleccion'] + ' ';
-    }
+      if ( asientosSeleccionados.length > 0 ) {
+        const findAsiento = asientosSeleccionados.find((i) => i.asiento === asiento.asiento);
+        if( findAsiento ) {
+          asiento = findAsiento;
+        }
+        isSelected = asientosSeleccionados.includes(
+          (i) => i.asiento === asiento && asiento.tipo !== "pet-busy"
+        );
+        isPetSelected = asientosSeleccionados.includes(
+          (i) => i.asiento === asiento && asiento.estado === "pet-busy"
+        );
+      }
 
-    if (isPetSelected) {
-      classes += styles['m-seleccion'] + ' ';
-    }
 
-    if (asiento.tipo === "pet" && asiento.estado === "ocupado") {
-      classes += styles['m-disponible'] + ' ';
-    }
+      let classes = "";
+      if (isSelected) {
+        debugger;
+        classes += styles['seleccion'] + ' ';
+      }
 
-    if (asiento.tipo === "pet" && asiento.estado === "pet-free") {
-      classes += styles['m-disponible'] + ' ';
-    }
+      if (isPetSelected) {
+        classes += styles['m-seleccion'] + ' ';
+      }
 
-    if (
-      asiento.estado === "pet-busy" &&
-      !asientosSeleccionados.find((i) => i.asiento === asiento.asiento)
-    ) {
-      classes += styles['m-reservado'] + ' ';
-    }
-    if (asiento.estado === "ocupado") {
-      classes += styles['reservado'] + ' ';
-    }
-    if (asiento.estado === "libre") {
-      classes += styles['disponible'] + ' ';
-    }
+      if (asiento.tipo === "pet" && asiento.estado === "ocupado") {
+        classes += styles['m-disponible'] + ' ';
+      }
 
-    if (asiento.asiento === "B1" || asiento.asiento === "B2") {
-      classes += styles['bano'] + ' ';
-    }
+      if (asiento.tipo === "pet" && asiento.estado === "pet-free") {
+        classes += styles['m-disponible'] + ' ';
+      }
 
-    return classes.trim();
+      if (
+        asiento.estado === "pet-busy" &&
+        !asientosSeleccionados.find((i) => i.asiento === asiento.asiento)
+      ) {
+        classes += styles['m-reservado'] + ' ';
+      }
+      if (asiento.estado === "ocupado") {
+        classes += styles['reservado'] + ' ';
+      }
+      if (asiento.estado === "libre") {
+        classes += styles['disponible'] + ' ';
+      }
+
+      if (asiento.asiento === "B1" || asiento.asiento === "B2") {
+        classes += styles['bano'] + ' ';
+      }
+
+      return classes.trim();
+    } catch( error ) {
+      console.log(`Error al obtener clases para el asiento ${ JSON.stringify(asiento) }`)
+      console.log(obtenerAsientosSeleccionados(indexParrilla))
+      console.error(`Error al obtener clases de asiento [${ error }]`);
+    }
   };
 
   async function reloadPane(indexParrilla) {
     try {
       const parrillaTemporal = [...parrilla.parrilla];
-      const parrillaModificada = [...parrilla.parrilla];
       const { data } = await axios.post(
         "/api/ticket_sale/mapa-asientos",
         new BuscarPlanillaVerticalOpenPaneDTO(parrilla)
       );
-        parrillaModificada[indexParrilla].loadingAsientos = false;
-        parrillaModificada[indexParrilla].asientos1 = data[1];
-        if( !!parrillaTemporal[indexParrilla].busPiso2 ) {
-            parrillaModificada[indexParrilla].asientos2 = data[2];
-        }
-        setParrilla(parrillaModificada);
+      let nuevaParrilla = { ...parrillaTemporal[indexParrilla] };
+      nuevaParrilla.loadingAsientos = false;
+      nuevaParrilla.asientos1 = data[1];
+      if( !!parrillaTemporal[indexParrilla].busPiso2 ) {
+        nuevaParrilla.asientos2 = data[2];
+      }
+      parrillaTemporal[indexParrilla] = nuevaParrilla;
+      setParrilla(parrillaTemporal);
     } catch ({ message }) {
         console.error(`Error al recargar panel [${ message }]`);
     }
@@ -165,8 +183,7 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
-      debugger;
-      if( asiento.estado === 'sinasiento') return;
+      if( asiento.estado === 'sinasiento' || !asiento.asiento ) return;
 
       const carrito = {
         servicio: parrilla.parrilla[indexParrilla],
@@ -206,6 +223,7 @@ const Parrilla = (props) => {
 
         dispatch(agregarServicio(carrito));
         await reloadPane(indexParrilla);
+        return;
       }
 
       if (asiento.estado == ASIENTO_OCUPADO && asientoSeleccionado) {
@@ -294,17 +312,18 @@ const Parrilla = (props) => {
     }
   }
 
-  function getImage( sit ) {
-    let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
+  function getImage( sit, indexParrilla ) {
+    let asientosSeleccionados = obtenerAsientosSeleccionados(indexParrilla) || [];
 
-    const isSelected = asientosSeleccionados.find(
-      (i) => i.asiento === sit.asiento && sit.tipo !== "pet-busy"
-    );
+    if ( asientosSeleccionados.length > 0 ) {
+      const findAsiento = asientosSeleccionados.find((i) => i.asiento === sit.asiento);
+      if( findAsiento ) sit = findAsiento;
+    }
     
     if( sit.asiento === 'B1' || sit.asiento === 'B2') {
       return 'img/a-bano.svg';
     }
-    if( sit.clase && isSelected ) {
+    if( sit.clase && sit.estado === 'seleccion' ) {
       return 'img/asiento_seleccionado.svg';
     }
     if( sit.estado === 'libre' && sit.valorAsiento > 0) {
@@ -383,9 +402,9 @@ const Parrilla = (props) => {
                                   1
                                 );
                               }}
-                              className={`${styles["columna"]} ${ asientoClass(ii) } `}
+                              className={`${styles["columna"]} ${ asientoClass(ii, props.k) } `}
                             >
-                              { ii.asiento && <img src={ getImage(ii) }/> }
+                              { ii.asiento && <img src={ getImage(ii, props.k) }/> }
                               <span>
                                 {ii.asiento != "B1" &&
                                 ii.asiento != "B2" &&
