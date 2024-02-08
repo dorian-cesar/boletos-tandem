@@ -152,6 +152,7 @@
 
 .botones-inferiores .botones-seleccion-piso .seleccion-pisos div {
     margin-inline: 4px;
+    cursor: default;
 }
 
 .botones-inferiores .botones-pago {

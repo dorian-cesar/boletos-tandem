@@ -49,6 +49,9 @@ const Parrilla = (props) => {
 
   const [piso, setPiso] = useState(1);
 
+  const totalPagar = carroCompras.reduce((a, b) => a + b.asiento.valorAsiento, 0);
+  const asientosPorServicio = carroCompras.filter((carro) => carro.servicio.idServicio === parrilla.idServicio);
+
   function obtenerAsientosSeleccionados(indexParrilla) {
     const returnedArray = []
     carroCompras.filter((carro) => {
@@ -467,13 +470,13 @@ const Parrilla = (props) => {
           </div>
           <div className={ styles['botones-pago'] }>
             <div className={styles["button_continue"]}>
-              <span>Continuar: ${/* valor*/}</span>
+              <span>Continuar: ${ totalPagar }</span>
             </div>
             <div className={styles["button_little_car"]}>
               <span>Agregar al carro</span>
             </div>
             <div className={ styles['texto-cantidad-asientos'] }>
-              <span>Cantidad de asientos seleccionados: { asientosIda.length }</span>
+              <span>Cantidad de asientos seleccionados: { asientosPorServicio.length }</span>
             </div>
           </div>
         </div>
