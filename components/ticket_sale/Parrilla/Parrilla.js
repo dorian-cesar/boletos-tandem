@@ -49,10 +49,21 @@ const Parrilla = (props) => {
 
   const [piso, setPiso] = useState(1);
 
-  const asientoClass = (asiento) => {
-    debugger;
+  function obtenerAsientosSeleccionados() {
+    const asientosSeleccionados = carroCompras.map((carro) => {
+      if( carro.servicio.idServicio === parrilla.idServicio ) {
+        return {
+          ...carro.asiento,
+          estado: 'seleccion'
+        };
+      }
+    });
 
-    let asientosSeleccionados = carroCompras || [];
+    return asientosSeleccionados;
+  }
+
+  const asientoClass = (asiento) => {
+    let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
     const isSelected = asientosSeleccionados.find(
       (i) => i.asiento === asiento.asiento && asiento.tipo !== "pet-busy"
@@ -155,6 +166,8 @@ const Parrilla = (props) => {
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
       debugger;
+      if( asiento.estado === 'sinasiento') return;
+
       const carrito = {
         servicio: parrilla.parrilla[indexParrilla],
         asiento
@@ -171,63 +184,61 @@ const Parrilla = (props) => {
         asiento.estado == ASIENTO_LIBRE_MASCOTA
       ) {
         if (!validarMaximoAsientos(asientosTemporal)) return;
-        // asientosTemporal = await servicioTomarAsiento(
-        //   parrilla,
-        //   asiento.asiento,
-        //   piso,
-        //   asientosTemporal
-        // );
+        asientosTemporal = await servicioTomarAsiento(
+          parrilla,
+          asiento.asiento,
+          piso,
+          asientosTemporal
+        );
 
-        // if (
-        //   asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
-        //   asiento.tipo == ASIENTO_TIPO_MASCOTA
-        // ) {
-        //   asientosTemporal = await servicioTomarAsiento(
-        //     parrilla,
-        //     asiento.asientoAsociado,
-        //     piso,
-        //     asientosTemporal,
-        //     true
-        //   );
-        // }
+        if (
+          asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
+          asiento.tipo == ASIENTO_TIPO_MASCOTA
+        ) {
+          asientosTemporal = await servicioTomarAsiento(
+            parrilla,
+            asiento.asientoAsociado,
+            piso,
+            asientosTemporal,
+            true
+          );
+        }
 
         dispatch(agregarServicio(carrito));
-        return;
-
-        // await reloadPane(indexParrilla);
+        await reloadPane(indexParrilla);
       }
 
       if (asiento.estado == ASIENTO_OCUPADO && asientoSeleccionado) {
-        // await servicioLiberarAsiento(
-        //   parrilla.parilla[indexParrilla],
-        //   asiento.asiento,
-        //   asientoSeleccionado.codigoReserva
-        // );
+        await servicioLiberarAsiento(
+          parrilla.parilla[indexParrilla],
+          asiento.asiento,
+          asientoSeleccionado.codigoReserva
+        );
 
-        // if (
-        //   asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
-        //   asiento.tipo == ASIENTO_TIPO_MASCOTA
-        // ) {
-        //   await servicioLiberarAsiento(
-        //     parrilla.parilla[indexParrilla],
-        //     asiento.asientoAsociado,
-        //     piso,
-        //     asientoSeleccionado.codigoReserva
-        //   );
-        // }
+        if (
+          asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
+          asiento.tipo == ASIENTO_TIPO_MASCOTA
+        ) {
+          await servicioLiberarAsiento(
+            parrilla.parilla[indexParrilla],
+            asiento.asientoAsociado,
+            piso,
+            asientoSeleccionado.codigoReserva
+          );
+        }
 
-        // // await reloadPane(indexParrilla);
-        // // asientosTemporal = asientosTemporal.filter(
-        // //   (asientoBusqueda:any) => asientoBusqueda.asiento != asiento.asiento
-        // // );
-        // if (
-        //   asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
-        //   asiento.tipo == ASIENTO_TIPO_MASCOTA
-        // ) {
-        //   asientosTemporal = asientosTemporal.filter(
-        //     ({ asiento }:any) => asiento != asiento.asientoAsociado
-        //   );
-        // }
+        await reloadPane(indexParrilla);
+        asientosTemporal = asientosTemporal.filter(
+          (asientoBusqueda) => asientoBusqueda.asiento != asiento.asiento
+        );
+        if (
+          asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
+          asiento.tipo == ASIENTO_TIPO_MASCOTA
+        ) {
+          asientosTemporal = asientosTemporal.filter(
+            ({ asiento }) => asiento != asiento.asientoAsociado
+          );
+        }
       }
       
 
@@ -284,17 +295,23 @@ const Parrilla = (props) => {
   }
 
   function getImage( sit ) {
+    let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
+
+    const isSelected = asientosSeleccionados.find(
+      (i) => i.asiento === sit.asiento && sit.tipo !== "pet-busy"
+    );
+    
     if( sit.asiento === 'B1' || sit.asiento === 'B2') {
       return 'img/a-bano.svg';
+    }
+    if( sit.clase && isSelected ) {
+      return 'img/asiento_seleccionado.svg';
     }
     if( sit.estado === 'libre' && sit.valorAsiento > 0) {
       return 'img/asiento_disponible.svg';
     }
     if( sit.clase && sit.estado === 'ocupado' ) {
       return 'img/asiento_ocupado.svg';
-    }
-    if( sit.clase && sit.estado === 'seleccion' ) {
-      return 'img/asiento_seleccionado.svg';
     }
     if( sit.estado === 'libre' && sit.valorAsiento === 0) {
       return '';
