@@ -1,9 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
+import LocalStorageEntities from 'entities/LocalStorageEntities';
+import { decryptData, encryptData, encryptDataNoTime } from 'utils/encrypt-data';
 
-
-const initialState = {
+let initialState = {
     idSistema: 7,
     listaCarrito: []
+}
+
+if (typeof window !== 'undefined') {
+    if ( localStorage.getItem(LocalStorageEntities.car) ) {
+        let data = decryptData(LocalStorageEntities.car);
+        if( data ) {
+            initialState = data;
+        } 
+    }
 }
 
 export const compraSlice = createSlice({
@@ -11,7 +21,13 @@ export const compraSlice = createSlice({
     initialState,
     reducers: {
         agregarServicio: (state, action) => {
-            state.listaCarrito.push(action.payload);
+            if( state.listaCarrito.length === 0 ) {
+                state.listaCarrito.push(action.payload);
+                encryptData(state, LocalStorageEntities.car, Date.now() + (15 * 60 * 1000))
+            } else {
+                state.listaCarrito.push(action.payload);
+                encryptDataNoTime(state, LocalStorageEntities.car);
+            }
         },
         agregarAlCarrito: (state, action) => {
             state

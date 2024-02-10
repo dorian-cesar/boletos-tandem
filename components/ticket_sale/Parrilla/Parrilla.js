@@ -23,7 +23,7 @@ const MAXIMO_COMPRA_ASIENTO = 4;
 
 const Parrilla = (props) => {
 
-  const carroCompras = useSelector((state) => state.compra.listaCarrito)
+  const carroCompras = useSelector((state) => state.compra?.listaCarrito) || []
   const dispatch = useDispatch()
   
   const {

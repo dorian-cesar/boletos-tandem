@@ -1,3 +1,5 @@
+'use client'
+
 import useUser from "lib/useUser";
 import { useRouter } from "next/router";
 import Login from "components/Login";
@@ -11,7 +13,7 @@ export default function Header({ openNav }: { openNav: any }) {
   const router = useRouter();
   const { getItem, clear } = useLocalStorage();
 
-  const carroCompras = useSelector((state:any) => state.compra.listaCarrito)
+  const carroCompras = useSelector((state:any) => state.compra?.listaCarrito) || []
   
   useEffect(() => {
     setUser(getItem("user"));
@@ -114,14 +116,14 @@ export default function Header({ openNav }: { openNav: any }) {
                     </li>
                   </ul>
                 )}
-                <Link href="/carrito" legacyBehavior>
+                {/* <Link href="/carrito" legacyBehavior>
                   <a className="d-flex align-items-center">
                     <img src="../img/cart-outline.svg" width={30} />
                     <span className="badge bg-primary rounded-pill">
                       {carroCompras.length}
                     </span>
                   </a>
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>

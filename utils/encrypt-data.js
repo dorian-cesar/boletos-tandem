@@ -7,14 +7,20 @@ export function encryptData(data, key, live_time = null) {
     localStorage.setItem(key, encrypted);
 }
 
+export function encryptDataNoTime(data, key) {
+    let encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), key).toString();
+    localStorage.setItem(key, encrypted);
+}
+
 export function decryptData(key) {
+    debugger;
     let encrypted = localStorage.getItem(key);
     if (!encrypted) {
         return null;
     }
     let decrypted = CryptoJS.AES.decrypt(encrypted, key);
     const transformData = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
-    if( transformData && transformData.live_time >= Date.now() ) {
+    if( transformData && transformData.live_time <= Date.now() ) {
         _deleteData(key);
         return null;
     }
