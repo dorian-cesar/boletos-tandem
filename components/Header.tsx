@@ -12,11 +12,12 @@ export default function Header({ openNav }: { openNav: any }) {
   const [user, setUser] = useState();
   const router = useRouter();
   const { getItem, clear } = useLocalStorage();
-
-  const carroCompras = useSelector((state:any) => state.compra?.listaCarrito) || []
+  const [carroCompras, setCarroCompras] = useState([]);
+  const data = useSelector((state:any) => state.compra?.listaCarrito) || [];
   
   useEffect(() => {
     setUser(getItem("user"));
+    setCarroCompras(data);
   }, []);
 
   return (
@@ -116,14 +117,14 @@ export default function Header({ openNav }: { openNav: any }) {
                     </li>
                   </ul>
                 )}
-                {/* <Link href="/carrito" legacyBehavior>
+                <Link href="/carrito" legacyBehavior>
                   <a className="d-flex align-items-center">
                     <img src="../img/cart-outline.svg" width={30} />
                     <span className="badge bg-primary rounded-pill">
                       {carroCompras.length}
                     </span>
                   </a>
-                </Link> */}
+                </Link>
               </div>
             </div>
           </div>
