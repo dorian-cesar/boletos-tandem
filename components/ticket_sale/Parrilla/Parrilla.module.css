@@ -209,27 +209,11 @@
     background-image: url(../../../public/img/conductor.svg);
 }
 
-.button_first_floor {
-    display: flex;
-    width: 88px;
-    height: 28px;
-    padding: 2px 18px;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-    border-radius: 16px;
-    background: var(--azul-100, #3365B4);
+.floor-button-selected {
+    background: var(--azul-100, #3365B4) !important;
 }
 
-.button_first_floor span {
-    color: var(--Blanco, #FFF);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-}
-
-.button_second_floor {
+.floor-button {
     display: flex;
     width: 88px;
     height: 28px;
@@ -241,7 +225,7 @@
     background: var(--azul-50, #98B1D9);
 }
 
-.button_second_floor span {
+.floor-button span {
     color: var(--Blanco, #FFF);
     font-size: 16px;
     font-style: normal;

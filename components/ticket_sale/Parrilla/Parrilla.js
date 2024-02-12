@@ -516,10 +516,10 @@ const Parrilla = (props) => {
         <div className={ styles['botones-inferiores'] }>
           <div className={ styles['botones-seleccion-piso'] }>
             <div className={ styles['seleccion-pisos']}>
-              <div className={styles["button_first_floor"]} onClick={ () => setPiso(1) }>
+              <div className={ `${ styles["floor-button"] } ${ piso === 1 && styles["floor-button-selected"] }` } onClick={ () => setPiso(1) }>
                 <span>#Piso 1</span>
               </div>
-              <div className={styles["button_second_floor"]} onClick={ () => setPiso(2) }>
+              <div className={ `${ styles["floor-button"] } ${ piso === 2 && styles["floor-button-selected"] }` } onClick={ () => setPiso(2) }>
                 <span>#Piso 2</span>
               </div>
             </div>
