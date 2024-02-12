@@ -84,11 +84,13 @@ const Boleto = (props) => {
             isShowParrilla={ isOpened }
             setIsShowParrilla= { setIsOpened }
             asientos1={ props.asientos1 }
+            asientos2={ props.asientos2 }
             k={ props.k }
             parrilla={props}
             stage={props.stage}
             setParrilla={props.setParrilla}
             asientos_selected={props.asientos_selected}
+            setIsOpened={setIsOpened}
             />
         </div>
       </section>

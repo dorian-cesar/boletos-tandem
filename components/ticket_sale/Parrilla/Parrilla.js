@@ -346,24 +346,24 @@ const Parrilla = (props) => {
           <img
             src="img/close.svg"
             className={styles["cross"]}
-            // onClick={() => setIsShowParrilla(!isShowParrilla)}
+            onClick={() => props.setIsOpened(false)}
           />
         </div>
         <div className={ styles['disponibilidad-bus'] }>
           <div className={`${styles["bus"]} ${styles["piso-1"]}`}>
-            <img
+            { piso === 1 && <img
               src="img/line.svg"
               alt="piso-1"
               className={styles["linea-piso-1"]}
-            />
+            />}
             <div className={ styles['contenedor-bus'] }>
-              <div className={styles["fila"]}>
+              {piso === 1 && <div className={styles["fila"]}>
                 <img
                   className={styles["imagen-volante"]}
                   src="img/volante.svg"
                   alt="Volante conductor"
                 />
-              </div>
+              </div>}
               <div className={ `${ styles["fila"] } ${ styles['fila-vacia'] }`}>
                 <div className={styles["columna"]}></div>
                 <div className={styles["columna"]}></div>
@@ -372,6 +372,7 @@ const Parrilla = (props) => {
                 <div className={styles["columna"]}></div>
               </div>
               {props.asientos1 ? (
+                piso === 1 &&
                 <>
                   {function () {
                     let max = 7 - props.asientos1.length;
@@ -440,6 +441,61 @@ const Parrilla = (props) => {
               ) : (
                 ""
               )}
+              {props.asientos2 ? (
+                piso === 2 &&
+                <>
+                  {props.asientos2.map((i, k) => {
+                    return (
+                      <div key={`fila-asiento-${k}`} className={styles["fila"]}>
+                        {i.map((ii, kk) => {
+                          return (
+                            <div
+                              key={`columna-asiento-${kk}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                tomarAsiento(
+                                  ii,
+                                  props,
+                                  props.k,
+                                  1
+                                );
+                              }}
+                              className={`${styles["columna"]} ${ asientoClass(ii, props.k) } `}
+                            >
+                              { ii.asiento && <img src={ getImage(ii, props.k) }/> }
+                              <span>
+                                {ii.asiento != "B1" &&
+                                ii.asiento != "B2" &&
+                                ii.estado != "sinasiento" &&
+                                ii.tipo != "pet"
+                                  ? ii.asiento
+                                  : ""}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                  {function () {
+                    let max = 10 - props.asientos2.length;
+                    let n = 0;
+                    let liens = [];
+                    while (n < max) {
+                      liens.push(
+                        <div
+                          key={`fila-asiento-${n}`}
+                          className={styles["fila"]}
+                        ></div>
+                      );
+                      n++;
+                    }
+                    return liens;
+                  }.call(this)}
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <div className={ styles['estados-disponibilidad'] }>
@@ -460,10 +516,10 @@ const Parrilla = (props) => {
         <div className={ styles['botones-inferiores'] }>
           <div className={ styles['botones-seleccion-piso'] }>
             <div className={ styles['seleccion-pisos']}>
-              <div className={styles["button_first_floor"]}>
+              <div className={styles["button_first_floor"]} onClick={ () => setPiso(1) }>
                 <span>#Piso 1</span>
               </div>
-              <div className={styles["button_second_floor"]}>
+              <div className={styles["button_second_floor"]} onClick={ () => setPiso(2) }>
                 <span>#Piso 2</span>
               </div>
             </div>
