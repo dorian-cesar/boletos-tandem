@@ -37,10 +37,30 @@ export const compraSlice = createSlice({
         },
         agregarPasajero: (state) => {
 
+        },
+        eliminarServicio: (state, action) => {
+            debugger;
+            if( state.listaCarrito.length > 0 ){
+                const { servicio, asiento } = action.payload;
+                const prueba = state.listaCarrito.map(({...servicioGuardado}) =>{
+                    debugger;
+                    if(servicioGuardado.servicio.idServicio === servicio.idServicio){
+                        servicioGuardado.servicio = servicioGuardado.servicio.filter((y) => {
+                            debugger;
+                            y.idServicio !== servicio.idServicio
+                            return y;
+                        }
+                           )
+                    }
+                    
+                });
+                const newArray = state.listaCarrito.filter((carrito)=> carrito.servicio.idServicio!==action.payload.servicio.idServicio && carrito.asiento.asiento !== action.payload.asiento.asiento)
+                encryptDataNoTime(state,LocalStorageEntities.car); 
+            }
         }
     },
 });
 
-export const { agregarServicio, agregarPasajero } = compraSlice.actions;
+export const { agregarServicio, agregarPasajero, eliminarServicio } = compraSlice.actions;
 
 export default compraSlice.reducer;

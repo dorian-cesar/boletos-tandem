@@ -14,14 +14,14 @@ export class TomaAsientoDTO {
 }
 
 export class LiberarAsientoDTO {
-    constructor(parrilla, startDate, endDate, asiento, piso, stage, codigoReserva) {
-        this.servicio = parrilla?.idServicio || '';
+    constructor(parrilla, asiento, codigoReserva, piso) {
+        this.servicio = parrilla?.servicio?.idServicio || '';
         this.codigoReserva = codigoReserva || '';
-        this.fecha = parrilla?.fechaServicio
-        this.origen = parrilla?.idTerminalOrigen || '';
-        this.destino = parrilla?.idTerminalDestino || '';
-        this.integrador = parrilla?.integrador || 0;
+        this.fecha = parrilla?.servicio?.fechaServicio
+        this.origen = parrilla?.servicio?.idTerminalOrigen || '';
+        this.destino = parrilla?.servicio?.idTerminalDestino || '';
+        this.integrador = parrilla?.servicio?.integrador || 0;
         this.asiento = asiento || '';
-        this.tarifa = piso == 1 ? parrilla?.tarifaPrimerPisoInternet : parrilla?.tarifaSegundoPisoInternet;
+        this.tarifa = piso == 1 ? parrilla?.servicio?.tarifaPrimerPisoInternet : parrilla?.servicio?.tarifaSegundoPisoInternet;
     }
 }

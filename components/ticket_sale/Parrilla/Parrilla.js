@@ -9,7 +9,7 @@ import styles from "./Parrilla.module.css";
 import { AsientoDTO } from "dto/AsientoDTO";
 
 import { useSelector, useDispatch } from 'react-redux'
-import { agregarServicio } from "store/usuario/compra-slice";
+import { agregarServicio, eliminarServicio } from "store/usuario/compra-slice";
 import { toast } from "react-toastify";
 
 const ASIENTO_LIBRE = 'libre';
@@ -189,13 +189,13 @@ const Parrilla = (props) => {
 
       const carrito = {
         servicio: parrilla.parrilla[indexParrilla],
-        asiento
+        asiento,
+        tipoServicio: (stage === 0) ? 'IDA' : 'VUELTA'
       }
-
       let asientosTemporal =
-        stage == STAGE_BOLETO_IDA ? [...asientosIda] : [...asientosVuelta];
-      const asientoSeleccionado = asientosTemporal.find(
-        (asientoBusqueda) => asiento.asiento == asientoBusqueda.asiento
+        stage == STAGE_BOLETO_IDA ? [...asientosIda]  : [...asientosVuelta];
+      const asientoSeleccionado = asientosTemporal?.find(
+        (asientoBusqueda) => asiento.asiento == asientoBusqueda?.asiento
       );
 
       if (
@@ -230,9 +230,10 @@ const Parrilla = (props) => {
 
       if (asiento.estado == ASIENTO_OCUPADO && asientoSeleccionado) {
         await servicioLiberarAsiento(
-          parrilla.parilla[indexParrilla],
+          carrito,
           asiento.asiento,
-          asientoSeleccionado.codigoReserva
+          1, 
+          piso
         );
 
         if (
@@ -240,27 +241,16 @@ const Parrilla = (props) => {
           asiento.tipo == ASIENTO_TIPO_MASCOTA
         ) {
           await servicioLiberarAsiento(
-            parrilla.parilla[indexParrilla],
+            carrito,
             asiento.asientoAsociado,
-            piso,
-            asientoSeleccionado.codigoReserva
+            1,
+            piso
           );
         }
-
+        dispatch(eliminarServicio(carrito));
         await reloadPane(indexParrilla);
-        asientosTemporal = asientosTemporal.filter(
-          (asientoBusqueda) => asientoBusqueda.asiento != asiento.asiento
-        );
-        if (
-          asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
-          asiento.tipo == ASIENTO_TIPO_MASCOTA
-        ) {
-          asientosTemporal = asientosTemporal.filter(
-            ({ asiento }) => asiento != asiento.asientoAsociado
-          );
-        }
+        return;
       }
-      
 
       dispatch(agregarServicio(carrito));
       return;
@@ -269,9 +259,9 @@ const Parrilla = (props) => {
     }
   }
 
-  async function servicioLiberarAsiento(parrillaServicio, asiento, piso, codigoReserva = '') {
-    try {
-        const { data } = await axios.post('/api/ticket_sale/liberar-asiento', new LiberarAsientoDTO(parrillaServicio, '', '', asiento, piso, stage, codigoReserva))
+  async function servicioLiberarAsiento(parrillaServicio, asiento, codigoReserva, piso) {
+    try {    
+        const { data } = await axios.post('/api/ticket_sale/liberar-asiento', new LiberarAsientoDTO(parrillaServicio, asiento, codigoReserva, piso))
         return data;
     } catch ({ message }) {
         throw new Error(`Error al liberar asiento [${ message }]`);
