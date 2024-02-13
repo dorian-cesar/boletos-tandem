@@ -6,7 +6,7 @@ import Input from "../Input";
 import { useEffect, useState, forwardRef } from "react";
 import es from "date-fns/locale/es";
 import styles from "./BusquedaCuponera.module.css";
-import { ObtenerParrillaServicioDTO } from "dto/ParrillaDTO";
+import { ObtenerParrillaCuponeraServicioDTO } from "dto/ParrillaDTO";
 
 registerLocale("es", es);
 
@@ -33,7 +33,7 @@ const BusquedaCuponera = (props) => {
   async function searchParrillaCuponera() {
     try {
         setLoadingParrilla(true);
-        const parrillaCuponera = await axios.post("/api/coupon/parrilla-cuponera", new ObtenerParrillaServicioDTO(origen, destino));
+        const parrillaCuponera = await axios.post("/api/coupon/parrilla-cuponera", new ObtenerParrillaCuponeraServicioDTO(origen, destino));
         setParrilla(parrillaCuponera.data.object.map((parrillaMapped, index) => {
             return {
                 ...parrillaMapped,
