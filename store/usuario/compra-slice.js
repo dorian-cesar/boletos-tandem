@@ -42,20 +42,12 @@ export const compraSlice = createSlice({
             debugger;
             if( state.listaCarrito.length > 0 ){
                 const { servicio, asiento } = action.payload;
-                const prueba = state.listaCarrito.map(({...servicioGuardado}) =>{
-                    debugger;
-                    if(servicioGuardado.servicio.idServicio === servicio.idServicio){
-                        servicioGuardado.servicio = servicioGuardado.servicio.filter((y) => {
-                            debugger;
-                            y.idServicio !== servicio.idServicio
-                            return y;
-                        }
-                           )
-                    }
-                    
+                const newArray = state.listaCarrito.filter((carrito) => {
+                    return !(carrito.servicio.idServicio === servicio.idServicio && carrito.asiento.asiento === asiento.asiento);
                 });
-                const newArray = state.listaCarrito.filter((carrito)=> carrito.servicio.idServicio!==action.payload.servicio.idServicio && carrito.asiento.asiento !== action.payload.asiento.asiento)
-                encryptDataNoTime(state,LocalStorageEntities.car); 
+                state.listaCarrito = newArray;
+                if( newArray.length === 0 ) delete state.live_time;
+                encryptDataNoTime(state, LocalStorageEntities.car); 
             }
         }
     },
