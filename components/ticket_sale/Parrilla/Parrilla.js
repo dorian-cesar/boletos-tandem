@@ -515,7 +515,11 @@ const Parrilla = (props) => {
             </div>
           </div>
           <div className={ styles['botones-pago'] }>
-            <div className={styles["button_continue"]}>
+            <div className={styles["button_continue"]}  href="#"
+                     onClick={(e) => {
+                        e.stopPropagation();
+                        props.setPasaje(props);
+                      }}>
               <span>Continuar: ${ totalPagar }</span>
             </div>
             <div className={styles["button_little_car"]}>

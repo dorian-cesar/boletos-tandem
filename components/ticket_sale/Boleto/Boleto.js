@@ -77,6 +77,7 @@ const Boleto = (props) => {
             setParrilla={props.setParrilla}
             asientos_selected={props.asientos_selected}
             setIsOpened={setIsOpened}
+            setPasaje={props.setPasaje}
             />
         </div>
       </section>
