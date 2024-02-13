@@ -15,13 +15,6 @@ dayjs.extend(customParseFormat);
 const Boleto = (props) => {
   const [isOpened, setIsOpened] = useState(false);
 
-  const getSubtotal = (clientes) => {
-    return clientes.reduce((a, b) => {
-      b.tarifa = b.tarifa.replace('.',',')
-      a = parseFloat(a) + Number(b.tarifa.replace(/[^\d.-]/g, ""));
-      return a;
-    }, 0);
-  };
   let duracion = dayjs(
     props.fechaLlegada + " " + props.horaLlegada,
     "DD/MM/YYYY HH:mm"
@@ -31,13 +24,6 @@ const Boleto = (props) => {
   );
 
   duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
-  const [piso, setPiso] = useState(1);
-
-  const [animacionDerecha, setAnimacionDerecha] = useState(false);
-
-  const manejarClic = () => {
-    setAnimacionDerecha(!animacionDerecha);
-  };
 
   return (
     <>
