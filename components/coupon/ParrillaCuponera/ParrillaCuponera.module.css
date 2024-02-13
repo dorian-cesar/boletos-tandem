@@ -1,0 +1,101 @@
+.container {
+    width: 240px;
+    height: 370px;
+    flex-shrink: 0;
+    fill: var(--Blanco, #FFF);
+    border-radius: 20px;
+    stroke-width: 1px;
+    stroke: var(--gris-15, #D9D9D9);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    background-image: url("../../../public/img/icon/cuponera/Boleto.svg");
+    margin-bottom: 20px;
+}
+
+.container .title {
+    margin-top: 20px;
+    margin-left: 40px;
+    color: #000;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal; 
+}
+
+.container .sub-title {
+    margin-top: 10px;
+    margin-left: 100px;
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal; 
+}
+
+.container .sub-title-origen {
+    margin-top: 10px;
+    margin-left: 20px;
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal; 
+}
+
+.container .price{
+    margin-top: 10px;
+    margin-left: 80px;
+    color: var(--azul-100, #3365B4);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 26px; /* 108.333% */
+}
+
+.container .condition{
+    margin-top: 10px;
+    margin-left: 20px;
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.img-little-origen{
+    width: 24px;
+    height: 24px;
+}
+
+.img-little{
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.dotted-line {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    width: 230px;
+    border-style: dashed;
+    border-width: 1px; 
+}
+
+.button {
+    margin-top : 20px;
+    margin-left :45px;
+    display: flex;
+    width: 180px;
+    height: 32px;
+    padding: 0px 8px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 20px;
+    background: var(--naranjo-100, #FF6500);
+    color: var(--Blanco, #FFF);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}

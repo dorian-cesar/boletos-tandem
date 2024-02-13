@@ -68,3 +68,39 @@ export function isValidCodigoCuponera(codigoCuponera) {
         console.error(`Error al validar codigo cuponera [${ message }]`);
     }
 };
+
+
+export function isValidDatosComprador(cuerpo) {
+    console.log('aaa', cuerpo)
+    try {
+        let isValid = true;
+        
+        if ( !cuerpo.nombre || cuerpo.nombre == '' ) {
+            isValid = false;
+        }
+
+        if ( !cuerpo.apellido || cuerpo.apellido == '' ) {
+            isValid = false;
+        }
+
+        if ( !cuerpo.email || cuerpo.email == '' ) {
+            isValid = false;
+        } else {
+            if ( !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(cuerpo.email) ) {
+                isValid = false;
+            }
+        }
+
+        if (!cuerpo.rut || cuerpo.rut == '') {
+            isValid = false;
+        } else {
+            const rutValidacion = new Rut(cuerpo.rut);
+            if ( !rutValidacion.isValid ) {
+                isValid = false;
+            }
+        }
+        return isValid;
+    } catch ({ message }) {
+        console.error(`Error al validar pasajero [${ message }]`);
+    }
+};

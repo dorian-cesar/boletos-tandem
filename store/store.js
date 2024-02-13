@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import compraSlice from './usuario/compra-slice'
+import compraCuponeraSlice from './usuario/compra-cuponera-slice'
 
 export const store = configureStore({
   reducer: {
-    compra: compraSlice
+    compra: compraSlice,
+    compraCuponera: compraCuponeraSlice
   },
 })

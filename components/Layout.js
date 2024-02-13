@@ -41,8 +41,8 @@ export default function Layout({ children }) {
               </Link>
             </div>
             <div className="w-100">
-              <Link href="/cuponera" legacyBehavior>
-                <a href="/cuponera" className="agencias">
+              <Link href="/cuponera/Cuponera" legacyBehavior>
+                <a href="/cuponera/Cuponera" className="agencias">
                   Compra tu cuponera
                 </a>
               </Link>

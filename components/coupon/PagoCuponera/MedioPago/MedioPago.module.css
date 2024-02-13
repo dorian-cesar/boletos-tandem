@@ -1,0 +1,80 @@
+
+.container {
+    display: flex;
+    width: 644px;
+    height: 87px; 
+    padding: 8px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px; 
+    border-radius: 16px;
+    background: var(--Blanco, #FFF);
+}
+
+.contenedor {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding-right: 10px;
+  }
+  
+
+  .contenedor input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border: 3px solid #9A9A9A;
+    border-radius: 50%;
+  }
+
+  .contenedor:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+  
+  .contenedor input:checked ~ .checkmark {
+    background-color: #fff;
+    border-color:  var(--naranjo);
+  }
+  
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  .contenedor input:checked ~ .checkmark:after {
+    display: block;
+  }
+ 
+  .contenedor .checkmark:after {
+    top: 4px;
+    left: 4px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--naranjo);
+  }
+
+.dotted-line {
+    background: #3365B4;
+    width: 612px;
+    height: 1px;
+    border-style: dashed;
+    border-width: 1px; 
+}

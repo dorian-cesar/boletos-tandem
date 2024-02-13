@@ -1,0 +1,134 @@
+.container {
+    width: 380px;
+    height: 536px;
+    flex-shrink: 0; 
+    border-radius: 16px;
+    background: var(--Blanco, #FFF);
+}
+
+.title {
+    color: var(--azul-100, #3365B4);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-left: 20px;
+}
+
+.name-coupon {
+    color: #000;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal; 
+    margin-left: 36px;
+    margin-top: 30px;
+}
+
+.content-title {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-left: 36px;
+    margin-top: 16px;
+}
+
+.content-detail {
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-left: 36px;
+    margin-top: 16px;
+}
+
+.switch {
+    margin-left: 36px;
+}
+
+.switch .title{
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal; 
+}
+
+.dotted-line {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-left: 36px;
+    margin-right: 36px;
+    width: 310px;
+    border-style: dashed;
+    border-width: 1px; 
+}
+
+.pay-title{
+    color: var(--naranjo-100, #FF6500);
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 26px;
+    margin-top: 16px;
+}
+
+.check {
+    margin-left: 36px;
+    margin-right: 36px;
+    margin-top: 16px;
+}
+
+.check-title {
+    color: #000;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.button {
+    margin-right: 36px;
+    margin-top: 16px;
+    margin-bottom: 25px;
+}
+
+.button-pay-disabled {
+    display: flex;
+    width: 306px;
+    height: 42px;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    background: var(--naranjo-80, #f8ccaf); 
+    color: var(--Blanco, #FFF);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.button-pay {
+    display: flex;
+    width: 306px;
+    height: 42px;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    background: var(--naranjo-100, #FF6500);
+    color: var(--Blanco, #FFF);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.button-pay:active {
+    background: var(--naranjo-80, #f8ccaf); 
+  }
