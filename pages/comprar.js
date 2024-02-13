@@ -21,11 +21,11 @@ registerLocale("es", es);
 
 const stages = [
     {
-        name: "Selección viaje IDA",
+        name: "Servicio ida",
         kind: "pasajes_1",
     },
     {
-        name: "Selección viaje VUELTA",
+        name: "Servicio vuelta",
         kind: "pasajes_2",
     },
     {
