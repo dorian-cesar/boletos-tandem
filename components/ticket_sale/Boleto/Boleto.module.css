@@ -166,6 +166,7 @@
     height: 390px;
     animation-name: show;
     animation-duration: 1s;
+    overflow: hidden;
 }
 
 .container-ticket input ~ .grill-detail {
@@ -175,4 +176,5 @@
     width: 776px;
     border-radius: 16px;
     padding-inline: 32px;
+    overflow: hidden;
 }
