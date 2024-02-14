@@ -45,8 +45,12 @@ export const compraSlice = createSlice({
                     } else {
                         state.listaCarrito[key][payload.tipoServicio] = [payload]
                     }
+                    if( state.live_time ) {
+                        encryptDataNoTime(state, LocalStorageEntities.car);
+                    } else {
+                        encryptData(state, LocalStorageEntities.car, Date.now() + (15 * 60 * 1000));
+                    }
                 }
-                encryptDataNoTime(state, LocalStorageEntities.car);
             }
         },
         agregarPasajero: (state) => {
