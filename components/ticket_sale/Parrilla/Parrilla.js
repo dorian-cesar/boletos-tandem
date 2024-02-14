@@ -56,31 +56,33 @@ const Parrilla = (props) => {
 
   const [piso, setPiso] = useState(1);
 
-  const totalPagar = carroCompras[key] && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ? carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].reduce((a, b) => a + b.asiento.valorAsiento, 0) : 0;
+  const totalPagar = 0;
   
-  const asientosPorServicio = carroCompras[key] && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ? carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] : [];
+  let asientosPorServicio = [];
 
-  function obtenerAsientosSeleccionados(indexParrilla) {
+  function obtenerAsientosSeleccionados() {
     const returnedArray = []
     if( carroCompras[key] ) {
       if( carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ) {
         carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].filter((carro) => {
-          if( carro.servicio.idServicio === parrilla.parrilla[indexParrilla].idServicio && carro.servicio.fechaServicio === parrilla.parrilla[indexParrilla].fechaServicio ) {
-            returnedArray.push({
-              ...carro.asiento,
-              estado: carro.asiento.tipo !== 'pet' ? 'seleccion' : 'seleccion-mascota'
+          if( carro.idServicio === props.thisParrilla.idServicio && carro.fechaServicio === props.thisParrilla.fechaServicio ) {
+            carro.asientos.forEach((carro) => {
+              returnedArray.push({
+                ...carro,
+                estado: carro.tipo !== 'pet' ? 'seleccion' : 'seleccion-mascota'
+              });
             });
           }
         });
       }
     }
-
+    asientosPorServicio = returnedArray;
     return returnedArray;
   }
 
   const asientoClass = (asiento, indexParrilla) => {
     try {
-      let asientosSeleccionados = obtenerAsientosSeleccionados(indexParrilla) || [];
+      let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
       let isSelected = false, isPetSelected = false;
 
@@ -135,7 +137,7 @@ const Parrilla = (props) => {
       return classes.trim();
     } catch( error ) {
       console.log(`Error al obtener clases para el asiento ${ JSON.stringify(asiento) }`)
-      console.log(obtenerAsientosSeleccionados(indexParrilla))
+      console.log(obtenerAsientosSeleccionados())
       console.error(`Error al obtener clases de asiento [${ error }]`);
     }
   };
@@ -207,8 +209,6 @@ const Parrilla = (props) => {
       }
 
       let asientosTemporal = asientosPorServicio || [];
-      asientosTemporal = asientosTemporal.filter((temporal) => temporal.servicio.idServicio === parrilla.parrilla[indexParrilla].idServicio && temporal.servicio.fechaServicio === parrilla.parrilla[indexParrilla].fechaServicio);
-      asientosTemporal = asientosTemporal.map((temporal) => temporal.asiento);
       
       const asientoSeleccionado = asientosTemporal?.find(
         (asientoBusqueda) => asiento.asiento == asientoBusqueda?.asiento
@@ -321,7 +321,10 @@ const Parrilla = (props) => {
   }
 
   function getImage( sit, indexParrilla ) {
-    let asientosSeleccionados = obtenerAsientosSeleccionados(indexParrilla) || [];
+    if( sit.asiento === '12' ) {
+      debugger;
+    }
+    let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
     if ( asientosSeleccionados.length > 0 ) {
       const findAsiento = asientosSeleccionados.find((i) => i.asiento === sit.asiento);
@@ -346,7 +349,7 @@ const Parrilla = (props) => {
   }
 
   function cantidadAsientosSeleccionados() {
-    return asientosPorServicio.filter((i) => i.servicio.idServicio === props.thisParrilla.idServicio && i.servicio.fechaServicio === props.thisParrilla.fechaServicio).length;
+    return asientosPorServicio.filter((i) => i.idServicio === props.thisParrilla.idServicio && i.fechaServicio === props.thisParrilla.fechaServicio).length;
   }
 
   return (
@@ -546,7 +549,7 @@ const Parrilla = (props) => {
               <span>Agregar al carro</span>
             </div>
             <div className={ styles['texto-cantidad-asientos'] }>
-              <span>Cantidad de asientos seleccionados: { cantidadAsientosSeleccionados() }</span>
+              <span>Cantidad de asientos seleccionados: { asientosPorServicio.length }</span>
             </div>
           </div>
         </div>

@@ -26,7 +26,6 @@ export const compraSlice = createSlice({
             let key = '';
             
             if( payload.tipoServicio === 'ida' ) { 
-                // key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}-${payload.servicio.fechaSalida.replace(/\//g, "")}`;
                 key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}`;
             } else {
                 key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
@@ -34,17 +33,33 @@ export const compraSlice = createSlice({
 
             if( Object.keys(state.listaCarrito).length === 0 ) {
                 state.listaCarrito[key] = {};
-                const previewValues = state.listaCarrito[key][payload.tipoServicio] || [];
-                previewValues.push(payload);
-                state.listaCarrito[key][payload.tipoServicio] = previewValues;
+                const listaServicios = state.listaCarrito[key][payload.tipoServicio] || [];
+                let servicio = listaServicios.find((servicio) => servicio.idServicio === payload.servicio.idServicio);
+                if( servicio ) {
+                    servicio.asientos.push(payload.asiento);
+                } else {
+                    delete payload.servicio.logo;
+                    listaServicios.push({
+                        ...payload.servicio,
+                        asientos: [payload.asiento]
+                    });
+                }
+                state.listaCarrito[key][payload.tipoServicio] = listaServicios;
                 encryptData(state, LocalStorageEntities.car, Date.now() + (15 * 60 * 1000))
             } else {
                 if( state.listaCarrito[key] ) {
-                    if( state.listaCarrito[key][payload.tipoServicio] ) {
-                        state.listaCarrito[key][payload.tipoServicio].push(payload);
+                    const listaServicios = state.listaCarrito[key][payload.tipoServicio] || [];
+                    let servicio = listaServicios.find((servicio) => servicio.idServicio === payload.servicio.idServicio);
+                    if( servicio ) {
+                        servicio.asientos.push(payload.asiento);
                     } else {
-                        state.listaCarrito[key][payload.tipoServicio] = [payload]
+                        delete payload.servicio.logo;
+                        listaServicios.push({
+                            ...payload.servicio,
+                            asientos: [payload.asiento]
+                        });
                     }
+                    state.listaCarrito[key][payload.tipoServicio] = listaServicios;
                     if( state.live_time ) {
                         encryptDataNoTime(state, LocalStorageEntities.car);
                     } else {
@@ -62,7 +77,6 @@ export const compraSlice = createSlice({
             let key = '';
             
             if( payload.tipoServicio === 'ida' ) { 
-                // key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}-${payload.servicio.fechaSalida.replace(/\//g, "")}`;
                 key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}`;
             } else {
                 key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
@@ -70,12 +84,19 @@ export const compraSlice = createSlice({
 
             if( state.listaCarrito[key] ) {
                 if( state.listaCarrito[key][payload.tipoServicio] ) {
-                    const newArray = state.listaCarrito[key][payload.tipoServicio].filter((carrito) => {
-                        return !(carrito.servicio.idServicio === payload.servicio.idServicio && carrito.asiento.asiento === payload.asiento.asiento);
-                    });
-                    state.listaCarrito[key][payload.tipoServicio] = newArray;
-                    if( newArray.length === 0 ) delete state.live_time;
-                encryptDataNoTime(state, LocalStorageEntities.car); 
+                    const previewService = state.listaCarrito[key][payload.tipoServicio].find((servicio) => servicio.idServicio === payload.servicio.idServicio);
+                    const newAsientos = previewService.asientos.filter((asiento) => asiento.asiento !== payload.asiento.asiento);
+                    if( newAsientos.length === 0 ) {
+                        delete state.listaCarrito[key][payload.tipoServicio];
+                        delete state.live_time;
+                        encryptDataNoTime(state, LocalStorageEntities.car);
+                    } else {
+                        previewService.asientos = newAsientos;
+                        const newArray = state.listaCarrito[key][payload.tipoServicio].filter((servicio) => servicio.idServicio !== payload.servicio.idServicio);
+                        newArray.push(previewService)
+                        state.listaCarrito[key][payload.tipoServicio] = newArray;
+                        encryptDataNoTime(state, LocalStorageEntities.car); 
+                    }
                 }
             }
         }
