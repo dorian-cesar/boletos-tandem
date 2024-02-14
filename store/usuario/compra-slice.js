@@ -87,7 +87,7 @@ export const compraSlice = createSlice({
                     const previewService = state.listaCarrito[key][payload.tipoServicio].find((servicio) => servicio.idServicio === payload.servicio.idServicio);
                     const newAsientos = previewService.asientos.filter((asiento) => asiento.asiento !== payload.asiento.asiento);
                     if( newAsientos.length === 0 ) {
-                        delete state.listaCarrito[key][payload.tipoServicio];
+                        state.listaCarrito[key][payload.tipoServicio] = state.listaCarrito[key][payload.tipoServicio].filter((servicio) => servicio.idServicio !== payload.servicio.idServicio);
                         delete state.live_time;
                         encryptDataNoTime(state, LocalStorageEntities.car);
                     } else {
