@@ -54,10 +54,10 @@ const Parrilla = (props) => {
     }
   }, [])
 
-
   const [piso, setPiso] = useState(1);
 
   const totalPagar = carroCompras[key] && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ? carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].reduce((a, b) => a + b.asiento.valorAsiento, 0) : 0;
+  
   const asientosPorServicio = carroCompras[key] && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ? carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] : [];
 
   function obtenerAsientosSeleccionados(indexParrilla) {
@@ -65,7 +65,7 @@ const Parrilla = (props) => {
     if( carroCompras[key] ) {
       if( carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ) {
         carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].filter((carro) => {
-          if( carro.servicio.idServicio === parrilla.parrilla[indexParrilla].idServicio ) {
+          if( carro.servicio.idServicio === parrilla.parrilla[indexParrilla].idServicio && carro.servicio.fechaServicio === parrilla.parrilla[indexParrilla].fechaServicio ) {
             returnedArray.push({
               ...carro.asiento,
               estado: carro.asiento.tipo !== 'pet' ? 'seleccion' : 'seleccion-mascota'
@@ -207,6 +207,7 @@ const Parrilla = (props) => {
       }
 
       let asientosTemporal = asientosPorServicio || [];
+      asientosTemporal = asientosTemporal.filter((temporal) => temporal.servicio.idServicio === parrilla.parrilla[indexParrilla].idServicio && temporal.servicio.fechaServicio === parrilla.parrilla[indexParrilla].fechaServicio);
       asientosTemporal = asientosTemporal.map((temporal) => temporal.asiento);
       
       const asientoSeleccionado = asientosTemporal?.find(
@@ -342,6 +343,10 @@ const Parrilla = (props) => {
     if( sit.estado === 'libre' && sit.valorAsiento === 0) {
       return '';
     }
+  }
+
+  function cantidadAsientosSeleccionados() {
+    return asientosPorServicio.filter((i) => i.servicio.idServicio === props.thisParrilla.idServicio && i.servicio.fechaServicio === props.thisParrilla.fechaServicio).length;
   }
 
   return (
@@ -541,7 +546,7 @@ const Parrilla = (props) => {
               <span>Agregar al carro</span>
             </div>
             <div className={ styles['texto-cantidad-asientos'] }>
-              <span>Cantidad de asientos seleccionados: { asientosPorServicio.length }</span>
+              <span>Cantidad de asientos seleccionados: { cantidadAsientosSeleccionados() }</span>
             </div>
           </div>
         </div>

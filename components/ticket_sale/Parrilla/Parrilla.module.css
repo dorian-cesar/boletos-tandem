@@ -250,6 +250,7 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    white-space: nowrap;
 }
 
 .button_little_car {
