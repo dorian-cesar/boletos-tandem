@@ -25,7 +25,7 @@ const Parrilla = (props) => {
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || []
   const dispatch = useDispatch()
-  
+
   const {
     isShowParrilla = false,
     parrilla,
@@ -36,10 +36,9 @@ const Parrilla = (props) => {
 
   const [asientosIda, setAsientosIda] = useState([]);
   const [asientosVuelta, setAsientosVuelta] = useState([]);
-  const [servicioIda, setServicioIda] = useState(null);
-  const [servicioVuelta, setServicioVuelta] = useState(null);
   const [modalMab, setModalMab] = useState(false);
   const [openPane, setOpenPane] = useState(false);
+  const [key, setKey] = useState(null);
 
   useEffect(() => {
     if (isShowParrilla && !parrilla.length) {
@@ -47,21 +46,34 @@ const Parrilla = (props) => {
     }
   }, [isShowParrilla]);
 
+  useEffect(() => {
+    if( stage === STAGE_BOLETO_IDA ) {
+      setKey(`${props?.thisParrilla?.idTerminalOrigen}-${props?.thisParrilla?.idTerminalDestino}`);
+    } else if( stage === STAGE_BOLETO_VUELTA ) {
+      setKey(`${props?.thisParrilla?.idTerminalDestino}-${props?.thisParrilla?.idTerminalOrigen}`);
+    }
+  }, [])
+
+
   const [piso, setPiso] = useState(1);
 
-  const totalPagar = carroCompras.reduce((a, b) => a + b.asiento.valorAsiento, 0);
-  const asientosPorServicio = carroCompras.filter((carro) => carro.servicio.idServicio === parrilla.idServicio);
+  const totalPagar = carroCompras[key] && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ? carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].reduce((a, b) => a + b.asiento.valorAsiento, 0) : 0;
+  const asientosPorServicio = carroCompras[key] && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ? carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] : [];
 
   function obtenerAsientosSeleccionados(indexParrilla) {
     const returnedArray = []
-    carroCompras.filter((carro) => {
-      if( carro.servicio.idServicio === parrilla.parrilla[indexParrilla].idServicio ) {
-        returnedArray.push({
-          ...carro.asiento,
-          estado: carro.asiento.tipo !== 'pet' ? 'seleccion' : 'seleccion-mascota'
+    if( carroCompras[key] ) {
+      if( carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ) {
+        carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].filter((carro) => {
+          if( carro.servicio.idServicio === parrilla.parrilla[indexParrilla].idServicio ) {
+            returnedArray.push({
+              ...carro.asiento,
+              estado: carro.asiento.tipo !== 'pet' ? 'seleccion' : 'seleccion-mascota'
+            });
+          }
         });
       }
-    });
+    }
 
     return returnedArray;
   }
@@ -185,15 +197,18 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
+      debugger;
       if( asiento.estado === 'sinasiento' || !asiento.asiento ) return;
 
       const carrito = {
         servicio: parrilla.parrilla[indexParrilla],
         asiento,
-        tipoServicio: (stage === 0) ? 'IDA' : 'VUELTA'
+        tipoServicio: (stage === 0) ? 'ida' : 'vuelta'
       }
-      let asientosTemporal =
-        stage == STAGE_BOLETO_IDA ? [...asientosIda]  : [...asientosVuelta];
+
+      let asientosTemporal = asientosPorServicio || [];
+      asientosTemporal = asientosTemporal.map((temporal) => temporal.asiento);
+      
       const asientoSeleccionado = asientosTemporal?.find(
         (asientoBusqueda) => asiento.asiento == asientoBusqueda?.asiento
       );
@@ -228,32 +243,32 @@ const Parrilla = (props) => {
         return;
       }
 
-      if (asiento.estado == ASIENTO_OCUPADO && asientoSeleccionado) {
-        await servicioLiberarAsiento(
-          carrito,
-          asiento.asiento,
-          1, 
-          piso
-        );
-
-        if (
-          asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
-          asiento.tipo == ASIENTO_TIPO_MASCOTA
-        ) {
+      if( asiento.estado == ASIENTO_OCUPADO ) {
+        if( asientoSeleccionado ) {
           await servicioLiberarAsiento(
             carrito,
-            asiento.asientoAsociado,
-            1,
+            asiento.asiento,
+            1, 
             piso
           );
+  
+          if (
+            asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
+            asiento.tipo == ASIENTO_TIPO_MASCOTA
+          ) {
+            await servicioLiberarAsiento(
+              carrito,
+              asiento.asientoAsociado,
+              1,
+              piso
+            );
+          }
+          dispatch(eliminarServicio(carrito));
+          await reloadPane(indexParrilla);
+          return;
         }
-        dispatch(eliminarServicio(carrito));
-        await reloadPane(indexParrilla);
         return;
       }
-
-      dispatch(agregarServicio(carrito));
-      return;
     } catch ({ message }) {
       console.error(`Error al tomar asiento [${message}]`);
     }

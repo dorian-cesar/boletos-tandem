@@ -68,6 +68,7 @@ const Boleto = (props) => {
         <div className={ styles['grill-detail'] }>
           <Parrilla 
             isShowParrilla={ isOpened }
+            thisParrilla={ props.thisParrilla }
             setIsShowParrilla= { setIsOpened }
             asientos1={ props.asientos1 }
             asientos2={ props.asientos2 }

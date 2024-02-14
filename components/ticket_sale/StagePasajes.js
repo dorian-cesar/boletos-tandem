@@ -149,6 +149,7 @@ const StagePasajes = (props) => {
                 <Boleto
                     key={ `key-boleto-${ indexParrilla }`}
                     {...mappedParrilla }
+                    thisParrilla={ mappedParrilla }
                     k={ indexParrilla }
                     asientos_selected={ stage == STAGE_BOLETO_IDA ? asientosIda : asientosVuelta }
                     stage={ stage }

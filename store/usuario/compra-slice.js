@@ -4,7 +4,7 @@ import { decryptData, encryptData, encryptDataNoTime } from 'utils/encrypt-data'
 
 let initialState = {
     idSistema: 7,
-    listaCarrito: []
+    listaCarrito: {}
 }
 
 if (typeof window !== 'undefined') {
@@ -21,33 +21,58 @@ export const compraSlice = createSlice({
     initialState,
     reducers: {
         agregarServicio: (state, action) => {
-            if( state.listaCarrito.length === 0 ) {
-                state.listaCarrito.push(action.payload);
+            debugger;
+            const { payload } = action;
+            let key = '';
+            
+            if( payload.tipoServicio === 'ida' ) { 
+                // key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}-${payload.servicio.fechaSalida.replace(/\//g, "")}`;
+                key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}`;
+            } else {
+                key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
+            }
+
+            if( Object.keys(state.listaCarrito).length === 0 ) {
+                state.listaCarrito[key] = {};
+                const previewValues = state.listaCarrito[key][payload.tipoServicio] || [];
+                previewValues.push(payload);
+                state.listaCarrito[key][payload.tipoServicio] = previewValues;
                 encryptData(state, LocalStorageEntities.car, Date.now() + (15 * 60 * 1000))
             } else {
-                state.listaCarrito.push(action.payload);
+                if( state.listaCarrito[key] ) {
+                    if( state.listaCarrito[key][payload.tipoServicio] ) {
+                        state.listaCarrito[key][payload.tipoServicio].push(payload);
+                    } else {
+                        state.listaCarrito[key][payload.tipoServicio] = [payload]
+                    }
+                }
                 encryptDataNoTime(state, LocalStorageEntities.car);
             }
-        },
-        agregarAlCarrito: (state, action) => {
-            state
-            .listaCarrito
-            ?.find(servicio => servicio.servicio === action.payload.servicio)
-            ?.pasajero?.push(action.payload.pasajero);
         },
         agregarPasajero: (state) => {
 
         },
         eliminarServicio: (state, action) => {
             debugger;
-            if( state.listaCarrito.length > 0 ){
-                const { servicio, asiento } = action.payload;
-                const newArray = state.listaCarrito.filter((carrito) => {
-                    return !(carrito.servicio.idServicio === servicio.idServicio && carrito.asiento.asiento === asiento.asiento);
-                });
-                state.listaCarrito = newArray;
-                if( newArray.length === 0 ) delete state.live_time;
+            const { payload } = action;
+            let key = '';
+            
+            if( payload.tipoServicio === 'ida' ) { 
+                // key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}-${payload.servicio.fechaSalida.replace(/\//g, "")}`;
+                key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}`;
+            } else {
+                key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
+            }
+
+            if( state.listaCarrito[key] ) {
+                if( state.listaCarrito[key][payload.tipoServicio] ) {
+                    const newArray = state.listaCarrito[key][payload.tipoServicio].filter((carrito) => {
+                        return !(carrito.servicio.idServicio === payload.servicio.idServicio && carrito.asiento.asiento === payload.asiento.asiento);
+                    });
+                    state.listaCarrito[key][payload.tipoServicio] = newArray;
+                    if( newArray.length === 0 ) delete state.live_time;
                 encryptDataNoTime(state, LocalStorageEntities.car); 
+                }
             }
         }
     },

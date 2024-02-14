@@ -1,0 +1,20 @@
+.resumen-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.resumen-container h3 {
+    color: var(--azul-100, #3365B4);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.contenedor-servicios {
+
+}
+
+.contenedor-servicios .servicio-ida, .contenedor-servicios .servicio-vuelta {
+    padding: 8px;
+}

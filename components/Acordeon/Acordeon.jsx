@@ -3,7 +3,7 @@ import styles from './Acordeon.module.css';
 
 const Acordeon = (props) => {
 
-  const { title, content } = props; 
+  const { title, children } = props; 
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
@@ -17,7 +17,7 @@ const Acordeon = (props) => {
       </div>
       {isOpen && 
         <div className={styles['accordion-content']}>
-              {content}
+          { children }
         </div>
       }
     </div>

@@ -1,0 +1,14 @@
+.main-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.travel-summary {
+    display: flex;
+    width: 380px;
+    padding-block: 15px;
+    padding-inline: 27px;
+    border-radius: 16px;
+    background-color: var(--Blanco, #FFF);
+}

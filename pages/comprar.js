@@ -15,7 +15,7 @@ const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
 import { ObtenerParrillaServicioDTO } from "dto/ParrillaDTO";
 import StagePasajes from "../components/ticket_sale/StagePasajes";
-import StagePago from "../components/ticket_sale/StagePago";
+import StagePago from "../components/ticket_sale/StagePago/StagePago";
 
 registerLocale("es", es);
 
