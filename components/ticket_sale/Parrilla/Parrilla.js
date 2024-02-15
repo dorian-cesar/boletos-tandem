@@ -31,14 +31,13 @@ const Parrilla = (props) => {
     parrilla,
     stage,
     setParrilla,
-    asientos_selected,
   } = props;
 
-  const [asientosIda, setAsientosIda] = useState([]);
-  const [asientosVuelta, setAsientosVuelta] = useState([]);
   const [modalMab, setModalMab] = useState(false);
   const [openPane, setOpenPane] = useState(false);
   const [key, setKey] = useState(null);
+  const [totalPagar, setTotalPagar] = useState(0);
+  const [piso, setPiso] = useState(1);
 
   useEffect(() => {
     if (isShowParrilla && !parrilla.length) {
@@ -54,11 +53,19 @@ const Parrilla = (props) => {
     }
   }, [])
 
-  const [piso, setPiso] = useState(1);
-
-  const totalPagar = 0;
+  useEffect(() => actualizarTotalPagar(), [carroCompras]);
   
   let asientosPorServicio = [];
+
+  function actualizarTotalPagar() {
+    debugger;
+    let total = 0;
+    Object.keys(carroCompras).forEach((servicios) => {
+      carroCompras[servicios]?.ida?.forEach(servicioIda => total += servicioIda.asientos.reduce((acc, asiento) => acc + asiento.valorAsiento, 0));
+      carroCompras[servicios]?.vuelta?.forEach(servicioVuelta => total += servicioVuelta.asientos.reduce((acc, asiento) => acc + asiento.valorAsiento, 0));
+    })
+    setTotalPagar(total);
+  }
 
   function obtenerAsientosSeleccionados() {
     const returnedArray = []
@@ -187,9 +194,6 @@ const Parrilla = (props) => {
         asientosTemporal.push(
           new AsientoDTO(reserva, parrillaServicio, asiento, piso)
         );
-        stage == STAGE_BOLETO_IDA
-          ? setAsientosIda(asientosTemporal)
-          : setAsientosVuelta(asientosTemporal);
         return asientosTemporal;
       }
     } catch ({ message }) {
@@ -301,7 +305,6 @@ const Parrilla = (props) => {
       const parrillaTemporal = [...parrilla.parrilla];
       const parrillaModificada = [...parrilla.parrilla];
 
-      stage == STAGE_BOLETO_IDA ? setAsientosIda([]) : setAsientosVuelta([]);
       if (parrilla.parrilla[indexParrilla].id == openPane) {
         return;
       }
@@ -375,6 +378,7 @@ const Parrilla = (props) => {
                   className={styles["imagen-volante"]}
                   src="img/volante.svg"
                   alt="Volante conductor"
+                  onClick={ () => console.log(totalCompra) }
                 />
               </div>}
               <div className={ `${ styles["fila"] } ${ styles['fila-vacia'] }`}>
