@@ -15,11 +15,11 @@ const PagoCuponera = (props) => {
         <div className="col-12 col-md-8">
           <Acordeon
             title="Datos del comprador"
-            content={<InformacionComprador/>}
+            children={<InformacionComprador/>}
           />
           <Acordeon
             title="Método de pago"
-            content={<MedioPago/>}
+            children={<MedioPago/>}
           />
         </div>
         <div className="col-12 col-md-4">
