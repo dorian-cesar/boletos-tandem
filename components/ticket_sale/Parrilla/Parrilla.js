@@ -297,6 +297,19 @@ const Parrilla = (props) => {
           });
           return false;
       }
+
+      if( carroCompras[key] && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ) {
+        const exist = carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].find((i) => i.idServicio === props.thisParrilla.idServicio && i.fechaServicio === props.thisParrilla.fechaServicio);
+        if( !exist && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].length >= MAXIMO_COMPRA_ASIENTO ) {
+          toast.warn(`Sólo puede elegir ${ MAXIMO_COMPRA_ASIENTO } servicios`, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false
+          });
+          return false;
+        }
+      }
+
       return true;
   }
 
