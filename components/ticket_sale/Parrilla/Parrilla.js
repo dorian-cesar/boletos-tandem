@@ -222,7 +222,7 @@ const Parrilla = (props) => {
         asiento.estado == ASIENTO_LIBRE ||
         asiento.estado == ASIENTO_LIBRE_MASCOTA
       ) {
-        if (!validarMaximoAsientos(asientosTemporal)) return;
+        if (!validarMaximoAsientos(asientosTemporal, asiento)) return;
         asientosTemporal = await servicioTomarAsiento(
           props.thisParrilla,
           asiento.asiento,
@@ -319,15 +319,26 @@ const Parrilla = (props) => {
     }
 }
 
-  function validarMaximoAsientos(asientos) {
-    const asientosValidos = asientos.filter((i) => i.tipo !== 'pet');
-    if( asientosValidos.length >= MAXIMO_COMPRA_ASIENTO ) {
-        toast.warn(`Máximo ${ MAXIMO_COMPRA_ASIENTO } pasajes`, {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false
-        });
-        return false;
+  function validarMaximoAsientos(asientos, asientoSeleccion) {
+
+    const cantidadAsientos = asientos.length;
+
+    if( cantidadAsientos >= MAXIMO_COMPRA_ASIENTO ) {
+      toast.warn(`Máximo ${ MAXIMO_COMPRA_ASIENTO } pasajes`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false
+      });
+      return false;
+    }
+
+    if( asientoSeleccion.asientoAsociado && cantidadAsientos + 1 >= MAXIMO_COMPRA_ASIENTO ) {
+      toast.warn(`Asiento seleccionado superara el máximo de compra permitido`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false
+      });
+      return false;
     }
 
     if( carroCompras[key] && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ) {
