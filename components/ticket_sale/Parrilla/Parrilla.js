@@ -19,6 +19,7 @@ const STAGE_BOLETO_VUELTA = 1;
 const ASIENTO_TIPO_MASCOTA = 'pet';
 const ASIENTO_TIPO_ASOCIADO = 'asociado';
 const ASIENTO_OCUPADO = 'ocupado';
+const ASIENTO_OCUPADO_MASCOTA = 'pet-busy';
 const MAXIMO_COMPRA_ASIENTO = 4;
 
 const Parrilla = (props) => {
@@ -256,7 +257,8 @@ const Parrilla = (props) => {
         return;
       }
 
-      if( asiento.estado == ASIENTO_OCUPADO ) {
+      if( asiento.estado == ASIENTO_OCUPADO || 
+          asiento.estado == ASIENTO_OCUPADO_MASCOTA ) {
         if( asientoSeleccionado ) {
           await servicioLiberarAsiento(
             carrito,
