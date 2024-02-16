@@ -191,18 +191,21 @@
 }
 
 .bus .fila .m-disponible {
-    background-image: url(../../../public/img/am-disponible.svg);
     cursor: pointer;
+    transform: rotate(180deg) !important;
+    color: transparent;
 }
 
 .bus .fila .m-seleccion {
-    background-image: url(../../../public/img/am-seleccionado.svg);
     cursor: pointer;
+    transform: rotate(180deg) !important;
+    color: transparent;
 }
 
 .bus .fila .m-reservado {
-    background-image: url(../../../public/img/am-reservado.svg);
     cursor: pointer;
+    transform: rotate(180deg) !important;
+    color: transparent;
 }
 
 .bus .fila .conductor {

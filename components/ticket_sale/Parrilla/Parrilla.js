@@ -203,7 +203,6 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
-      debugger;
       if( asiento.estado === 'sinasiento' || !asiento.asiento ) return;
 
       const carrito = {
@@ -224,7 +223,7 @@ const Parrilla = (props) => {
       ) {
         if (!validarMaximoAsientos(asientosTemporal)) return;
         asientosTemporal = await servicioTomarAsiento(
-          parrilla,
+          props.thisParrilla,
           asiento.asiento,
           piso,
           asientosTemporal
@@ -244,6 +243,15 @@ const Parrilla = (props) => {
         }
 
         dispatch(agregarServicio(carrito));
+
+        if( asiento.asientoAsociado ) {
+          const newCarrito = {
+            ...carrito,
+            asiento: asignarAsientoAsociado(asiento),
+          }
+          if( newCarrito.asiento ) dispatch(agregarServicio(newCarrito));
+        }
+
         await reloadPane(indexParrilla);
         return;
       }
@@ -268,7 +276,17 @@ const Parrilla = (props) => {
               piso
             );
           }
+
           dispatch(eliminarServicio(carrito));
+
+          if( asiento.asientoAsociado ) {
+            const newCarrito = {
+              ...carrito,
+              asiento: asignarAsientoAsociado(asiento),
+            }
+            if( newCarrito.asiento ) dispatch(eliminarServicio(newCarrito));
+          }
+
           await reloadPane(indexParrilla);
           return;
         }
@@ -276,6 +294,17 @@ const Parrilla = (props) => {
       }
     } catch ({ message }) {
       console.error(`Error al tomar asiento [${message}]`);
+    }
+  }
+
+  function asignarAsientoAsociado(asiento) {
+    debugger;
+    const asientos = [];
+    props.thisParrilla.asientos1.map(array => array.map(asiento => asientos.push(asiento)))
+    props.thisParrilla.asientos2.map(array => array.map(asiento => asientos.push(asiento)))
+    const asientoAsociado = asientos.find((i) => i.asiento === asiento.asientoAsociado);
+    if( asientoAsociado ) {
+      return asientoAsociado;
     }
   }
 
@@ -289,28 +318,29 @@ const Parrilla = (props) => {
 }
 
   function validarMaximoAsientos(asientos) {
-      if( asientos.length >= MAXIMO_COMPRA_ASIENTO ) {
-          toast.warn(`Máximo ${ MAXIMO_COMPRA_ASIENTO } pasajes`, {
-              position: 'top-right',
-              autoClose: 5000,
-              hideProgressBar: false
-          });
-          return false;
-      }
-
-      if( carroCompras[key] && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ) {
-        const exist = carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].find((i) => i.idServicio === props.thisParrilla.idServicio && i.fechaServicio === props.thisParrilla.fechaServicio);
-        if( !exist && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].length >= MAXIMO_COMPRA_ASIENTO ) {
-          toast.warn(`Sólo puede elegir ${ MAXIMO_COMPRA_ASIENTO } servicios`, {
+    const asientosValidos = asientos.filter((i) => i.tipo !== 'pet');
+    if( asientosValidos.length >= MAXIMO_COMPRA_ASIENTO ) {
+        toast.warn(`Máximo ${ MAXIMO_COMPRA_ASIENTO } pasajes`, {
             position: 'top-right',
             autoClose: 5000,
             hideProgressBar: false
-          });
-          return false;
-        }
-      }
+        });
+        return false;
+    }
 
-      return true;
+    if( carroCompras[key] && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'] ) {
+      const exist = carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].find((i) => i.idServicio === props.thisParrilla.idServicio && i.fechaServicio === props.thisParrilla.fechaServicio);
+      if( !exist && carroCompras[key][stage === 0 ? 'ida' : 'vuelta'].length >= MAXIMO_COMPRA_ASIENTO ) {
+        toast.warn(`Sólo puede elegir ${ MAXIMO_COMPRA_ASIENTO } servicios`, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false
+        });
+        return false;
+      }
+    }
+
+    return true;
   }
 
   async function setOpenPaneRoot(indexParrilla) {
@@ -337,7 +367,7 @@ const Parrilla = (props) => {
   }
 
   function getImage( sit, indexParrilla ) {
-    if( sit.asiento === '12' ) {
+    if( sit.tipo === 'pet' ) {
       debugger;
     }
     let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
@@ -358,6 +388,15 @@ const Parrilla = (props) => {
     }
     if( sit.clase && sit.estado === 'ocupado' ) {
       return 'img/asiento_ocupado.svg';
+    }
+    if( sit.tipo === 'pet' && sit.estado === 'pet-free' ) {
+      return 'img/a-pet-disponible.svg';
+    }
+    if( sit.tipo === 'pet' && sit.estado === 'pet-busy' ) {
+      return 'img/a-pet-reservado.svg';
+    }
+    if( sit.tipo === 'pet' && sit.estado === 'seleccion-mascota' ) {
+      return 'img/a-pet-seleccionado.svg';
     }
     if( sit.estado === 'libre' && sit.valorAsiento === 0) {
       return '';
@@ -441,8 +480,7 @@ const Parrilla = (props) => {
                               <span>
                                 {ii.asiento != "B1" &&
                                 ii.asiento != "B2" &&
-                                ii.estado != "sinasiento" &&
-                                ii.tipo != "pet"
+                                ii.estado != "sinasiento"
                                   ? ii.asiento
                                   : ""}
                               </span>
@@ -496,8 +534,7 @@ const Parrilla = (props) => {
                               <span>
                                 {ii.asiento != "B1" &&
                                 ii.asiento != "B2" &&
-                                ii.estado != "sinasiento" &&
-                                ii.tipo != "pet"
+                                ii.estado != "sinasiento"
                                   ? ii.asiento
                                   : ""}
                               </span>

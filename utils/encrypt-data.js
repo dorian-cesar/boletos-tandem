@@ -1,7 +1,6 @@
 import CryptoJS from "crypto-js";
 
 export function encryptData(data, key, live_time = null) {
-    debugger;
     live_time && Object.assign(data, { live_time: live_time })
     let encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), key).toString();
     localStorage.setItem(key, encrypted);
@@ -13,7 +12,6 @@ export function encryptDataNoTime(data, key) {
 }
 
 export function decryptData(key) {
-    debugger;
     let encrypted = localStorage.getItem(key);
     if (!encrypted) {
         return null;
