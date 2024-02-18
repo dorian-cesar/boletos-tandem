@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export const ResumenViaje = () => {
+  
   const [resumen, setResumen] = useState({
     carro: {},
   });

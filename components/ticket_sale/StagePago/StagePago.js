@@ -374,9 +374,7 @@ const StagePago = (props) => {
   return (
     <main className={styles["main-content"]}>
       <section>
-        <Acordeon 
-            title="Resumen de compra" 
-            children={<ResumenServicio />} />
+        <ResumenServicio />
         <Acordeon
             title="Datos del comprador"
             children={<DatosPasajero />}

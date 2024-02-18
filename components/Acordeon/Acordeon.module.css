@@ -7,19 +7,57 @@
     width: 644px;
     height: 48px; 
     padding: 8px 16px;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
+    justify-content: space-between;
     gap: 16px; 
     border-radius: 16px;
     background: var(--Blanco, #FFF);
 }
 
+.accordion-open {
+    border-radius: 16px 16px 0 0 !important;
+}
+
+.accordion-header .travel-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.accordion-header .travel-info :nth-child(2) {
+    margin-inline: 32px;
+}
+
+.accordion-header .travel-info .travel-info-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.accordion-header .travel-info .travel-info-item img {
+    width: 32px;
+}
+
+.accordion-header .travel-info .travel-info-item span {
+    margin-inline-start: 5px;
+    margin-inline-end: 0 !important;
+}
+
 .accordion-header span{
     color: var(--azul-100, #3365B4);
-    font-size: 20px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
     line-height: normal; 
+}
+
+.accordion-header-open {
+    width: 32px;
+    transform: rotate(180deg);
+}
+
+.accordion-header-close {
+    width: 32px;
 }
 
 .accordion-content {
@@ -34,6 +72,10 @@
     flex-direction: column;
     align-items: flex-start;
     border-radius: 16px; 
+}
+
+.accordion-content-open {
+    border-radius: 0 0 16px 16px !important;
 }
 
 .accordion-content.show {
