@@ -35,8 +35,6 @@ const DatosPasajero = (props) => {
   return (
     <>
       <div className={styles["container"]}>
-        <div className={styles["dotted-line"]}></div>
-
         <div className={"row"}>
           <div className={"col-12 col-md-6"}>
             <div className={"grupo-campos"}>
@@ -130,16 +128,6 @@ const DatosPasajero = (props) => {
                 onChange={(e) => setDataComprador(e.target)}
               />
             </div>
-          </div>
-          <div className={"col-12 col-md-6"}>
-            <div className={"row"}>
-              <div className={"col"}>
-                <label className={styles["container-text"]}>
-                  <label className={styles["label"]}></label>
-                </label>
-              </div>
-            </div>
-            <div className={"grupo-campos"}></div>
           </div>
         </div>
       </div>

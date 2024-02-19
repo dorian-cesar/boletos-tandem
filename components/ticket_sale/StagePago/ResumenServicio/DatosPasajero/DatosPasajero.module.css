@@ -1,7 +1,5 @@
 .container {
     display: flex;
-    width: 644px;
-    height: 272px; 
     padding: 8px 16px;
     flex-direction: column;
     align-items: flex-start;
@@ -13,6 +11,10 @@
 .container-text{
     margin-left: 0px;
     margin-bottom: 12px;
+}
+
+.grupo-campos {
+    margin-bottom: 25px !important;
 }
 
 .dotted-line {
@@ -33,6 +35,7 @@
     border-radius: 16px;
     border: 1px solid var(--azul-50, #98B1D9);
     background: var(--Blanco, #FFF);
+    width: 100%;
 }
 
 .label {

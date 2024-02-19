@@ -3,22 +3,17 @@ import styles from "./InformacionPasajero.module.css"
 import Rut from "rutjs";
 import { useEffect, useState } from "react";
 import Acordeon from "../../../../Acordeon/Acordeon";
-import AsientoPasajero from "../AsientoPasajero/AsientoPasajero";
+import DatosPasajero from "../DatosPasajero/DatosPasajero";
 
 
 
 const InformacionPasajero = (props) => {
-    const { data } = props;
+    const { data, title } = props;
     return (
         <>
-        {Object.entries(data).map(([key, value]) => {
-                const title = (value.terminalOrigen +" - "+ value.terminalDestino +" - "+ value.horaSalida);
-                return (
-                    <Acordeon key={key} title={title} children={<AsientoPasajero data={value.asientos}/>}/> 
-                );
-            })}
-         
-        
+            <Acordeon title={ title }>
+                <DatosPasajero />
+            </Acordeon> 
         </>
     )
 }

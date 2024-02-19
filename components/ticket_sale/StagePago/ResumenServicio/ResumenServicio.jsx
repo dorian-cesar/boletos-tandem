@@ -1,14 +1,16 @@
-import { useSelector, useDispatch } from "react-redux";
 import styles from "./ResumenServicio.module.css";
 import Rut from "rutjs";
 import { useEffect, useState } from "react";
 import Acordeon from "../../../Acordeon/Acordeon";
 import InformacionPasajero from "./InformacionPasajero/InformacionPasajero";
 
+import { useSelector, useDispatch } from 'react-redux'
+import { agruparInformacionPago } from "store/usuario/compra-slice";
+
 const ResumenServicio = (props) => {
   const dispatch = useDispatch();
   const carroVenta = useSelector((state) => state.compra.listaCarrito);
-  const [infoGrouped, setInfoGrouped] = useState([]);
+  const informacionAgrupada = useSelector((state) => state.compra.informacionAgrupada);
 
   function groupInfo() {
     const groupInfo = [];
@@ -44,7 +46,7 @@ const ResumenServicio = (props) => {
 
         value.vuelta.forEach(servicio => servicio.asientos.forEach(asiento => asientos.push(asiento)));
 
-        const servicioFormateado = value.vuelta[0];
+        const servicioFormateado = { ...value.vuelta[0] };
         delete servicioFormateado.asientos;
         delete servicioFormateado.asientos1;
         delete servicioFormateado.asientos2;
@@ -59,7 +61,7 @@ const ResumenServicio = (props) => {
       }
     });
 
-    setInfoGrouped(groupInfo);
+    dispatch(agruparInformacionPago(groupInfo));
   }
 
   useEffect(() => groupInfo(), []);
@@ -67,7 +69,7 @@ const ResumenServicio = (props) => {
   return (
     <>
       {
-        infoGrouped.map((info, index) => {
+        informacionAgrupada.map((info, index) => {
           return (
             <Acordeon
               key={ index }
@@ -75,36 +77,25 @@ const ResumenServicio = (props) => {
               fecha={ info.fecha }
               hora={ info.hora }
             >
-              <InformacionPasajero data={[info]} />
+              { index > 0 && 
+              <div className="form-check">
+                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                <label className="form-check-label" for="flexCheckDefault">
+                  Usar los datos del primer viaje
+                </label>
+              </div> 
+              }
+              {
+                info.asientos.map((asiento, index) => {
+                  return (
+                    <InformacionPasajero className='w-100' title={ `Pasajero ${ index + 1 } | Asiento ${ asiento.asiento }` } data={asiento} />
+                  );
+                })
+              }
             </Acordeon>
           );
         })
       }
-      {Object.entries(carroVenta).map(([key, value]) => {
-        const idaKey = value.ida[0].id;
-        const vueltaKey = value.vuelta?.[0]?.id ?? null;
-        const idaNombre = Object.keys(value)[0];
-        const keys = Object.keys(value);
-        const vueltaNombre = keys.length >= 2 ? keys[1] : null;
-        const idaLista = value.ida || [];
-        const vueltaLisa = value.vuelta || [];
-        return (
-          <>
-            <Acordeon
-              key={idaKey}
-              title={idaNombre}
-              children={<InformacionPasajero data={idaLista} />}
-            />
-            {vueltaKey && (
-              <Acordeon
-                key={vueltaKey}
-                title={vueltaNombre}
-                children={<InformacionPasajero data={vueltaLisa} />}
-              />
-            )}
-          </>
-        );
-      })}
     </>
   );
 };

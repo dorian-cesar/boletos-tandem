@@ -13,7 +13,7 @@ const Acordeon = (props) => {
   return (
     <div className={styles['accordion']}>
       <div className={`${ styles['accordion-header'] } ${ isOpen && styles['accordion-open'] }`} onClick={toggleAccordion}>
-        { title && <span>{title} {isOpen ? '▼' : '►'}</span> }
+        { title && <span>{title}</span> }
         { !title && 
         <>
           <div className={ styles['travel-info'] }>
@@ -30,13 +30,13 @@ const Acordeon = (props) => {
               <span>{hora}</span>
             </div>
           </div>
-          <div>
-            <img 
-              src='img/icon/general/chevron-down-circle-outline.svg' 
-              className={ isOpen ? styles['accordion-header-open'] : styles['accordion-header-close']} />
-          </div>
         </>
         }
+        <div>
+          <img 
+            src='img/icon/general/chevron-down-circle-outline.svg' 
+            className={ isOpen ? styles['accordion-header-open'] : styles['accordion-header-close']} />
+        </div>
       </div>
       {isOpen && 
         <div className={ `${ styles['accordion-content'] } ${ isOpen && styles['accordion-content-open'] }`}>

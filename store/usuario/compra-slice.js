@@ -4,7 +4,8 @@ import { decryptData, encryptData, encryptDataNoTime } from 'utils/encrypt-data'
 
 let initialState = {
     idSistema: 7,
-    listaCarrito: {}
+    listaCarrito: {},
+    informacionAgrupada: []
 }
 
 if (typeof window !== 'undefined') {
@@ -68,9 +69,6 @@ export const compraSlice = createSlice({
                 }
             }
         },
-        agregarPasajero: (state) => {
-
-        },
         eliminarServicio: (state, action) => {
             debugger;
             const { payload } = action;
@@ -99,10 +97,14 @@ export const compraSlice = createSlice({
                     }
                 }
             }
+        },
+        agruparInformacionPago: (state, action) => {
+            const { payload } = action;
+            state.informacionAgrupada = payload;
         }
     },
 });
 
-export const { agregarServicio, agregarPasajero, eliminarServicio } = compraSlice.actions;
+export const { agregarServicio, eliminarServicio, agruparInformacionPago } = compraSlice.actions;
 
 export default compraSlice.reducer;

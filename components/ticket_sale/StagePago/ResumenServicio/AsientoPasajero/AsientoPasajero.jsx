@@ -12,7 +12,7 @@ const AsientoPasajero = (props) => {
       {Object.entries(data).map(([key, value]) => {
         const title = "Pasajero asiento " + value.asiento;
         return (
-          <Acordeon key={key} title={title} children={<DatosPasajero />} />
+          <Acordeon key={key} title={title} />
         );
       })}
     </>
