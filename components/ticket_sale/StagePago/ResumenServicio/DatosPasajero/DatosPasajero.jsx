@@ -18,6 +18,9 @@ const DatosPasajero = (props) => {
     try {
       debugger;
       let carro_temp = { ...asiento };
+      if ( !carro_temp.tipoRut ) {
+        carro_temp['tipoRut'] = "rut";
+      }
       value = validarFormatoRut(name, value);
       carro_temp[name] = value;
       const infoToDispatch = {
@@ -51,7 +54,7 @@ const DatosPasajero = (props) => {
               <label className={styles["label"]}>Nombres</label>
               <input
                 type="text"
-                value={carro.datos["nombre"]}
+                value={asiento["nombre"]}
                 name="nombre"
                 placeholder="Ej: Juan Andrés"
                 className={styles["input"]}
@@ -64,7 +67,7 @@ const DatosPasajero = (props) => {
               <label className={styles["label"]}>Apellidos</label>
               <input
                 type="text"
-                value={carro.datos["apellido"]}
+                value={asiento["apellido"]}
                 name="apellido"
                 placeholder="Ej: Espinoza Arcos"
                 className={styles["input"]}
@@ -79,10 +82,10 @@ const DatosPasajero = (props) => {
                   <label className={styles["label"]}>rut</label>
                   <input
                     type="checkbox"
-                    checked={carro.datos["tipoRut"] == "rut" ? "checked" : ""}
+                    checked={asiento["tipoRut"] == "rut" ? "checked" : ""}
                     value="rut"
                     name="tipoRut"
-                    onChange={(e) => setDataComprador(e.target)}
+                    onClick={(e) => setDataComprador(e.target)}
                   />
                   <span className="checkmark"></span>
                 </label>
@@ -93,11 +96,11 @@ const DatosPasajero = (props) => {
                   <input
                     type="checkbox"
                     checked={
-                      carro.datos["tipoRut"] == "pasaporte" ? "checked" : ""
+                      asiento["tipoRut"] == "pasaporte" ? "checked" : ""
                     }
                     value="pasaporte"
                     name="tipoRut"
-                    onChange={(e) => setDataComprador(e.target)}
+                    onClick={(e) => setDataComprador(e.target)}
                   />
                   <span className={"checkmark"}></span>
                 </label>
@@ -106,12 +109,12 @@ const DatosPasajero = (props) => {
             <div className={"grupo-campos"}>
               <input
                 type="text"
-                value={carro.datos["rut"]}
+                value={asiento["rut"]}
                 name="rut"
                 placeholder="Ej: 111111111"
                 className={`${
-                  Array.isArray(carro.datos.errors) &&
-                  carro.datos.errors.includes("rut")
+                  Array.isArray(asiento.errors) &&
+                  asiento.errors.includes("rut")
                     ? "is-invalid"
                     : ""
                 } ${styles["input"]}`}
@@ -131,7 +134,7 @@ const DatosPasajero = (props) => {
             <div className={"grupo-campos"}>
               <input
                 type="email"
-                value={carro.datos["email"]}
+                value={asiento["email"]}
                 name="email"
                 placeholder="Ej: correo@correo.cl"
                 className={styles["input"]}
