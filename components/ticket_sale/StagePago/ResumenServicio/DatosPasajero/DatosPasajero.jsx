@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
 import styles from "./DatosPasajero.module.css";
-import { useSelector, useDispatch } from "react-redux";
 import Rut from "rutjs";
 
+import { useSelector, useDispatch } from "react-redux";
+import { agregarInformacionAsiento } from "store/usuario/compra-slice";
+
 const DatosPasajero = (props) => {
+
+  const { servicio, asiento } = props;
+  const dispatch = useDispatch();
+  
   const [carro, setCarro] = useState({
     datos: { tipoRut: "rut" },
   });
 
   function setDataComprador({ name, value }) {
     try {
-      let carro_temp = { ...carro };
+      debugger;
+      let carro_temp = { ...asiento };
       value = validarFormatoRut(name, value);
-      carro_temp.datos[name] = value;
-      dispatch(agregarComprador(carro_temp.datos));
-      setCarro(carro_temp);
+      carro_temp[name] = value;
+      const infoToDispatch = {
+        servicio,
+        asiento: carro_temp,
+      }
+      dispatch(agregarInformacionAsiento(infoToDispatch));
     } catch ({ message }) {
       console.error(`Error al agregar informacion del comprador [${message}]`);
     }

@@ -88,7 +88,11 @@ const ResumenServicio = (props) => {
               {
                 info.asientos.map((asiento, index) => {
                   return (
-                    <InformacionPasajero className='w-100' title={ `Pasajero ${ index + 1 } | Asiento ${ asiento.asiento }` } data={asiento} />
+                    <InformacionPasajero 
+                      className='w-100' 
+                      title={ `Pasajero ${ index + 1 } | Asiento ${ asiento.asiento }` }
+                      asiento={ asiento }
+                      servicio={ info } />
                   );
                 })
               }
