@@ -31,6 +31,7 @@ const BusquedaCuponera = (props) => {
   const [destinos, setDestinos] = useState([]);
 
   async function searchParrillaCuponera() {
+    debugger;
     try {
         setLoadingParrilla(true);
         const parrillaCuponera = await axios.post("/api/coupon/parrilla-cuponera", new ObtenerParrillaCuponeraServicioDTO(origen, destino));

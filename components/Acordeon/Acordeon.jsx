@@ -34,7 +34,7 @@ const Acordeon = (props) => {
         }
         <div>
           <img 
-            src='img/icon/general/chevron-down-circle-outline.svg' 
+            src='/img/icon/general/chevron-down-circle-outline.svg' 
             className={ isOpen ? styles['accordion-header-open'] : styles['accordion-header-close']} />
         </div>
       </div>

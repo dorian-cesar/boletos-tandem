@@ -42,7 +42,12 @@ const StagePago = (props) => {
     if( usaDatosPasajeroPago ) {
       dispatch(asignarDatosComprador(informacionAgrupada[0].asientos[0]));
     } else {
-      dispatch(asignarDatosComprador({}));
+      dispatch(asignarDatosComprador({
+        nombre: "",
+        apellido: "",
+        email: "",
+        rut: "",
+      }));
     }
   }, [usaDatosPasajeroPago])
 

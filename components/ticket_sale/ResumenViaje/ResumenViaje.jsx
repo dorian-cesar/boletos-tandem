@@ -11,7 +11,7 @@ export const ResumenViaje = () => {
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const dispatch = useDispatch();
-  
+
   const obtenerInformacion = () => {
     {
       Object.entries(carroCompras).map(([key, value]) => {
@@ -100,7 +100,7 @@ export const ResumenViaje = () => {
               </div>
             ))}
         </div>
-        <div className={styles["servicio-vuelta"]}></div>
+        {/* <div className={styles["servicio-vuelta"]}></div> */}
       </div>
     </div>
   );

@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import styles from "./BusquedaServicio.module.css";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from 'react-redux'
+import Popup from "../Popup/Popup";
+import ModalEntities from "entities/ModalEntities";
 
 
 registerLocale("es", es);
@@ -46,20 +48,38 @@ const BusquedaServicio = (props) => {
 
   const [activeTab, setActiveTab] = useState("Búsqueda de Servicio");
 
+  const [mostrarPopup, setMostrarPopup] = useState(false);
+
+  const abrirPopup = () => {
+    setMostrarPopup(true);
+  };
+  const cerrarPopup = () => {
+    setMostrarPopup(false);
+  };
+
   const router = useRouter();
 
   useEffect(() => {
     setDatePickerKey((prevKey) => prevKey + 1);
   }, [startDate]);
 
-  /*
+  
   function validarServicioTomado(){
+    debugger;
     const tieneElementos = Object.keys(listaCarrito).length > 0;
-    if(tieneElementos === false){
+    let fechaComponente = dayjs(startDate).format("YYYY-MM-DD")
+    if(tieneElementos){
+      const { origen, destino, startDate, endDate } = router.query;
+      if (dayjs(fechaComponente).isBefore(startDate) || dayjs(fechaComponente).isAfter(startDate)) {
+        abrirPopup();
+      } else {
+       
+      }
       return true;
     }
+    return false;
   }
-*/
+
   async function redireccionarBuscarServicio() {
     await router.push(
       `/comprar?origen=${origen}&destino=${destino}&startDate=${
@@ -169,6 +189,13 @@ const BusquedaServicio = (props) => {
                         ¿Cúal es tu próximo destino?
                       </h1>
                     )}
+                    {mostrarPopup && (
+        <Popup
+          key={ModalEntities.annulation_purse}
+          mensaje="Este es un mensaje de ejemplo en el popup."
+          onClose={cerrarPopup}
+        />
+      )}
                     {isShowMascota && (
                       <div
                         className={styles["title-mascota-abordo"]}
@@ -293,7 +320,7 @@ const BusquedaServicio = (props) => {
                         <button
                           className={`${styles["button-busqueda-servicio"]} `}
                           onClick={() => {
-                             origen && destino &&  redireccionarBuscarServicio() 
+                            validarServicioTomado() ? "" : origen && destino &&  redireccionarBuscarServicio()
                           }}
                         >
                           <img src="img/icon-buscar-blanco.svg" /> Buscar
