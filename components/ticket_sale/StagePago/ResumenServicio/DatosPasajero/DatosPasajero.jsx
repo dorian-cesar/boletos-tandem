@@ -3,7 +3,7 @@ import styles from "./DatosPasajero.module.css";
 import Rut from "rutjs";
 
 import { useSelector, useDispatch } from "react-redux";
-import { agregarInformacionAsiento } from "store/usuario/compra-slice";
+import { agregarInformacionAsiento, asignarDatosComprador } from "store/usuario/compra-slice";
 
 const DatosPasajero = (props) => {
 
@@ -27,7 +27,12 @@ const DatosPasajero = (props) => {
         servicio,
         asiento: carro_temp,
       }
-      dispatch(agregarInformacionAsiento(infoToDispatch));
+
+      if( servicio ) {
+        dispatch(agregarInformacionAsiento(infoToDispatch));
+      } else {
+        dispatch(asignarDatosComprador(carro_temp));
+      }
     } catch ({ message }) {
       console.error(`Error al agregar informacion del comprador [${message}]`);
     }
@@ -85,7 +90,7 @@ const DatosPasajero = (props) => {
                     checked={asiento["tipoRut"] == "rut" ? "checked" : ""}
                     value="rut"
                     name="tipoRut"
-                    onClick={(e) => setDataComprador(e.target)}
+                    onChange={(e) => setDataComprador(e.target)}
                   />
                   <span className="checkmark"></span>
                 </label>
@@ -100,7 +105,7 @@ const DatosPasajero = (props) => {
                     }
                     value="pasaporte"
                     name="tipoRut"
-                    onClick={(e) => setDataComprador(e.target)}
+                    onChange={(e) => setDataComprador(e.target)}
                   />
                   <span className={"checkmark"}></span>
                 </label>

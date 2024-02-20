@@ -18,16 +18,33 @@ import MediosPago from "./ResumenServicio/MediosPago/MediosPago"
 import styles from "./StagePago.module.css";
 import { ResumenViaje } from "../ResumenViaje/ResumenViaje";
 
+import { useDispatch, useSelector } from "react-redux";
+import { asignarDatosComprador } from "store/usuario/compra-slice";
+
 const StagePago = (props) => {
   const { carro, nacionalidades, convenios, mediosDePago, setCarro } = props;
+
+  const informacionAgrupada = useSelector((state) => state.compra.informacionAgrupada);
+  const datosComprador = useSelector((state) => state.compra.datosComprador);
+
+  const dispatch = useDispatch();
 
   const [convenioSelected, setConvenioSelected] = useState(null);
   const [convenio, setConvenio] = useState(null);
   const [convenioActive, setConvenioActive] = useState(null);
   const [convenioFields, setConvenioFields] = useState({});
   const [payment, setPayment] = useState({});
+  const [usaDatosPasajeroPago, setUsaDatosPasajeroPago] = useState(false);
 
   const payment_form = useRef(null);
+
+  useEffect(() => {
+    if( usaDatosPasajeroPago ) {
+      dispatch(asignarDatosComprador(informacionAgrupada[0].asientos[0]));
+    } else {
+      dispatch(asignarDatosComprador({}));
+    }
+  }, [usaDatosPasajeroPago])
 
   async function getConvenio() {
     try {
@@ -375,10 +392,15 @@ const StagePago = (props) => {
     <main className={styles["main-content"]}>
       <section className={ styles['info-list'] }>
         <ResumenServicio />
-        <Acordeon
-            title="Datos del comprador"
-            children={<DatosPasajero />}
-        />
+        <Acordeon title="Datos del comprador">
+          <div className="form-check">
+            <input className="form-check-input" type="checkbox" value={ usaDatosPasajeroPago } id="flexCheckDefault" onChange={ () => setUsaDatosPasajeroPago(!usaDatosPasajeroPago) }/>
+            <label className="form-check-label" htmlFor="flexCheckDefault">
+              Usar los datos del pasajero 1
+            </label>
+          </div> 
+          <DatosPasajero asiento={ datosComprador }/>
+        </Acordeon>
         <Acordeon 
             title="Punto de embarque" 
             children={<PuntoEmbarque />}/>

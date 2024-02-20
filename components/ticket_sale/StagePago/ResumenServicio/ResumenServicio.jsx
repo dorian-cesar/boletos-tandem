@@ -90,6 +90,7 @@ const ResumenServicio = (props) => {
                   return (
                     <InformacionPasajero 
                       className='w-100' 
+                      key={ `${ asiento.asiento }-key-${ index }` }
                       title={ `Pasajero ${ index + 1 } | Asiento ${ asiento.asiento }` }
                       asiento={ asiento }
                       servicio={ info } />
