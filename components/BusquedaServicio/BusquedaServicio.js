@@ -6,9 +6,10 @@ import Input from "../Input";
 import { useEffect, useState, forwardRef } from "react";
 import es from "date-fns/locale/es";
 import { useRouter } from "next/router";
-import Tab from "../Tab";
-import TabPanel from "../TabPanel";
 import styles from "./BusquedaServicio.module.css";
+import { toast } from "react-toastify";
+import { useSelector, useDispatch } from 'react-redux'
+
 
 registerLocale("es", es);
 
@@ -24,6 +25,10 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
 ));
 
 const BusquedaServicio = (props) => {
+  const dispatch = useDispatch();
+  const listaCarrito = useSelector(
+    (state) => state.compra.listaCarrito
+  );
   const {
     origenes,
     dias,
@@ -47,6 +52,14 @@ const BusquedaServicio = (props) => {
     setDatePickerKey((prevKey) => prevKey + 1);
   }, [startDate]);
 
+  /*
+  function validarServicioTomado(){
+    const tieneElementos = Object.keys(listaCarrito).length > 0;
+    if(tieneElementos === false){
+      return true;
+    }
+  }
+*/
   async function redireccionarBuscarServicio() {
     await router.push(
       `/comprar?origen=${origen}&destino=${destino}&startDate=${
@@ -54,24 +67,6 @@ const BusquedaServicio = (props) => {
       }&endDate=${endDate && dayjs(endDate).format("YYYY-MM-DD")}`
     );
     if (router.asPath.includes("comprar")) {
-      router.reload();
-    }
-  }
-
-  async function redireccionarBuscarCuponera() {
-    await router.push(`/comprarCuponera?origen=${origen}&destino=${destino}`);
-    if (router.asPath.includes("comprarCuponera")) {
-      router.reload();
-    }
-  }
-
-  async function redireccionarBuscarServicioCuponera() {
-    await router.push(
-      `/confirmacionCuponera?origen=${origen}&destino=${destino}&startDate=${
-        startDate && dayjs(startDate).format("YYYY-MM-DD")
-      }`
-    );
-    if (router.asPath.includes("confirmacionCuponera")) {
       router.reload();
     }
   }
@@ -152,11 +147,6 @@ const BusquedaServicio = (props) => {
       setActiveTab(savedActiveTab);
     }
   }, []);
-
-  const handleTabClick = (label) => {
-    localStorage.setItem("activeTab", label);
-    setActiveTab(label);
-  };
 
   function invertirDestinos() {
     const origenBackup = origen;
@@ -302,9 +292,9 @@ const BusquedaServicio = (props) => {
                         ></label>
                         <button
                           className={`${styles["button-busqueda-servicio"]} `}
-                          onClick={
-                            origen && destino && redireccionarBuscarServicio
-                          }
+                          onClick={() => {
+                             origen && destino &&  redireccionarBuscarServicio() 
+                          }}
                         >
                           <img src="img/icon-buscar-blanco.svg" /> Buscar
                         </button>

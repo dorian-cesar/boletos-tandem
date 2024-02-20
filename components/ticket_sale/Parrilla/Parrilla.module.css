@@ -256,6 +256,11 @@
     white-space: nowrap;
 }
 
+.button_continue:active {
+    background: var(--naranjo-80, #f8ccaf); 
+  }
+
+
 .button_little_car {
     display: flex;
     width: 214px;

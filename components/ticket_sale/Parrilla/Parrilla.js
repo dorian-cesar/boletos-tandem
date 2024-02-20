@@ -55,7 +55,7 @@ const Parrilla = (props) => {
   }, [])
 
   useEffect(() => actualizarTotalPagar(), [carroCompras]);
-  
+
   let asientosPorServicio = [];
 
   function actualizarTotalPagar() {
@@ -320,6 +320,7 @@ const Parrilla = (props) => {
 }
 
   function validarMaximoAsientos(asientos, asientoSeleccion) {
+    debugger;
 
     const cantidadAsientos = asientos.length;
 
@@ -418,6 +419,35 @@ const Parrilla = (props) => {
 
   function cantidadAsientosSeleccionados() {
     return asientosPorServicio.filter((i) => i.idServicio === props.thisParrilla.idServicio && i.fechaServicio === props.thisParrilla.fechaServicio).length;
+  }
+
+  function validarAsientosTomados(){
+    if(stage === STAGE_BOLETO_IDA){
+      let cantidad = asientosPorServicio.length
+      if(cantidad === 0){
+        toast.warn(`Debe seleccionar al menos un asiento para continuar`, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false
+        });
+        return false;
+      }
+    } 
+    if(stage === STAGE_BOLETO_VUELTA){
+      let cantidad = asientosPorServicio.length
+      if(cantidad === 0){
+        toast.warn(`Debe seleccionar al menos un asiento para continuar`, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false
+        });
+        return false;
+      }
+
+      
+      
+    } 
+    return true;
   }
 
   return (
@@ -608,10 +638,10 @@ const Parrilla = (props) => {
             <div className={styles["button_continue"]}  href="#"
                      onClick={(e) => {
                         e.stopPropagation();
-                        props.setPasaje(props);
+                        ( validarAsientosTomados() ) ? props.setPasaje(props) : "";                   
                       }}>
               <span>Continuar: ${ totalPagar }</span>
-            </div>
+            </div> 
             <div className={styles["button_little_car"]}>
               <span>Agregar al carro</span>
             </div>

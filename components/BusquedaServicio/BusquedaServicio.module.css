@@ -51,3 +51,6 @@
 
 
 }
+.button-busqueda-servicio:active {
+    background: var(--naranjo-80, #f8ccaf); 
+  }
