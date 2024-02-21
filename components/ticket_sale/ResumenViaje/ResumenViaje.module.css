@@ -1,6 +1,7 @@
 .resumen-container {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .resumen-container h3 {
@@ -13,4 +14,116 @@
 
 .contenedor-servicios .servicio-ida, .contenedor-servicios .servicio-vuelta {
     padding: 8px;
+}
+
+.detalle-container {
+    margin-top: 16px;
+}
+
+.detalle-item ul {
+    list-style-type: none;
+    padding-left: 0;
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 0;
+}
+
+.detalle-item ul li {
+    position: relative;
+    margin: 0;
+    padding-bottom: 1em;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.detalle-item ul li:before {
+    content: '';
+    border: 0.1em dashed #FF6500;
+    position: absolute;
+    bottom: 0px;
+    top: 10px;
+    left: 5px;
+}
+
+.detalle-item ul li:after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: #FF6500;
+    border-radius: 50%;
+    position: absolute;
+    left: 2px;
+    top: 7px;
+}
+
+.detalle-item ul li:last-child::before {
+    top: 1px;
+    bottom: 20px !important;
+}
+
+.resumen-servicio {
+    display: flex;
+    justify-content: space-between;
+    padding-block: 16px;
+    margin-bottom: 16px;
+    border-top: 1px dotted #000;
+    border-bottom: 1px dotted #000;
+}
+
+.total-container {
+    padding-inline: 8px;
+}
+
+.contanedor-total-pagar {
+    display: flex;
+    justify-content: center;
+    padding-block: 16px;
+    border-top: 1px dotted #000;
+    border-bottom: 1px dotted #000;
+    margin-block: 16px;
+}
+
+.contanedor-total-pagar span {
+    color: var(--naranjo-100, #FF6500);
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 26px;
+}
+
+.contenedor-checks * {
+    margin-block: 4px;
+}
+
+.contenedor-boton-pagar {
+    display: flex;
+    justify-content: center;
+    padding-block: 16px;
+}
+
+.contenedor-boton-pagar .boton-pagar {
+    width: 100%;
+    max-width: 300px;
+    padding: 8px 16px;
+    background-color: var(--naranjo-100, #FF6500);
+    color: var(--blanco-100, #FFFFFF);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    border: none;
+    border-radius: 16px;
+    cursor: default;
+    transition: background-color 0.3s;
+}
+
+.contenedor-boton-pagar .boton-pagar:hover {
+    background: var(--naranjo-80, #FF8A00);
 }

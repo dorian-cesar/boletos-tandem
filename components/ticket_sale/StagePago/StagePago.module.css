@@ -12,6 +12,7 @@
     padding-inline: 27px;
     border-radius: 16px;
     background-color: var(--Blanco, #FFF);
+    height: fit-content;
 }
 
 .info-list {
