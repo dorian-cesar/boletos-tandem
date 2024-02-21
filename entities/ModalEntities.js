@@ -11,6 +11,7 @@ const ModalEntities = {
     return_success: 'RETURN_SUCCES',
     confirm_change: 'CONFIRM_CHANGE',
     confirm_success: 'CONFIRM_SUCCESS',
+    delete_car: 'DELETE_CAR',
 }
 
 export default ModalEntities;
