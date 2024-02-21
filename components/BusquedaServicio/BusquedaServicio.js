@@ -191,7 +191,7 @@ const BusquedaServicio = (props) => {
                     )}
                     {mostrarPopup && (
         <Popup
-          key={ModalEntities.annulation_purse}
+          modalKey={ModalEntities.annulation_purse}
           mensaje="Este es un mensaje de ejemplo en el popup."
           onClose={cerrarPopup}
         />

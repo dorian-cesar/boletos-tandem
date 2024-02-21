@@ -2,15 +2,14 @@ import React from 'react';
 import styles from "./Popup.module.css"
 import ModalEntities from "../../entities/ModalEntities";
 
-
-
-const Popup = ({ key, onClose }) => {
-
-  const popInfo = {
-    [ModalEntities.annulation_purse]: {
-      title: 'probando'
-    }
+const popInfo = {
+  [ModalEntities.annulation_purse]: {
+    title: 'probando'
   }
+}
+
+const Popup = ({ modalKey, onClose }) => {
+
 
   return (
     <div className={styles["popup-overlay"]}>
@@ -19,7 +18,7 @@ const Popup = ({ key, onClose }) => {
           <img src="/img/icon/popup/warning-outline.svg"></img>
         </div>
         <div className={styles["popup-title"]}>
-          {popInfo[key]?.title || 'aaaaa'}
+          {popInfo[modalKey]?.title || 'aaaaa'}
         </div>
       </div>
     </div>
