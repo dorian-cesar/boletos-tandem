@@ -8,10 +8,9 @@ import es from "date-fns/locale/es";
 import { useRouter } from "next/router";
 import styles from "./BusquedaServicio.module.css";
 import { toast } from "react-toastify";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import Popup from "../Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
-
 
 registerLocale("es", es);
 
@@ -28,9 +27,7 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
 
 const BusquedaServicio = (props) => {
   const dispatch = useDispatch();
-  const listaCarrito = useSelector(
-    (state) => state.compra.listaCarrito
-  );
+  const listaCarrito = useSelector((state) => state.compra.listaCarrito);
   const {
     origenes,
     dias,
@@ -63,17 +60,18 @@ const BusquedaServicio = (props) => {
     setDatePickerKey((prevKey) => prevKey + 1);
   }, [startDate]);
 
-  
-  function validarServicioTomado(){
+  function validarServicioTomado() {
     debugger;
     const tieneElementos = Object.keys(listaCarrito).length > 0;
-    let fechaComponente = dayjs(startDate).format("YYYY-MM-DD")
-    if(tieneElementos){
+    let fechaComponente = dayjs(startDate).format("YYYY-MM-DD");
+    if (tieneElementos) {
       const { origen, destino, startDate, endDate } = router.query;
-      if (dayjs(fechaComponente).isBefore(startDate) || dayjs(fechaComponente).isAfter(startDate)) {
+      if (
+        dayjs(fechaComponente).isBefore(startDate) ||
+        dayjs(fechaComponente).isAfter(startDate)
+      ) {
         abrirPopup();
       } else {
-       
       }
       return true;
     }
@@ -190,12 +188,12 @@ const BusquedaServicio = (props) => {
                       </h1>
                     )}
                     {mostrarPopup && (
-        <Popup
-          modalKey={ModalEntities.annulation_purse}
-          mensaje="Este es un mensaje de ejemplo en el popup."
-          onClose={cerrarPopup}
-        />
-      )}
+                      <Popup
+                        modalKey={ModalEntities.delete_car}
+                        modalClose={cerrarPopup}
+                        modalMethods={null}
+                      />
+                    )}
                     {isShowMascota && (
                       <div
                         className={styles["title-mascota-abordo"]}
@@ -320,7 +318,9 @@ const BusquedaServicio = (props) => {
                         <button
                           className={`${styles["button-busqueda-servicio"]} `}
                           onClick={() => {
-                            validarServicioTomado() ? "" : origen && destino &&  redireccionarBuscarServicio()
+                             origen &&
+                                destino &&
+                                redireccionarBuscarServicio();
                           }}
                         >
                           <img src="img/icon-buscar-blanco.svg" /> Buscar
