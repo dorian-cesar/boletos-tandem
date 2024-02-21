@@ -320,6 +320,12 @@ const Parrilla = (props) => {
             asiento: asignarAsientoAsociado(asiento),
           };
           if (newCarrito.asiento) dispatch(agregarServicio(newCarrito));
+          if(stage === STAGE_BOLETO_VUELTA){
+            setCantidadVuelta(cantidadVuelta+1);
+          }
+          if(stage === STAGE_BOLETO_IDA){
+            setCantidadIda(cantidadIda+1);
+          }
         }
 
         await reloadPane(indexParrilla);
@@ -359,6 +365,12 @@ const Parrilla = (props) => {
               asiento: asignarAsientoAsociado(asiento),
             };
             if (newCarrito.asiento) dispatch(eliminarServicio(newCarrito));
+            if(stage === STAGE_BOLETO_VUELTA){
+              setCantidadVuelta(cantidadVuelta-1);
+            }
+            if(stage === STAGE_BOLETO_IDA){
+              setCantidadIda(cantidadIda-1);
+            }
           }
 
           await reloadPane(indexParrilla);
