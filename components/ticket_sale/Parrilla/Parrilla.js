@@ -187,7 +187,6 @@ const Parrilla = (props) => {
         classes += styles["vacio"] + " ";
       }
 
-
       return classes.trim();
     } catch (error) {
       console.log(
@@ -197,6 +196,7 @@ const Parrilla = (props) => {
       console.error(`Error al obtener clases de asiento [${error}]`);
     }
   };
+
 
   async function reloadPane(indexParrilla) {
     try {
@@ -534,7 +534,7 @@ const Parrilla = (props) => {
     if (sit.tipo === "pet" && sit.estado === "seleccion-mascota") {
       return "img/a-pet-seleccionado.svg";
     }
-    if (sit.estado === "libre" && sit.valorAsiento === 0 && sit.clase === 'SIN') {
+    if (sit.estado === "libre" && sit.valorAsiento === 0) {
       return "";
     }
   }
@@ -667,8 +667,7 @@ const Parrilla = (props) => {
                                   <span>
                                     {ii.asiento != "B1" &&
                                     ii.asiento != "B2" &&
-                                    ii.estado != "sinasiento"&&
-                                    ii.tipo !== "pet"
+                                    ii.estado != "sinasiento"
                                       ? ii.asiento
                                       : ""}
                                   </span>
@@ -723,10 +722,9 @@ const Parrilla = (props) => {
                                   <span>
                                     {ii.asiento != "B1" &&
                                     ii.asiento != "B2" &&
-                                    ii.estado != "sinasiento"&&
-                                    ii.tipo !== "pet"
-                                      ? ii.asiento
-                                      : ""}
+                                    ii.estado != "sinasiento"
+                                    ? ii.asiento
+                                    : ""}
                                   </span>
                                 </div>
                               );
