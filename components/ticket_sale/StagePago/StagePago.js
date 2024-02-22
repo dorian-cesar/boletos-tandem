@@ -393,6 +393,121 @@ const StagePago = (props) => {
     }
   }, [payment]);
 
+
+  /* Este metodo es para validar el uso de la cuponera en cuanto a origen destino, fecha servicio, id servicio y codigo cuponera
+  -- si el wn pone cuponera debemos validar que corresponde a los origenes y destino y fecha
+  -- me falta hacer un metodo para validar si la cuponera pertenece al usuario, pero de momento hagamoslo pasar que si, yo lo hago despues
+
+    async function validarUsoCuponera() {
+    try {
+      const primerCliente = carro.clientes_ida[0];
+      if (!primerCliente) {
+        return false;
+      }
+
+      let fecha = primerCliente.fechaServicio.replace(/\//g, "-");
+      const validarUsoCuponeraDTO = new ValidarUsoCuponeraDTO(
+        primerCliente.origen,
+        primerCliente.destino,
+        fecha,
+        primerCliente.idServicio,
+        carro.datos["codigoCuponera"]
+      );
+
+      const { data } = await axios.post(
+        "/api/coupon/validar-cuponera",
+        validarUsoCuponeraDTO
+      );
+      return data.status;
+    } catch (error) {
+      console.error(`Error al validarUsoCuponera [${error.message}]`);
+      return false;
+    }
+  }
+  
+  
+  */
+
+  /*
+
+    esta funcion usaba para canjear la cuponera, esta se tiene que canjear cuando el loco tenga un solo asiento tomado, esa es la regla, un codigo de cuponera para una toma de asiento
+    si tiene mas de 1 asiento no deberia poder usar la cuponera. esta definido 1 a 1
+    esto podriamos meterlo en el store 
+
+     function armarResponseCanjear(datos) {
+    let fechaServicioParse = formatearFecha(datos.fechaServicio);
+    let fechaServicioSalidarParse =
+      formatearFecha(datos.fechaSalida) + datos.horaSalida.replace(":", "");
+    let canjearCuponera = {
+      idSistema: 7,
+      idIntegrador: 1000,
+      codigoCuponera: carro.datos["codigoCuponera"],
+      boleto: {
+        asiento: datos.asiento.asiento,
+        clase: datos.clase,
+        idServicio: datos.idServicio,
+        fechaServicio: fechaServicioParse,
+        fechaSalida: fechaServicioSalidarParse,
+        piso: datos.asiento.piso,
+        email: datos.pasajero.email,
+        destino: datos.destino,
+        idOrigen: datos.origen,
+        idDestino: datos.destino,
+        rut: datos.pasajero.rut,
+        tipoDocumento: datos.pasajero.tipoRut,
+      },
+    };
+    setCanjearCuponera(canjearCuponera);
+  }
+
+  */
+
+  /* este era el servicio para la cuponera, tiene muchas weas innecesarias
+
+     async function sendToPayment() {
+    try {
+      const isValidCuponera = await validarUsoCuponera();
+      if (isValidCuponera) {
+        let datosArmado;
+        let pasajes = [
+          ...carro.clientes_ida.map((clientesIdaMapped, clientesIdaIndex) => {
+            datosArmado = clientesIdaMapped;
+          }),
+        ];
+        armarResponseCanjear(datosArmado);
+        const { email, rut } = carro.datos;
+
+        console.log('datos cuponera ?',canjeCuponera)
+        if(canjeCuponera != null){
+          const { data } = await axios.post(
+            "/api/coupon/canjear-cuponera",
+            canjeCuponera
+          );
+          if (data.resultado.exito) {
+            const url = `/respuesta-transaccion-canje/${data.voucher.boleto}`;
+            router.push(url);
+          } else {
+            toast.warn(data.resultado.mensaje, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+            });
+          }
+        } 
+      } else {
+        toast.warn(`Cuponera no es valida para uso`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+      }
+    } catch (error) {
+      console.error(`Error al sendToPayment [${error.message}]`);
+      return false;
+    }
+  }
+  */
+
   return (
     <main className={styles["main-content"]}>
       <section className={ styles['info-list'] }>
