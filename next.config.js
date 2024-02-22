@@ -1,5 +1,17 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
+  async rewrites() {
+    return [
+      {
+        source: '/Devolucion',
+        destination: '/devolucion/Devolucion',
+      },
+      {
+        source: '/Cuponera',
+        destination: '/cuponera/Cuponera',
+      },
+    ];
+  },
   reactStrictMode: true,
   images: {
     domains: ['avatars.githubusercontent.com'],
