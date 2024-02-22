@@ -1,8 +1,8 @@
-import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useEffect, useState } from "react";
 import styles from "./ResumenViaje.module.css";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { format, parse } from "@formkit/tempo"
+import { format } from "@formkit/tempo"
 
 export const ResumenViaje = () => {
   
@@ -27,14 +27,14 @@ export const ResumenViaje = () => {
         const fechaIdaFormateada = value.ida[0].fechaSalida.split('/');
         const fechaIda = new Date(`${ fechaIdaFormateada[1] }/${ fechaIdaFormateada[0] }/${ fechaIdaFormateada[2]}`);
 
-        const fechaVueltaFormateada = value.vuelta[0].fechaSalida.split('/');
-        const fechaVuelta = new Date(`${ fechaVueltaFormateada[1] }/${ fechaVueltaFormateada[0] }/${ fechaVueltaFormateada[2]}`);
 
         const idaNombre = `Salida, ${ format(fechaIda, "ddd D MMM") }`;
         const keys = Object.keys(value);
 
         let vueltaNombre = '';
         if( keys.length >= 2 ) {
+          const fechaVueltaFormateada = value.vuelta[0].fechaSalida.split('/');
+          const fechaVuelta = new Date(`${ fechaVueltaFormateada[1] }/${ fechaVueltaFormateada[0] }/${ fechaVueltaFormateada[2]}`);
           vueltaNombre = `Vuelta, ${ format(fechaVuelta, "ddd D MMM") }`;
         }
 
@@ -160,12 +160,13 @@ export const ResumenViaje = () => {
             ))}
         </div>
         <div className={ styles['total-container'] }>
-          <div className='form-check form-switch'>
+          <div className={ `form-check form-switch ${ styles['utiliza-monedero-virtual'] }` }>
             <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
             <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
               Utilizar monedero virtual ({ saldoMonederoVirtual })
             </label>
-            <img src="/img/icon/general/information-circle-outline.svg" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Sólo se puede pagar con el monedero cuando inicies sesión."/>
+            <img src="/img/icon/general/information-circle-outline.svg"/>
+            <span className={ styles['tooltip-text'] }>Sólo se puede pagar con el monedero cuando inicies sesión.</span>
           </div>
           <div className={ styles['contanedor-total-pagar'] }>
             <span>Total a pagar: { clpFormat.format(totalPagar) }</span>
