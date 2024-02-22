@@ -406,9 +406,9 @@ const StagePago = (props) => {
           </div> 
           <DatosPasajero asiento={ datosComprador }/>
         </Acordeon>
-        <Acordeon 
+        {/* <Acordeon 
             title="Punto de embarque" 
-            children={<PuntoEmbarque />}/>
+            children={<PuntoEmbarque />}/> */}
         <Acordeon 
             title="Medio de pago" 
             children={<MediosPago />} />
