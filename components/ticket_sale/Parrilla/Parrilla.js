@@ -183,6 +183,11 @@ const Parrilla = (props) => {
         classes += styles["bano"] + " ";
       }
 
+      if (asiento.asiento === "") {
+        classes += styles["vacio"] + " ";
+      }
+
+
       return classes.trim();
     } catch (error) {
       console.log(
@@ -529,7 +534,7 @@ const Parrilla = (props) => {
     if (sit.tipo === "pet" && sit.estado === "seleccion-mascota") {
       return "img/a-pet-seleccionado.svg";
     }
-    if (sit.estado === "libre" && sit.valorAsiento === 0) {
+    if (sit.estado === "libre" && sit.valorAsiento === 0 && sit.clase === 'SIN') {
       return "";
     }
   }
@@ -662,7 +667,8 @@ const Parrilla = (props) => {
                                   <span>
                                     {ii.asiento != "B1" &&
                                     ii.asiento != "B2" &&
-                                    ii.estado != "sinasiento"
+                                    ii.estado != "sinasiento"&&
+                                    ii.tipo !== "pet"
                                       ? ii.asiento
                                       : ""}
                                   </span>
@@ -717,7 +723,8 @@ const Parrilla = (props) => {
                                   <span>
                                     {ii.asiento != "B1" &&
                                     ii.asiento != "B2" &&
-                                    ii.estado != "sinasiento"
+                                    ii.estado != "sinasiento"&&
+                                    ii.tipo !== "pet"
                                       ? ii.asiento
                                       : ""}
                                   </span>

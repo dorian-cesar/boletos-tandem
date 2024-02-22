@@ -180,6 +180,11 @@
     height: 24px;
 }
 
+.vacio {
+    width: 24px;
+    height: 25.2px;
+}
+
 .bus .fila .reservado {
   cursor: pointer;
   color: #9A9A9A;
