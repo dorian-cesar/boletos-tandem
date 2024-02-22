@@ -17,46 +17,67 @@ const ResumenServicio = (props) => {
 
     Object.entries(carroVenta).map(([key, value]) => {
 
-      debugger;
-      const viaje = `${ value.ida[0].terminalOrigen }-${ value.ida[0].terminalDestino }`;
-      const fecha = value.ida[0].fechaServicio;
-      const hora = value.ida[0].horaSalida;
-      const asientos = [];
+      value.ida.forEach(servicioIda => {
+        const findService = groupInfo.find(servicio => servicio.viaje === `${ servicioIda.terminalOrigen }-${ servicioIda.terminalDestino }` && servicio.fecha === servicioIda.fechaServicio && servicio.hora === servicioIda.horaSalida);
+        if( findService ) {
+          groupInfo.map(servicio => {
+            if( servicio.viaje === `${ servicioIda.terminalOrigen }-${ servicioIda.terminalDestino }` && servicio.fecha === servicioIda.fechaServicio && servicio.hora === servicioIda.horaSalida ) {
+              servicio.asientos.push(...servicioIda.asientos);
+            }
+          });
+        } else {
+          const viaje = `${ servicioIda.terminalOrigen }-${ servicioIda.terminalDestino }`;
+          const fecha = servicioIda.fechaServicio;
+          const hora = servicioIda.horaSalida;
+          const asientos = [];
 
-      value.ida.forEach(servicio => servicio.asientos.forEach(asiento => asientos.push(asiento)));
+          servicioIda.asientos.forEach(asiento => asientos.push(asiento));
 
-      const servicioFormateado = { ...value.ida[0] };
-      delete servicioFormateado.asientos;
-      delete servicioFormateado.asientos1;
-      delete servicioFormateado.asientos2;
+          const servicioFormateado = { ...servicioIda };
+          delete servicioFormateado.asientos;
+          delete servicioFormateado.asientos1;
+          delete servicioFormateado.asientos2;
 
-      groupInfo.push({
-        ...servicioFormateado,
-        viaje,
-        fecha,
-        hora,
-        asientos
+          groupInfo.push({
+            ...servicioFormateado,
+            viaje,
+            fecha,
+            hora,
+            asientos
+          });
+        }
       });
 
       if( value.vuelta ) {
-        const viaje = `${ value.vuelta[0].terminalOrigen } - ${ value.vuelta[0].terminalDestino }`;
-        const fecha = value.vuelta[0].fechaServicio;
-        const hora = value.vuelta[0].horaSalida;
-        const asientos = [];
-
-        value.vuelta.forEach(servicio => servicio.asientos.forEach(asiento => asientos.push(asiento)));
-
-        const servicioFormateado = { ...value.vuelta[0] };
-        delete servicioFormateado.asientos;
-        delete servicioFormateado.asientos1;
-        delete servicioFormateado.asientos2;
-
-        groupInfo.push({
-          ...servicioFormateado,
-          viaje,
-          fecha,
-          hora,
-          asientos
+        value.vuelta.forEach(servicioVuelta => {
+          const findService = groupInfo.find(servicio => servicio.viaje === `${ servicioVuelta.terminalOrigen }-${ servicioVuelta.terminalDestino }` && servicio.fecha === servicioVuelta.fechaServicio && servicio.hora === servicioVuelta.horaSalida);
+          if( findService ) {
+            groupInfo.map(servicio => {
+              if( servicio.viaje === `${ servicioVuelta.terminalOrigen }-${ servicioVuelta.terminalDestino }` && servicio.fecha === servicioVuelta.fechaServicio && servicio.hora === servicioVuelta.horaSalida ) {
+                servicio.asientos.push(...servicioVuelta.asientos);
+              }
+            });
+          } else {
+            const viaje = `${ servicioVuelta.terminalOrigen }-${ servicioVuelta.terminalDestino }`;
+            const fecha = servicioVuelta.fechaServicio;
+            const hora = servicioVuelta.horaSalida;
+            const asientos = [];
+  
+            servicioVuelta.asientos.forEach(asiento => asientos.push(asiento));
+  
+            const servicioFormateado = { ...servicioVuelta };
+            delete servicioFormateado.asientos;
+            delete servicioFormateado.asientos1;
+            delete servicioFormateado.asientos2;
+  
+            groupInfo.push({
+              ...servicioFormateado,
+              viaje,
+              fecha,
+              hora,
+              asientos
+            });
+          }
         });
       }
     });
@@ -77,14 +98,6 @@ const ResumenServicio = (props) => {
               fecha={ info.fecha }
               hora={ info.hora }
             >
-              { index > 0 && 
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                <label className="form-check-label" htmlFor="flexCheckDefault">
-                  Usar los datos del primer viaje
-                </label>
-              </div> 
-              }
               {
                 info.asientos.map((asiento, index) => {
                   return (
