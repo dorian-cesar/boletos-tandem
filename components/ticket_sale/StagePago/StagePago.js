@@ -33,10 +33,7 @@ const StagePago = (props) => {
   const [convenio, setConvenio] = useState(null);
   const [convenioActive, setConvenioActive] = useState(null);
   const [convenioFields, setConvenioFields] = useState({});
-  const [payment, setPayment] = useState({});
   const [usaDatosPasajeroPago, setUsaDatosPasajeroPago] = useState(false);
-
-  const payment_form = useRef(null);
 
   useEffect(() => {
     if( usaDatosPasajeroPago ) {
@@ -215,12 +212,6 @@ const StagePago = (props) => {
   useEffect(() => {
     (async () => await getConvenio())();
   }, [convenioSelected]);
-
-  useEffect(() => {
-    if (payment.url) {
-      payment_form.current?.submit();
-    }
-  }, [payment]);
 
 
   /* Este metodo es para validar el uso de la cuponera en cuanto a origen destino, fecha servicio, id servicio y codigo cuponera

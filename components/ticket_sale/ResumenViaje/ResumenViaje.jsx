@@ -1,10 +1,11 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./ResumenViaje.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo"
 import { newIsValidPasajero } from "../../../utils/user-pasajero";
 import { toast } from "react-toastify";
+import { ListaCarritoDTO, PasajeroListaCarritoDTO } from "../../../dto/PasajesDTO";
 
 export const ResumenViaje = () => {
   
@@ -19,9 +20,13 @@ export const ResumenViaje = () => {
 
   const [saldoMonederoVirtual, setSaldoMonederoVirtual] = useState(clpFormat.format(0));
   const [totalPagar, setTotalPagar] = useState(0);
+  const [payment, setPayment] = useState({});
+  const payment_form = useRef(null);
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const informacionAgrupada = useSelector((state) => state.compra?.informacionAgrupada) || [];
+  const datosComprador = useSelector((state) => state.compra?.datosComprador) || {};
+  const medioPago = useSelector((state) => state.compra.medioPago);
   const dispatch = useDispatch();
 
   const obtenerInformacion = () => {
@@ -105,7 +110,6 @@ export const ResumenViaje = () => {
 
   async function sendToPayment() {
     try {
-      debugger;
       const validator = isPaymentValid();
 
       if( !validator.valid ) {
@@ -117,77 +121,24 @@ export const ResumenViaje = () => {
         return;
       }
 
-      return;
-      
-      let pasajes = [
-        ...carro.clientes_ida.map((clientesIdaMapped, clientesIdaIndex) => {
-          const pasajero = clientesIdaMapped.pet
-            ? carro.clientes_ida[clientesIdaIndex - 1]
-            : clientesIdaMapped.pasajero;
-          const convenioActivo = convenioActive
-            ? convenioActive.idConvenio
-            : "";
-          const datoConvenio = convenioActive
-            ? convenioActive.listaAtributo[0].valor
-            : "";
-          const precioConvenio = convenioActive
-            ? Number(
-                convenioActive.listaBoleto.find(
-                  (boleto) =>
-                    boleto.origen == clientesIdaMapped.origen &&
-                    boleto.asiento == clientesIdaMapped.asiento &&
-                    boleto.piso == clientesIdaMapped.piso
-                ).pago
-              )
-            : clientesIdaMapped.tarifa.replace(",", "");
-          return new PasajePagoDTO(
-            clientesIdaMapped,
-            pasajero,
-            clientesIdaMapped.extras,
-            convenioActivo,
-            precioConvenio,
-            datoConvenio
-          );
-        }),
-        ...carro.clientes_vuelta.map(
-          (clientesVueltaMapped, clientesVueltaIndex) => {
-            const pasajero = clientesVueltaMapped.pet
-              ? carro.clientes_ida[clientesVueltaIndex - 1]
-              : clientesVueltaMapped.pasajero;
-            const convenioActivo = convenioActive
-              ? convenioActive.idConvenio
-              : "";
-            const datoConvenio = convenioActive
-              ? convenioActive.listaAtributo[0].valor
-              : "";
-            const precioConvenio = convenioActive
-              ? Number(
-                  convenioActive.listaBoleto.find(
-                    (boleto) =>
-                      boleto.origen == clientesVueltaMapped.origen &&
-                      boleto.asiento == clientesVueltaMapped.asiento &&
-                      boleto.piso == clientesVueltaMapped.piso
-                  ).pago
-                )
-              : clientesVueltaMapped.tarifa.replace(",", "");
-            return new PasajePagoDTO(
-              clientesVueltaMapped,
-              pasajero,
-              clientesVueltaMapped.extras,
-              convenioActivo,
-              precioConvenio,
-              datoConvenio
-            );
-          }
-        ),
-      ];
+      let resumenCompra = {
+        medioDePago: medioPago,
+        montoTotal: totalPagar,
+        idSistema: 7,
+        integrador: 1000,
+        datosComprador: datosComprador,
+        listaCarrito: []
+      }
 
-      const { email, rut } = carro.datos;
+      informacionAgrupada.forEach((servicio) => {
+        const carrito = new ListaCarritoDTO(servicio, servicio.asientos[0]);
+        servicio.asientos.forEach((asiento) => {
+          carrito.pasajeros.push(new PasajeroListaCarritoDTO(asiento));
+        });
+        resumenCompra.listaCarrito.push(carrito);
+      });
 
-      const { data } = await axios.post(
-        "/api/ticket_sale/guardar-carro",
-        new GuardarCarroDTO(email, rut, getTotal(), pasajes)
-      );
+      const { data } = await axios.post("/api/ticket_sale/guardar-multi-carro", resumenCompra);
 
       if (Boolean(data.error)) {
         toast.error(data.error.message || "Error al completar la transacción", {
@@ -203,16 +154,17 @@ export const ResumenViaje = () => {
         url: data.url,
         token: data.token,
       });
+
     } catch (error) {
       console.error(`Error al completar la transacción [${error.message}]`);
-      // toast.error(
-      //   response.data.message || "Error al completar la transacción",
-      //   {
-      //     position: "bottom-center",
-      //     autoClose: 5000,
-      //     hideProgressBar: false,
-      //   }
-      // );
+      toast.error(
+        error.message || "Error al completar la transacción",
+        {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+        }
+      );
     }
   }
 
@@ -235,6 +187,12 @@ export const ResumenViaje = () => {
   useEffect(() => {
     obtenerInformacion();
   }, []);
+
+  useEffect(() => {
+    if (payment.url) {
+      payment_form.current?.submit();
+    }
+  }, [payment]);
 
   useEffect(() => {
     let total = 0;
@@ -320,6 +278,9 @@ export const ResumenViaje = () => {
         </div>
         <div className={ styles['contenedor-boton-pagar'] }>
           <button className={ styles['boton-pagar'] } onClick={ () => sendToPayment() }>Pagar</button>
+          <form ref={ payment_form } style={{ display: 'none', }} method='POST' action={ payment.url }>
+            <input name='TBK_TOKEN' value={ payment.token }/>
+          </form>
         </div>
       </div>
     </div>

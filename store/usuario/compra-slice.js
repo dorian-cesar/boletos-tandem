@@ -6,7 +6,8 @@ let initialState = {
     idSistema: 7,
     listaCarrito: {},
     informacionAgrupada: [],
-    datosComprador: {}
+    datosComprador: {},
+    medioPago: ''
 }
 
 if (typeof window !== 'undefined') {
@@ -123,10 +124,14 @@ export const compraSlice = createSlice({
         asignarDatosComprador: (state, action) => {
             const { payload } = action;
             state.datosComprador = payload;
+        },
+        agregarMedioPago: (state, action) => {
+            const { payload } = action;
+            state.medioPago = payload;
         }
     },
 });
 
-export const { agregarServicio, eliminarServicio, agruparInformacionPago, agregarInformacionAsiento, asignarDatosComprador } = compraSlice.actions;
+export const { agregarServicio, eliminarServicio, agruparInformacionPago, agregarInformacionAsiento, asignarDatosComprador, agregarMedioPago } = compraSlice.actions;
 
 export default compraSlice.reducer;

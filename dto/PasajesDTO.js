@@ -88,8 +88,9 @@ export class PasajePagoDTO {
     }
 }
 
-export class NuevoPasajePagoDTO {
+export class ListaCarritoDTO {
     constructor(servicio, asiento) {
+        debugger;
         this.servicio = servicio?.idServicio || '';
         this.fechaServicio = servicio?.fechaServicio || '';
         this.fechaPasada = servicio?.fechaLlegada || '';
@@ -97,37 +98,36 @@ export class NuevoPasajePagoDTO {
         this.horaSalida = servicio?.horaSalida || '';
         this.horaLlegada = servicio?.horaLlegada || '';
         this.origen = servicio?.idTerminalOrigen || '';
-        this.destino = servicio?.idTerminalOrigen || '';
-        this.codigoReserva = '1';
-        this.descuento = 0;
+        this.destino = servicio?.idTerminalDestino || '';
+        this.codigoReserva = '1'
+        this.descuento = 0
         this.empresa = servicio?.empresa || '';
         this.clase = asiento?.claseBus || '';
-        this.bus = asiento?.piso || '';
-        this.integrador = integrador?.integrador || 1000;
+        this.bus = servicio?.busPiso1 || '';
+        this.integrador = servicio?.integrador || 1000;
+        this.datoConvenio = servicio?.datoConvenio ? servicio.datoConvenio : '';
+        this.convenio = servicio?.convenioActivo ? servicio.convenioActivo : '';
+        // this.tipoServicio = null;
+        // this.asientoAsociado = null;
+        this.pasajeros = [];
+    }
+}
 
-        this.monto = pasaje?.tarifa.replace(',', '') || '';
-
-        this.precio = precio;
-        this.idaVuelta = false;
-        this.piso = pasaje?.piso || '';
-        this.asiento = pasaje?.asiento?.asiento || '';
-        this.datoConvenio = datoConvenio || '';
-        this.convenio = convenioActivo || '';
-        this.pasajero = {
-            comunaDestino: "14000001",
-            comunaOrigen: "14000001",
-            documento: pasajero?.rut.replace(".", "").replace(".", ""),
-            email: pasajero?.email || '',
-            nacionalidad: pasajero?.nacionalidad || '',
-            nombre: pasajero?.nombre || '',
-            apellido: pasajero?.apellido || '',
-            telefono: pasajero?.telefono || '',
-            telefonoEmergencia: "955555555",
-            tipoDocumento: "R",
-        };
-        this.tipoServicio = null;
-        this.asientoAsociado = null;
-        this.codigoCuponera = pasaje.codigoCuponera || '';
+export class PasajeroListaCarritoDTO {
+    constructor(asiento) {
+        this.monto = asiento?.tarifa || '';
+        this.precio = asiento?.tarifa || '';
+        this.idaVuelta = false
+        this.piso = asiento?.piso || 1;
+        this.asiento = asiento?.asiento || '';
+        this.clase = asiento?.claseBus || '';
+        this.documento = asiento?.rut || '';
+        this.email = asiento?.email || '';
+        this.nacionalidad = asiento?.nacionalidad || '';
+        this.nombre = asiento?.nombre || '';
+        this.apellido = asiento?.apellido || '';
+        this.telefono = asiento?.telefono || '';
+        this.tipoDocumento = asiento?.tipoRut || '';
     }
 }
 

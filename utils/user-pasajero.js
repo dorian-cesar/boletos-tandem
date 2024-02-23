@@ -57,7 +57,6 @@ export function isValidPasajero(pasajero, indexPasajero, direccionRecorrido, set
 
 export function newIsValidPasajero(pasajero) {
     try {
-        debugger;
         let validator = {
             valid: true,
             error: ''

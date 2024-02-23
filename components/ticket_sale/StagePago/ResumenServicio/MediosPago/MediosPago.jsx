@@ -1,13 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./MediosPago.module.css";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { agregarMedioPago } from "store/usuario/compra-slice";
 
 const MediosPago = (props) => {
   const [mediosPago, setMediosPago] = useState([]);
   const [selectedMedioPago, setSelectedMedioPago] = useState(null); // no se si los podemos controlar con el store para pagar
   const [codigoCuponera, setCodigoCuponera] = useState(""); // lo mismo cuando seleccionen cuponera guardar esos datos en el store para hacer validaciones
+
+  const dispatch = useDispatch();
+  const medioPago = useSelector((state) => state.compra.medioPago);
+
   const handleMedioPagoChange = (id) => {
-    setSelectedMedioPago(id);
+    dispatch(agregarMedioPago(id));
+    setSelectedMedioPago(medioPago);
   };
 
   useEffect(
