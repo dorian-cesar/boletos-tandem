@@ -127,7 +127,7 @@ export class PasajeroListaCarritoDTO {
         this.nombre = asiento?.nombre || '';
         this.apellido = asiento?.apellido || '';
         this.telefono = asiento?.telefono || '';
-        this.tipoDocumento = asiento?.tipoRut || '';
+        this.tipoDocumento = asiento?.tipoDocumento || '';
     }
 }
 

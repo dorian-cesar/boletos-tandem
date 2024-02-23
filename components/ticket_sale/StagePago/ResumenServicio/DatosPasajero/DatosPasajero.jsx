@@ -3,32 +3,36 @@ import styles from "./DatosPasajero.module.css";
 import Rut from "rutjs";
 
 import { useSelector, useDispatch } from "react-redux";
-import { agregarInformacionAsiento, asignarDatosComprador } from "store/usuario/compra-slice";
+import {
+  agregarInformacionAsiento,
+  asignarDatosComprador,
+} from "store/usuario/compra-slice";
 
 const DatosPasajero = (props) => {
-
   const { servicio, asiento } = props;
   const dispatch = useDispatch();
-  
+
   const [carro, setCarro] = useState({
-    datos: { tipoRut: "rut" },
+    datos: {
+      tipoDocumento: "R",
+    },
   });
 
   function setDataComprador({ name, value }) {
     try {
       debugger;
       let carro_temp = { ...asiento };
-      if ( !carro_temp.tipoRut ) {
-        carro_temp['tipoRut'] = "rut";
+      if (!carro_temp.tipoDocumento) {
+        carro_temp["tipoDocumento"] = "R";
       }
       value = validarFormatoRut(name, value);
       carro_temp[name] = value;
       const infoToDispatch = {
         servicio,
         asiento: carro_temp,
-      }
+      };
 
-      if( servicio ) {
+      if (servicio) {
         dispatch(agregarInformacionAsiento(infoToDispatch));
       } else {
         dispatch(asignarDatosComprador(carro_temp));
@@ -40,7 +44,7 @@ const DatosPasajero = (props) => {
 
   function validarFormatoRut(name, value) {
     try {
-      if (name.trim() == "rut" && value.length > 2) {
+      if (name.trim() == "R" && value.length > 2) {
         let rut = new Rut(value);
         value = new Rut(rut.getCleanRut().replace("-", "")).getNiceRut(true);
       }
@@ -87,9 +91,9 @@ const DatosPasajero = (props) => {
                   <label className={styles["label"]}>rut</label>
                   <input
                     type="checkbox"
-                    checked={asiento["tipoRut"] == "rut" ? "checked" : ""}
-                    value="rut"
-                    name="tipoRut"
+                    checked={asiento["tipoDocumento"] == "R" ? "checked" : ""}
+                    value="R"
+                    name="tipoDocumento"
                     onChange={(e) => setDataComprador(e.target)}
                   />
                   <span className="checkmark"></span>
@@ -100,11 +104,9 @@ const DatosPasajero = (props) => {
                   <label className={styles["label"]}>pasaporte</label>
                   <input
                     type="checkbox"
-                    checked={
-                      asiento["tipoRut"] == "pasaporte" ? "checked" : ""
-                    }
-                    value="pasaporte"
-                    name="tipoRut"
+                    checked={asiento["tipoDocumento"] == "P" ? "checked" : ""}
+                    value="P"
+                    name="tipoDocumento"
                     onChange={(e) => setDataComprador(e.target)}
                   />
                   <span className={"checkmark"}></span>
