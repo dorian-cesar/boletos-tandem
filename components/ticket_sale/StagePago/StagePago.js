@@ -63,18 +63,6 @@ const StagePago = (props) => {
     }
   }
 
-  function validarFormatoRut(name, value) {
-    try {
-      if (name.trim() == "rut" && value.length > 2) {
-        let rut = new Rut(value);
-        value = new Rut(rut.getCleanRut().replace("-", "")).getNiceRut(true);
-      }
-      return value;
-    } catch ({ message }) {
-      console.error(`Error al validar formato de rut [${message}]`);
-    }
-  }
-
   async function validarConvenio() {
     try {
       const pasajes = [
@@ -141,165 +129,6 @@ const StagePago = (props) => {
       );
     } catch ({ message }) {
       console.error(`Error al obtener el sub total [${message}]`);
-    }
-  }
-
-  function getTotal() {
-    try {
-      const ida = getSubtotal(carro.clientes_ida);
-      const vuelta = getSubtotal(carro.clientes_vuelta);
-      return Number(ida) + Number(vuelta);
-    } catch ({ message }) {
-      console.error(`Error al obtener el total [${message}]`);
-    }
-  }
-
-  function isPaymentValid() {
-    try {
-      let isValid = true;
-
-      const pasajerosIda = carro.clientes_ida.reduce(
-        (valorIncial, pasajeroRecorrido, indexPasajero) => {
-          if (
-            !isValidPasajero(
-              pasajeroRecorrido.pasajero,
-              indexPasajero,
-              "ida",
-              setCarro,
-              carro
-            )
-          ) {
-            valorIncial = false;
-          }
-          return valorIncial;
-        },
-        true
-      );
-
-      const pasajerosVuelta = carro.clientes_vuelta.reduce(
-        (valorIncial, pasajeroRecorrido, indexPasajero) => {
-          if (
-            !isValidPasajero(
-              pasajeroRecorrido.pasajero,
-              indexPasajero,
-              "vuelta",
-              setCarro,
-              carro
-            )
-          ) {
-            valorIncial = false;
-          }
-          return valorIncial;
-        },
-        true
-      );
-
-      if (!pasajerosIda || !pasajerosVuelta) {
-        isValid = false;
-      }
-
-      return isValid;
-    } catch ({ message }) {
-      console.error(`Error al validar el pago [${message}]`);
-    }
-  }
-
-  async function sendToPayment() {
-    try {
-      if (!isPaymentValid()) return;
-      let pasajes = [
-        ...carro.clientes_ida.map((clientesIdaMapped, clientesIdaIndex) => {
-          const pasajero = clientesIdaMapped.pet
-            ? carro.clientes_ida[clientesIdaIndex - 1]
-            : clientesIdaMapped.pasajero;
-          const convenioActivo = convenioActive
-            ? convenioActive.idConvenio
-            : "";
-          const datoConvenio = convenioActive
-            ? convenioActive.listaAtributo[0].valor
-            : "";
-          const precioConvenio = convenioActive
-            ? Number(
-                convenioActive.listaBoleto.find(
-                  (boleto) =>
-                    boleto.origen == clientesIdaMapped.origen &&
-                    boleto.asiento == clientesIdaMapped.asiento &&
-                    boleto.piso == clientesIdaMapped.piso
-                ).pago
-              )
-            : clientesIdaMapped.tarifa.replace(",", "");
-          return new PasajePagoDTO(
-            clientesIdaMapped,
-            pasajero,
-            clientesIdaMapped.extras,
-            convenioActivo,
-            precioConvenio,
-            datoConvenio
-          );
-        }),
-        ...carro.clientes_vuelta.map(
-          (clientesVueltaMapped, clientesVueltaIndex) => {
-            const pasajero = clientesVueltaMapped.pet
-              ? carro.clientes_ida[clientesVueltaIndex - 1]
-              : clientesVueltaMapped.pasajero;
-            const convenioActivo = convenioActive
-              ? convenioActive.idConvenio
-              : "";
-            const datoConvenio = convenioActive
-              ? convenioActive.listaAtributo[0].valor
-              : "";
-            const precioConvenio = convenioActive
-              ? Number(
-                  convenioActive.listaBoleto.find(
-                    (boleto) =>
-                      boleto.origen == clientesVueltaMapped.origen &&
-                      boleto.asiento == clientesVueltaMapped.asiento &&
-                      boleto.piso == clientesVueltaMapped.piso
-                  ).pago
-                )
-              : clientesVueltaMapped.tarifa.replace(",", "");
-            return new PasajePagoDTO(
-              clientesVueltaMapped,
-              pasajero,
-              clientesVueltaMapped.extras,
-              convenioActivo,
-              precioConvenio,
-              datoConvenio
-            );
-          }
-        ),
-      ];
-
-      const { email, rut } = carro.datos;
-
-      const { data } = await axios.post(
-        "/api/ticket_sale/guardar-carro",
-        new GuardarCarroDTO(email, rut, getTotal(), pasajes)
-      );
-
-      if (Boolean(data.error)) {
-        toast.error(data.error.message || "Error al completar la transacción", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-        });
-        return;
-      }
-
-      setPayment({
-        ...payment,
-        url: data.url,
-        token: data.token,
-      });
-    } catch ({ response }) {
-      toast.error(
-        response.data.message || "Error al completar la transacción",
-        {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-        }
-      );
     }
   }
 
@@ -524,9 +353,9 @@ const StagePago = (props) => {
         {/* <Acordeon 
             title="Punto de embarque" 
             children={<PuntoEmbarque />}/> */}
-        <Acordeon 
-            title="Medio de pago" 
-            children={<MediosPago />} />
+        <Acordeon title="Medio de pago">
+          <MediosPago />
+        </Acordeon>
       </section>
       <section className={styles["travel-summary"]}>
         <ResumenViaje />

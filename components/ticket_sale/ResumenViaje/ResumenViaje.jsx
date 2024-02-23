@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./ResumenViaje.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo"
+import { newIsValidPasajero } from "../../../utils/user-pasajero";
+import { toast } from "react-toastify";
 
 export const ResumenViaje = () => {
   
@@ -19,6 +21,7 @@ export const ResumenViaje = () => {
   const [totalPagar, setTotalPagar] = useState(0);
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
+  const informacionAgrupada = useSelector((state) => state.compra?.informacionAgrupada) || [];
   const dispatch = useDispatch();
 
   const obtenerInformacion = () => {
@@ -99,6 +102,135 @@ export const ResumenViaje = () => {
       });
     }
   };
+
+  async function sendToPayment() {
+    try {
+      debugger;
+      const validator = isPaymentValid();
+
+      if( !validator.valid ) {
+        toast.error(validator.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+
+      return;
+      
+      let pasajes = [
+        ...carro.clientes_ida.map((clientesIdaMapped, clientesIdaIndex) => {
+          const pasajero = clientesIdaMapped.pet
+            ? carro.clientes_ida[clientesIdaIndex - 1]
+            : clientesIdaMapped.pasajero;
+          const convenioActivo = convenioActive
+            ? convenioActive.idConvenio
+            : "";
+          const datoConvenio = convenioActive
+            ? convenioActive.listaAtributo[0].valor
+            : "";
+          const precioConvenio = convenioActive
+            ? Number(
+                convenioActive.listaBoleto.find(
+                  (boleto) =>
+                    boleto.origen == clientesIdaMapped.origen &&
+                    boleto.asiento == clientesIdaMapped.asiento &&
+                    boleto.piso == clientesIdaMapped.piso
+                ).pago
+              )
+            : clientesIdaMapped.tarifa.replace(",", "");
+          return new PasajePagoDTO(
+            clientesIdaMapped,
+            pasajero,
+            clientesIdaMapped.extras,
+            convenioActivo,
+            precioConvenio,
+            datoConvenio
+          );
+        }),
+        ...carro.clientes_vuelta.map(
+          (clientesVueltaMapped, clientesVueltaIndex) => {
+            const pasajero = clientesVueltaMapped.pet
+              ? carro.clientes_ida[clientesVueltaIndex - 1]
+              : clientesVueltaMapped.pasajero;
+            const convenioActivo = convenioActive
+              ? convenioActive.idConvenio
+              : "";
+            const datoConvenio = convenioActive
+              ? convenioActive.listaAtributo[0].valor
+              : "";
+            const precioConvenio = convenioActive
+              ? Number(
+                  convenioActive.listaBoleto.find(
+                    (boleto) =>
+                      boleto.origen == clientesVueltaMapped.origen &&
+                      boleto.asiento == clientesVueltaMapped.asiento &&
+                      boleto.piso == clientesVueltaMapped.piso
+                  ).pago
+                )
+              : clientesVueltaMapped.tarifa.replace(",", "");
+            return new PasajePagoDTO(
+              clientesVueltaMapped,
+              pasajero,
+              clientesVueltaMapped.extras,
+              convenioActivo,
+              precioConvenio,
+              datoConvenio
+            );
+          }
+        ),
+      ];
+
+      const { email, rut } = carro.datos;
+
+      const { data } = await axios.post(
+        "/api/ticket_sale/guardar-carro",
+        new GuardarCarroDTO(email, rut, getTotal(), pasajes)
+      );
+
+      if (Boolean(data.error)) {
+        toast.error(data.error.message || "Error al completar la transacción", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+
+      setPayment({
+        ...payment,
+        url: data.url,
+        token: data.token,
+      });
+    } catch (error) {
+      console.error(`Error al completar la transacción [${error.message}]`);
+      // toast.error(
+      //   response.data.message || "Error al completar la transacción",
+      //   {
+      //     position: "bottom-center",
+      //     autoClose: 5000,
+      //     hideProgressBar: false,
+      //   }
+      // );
+    }
+  }
+
+  function isPaymentValid() {
+    try {
+      let validator;
+      informacionAgrupada.forEach((servicio) => {
+        servicio.asientos.forEach((asiento) => {
+          if (!validator || validator.valid ) {
+            validator = newIsValidPasajero(asiento);
+          }
+        });
+      })
+      return validator;
+    } catch ({ message }) {
+      console.error(`Error al validar el pago [${message}]`);
+    }
+  }
 
   useEffect(() => {
     obtenerInformacion();
@@ -187,7 +319,7 @@ export const ResumenViaje = () => {
           </div>
         </div>
         <div className={ styles['contenedor-boton-pagar'] }>
-          <button className={ styles['boton-pagar'] }>Pagar</button>
+          <button className={ styles['boton-pagar'] } onClick={ () => sendToPayment() }>Pagar</button>
         </div>
       </div>
     </div>

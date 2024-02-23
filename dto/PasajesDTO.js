@@ -88,6 +88,49 @@ export class PasajePagoDTO {
     }
 }
 
+export class NuevoPasajePagoDTO {
+    constructor(servicio, asiento) {
+        this.servicio = servicio?.idServicio || '';
+        this.fechaServicio = servicio?.fechaServicio || '';
+        this.fechaPasada = servicio?.fechaLlegada || '';
+        this.fechaLlegada = servicio?.fechaLlegada || '';
+        this.horaSalida = servicio?.horaSalida || '';
+        this.horaLlegada = servicio?.horaLlegada || '';
+        this.origen = servicio?.idTerminalOrigen || '';
+        this.destino = servicio?.idTerminalOrigen || '';
+        this.codigoReserva = '1';
+        this.descuento = 0;
+        this.empresa = servicio?.empresa || '';
+        this.clase = asiento?.claseBus || '';
+        this.bus = asiento?.piso || '';
+        this.integrador = integrador?.integrador || 1000;
+
+        this.monto = pasaje?.tarifa.replace(',', '') || '';
+
+        this.precio = precio;
+        this.idaVuelta = false;
+        this.piso = pasaje?.piso || '';
+        this.asiento = pasaje?.asiento?.asiento || '';
+        this.datoConvenio = datoConvenio || '';
+        this.convenio = convenioActivo || '';
+        this.pasajero = {
+            comunaDestino: "14000001",
+            comunaOrigen: "14000001",
+            documento: pasajero?.rut.replace(".", "").replace(".", ""),
+            email: pasajero?.email || '',
+            nacionalidad: pasajero?.nacionalidad || '',
+            nombre: pasajero?.nombre || '',
+            apellido: pasajero?.apellido || '',
+            telefono: pasajero?.telefono || '',
+            telefonoEmergencia: "955555555",
+            tipoDocumento: "R",
+        };
+        this.tipoServicio = null;
+        this.asientoAsociado = null;
+        this.codigoCuponera = pasaje.codigoCuponera || '';
+    }
+}
+
 export class GuardarCarroDTO {
     constructor(email, rut, total, carrito) {
         this.email = email || '';
