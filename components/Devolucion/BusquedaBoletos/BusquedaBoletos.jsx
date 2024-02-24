@@ -3,8 +3,7 @@ import axios from "axios";
 import { useEffect, useState, forwardRef } from "react";
 
 const BusquedaBoletos = (props) => {
-  const { setStage, setBoletos, setLoadingBoleto} = props;
-  const [codigoTransaccion, setCodigoTransaccion] = useState("");
+  const { setStage, setBoletos, setLoadingBoleto, codigoTransaccion, setCodigoTransaccion } = props;
 
   async function validarTransaccion() {
     setLoadingBoleto(true);
@@ -24,6 +23,11 @@ const BusquedaBoletos = (props) => {
     }
   }
 
+  const handleCodigoTransaccionChange = (e) => {
+    setCodigoTransaccion(e.target.value);
+  };
+
+
   return (
     <>
       <div className={styles["container"]}>
@@ -36,7 +40,7 @@ const BusquedaBoletos = (props) => {
                 placeholder="Ej: HRJAS12FDA"
                 className={styles["input"]}
                 value={codigoTransaccion}
-                onChange={(e) => setCodigoTransaccion(e.target.value)}
+                onChange={handleCodigoTransaccionChange}
               />
             </div>
           </div>
