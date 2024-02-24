@@ -10,7 +10,8 @@ const BoletosSeleccion = (props) => {
     setSelectedBoletos,
   } = props;
 
-  const handleCheckboxChange = (boleto) => {
+  async function handleCheckboxChange (boleto) {
+ 
     const isSelected = selectedBoletos.includes(boleto);
     if (isSelected) {
       setSelectedBoletos(
@@ -19,6 +20,7 @@ const BoletosSeleccion = (props) => {
     } else {
       setSelectedBoletos([...selectedBoletos, boleto]);
     }
+    console.log('boletos seleccionados', selectedBoletos)
   };
 
   function volverAtras() {
@@ -130,9 +132,9 @@ const BoletosSeleccion = (props) => {
           </div>
           <div className={"col-12 col-md-6"}>
             <div
-              className={styles["button-continue"]}
+              className={ (selectedBoletos.length > 0) ? styles["button-continue"] : styles["button-continue-disabled"]} 
               onClick={() => {
-                siguiente();
+                (selectedBoletos.length > 0) ? siguiente() : "";
               }}
             >
               Continuar

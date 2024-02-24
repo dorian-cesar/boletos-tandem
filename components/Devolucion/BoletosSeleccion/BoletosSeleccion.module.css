@@ -82,6 +82,28 @@
     font-weight: 700;
     line-height: normal;
 }
+
+.button-continue-disabled{
+    margin-left: 20px;
+    margin-top: 15px;
+    margin-bottom: 30;
+    width: 384px;
+    height: 40px;
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex: 1 0 0;
+    border-radius: 16px;
+    background: var(--naranjo-80, #f8ccaf); 
+    color: var(--Blanco, #FFF);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
 .button-continue:active{
     background: var(--naranjo-80, #f8ccaf); 
 }
