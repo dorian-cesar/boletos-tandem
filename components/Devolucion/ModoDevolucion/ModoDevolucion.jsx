@@ -11,17 +11,9 @@ const ModoDevolucion = (props) => {
   function volverAtras() {
     setStage(1);
   }
-  async function siguiente() {
-    if(medioDevolucion === null){
-        toast.error(`Debe seleccionar un medio de devolución`, {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false
-        });      
-    }else{
-        setStage(3);
-    }
-   
+
+  function siguiente() {
+    setStage(3);
   }
 
   return (
@@ -74,6 +66,7 @@ const ModoDevolucion = (props) => {
                       value="monedero"
                       name="medioDevolucion"
                       onChange={handleMedioDevolucionChange}
+                      disabled
                     />
                     <label className={styles["label"]}>
                       {" "}
@@ -107,9 +100,13 @@ const ModoDevolucion = (props) => {
             </div>
             <div className={"col-12 col-md-6"}>
               <div
-                className={styles["button-continue"]}
+                className={
+                  medioDevolucion
+                    ? styles["button-continue"]
+                    : styles["button-continue-disabled"]
+                }
                 onClick={() => {
-                  siguiente();
+                  medioDevolucion ? siguiente() : "";
                 }}
               >
                 Continuar
