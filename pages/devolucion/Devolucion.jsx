@@ -6,11 +6,15 @@ import styles from "./Devolucion.module.css";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import BusquedaBoletos from "../../components/Devolucion/BusquedaBoletos/BusquedaBoletos";
+import BoletosSeleccion from "../../components/Devolucion/BoletosSeleccion/BoletosSeleccion";
+import ModoDevolucion from "../../components/Devolucion/ModoDevolucion/ModoDevolucion";
 
 const Devolucion = (props) => {
   const [stage, setStage] = useState(0);
   const [loadingBoleto, setLoadingBoleto] = useState(true);
   const [boletos, setBoletos] = useState([]);
+  const [selectedBoletos, setSelectedBoletos] = useState([]);
+  const [medioDevolucion, setMedioDevolucion] = useState(null);
 
   return (
     <Layout>
@@ -42,9 +46,23 @@ const Devolucion = (props) => {
         )}
 
         {stage == 1 ? (
-          <>
-            aqui van los pinches boletos
-          </>
+          <BoletosSeleccion
+            setStage={setStage}
+            boletos={boletos}
+            setLoadingBoleto={setLoadingBoleto}
+            selectedBoletos={selectedBoletos}
+            setSelectedBoletos={setSelectedBoletos}
+          />
+        ) : (
+          <></>
+        )}
+
+        {stage == 2 ? (
+          <ModoDevolucion
+            setStage={setStage}
+            medioDevolucion={medioDevolucion}
+            setMedioDevolucion={setMedioDevolucion}
+          />
         ) : (
           <></>
         )}
