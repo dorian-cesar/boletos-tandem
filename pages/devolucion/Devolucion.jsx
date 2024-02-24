@@ -8,6 +8,8 @@ import React, { useState, useEffect } from "react";
 import BusquedaBoletos from "../../components/Devolucion/BusquedaBoletos/BusquedaBoletos";
 import BoletosSeleccion from "../../components/Devolucion/BoletosSeleccion/BoletosSeleccion";
 import ModoDevolucion from "../../components/Devolucion/ModoDevolucion/ModoDevolucion";
+import DevolucionDebito from "../../components/Devolucion/DevolucionDebito/DevolucionDebito";
+import { toast } from "react-toastify";
 
 const Devolucion = (props) => {
   const [stage, setStage] = useState(0);
@@ -15,6 +17,17 @@ const Devolucion = (props) => {
   const [boletos, setBoletos] = useState([]);
   const [selectedBoletos, setSelectedBoletos] = useState([]);
   const [medioDevolucion, setMedioDevolucion] = useState(null);
+  const [codigoTransaccion, setCodigoTransaccion] = useState(null);
+  const [tipoCompra, setTipoCompra] = useState(null);
+
+  //tipo compra VN -> credito, VD debito
+
+  useEffect(() => {
+    if (boletos.length > 0) {
+      const primerBoleto = boletos[0];
+      setTipoCompra(primerBoleto.tipoCompra);
+    }
+  }, [boletos]);
 
   return (
     <Layout>
@@ -37,6 +50,8 @@ const Devolucion = (props) => {
                   setStage={setStage}
                   setBoletos={setBoletos}
                   setLoadingBoleto={setLoadingBoleto}
+                  codigoTransaccion={codigoTransaccion}
+                  setCodigoTransaccion={setCodigoTransaccion}
                 />
               </div>
             </div>
@@ -63,6 +78,22 @@ const Devolucion = (props) => {
             medioDevolucion={medioDevolucion}
             setMedioDevolucion={setMedioDevolucion}
           />
+        ) : (
+          <></>
+        )}
+
+        {stage == 3 ? (
+          tipoCompra === "VD" ? (
+            <DevolucionDebito
+            toast={toast}
+            setStage={setStage}
+              tipoCompra={tipoCompra}
+              selectedBoletos={selectedBoletos}
+              codigoTransaccion={codigoTransaccion}
+            />
+          ) : (
+            <></>
+          )
         ) : (
           <></>
         )}
