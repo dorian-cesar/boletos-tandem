@@ -72,18 +72,14 @@ const Popup = ({ modalKey, modalClose , modalMethods}) => {
       body: "Hemos enviado el comprobante de devolución del boleto. Recuerda que el tiempo dependerá de la opción seleccionada.",
       buttonMessage: "Volver al inicio",
       imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
-      onClick: () =>{
-
-      }
+      onClick: modalMethods
     },
     [ModalEntities.confirm_return]: {
       title: "¿Estás seguro de devolver los pasajes? ",
       body: "",
       buttonMessage: "Confirmar",
       imageIcon: "/img/icon/popup/warning-outline.svg",
-      onClick: () =>{
-
-      }
+      onClick: modalMethods
     },
     [ModalEntities.confirm_success]: {
       title: "¡Devolución existosa!",
