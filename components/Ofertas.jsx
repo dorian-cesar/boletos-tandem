@@ -1,13 +1,10 @@
-import axios from "axios";
-import dayjs from "dayjs";
-import DatePicker, { registerLocale } from "react-datepicker";
-import Link from "next/link";
-import Input from "../components/Input";
 import { useEffect, useState, forwardRef } from "react";
-import es from "date-fns/locale/es";
-import { useRouter } from "next/router";
 import CardOferta from './card-oferta';
 import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 import { Navigation, Autoplay, Pagination } from 'swiper/modules';
 
@@ -136,6 +133,7 @@ const Ofertas = (props) => {
         className="mt-5 pb-5"
         centeredSlides={ true }
         loop={ true }
+        navigation={ true }
         autoplay={{ delay: 7000, disableOnInteraction: false }}
         pagination={{ clickable: true }}
         slidesPerView={1}
