@@ -7,7 +7,7 @@ import getConfig from "next/config";
 import Link from "next/link";
 import { withIronSessionSsr } from "iron-session/next";
 import { useEffect, useState } from "react";
-import styles from "./respuesta.module.css";
+import styles from "./RespuestaTransaccionCuponera.module.css";
 
 const { publicRuntimeConfig } = getConfig();
 
