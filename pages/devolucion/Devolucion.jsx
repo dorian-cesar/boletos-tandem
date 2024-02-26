@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 
 const Devolucion = (props) => {
   const [stage, setStage] = useState(0);
-  const [loadingBoleto, setLoadingBoleto] = useState(true);
+  const [loadingBoleto, setLoadingBoleto] = useState(false);
   const [boletos, setBoletos] = useState([]);
   const [selectedBoletos, setSelectedBoletos] = useState([]);
   const [medioDevolucion, setMedioDevolucion] = useState(null);
@@ -71,13 +71,19 @@ const Devolucion = (props) => {
         ) : (
           <></>
         )}
-
+        
         {stage == 2 ? (
-          <ModoDevolucion
-            setStage={setStage}
-            medioDevolucion={medioDevolucion}
-            setMedioDevolucion={setMedioDevolucion}
-          />
+          loadingBoleto ? (
+            <Loader />
+          ) : boletos.length > 0 ? (
+            <ModoDevolucion
+              setStage={setStage}
+              medioDevolucion={medioDevolucion}
+              setMedioDevolucion={setMedioDevolucion}
+            />
+          ) : (
+                ""
+          )
         ) : (
           <></>
         )}
@@ -85,8 +91,8 @@ const Devolucion = (props) => {
         {stage == 3 ? (
           tipoCompra === "VD" ? (
             <DevolucionDebito
-            toast={toast}
-            setStage={setStage}
+              toast={toast}
+              setStage={setStage}
               tipoCompra={tipoCompra}
               selectedBoletos={selectedBoletos}
               codigoTransaccion={codigoTransaccion}

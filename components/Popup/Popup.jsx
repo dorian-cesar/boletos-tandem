@@ -97,6 +97,13 @@ const Popup = ({ modalKey, modalClose , modalMethods}) => {
       imageIcon: "/img/icon/popup/warning-outline.svg",
       onClick: modalMethods
     },
+    [ModalEntities.info_bad_return]: {
+      title: "¡Usuario(a)!",
+      body: "Código de transacción no valido, favor intente nuevamente",
+      buttonMessage: "Ok",
+      imageIcon: "/img/icon/popup/warning-outline.svg",
+      onClick: modalMethods
+    },
   };
   
 

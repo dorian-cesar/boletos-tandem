@@ -1,18 +1,42 @@
 import styles from "./BusquedaBoletos.module.css";
 import axios from "axios";
 import { useEffect, useState, forwardRef } from "react";
+import  {toast}  from "react-toastify";
+import ModalEntities from "../../../entities/ModalEntities";
+import Popup from "../../Popup/Popup";
 
 const BusquedaBoletos = (props) => {
   const { setStage, setBoletos, setLoadingBoleto, codigoTransaccion, setCodigoTransaccion } = props;
+  const [mostrarPopup, setMostrarPopup] = useState(false);
+
+  const abrirPopup = () => {
+    setMostrarPopup(true);
+  };
+  const cerrarPopup = () => {
+    setMostrarPopup(false);
+  };
 
   async function validarTransaccion() {
     setLoadingBoleto(true);
     let codigo = codigoTransaccion;
-    let resp = await axios.post("/api/devolucion-boletos", { codigo });
-    if (resp.data) {
-      setBoletos(resp.data?.object);
+    let data;
+    try {
+      const response = await axios.post("/api/devolucion-boletos", { codigo });
+      data = response.data;
+      setBoletos(data?.object);
       setStage(1);
       setLoadingBoleto(false);
+    } catch (error) {
+      data = error.response.data;
+      abrirPopup();
+      setLoadingBoleto(false);
+    }
+
+/*
+    let resp = await axios.post("/api/devolucion-boletos", { codigo });
+    console.log('datos respuesta', resp)
+    if (resp.data) {
+      
     } else {
       toast.error(resp.data.error, {
         position: "bottom-center",
@@ -20,7 +44,7 @@ const BusquedaBoletos = (props) => {
         hideProgressBar: false,
       });
       setLoadingBoleto(false);
-    }
+    }*/
   }
 
   const handleCodigoTransaccionChange = (e) => {
@@ -59,6 +83,13 @@ const BusquedaBoletos = (props) => {
             </div>
           </div>
         </div>
+        {mostrarPopup && (
+          <Popup
+            modalKey={ModalEntities.info_bad_return}
+            modalMethods={cerrarPopup}
+            modalClose={cerrarPopup}
+          />
+        )}
       </div>
     </>
   );
