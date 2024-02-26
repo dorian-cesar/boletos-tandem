@@ -22,6 +22,25 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
   />
 ));
 
+const stages = [
+  {
+      name: "Servicio ida",
+      kind: "pasajes_1",
+  },
+  {
+      name: "Servicio vuelta",
+      kind: "pasajes_2",
+  },
+  {
+      name: "Pago",
+      kind: "pago",
+  },
+  {
+      name: "Confirmación",
+      kind: "confirmacion",
+  },
+];
+
 const mediosPago = {
   WBPAY: {
     nombre: "Webpay",
@@ -152,72 +171,90 @@ export default function Home(props) {
   return (
     <Layout>
       {props.carro ? (
-        <section className={ styles['main-section'] }>
-          <div className={ styles['images-container'] }>
-            <img src="/img/ticket-outline.svg" alt="ticket" className={ styles['ticket-image'] } />
-            <img src="/img/checkmark-circle-outline.svg" alt="confirmado" className={ styles['confirmado-image'] } />
-          </div>
-          <h1>¡Muchas gracias por tu compra!</h1>
-          <span className={ styles['compra-realizada'] }>Tu compra se ha realizado con éxito. Próximamente, recibirás un correo electrónico con los boletos adquiridos.</span>
-          <div className={ styles['orden-compra'] }>
-            <span>Orden de compra: {props.codigo}</span>
-          </div>
-          <section className={ styles['detalle-viajes'] }>
-            {Array.isArray(resumen.carro.lista) &&
-              resumen.carro.lista.map((element) => (
-                <div className={styles["servicio-ida"]} key={element.titulo}>
-                  <b className={ styles['titulo-servicio'] }>{ element.titulo }</b>
-                  <div className={styles["detalle-container"]}>
-                    {Array.isArray(element.detalle) &&
-                      element.detalle.map((detalleItem, index) => (
-                        <div key={index} className={styles["detalle-item"]}>
-                          <ul>
-                            <li>
-                              <div>{ detalleItem.origen }</div>
-                              <div>{ detalleItem.hora }</div>
-                            </li>
-                            <li>
-                              <div>{ detalleItem.destino }</div>
-                              <div>{ detalleItem.horaLlegada }</div>
-                            </li>
-                          </ul>
-                          <div className={ styles['resumen-servicio'] }>
-                            <span>Cantidad de Asientos: {detalleItem.cantidadAsientos}</span>
-                            <b>{ detalleItem.total }</b>
-                          </div>
-                        </div>
-                      ))}
+        <>
+          {/* <ul className="d-flex flex-row justify-content-around py-4">
+            {
+              stages.map((stageMaped, indexStage) => {
+                return(
+                  <div key={ `stage-${ indexStage }` } className={ "seleccion text-center " + (indexStage == 3 ? "active" : "")}>
+                    <div className="numeros">
+                      <div className="numero">
+                        { indexStage + 1 }
+                      </div>
+                    </div>
+                    <h3>{stageMaped.name}</h3>
                   </div>
-                </div>
-              ))}
+                )
+              })
+            }
+          </ul> */}
+          <section className={ styles['main-section'] }>
+            <div className={ styles['images-container'] }>
+              <img src="/img/ticket-outline.svg" alt="ticket" className={ styles['ticket-image'] } />
+              <img src="/img/checkmark-circle-outline.svg" alt="confirmado" className={ styles['confirmado-image'] } />
+            </div>
+            <h1>¡Muchas gracias por tu compra!</h1>
+            <span className={ styles['compra-realizada'] }>Tu compra se ha realizado con éxito. Próximamente, recibirás un correo electrónico con los boletos adquiridos.</span>
+            <div className={ styles['orden-compra'] }>
+              <span>Orden de compra: {props.codigo}</span>
+            </div>
+            <section className={ styles['detalle-viajes'] }>
+              {Array.isArray(resumen.carro.lista) &&
+                resumen.carro.lista.map((element) => (
+                  <div className={styles["servicio-ida"]} key={element.titulo}>
+                    <b className={ styles['titulo-servicio'] }>{ element.titulo }</b>
+                    <div className={styles["detalle-container"]}>
+                      {Array.isArray(element.detalle) &&
+                        element.detalle.map((detalleItem, index) => (
+                          <div key={index} className={styles["detalle-item"]}>
+                            <ul>
+                              <li>
+                                <div>{ detalleItem.origen }</div>
+                                <div>{ detalleItem.hora }</div>
+                              </li>
+                              <li>
+                                <div>{ detalleItem.destino }</div>
+                                <div>{ detalleItem.horaLlegada }</div>
+                              </li>
+                            </ul>
+                            <div className={ styles['resumen-servicio'] }>
+                              <span>Cantidad de Asientos: {detalleItem.cantidadAsientos}</span>
+                              <b>{ detalleItem.total }</b>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                ))}
+            </section>
+            <section className={ styles['resumen-pago'] }>
+              <div className={ styles['contenedor-metodo-pago'] }>
+                <strong>Pagado con:</strong>
+                <span>
+                  { mediosPago[props.carro.carro.medioPago].mensaje } 
+                  <img src={ mediosPago[props.carro.carro.medioPago].imagen } alt={ `Icono ${mediosPago[props.carro.carro.medioPago].nombre}` }/>
+                </span>
+              </div>
+              <div className={ styles['contenedor-total-pagar'] }>
+                <strong>Total Pagado:</strong>
+                <span>{ clpFormat.format(totalPagar) }</span>
+              </div>
+            </section>
+            <section className={ styles['action-container'] }>
+              <div className={ styles['contenedor-descarga-boletos']}>
+                <img src='/img/icon/general/download-outline.svg' />
+                <span>
+                  Descarga tus boletos aquí
+                </span>
+              </div>
+              <div className={ styles['contenedor-volver-inicio'] }>
+                <Link href="/" className={ styles['btn'] }>
+                  Volver al inicio
+                </Link>
+              </div>
+            </section>
           </section>
-          <section className={ styles['resumen-pago'] }>
-            <div className={ styles['contenedor-metodo-pago'] }>
-              <strong>Pagado con:</strong>
-              <span>
-                { mediosPago[props.carro.carro.medioPago].mensaje } 
-                <img src={ mediosPago[props.carro.carro.medioPago].imagen } alt={ `Icono ${mediosPago[props.carro.carro.medioPago].nombre}` }/>
-              </span>
-            </div>
-            <div className={ styles['contenedor-total-pagar'] }>
-              <strong>Total Pagado:</strong>
-              <span>{ clpFormat.format(totalPagar) }</span>
-            </div>
-          </section>
-          <section className={ styles['action-container'] }>
-            <div className={ styles['contenedor-descarga-boletos']}>
-              <img src='/img/icon/general/download-outline.svg' />
-              <span>
-                Descarga tus boletos aquí
-              </span>
-            </div>
-            <div className={ styles['contenedor-volver-inicio'] }>
-              <Link href="/" className={ styles['btn'] }>
-                Volver al inicio
-              </Link>
-            </div>
-          </section>
-        </section>
+        </>
       ) : (
         <>
           <div className="row justify-content-center mb-5">
