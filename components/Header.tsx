@@ -2,7 +2,7 @@
 
 import useUser from "lib/useUser";
 import { useRouter } from "next/router";
-import Login from "components/Login";
+import Login from "components/Login/Login";
 import { useLocalStorage } from "hooks/useLocalStorage";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux'
