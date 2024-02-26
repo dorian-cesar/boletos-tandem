@@ -48,7 +48,7 @@ export default function Layout({ children }) {
               </Link>
             </div>
             <div className="w-100">
-              <Link href="" legacyBehavior>
+              <Link href="/CambioBoleto" legacyBehavior>
                 <a className="cambio-boleto">
                   Cambio de boleto
                 </a>
