@@ -34,16 +34,30 @@ export default function Layout({ children }) {
               </Link>
             </div>
             <div className="w-100">
-              <Link href="" legacyBehavior>
-                <a href="/comprar" className="agencias">
-                  Agencias
+              <Link href="/Cuponera" legacyBehavior>
+                <a href="/Cuponera" className="cuponeras">
+                  Cuponera
                 </a>
               </Link>
             </div>
             <div className="w-100">
-              <Link href="/Cuponera" legacyBehavior>
-                <a className="agencias">
-                  Compra tu cuponera
+              <Link href="/Confirmacion" legacyBehavior>
+                <a href="" className="confirmacions">
+                  Confirmación
+                </a>
+              </Link>
+            </div>
+            <div className="w-100">
+              <Link href="" legacyBehavior>
+                <a className="cambio-boleto">
+                  Cambio de boleto
+                </a>
+              </Link>
+            </div>
+            <div className="w-100">
+              <Link href="/Devolucion" legacyBehavior>
+                <a className="devolucion">
+                  Devolución de boleto
                 </a>
               </Link>
             </div>
@@ -65,32 +79,11 @@ export default function Layout({ children }) {
             {/* <div className="w-100"><a href="#" className="ofertas">Ofertas</a></div> */}
             {/* <div className="w-100"><Link href="/confirmacion-boleto"legacyBehavior  ><a href="/confirmacion-boleto" className="conf-pasajes">Confirmación de pasajes</a></Link></div> */}
             <div className="w-100">
-              <a
-                className="te-ayudamos acopla"
-                data-bs-toggle="collapse"
-                href="#collapseTeAyudamos"
-                role="button"
-                aria-expanded="false"
-                aria-controls="collapseTeAyudamos"
-              >
-                Te ayudamos
-              </a>
-              <div className="collapse" id="collapseTeAyudamos">
-                <div className="card-body">
-                  <Link href="/confirmacion-boleto" legacyBehavior>
-                    <a href="/confirmacion-boleto">Confirmación de boleto</a>
-                  </Link>
-                  <Link href="/cambio-boleto" legacyBehavior>
-                    <a href="/cambio-boleto">Cambio de boleto</a>
-                  </Link>
-                  <Link href="/devolucion" legacyBehavior>
-                    <a href="/cambio-boleto">Devolución de boletos</a>
-                  </Link>
-                  <Link href="/Devolucion" legacyBehavior>
-                    <a>Devolución de boletos</a>
-                  </Link>
-                </div>
-              </div>
+              <Link href="" legacyBehavior>
+                <a className="ayuda">
+                  Te ayudamos
+                </a>
+              </Link>
             </div>
           </div>
           <div className="w-100">

@@ -80,28 +80,71 @@
 .overlay .links-menu a.compra {
   background-image: url(img/icon/nav/ticket-outline.svg);
   color: #000;
-  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;}
+  line-height: normal;
+}
+.overlay .links-menu a.cuponeras {
+  background-image: url(img/icon/nav/cuponera.svg);
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}  
+.overlay .links-menu a.cambio-boleto {
+  background-image: url(img/icon/nav/cambio-boleto.svg);
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+} 
+
+.overlay .links-menu a.devolucion {
+  background-image: url(img/icon/nav/devolucion.svg);
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.overlay .links-menu a.confirmacions {
+  background-image: url(img/icon/nav/confirmacion.svg);
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.overlay .links-menu a.ayuda {
+  background-image: url(img/icon/nav/help-circle-outline.svg);
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
 .overlay .links-menu a.agencias {
   background-image: url(img/icon/nav/navigate-outline.svg);
   color: #000;
-  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;}
-.overlay .links-menu a.ofertas {background-image: url(img/menu/icon-oferta.svg);}
+  line-height: normal;
+}
+.overlay .links-menu a.ofertas {
+  background-image: url(img/menu/icon-oferta.svg);
+}
 .overlay .links-menu a.conf-pasajes {
   background-image: url(img/menu/icon-confirmacion-pasajes.svg);
   color: #000;
-  /* font-family: Titillium Web; */
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;}
+  line-height: normal;
+}
 .overlay .links-menu a.te-ayudamos {
   background: url(img/icon/nav/help-circle-outline.svg) 0 center no-repeat, url(img/menu/icon-flecha.svg) center right no-repeat;
   color: #000;
@@ -109,7 +152,8 @@
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;}
+  line-height: normal;
+}
 .overlay .links-menu a.cliente-empresa {
   background-image: url(img/icon/nav/business-outline.svg);
   color: #000;
@@ -117,7 +161,8 @@
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;}
+  line-height: normal;
+}
 .overlay .links-menu a.viajes-especiales {
   background-image: url(img/icon/nav/trail-sign-outline.svg);
   color: #000;
