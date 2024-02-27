@@ -10,6 +10,14 @@ module.exports = {
         source: '/Cuponera',
         destination: '/cuponera/Cuponera',
       },
+      {
+        source: '/CambioBoleto',
+        destination: '/ticket-change/CambioBoleto',
+      },
+      {
+        source: '/ConfirmacionBoleto',
+        destination: '/ticket-confirmation/ConfirmacionBoleto',
+      },
     ];
   },
   reactStrictMode: true,

@@ -41,7 +41,7 @@ export default function Layout({ children }) {
               </Link>
             </div>
             <div className="w-100">
-              <Link href="/Confirmacion" legacyBehavior>
+              <Link href="/ConfirmacionBoleto" legacyBehavior>
                 <a href="" className="confirmacions">
                   Confirmación
                 </a>
