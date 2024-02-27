@@ -1,51 +1,76 @@
-import styles from "./MedioPago.module.css"
+import styles from "./MedioPago.module.css";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux'
-import { agregarMedioPago } from "../../../../store/usuario/compra-cuponera-slice"
+import { useSelector, useDispatch } from "react-redux";
+import { agregarMedioPago } from "../../../../store/usuario/compra-cuponera-slice";
+import axios from "axios";
 
 const MedioPago = () => {
-    const dispatch = useDispatch()
+  const [mediosPago, setMediosPago] = useState([]);
+  const [selectedMedioPago, setSelectedMedioPago] = useState(null);
+  const dispatch = useDispatch();
 
-    const [carro, setCarro] = useState({
-        datos: { },
-    });
+  const [carro, setCarro] = useState({
+    datos: {},
+  });
 
-    function setDataMedioPago({ name, value }) {
-        try {
-                let carro_temp = { ...carro };
-                carro_temp.datos[name] = value;
-                dispatch(agregarMedioPago(carro_temp.datos))
-                setCarro(carro_temp);
-            } catch ({ message }) {
-                console.error(`Error al agregar informacion del comprador [${ message }]`);
-            }
-        };
+  function setDataMedioPago({ name, value }) {
+    try {
+      let carro_temp = { ...carro };
+      carro_temp.datos[name] = value;
+      dispatch(agregarMedioPago(carro_temp.datos));
+      setCarro(carro_temp);
+    } catch ({ message }) {
+      console.error(`Error al agregar informacion del comprador [${message}]`);
+    }
+  }
 
-    return (
-        <>
-        <div className={styles["container"]}>
-            <div className={styles["dotted-line"]}></div>
-            <div className={'col-12 col-md-6'}>
-                    <div className={'row'}>
-                        <div className={'col'}>
-                            <label className={styles['contenedor']}>                       
-                                <input 
-                                    type='checkbox'
-                                    checked={ carro.datos['tipoMedioPago'] === 'WBPAY' ? 'checked' : '' }
-                                    value='WBPAY'
-                                    name='tipoMedioPago'
-                                    onChange={ (e) => setDataMedioPago(e.target) } />
-                                <span className={styles['checkmark']}></span>
-                            </label>
-                        </div>
-                        <div className={'col'}>
-                        <img src="../img/icon/cuponera/Logo-webpay.svg" /> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    );
-}
+  useEffect(
+    () =>
+      async function obtenerMediosPagos() {
+        const { data } = await axios.post(
+          "/api/ticket_sale/obtener-medios-pago",
+          {}
+        );
+        setMediosPago(data);
+      },
+    []
+  );
+
+  return (
+    <>
+      <div className={styles["container"]}>
+        {mediosPago.map((element) => (
+
+        element.valor2 === "WBPAY" ?    
+          <div key={element.id} className={styles["body-pay"]}>
+                <input
+                  type="radio"
+                  id={element.id}
+                  name='tipoMedioPago'
+                  value={element.valor2}
+                  checked={ carro.datos['tipoMedioPago'] === element.valor2 ? 'checked' : '' }
+                  onChange={ (e) => setDataMedioPago(e.target) }
+                />
+                {element.valor2 === "WBPAY" ? (
+                  <img src="/img/icon/cuponera/Logo-webpay.svg"></img>
+                ) : (
+                  <label
+                    className={
+                      element.valor2 === "CUP" ? styles["text-coupon"] : ""
+                    }
+                    htmlFor={element.id}
+                  >
+                    {element?.valor1}
+                    <img src="/img/icon/cuponera/ticket-outline.svg"></img>
+                  </label>
+                )}
+          </div>
+         : null
+
+        ))}
+      </div>
+    </>
+  );
+};
 
 export default MedioPago;

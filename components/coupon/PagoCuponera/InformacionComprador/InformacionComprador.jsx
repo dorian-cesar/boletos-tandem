@@ -37,129 +37,102 @@ const InformacionComprador = (props) => {
 
   return (
     <>
-      <div className={styles["container"]}>
-        <div className={styles["dotted-line"]}></div>
-
-        <div className={"row"}>
-          <div className={"col-12 col-md-6"}>
-            <div className={"grupo-campos"}>
-              <label className={styles["label"]}>Nombres</label>
-              <input
-                type="text"
-                value={carro.datos["nombre"]}
-                name="nombre"
-                placeholder="Ej: Juan Andrés"
-                className={styles["input"]}
-                onChange={(e) => setDataComprador(e.target)}
-              />
-            </div>
+    <div className={styles["container"]}>
+      <div className={"row"}>
+        <div className={"col-12 col-md-6"}>
+          <div className={"grupo-campos"}>
+            <label className={styles["label"]}>Nombres</label>
+            <input
+              type="text"
+              value={carro.datos["nombre"]}
+              name="nombre"
+              placeholder="Ej: Juan Andrés"
+              className={styles["input"]}
+              onChange={(e) => setDataComprador(e.target)}
+            />
           </div>
-          <div className={"col-12 col-md-6"}>
-            <div className={"grupo-campos"}>
-              <label className={styles["label"]}>Apellidos</label>
-              <input
-                type="text"
-                value={carro.datos["apellido"]}
-                name="apellido"
-                placeholder="Ej: Espinoza Arcos"
-                className={styles["input"]}
-                onChange={(e) => setDataComprador(e.target)}
-              />
-            </div>
+        </div>
+        <div className={"col-12 col-md-6"}>
+          <div className={"grupo-campos"}>
+            <label className={styles["label"]}>Apellidos</label>
+            <input
+              type="text"
+              value={carro.datos["apellido"]}
+              name="apellido"
+              placeholder="Ej: Espinoza Arcos"
+              className={styles["input"]}
+              onChange={(e) => setDataComprador(e.target)}
+            />
           </div>
-          <div className={"col-12 col-md-6"}>
-            <div className={"row"}>
-              <div className={"col"}>
-                <label className={"contenedor"}>
-                  <label className={styles["label"]}>rut</label>
-                  <input
-                    type="checkbox"
-                    checked={carro.datos["tipoRut"] == "rut" ? "checked" : ""}
-                    value="rut"
-                    name="tipoRut"
-                    onChange={(e) => setDataComprador(e.target)}
-                  />
-                  <span className="checkmark"></span>
-                </label>
-              </div>
-              <div className={"col"}>
-                <label className={"contenedor"}>
-                  <label className={styles["label"]}>pasaporte</label>
-                  <input
-                    type="checkbox"
-                    checked={
-                      carro.datos["tipoRut"] == "pasaporte" ? "checked" : ""
-                    }
-                    value="pasaporte"
-                    name="tipoRut"
-                    onChange={(e) => setDataComprador(e.target)}
-                  />
-                  <span className={"checkmark"}></span>
-                </label>
-              </div>
-            </div>
-            <div className={"grupo-campos"}>
-              <input
-                type="text"
-                value={carro.datos["rut"]}
-                name="rut"
-                placeholder="Ej: 111111111"
-                className={`${
-                  Array.isArray(carro.datos.errors) &&
-                  carro.datos.errors.includes("rut")
-                    ? "is-invalid"
-                    : ""
-                } ${styles["input"]}`}
-                onChange={(e) => setDataComprador(e.target)}
-              />
-            </div>
-          </div>
-          <div className={"col-12 col-md-6"}>
-            <div className={"row"}>
-              <div className={"col"}>
-              <label className={styles["container-text"]}>
-                  <label className={styles["label"]}>E-mail</label>
-                </label>
-              </div>
-              <div className={"col"}>
-
-              </div>
-            </div>
-            <div className={"grupo-campos"}> 
-              <input
-                type="email"
-                value={carro.datos["email"]}
-                name="email"
-                placeholder="Ingresa tu email de contacto"
-                className={styles["input"]}
-                onChange={(e) => setDataComprador(e.target)}
-              />
-            </div>
-          </div>
-          <div className={"col-12 col-md-6"}>
+        </div>
+        <div className={"col-12 col-md-6"}>
           <div className={"row"}>
-              <div className={"col"}>
-                <label className={styles["container-text"]}>
-                  <label className={styles["label"]}></label>
-                </label>
-              </div>
+            <div className={"col"}>
+              <label className={"contenedor"}>
+                <label className={styles["label"]}>rut</label>
+                <input
+                  type="checkbox"
+                  checked={carro.datos["tipoDocumento"] == "R" ? "checked" : ""}
+                  value="R"
+                  name="tipoDocumento"
+                  onChange={(e) => setDataComprador(e.target)}
+                />
+                <span className="checkmark"></span>
+              </label>
             </div>
-            <div className={"grupo-campos"}>
-              <label className={styles["label"]}>E-mail</label>
-              <input
-                type="email"
-                value={carro.datos["email"]}
-                name="email"
-                placeholder="Ingresa tu email de contacto"
-                className={styles["input"]}
-                onChange={(e) => setDataComprador(e.target)}
-              />
+            <div className={"col"}>
+              <label className={"contenedor"}>
+                <label className={styles["label"]}>pasaporte</label>
+                <input
+                  type="checkbox"
+                  checked={carro.datos["tipoDocumento"] == "P" ? "checked" : ""}
+                  value="P"
+                  name="tipoDocumento"
+                  onChange={(e) => setDataComprador(e.target)}
+                />
+                <span className={"checkmark"}></span>
+              </label>
             </div>
-            
+          </div>
+          <div className={"grupo-campos"}>
+            <input
+              type="text"
+              value={carro.datos["rut"]}
+              name="rut"
+              placeholder="Ej: 111111111"
+              className={`${
+                Array.isArray(carro.datos.errors) &&
+                carro.datos.errors.includes("rut")
+                  ? "is-invalid"
+                  : ""
+              } ${styles["input"]}`}
+              onChange={(e) => setDataComprador(e.target)}
+            />
+          </div>
+        </div>
+        <div className={"col-12 col-md-6"}>
+          <div className={"row"}>
+            <div className={"col"}>
+              <label className={styles["container-text"]}>
+                <label className={styles["label"]}>E-mail</label>
+              </label>
+            </div>
+            <div className={"col"}></div>
+          </div>
+          <div className={"grupo-campos"}>
+            <input
+              type="email"
+              value={carro.datos["email"]}
+              name="email"
+              placeholder="Ej: correo@correo.cl"
+              className={styles["input"]}
+              onChange={(e) => setDataComprador(e.target)}
+            />
           </div>
         </div>
       </div>
-    </>
+    </div>
+  </>
   );
 };
 
