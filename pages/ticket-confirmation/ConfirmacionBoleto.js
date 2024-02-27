@@ -117,7 +117,7 @@ useEffect(() => {
         <div className="container">
           <div className="row py-4">
             <div className="col-12">
-              <span>Home &gt; Te ayudamos &gt; Cambio de boleto </span>
+              <span>Home &gt; Te ayudamos &gt; Confirmación de boleto </span>
             </div>
           </div>
           <div className="row">
@@ -126,7 +126,7 @@ useEffect(() => {
                 <img src="img/icon-estrella-mas.svg" alt="" />
                 <h1>
                   Te Ayudamos con tu
-                  <br /> <strong>cambio de Boleto</strong>
+                  <br /> <strong>Confirmación de Boleto</strong>
                 </h1>
               </div>
             </div>
@@ -144,7 +144,7 @@ useEffect(() => {
                 <div className="bloque">
                   <h2>
                     Ingresa el código de tu boleto para{" "}
-                    <strong>visualizar el boleto que quieres cambiar</strong>
+                    <strong>visualizar el boleto que quieres confirmar</strong>
                   </h2>
                   <div className="grupo-campos">
                     <label className="label-input">Código de boleto</label>
