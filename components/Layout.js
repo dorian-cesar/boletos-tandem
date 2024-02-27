@@ -79,7 +79,7 @@ export default function Layout({ children }) {
             {/* <div className="w-100"><a href="#" className="ofertas">Ofertas</a></div> */}
             {/* <div className="w-100"><Link href="/confirmacion-boleto"legacyBehavior  ><a href="/confirmacion-boleto" className="conf-pasajes">Confirmación de pasajes</a></Link></div> */}
             <div className="w-100">
-              <Link href="" legacyBehavior>
+              <Link href="/TeAyudamos" legacyBehavior>
                 <a className="ayuda">
                   Te ayudamos
                 </a>

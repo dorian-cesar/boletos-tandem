@@ -18,6 +18,10 @@ module.exports = {
         source: '/ConfirmacionBoleto',
         destination: '/ticket-confirmation/ConfirmacionBoleto',
       },
+      {
+        source: '/TeAyudamos',
+        destination: '/te-ayudamos/TeAyudamos',
+      },
     ];
   },
   reactStrictMode: true,
