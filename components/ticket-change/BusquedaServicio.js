@@ -33,12 +33,7 @@ const BusquedaServicio = (props) => {
   const [origen, setOrigen] = useState(null);
   const [destino, setDestino] = useState(null);
   const [destinos, setDestinos] = useState([]);
-  const [startDate, setStartDate] = useState(() => {
-    if (boletoValido && boletoValido.fechaEmbarcacion) {
-      return dayjs(boletoValido.fechaEmbarcacion, 'DD/MM/YYYY').toDate();
-    }
-    return dayjs().toDate();
-  });
+  const [startDate, setStartDate] = useState(dayjs().toDate());
   const [datePickerKey, setDatePickerKey] = useState(0);
 
   async function getDestinos() {
