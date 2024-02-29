@@ -27,6 +27,7 @@ const BusquedaServicio = (props) => {
     setParrilla,
     setLoadingParrilla,
     boletoValido,
+    buscaAlIniciar
   } = props;
   const [mascota_allowed, setMascota] = useState(false);
   const [origen, setOrigen] = useState(null);
@@ -101,31 +102,36 @@ const BusquedaServicio = (props) => {
     }
   }, [boletoValido]);
 
-  async function searchParrilla(in_stage) {
+  async function searchParrilla() {
     try {
-        const stage_active = in_stage ?? stage;
-        setLoadingParrilla(true);
+      setLoadingParrilla(true);
 
-        let data = {
-          origen: origen,
-          destino: destino,
-          startDate: dayjs(startDate).format("YYYYMMDD"),
-        };
+      let data = {
+        origen: origen,
+        destino: destino,
+        startDate: dayjs(startDate).format("YYYYMMDD"),
+      };
 
-        const parrilla = await axios.post("/api/parrilla", data
-        );
-        console.log('Planilla de asientos', parrilla )
-        setParrilla(parrilla.data.map((parrillaMapped, index) => {
-            return {
-                ...parrillaMapped,
-                id: index + 1
-            }
-        }));
-        setLoadingParrilla(false);   
+      const parrilla = await axios.post("/api/parrilla", data
+      );
+      console.log('Planilla de asientos', parrilla )
+      setParrilla(parrilla.data.map((parrillaMapped, index) => {
+          return {
+              ...parrillaMapped,
+              id: index + 1
+          }
+      }));
+      setLoadingParrilla(false);   
     } catch ({ message }) {
         console.error(`Error al obtener parrilla [${ message }]`)
     }
-};
+  };
+
+  useEffect(() => {
+    if ( buscaAlIniciar ) {
+      searchParrilla();
+    }
+  }, [destino]);
 
   return (
     <div className="col-12 col-md-12">

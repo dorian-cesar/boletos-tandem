@@ -128,10 +128,25 @@ export const compraSlice = createSlice({
         agregarMedioPago: (state, action) => {
             const { payload } = action;
             state.medioPago = payload;
+        },
+        limpiarListaCarrito: (state, action) => {
+            state.listaCarrito = {};
+            state.informacionAgrupada = [];
+            state.datosComprador = {};
+            state.medioPago = '';
+            localStorage.removeItem(LocalStorageEntities.car);
         }
     },
 });
 
-export const { agregarServicio, eliminarServicio, agruparInformacionPago, agregarInformacionAsiento, asignarDatosComprador, agregarMedioPago } = compraSlice.actions;
+export const { 
+    agregarServicio, 
+    eliminarServicio, 
+    agruparInformacionPago, 
+    agregarInformacionAsiento, 
+    asignarDatosComprador, 
+    agregarMedioPago,
+    limpiarListaCarrito
+} = compraSlice.actions;
 
 export default compraSlice.reducer;

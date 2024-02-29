@@ -1,14 +1,7 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
-import Rut from "rutjs";
+import { useEffect, useState } from "react";
 
 import { PasajeConvenioDTO } from "dto/PasajesDTO";
-import { GuardarCarroDTO, PasajePagoDTO } from "dto/PasajesDTO";
-import ResumenPasaje from "../ResumenPasaje";
-import InformacionPasajero from "../InformacionPasajero";
-import InformacionComprador from "../InformacionComprador";
-import { isValidPasajero } from "utils/user-pasajero";
-import { toast } from "react-toastify";
 import Acordeon from "../../Acordeon/Acordeon";
 import ResumenServicio from "./ResumenServicio/ResumenServicio";
 import PuntoEmbarque from "./ResumenServicio/PuntoEmbarque/PuntoEmbarque";

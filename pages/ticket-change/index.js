@@ -23,12 +23,12 @@ registerLocale("es", es);
 
 const stages = [
   {
-    name: "Selección viaje IDA",
-    kind: "pasajes_1",
+    name: 'Validación boleto',
+    kind: 'validacion'
   },
   {
-    name: "Selección viaje VUELTA",
-    kind: "pasajes_2",
+    name: "Selección servicio",
+    kind: "pasajes_1",
   },
   {
     name: "Pago",
@@ -180,6 +180,7 @@ useEffect(() => {
                 setParrilla={setParrilla}
                 setLoadingParrilla={setLoadingParrilla}
                 boletoValido={boletoValido}
+                buscaAlIniciar={true}
               />
 
               <div className="contenido-busqueda">
@@ -187,29 +188,22 @@ useEffect(() => {
                 
                 <div className="pasajes-compra py-5">
                 <div className="container">
-                  <div className="d-flex flex-row justify-content-around">
-                    {stages
-                      .filter(
-                        (stageMaped) =>
-                          endDate || (!endDate && stageMaped.kind != "pasajes_2")
-                      )
-                      .map((stageMaped, indexStage) => {
-                        return (
-                          <div
-                            key={`stage-${indexStage}`}
-                            className={
-                              "seleccion text-center " +
-                              (indexStage == stage ? "active" : "")
-                            }
-                          >
+                  <ul className="d-flex flex-row justify-content-around py-4">
+                    {
+                      stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
+                        return(
+                          <div key={ `stage-${ indexStage }` } className={ "seleccion text-center " + (indexStage == stage ? "active" : "")}>
                             <div className="numeros">
-                              <div className="numero">{indexStage + 1}</div>
+                              <div className="numero">
+                                { indexStage + 1 }
+                              </div>
                             </div>
                             <h3>{stageMaped.name}</h3>
                           </div>
-                        );
-                      })}
-                  </div>
+                        )
+                      })
+                    }
+                  </ul>
                   {stages_active[stage].kind == "pasajes_1" ||
                   stages_active[stage].kind == "pasajes_2" ? (
                     <StagePasajes

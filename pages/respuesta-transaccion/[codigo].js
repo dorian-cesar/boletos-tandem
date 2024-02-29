@@ -7,8 +7,9 @@ import { sessionOptions } from "lib/session";
 import getConfig from "next/config";
 import Link from "next/link";
 import styles from './RespuestaTransaccion.module.css';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo"
+import { limpiarListaCarrito } from "store/usuario/compra-slice";
 
 
 const { publicRuntimeConfig } = getConfig();
@@ -52,6 +53,7 @@ const mediosPago = {
 export default function Home(props) {
 
   const [totalPagar, setTotalPagar] = useState(0);
+  const [copiaCarro, setCopiaCarro] = useState({});
   const [resumen, setResumen] = useState({
     carro: {},
   });
@@ -62,10 +64,13 @@ export default function Home(props) {
   });
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
+
+  const dispatch = useDispatch();
   
   const obtenerInformacion = () => {
     {
-      Object.entries(carroCompras).map(([key, value]) => {
+      const carro = carroCompras || copiaCarro;
+      Object.entries(carro).map(([key, value]) => {
         const fechaIdaFormateada = value.ida[0].fechaSalida.split('/');
         const fechaIda = new Date(`${ fechaIdaFormateada[1] }/${ fechaIdaFormateada[0] }/${ fechaIdaFormateada[2]}`);
 
@@ -147,8 +152,9 @@ export default function Home(props) {
   }, []);
   
   useEffect(() => {
+    const carro = carroCompras || copiaCarro;
     let total = 0;
-    Object.entries(carroCompras).map(([key, value]) => {
+    Object.entries(carro).map(([key, value]) => {
       const idaList = value.ida || [];
       const vueltaList = value.vuelta || [];
 
@@ -166,6 +172,7 @@ export default function Home(props) {
     });
 
     setTotalPagar(total);
+    dispatch(limpiarListaCarrito());
   }, [resumen])
 
   return (
