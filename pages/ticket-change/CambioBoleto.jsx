@@ -111,7 +111,7 @@ useEffect(() => {
   return (
     <Layout>
       <Head>
-        <title>PullmanBus | Confirmación Boleto</title>
+        <title>PullmanBus | Cambio Boleto</title>
       </Head>
       <div className="pullman-mas">
         <div className="container">
@@ -171,12 +171,13 @@ useEffect(() => {
                     <input
                       type="text"
                       name=""
-                      onChange={(e) => setBoleto(e.target.value)}
+                      value={boleto}
+                      onChange={(e) => setBoleto(e.target.value.toUpperCase())}
                       className="form-control"
                     />
                   </div>
                   <div className="w-100">
-                    <button onClick={validarBoleto} className="btn">
+                    <button onClick={ (boleto) && validarBoleto} className="btn">
                       Buscar
                     </button>
                   </div>

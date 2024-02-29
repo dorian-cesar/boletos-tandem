@@ -3,23 +3,23 @@ module.exports = {
   async rewrites() {
     return [
       {
-        source: '/Devolucion',
+        source: '/devolucion',
         destination: '/devolucion/Devolucion',
       },
       {
-        source: '/Cuponera',
+        source: '/duponera',
         destination: '/cuponera/Cuponera',
       },
       {
-        source: '/CambioBoleto',
+        source: '/cambioBoleto',
         destination: '/ticket-change/CambioBoleto',
       },
       {
-        source: '/ConfirmacionBoleto',
+        source: '/confirmacionBoleto',
         destination: '/ticket-confirmation/ConfirmacionBoleto',
       },
       {
-        source: '/TeAyudamos',
+        source: '/teAyudamos',
         destination: '/te-ayudamos/TeAyudamos',
       },
     ];

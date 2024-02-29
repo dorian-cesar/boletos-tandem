@@ -1,7 +1,7 @@
 import axios from "axios";
 import Layout from "../../components/Layout";
 import Footer from "../../components/Footer";
-import BusquedaServicio from "../../components/ticket-change/BusquedaServicio";
+import BusquedaServicio from "../../components/ticket-confirmation/BusquedaServicio";
 import { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
@@ -14,8 +14,8 @@ import { ToastContainer } from "react-toastify";
 const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
 import { ObtenerParrillaServicioDTO } from "dto/ParrillaDTO";
-import StagePasajes from "../../components/ticket-change/StagePasajes";
-import StagePago from "../../components/ticket-change/StagePago";
+import StagePasajes from "../../components/ticket-confirmation/StagePasajes";
+import StagePago from "../../components/ticket-confirmation/StagePago/StagePago";
 import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 
@@ -23,12 +23,12 @@ registerLocale("es", es);
 
 const stages = [
   {
-    name: "Selección viaje IDA",
-    kind: "pasajes_1",
+    name: 'Validación boleto',
+    kind: 'validacion'
   },
   {
-    name: "Selección viaje VUELTA",
-    kind: "pasajes_2",
+    name: "Selección servicio",
+    kind: "pasajes_1",
   },
   {
     name: "Pago",
@@ -126,13 +126,33 @@ useEffect(() => {
                 <img src="img/icon-estrella-mas.svg" alt="" />
                 <h1>
                   Te Ayudamos con tu
-                  <br /> <strong>Confirmación de Boleto</strong>
+                  <br /> <strong>confirmación de Boleto</strong>
                 </h1>
               </div>
             </div>
             <div className="col-md-6 col-12 foto-header">
               <img src="img/cambioboleto2.svg" className="img-fluid" alt="" />
             </div>
+          </div>
+        </div>
+        <div className="pasajes-compra bg-transparent">
+          <div className="container">
+            <ul className="d-flex flex-row justify-content-around py-4">
+              {
+                stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
+                  return(
+                    <div key={ `stage-${ indexStage }` } className={ "seleccion text-center " + (indexStage == stage ? "active" : "")}>
+                      <div className="numeros">
+                        <div className="numero">
+                          { indexStage + 1 }
+                        </div>
+                      </div>
+                      <h3>{stageMaped.name}</h3>
+                    </div>
+                  )
+                })
+              }
+            </ul>
           </div>
         </div>
       </div>
@@ -151,12 +171,13 @@ useEffect(() => {
                     <input
                       type="text"
                       name=""
-                      onChange={(e) => setBoleto(e.target.value)}
+                      value={boleto}
+                      onChange={(e) => setBoleto(e.target.value.toUpperCase())}
                       className="form-control"
                     />
                   </div>
                   <div className="w-100">
-                    <button onClick={validarBoleto} className="btn">
+                    <button onClick={ (boleto) && validarBoleto} className="btn">
                       Buscar
                     </button>
                   </div>
@@ -180,6 +201,7 @@ useEffect(() => {
                 setParrilla={setParrilla}
                 setLoadingParrilla={setLoadingParrilla}
                 boletoValido={boletoValido}
+                buscaAlIniciar={false}
               />
 
               <div className="contenido-busqueda">
@@ -187,29 +209,6 @@ useEffect(() => {
                 
                 <div className="pasajes-compra py-5">
                 <div className="container">
-                  <div className="d-flex flex-row justify-content-around">
-                    {stages
-                      .filter(
-                        (stageMaped) =>
-                          endDate || (!endDate && stageMaped.kind != "pasajes_2")
-                      )
-                      .map((stageMaped, indexStage) => {
-                        return (
-                          <div
-                            key={`stage-${indexStage}`}
-                            className={
-                              "seleccion text-center " +
-                              (indexStage == stage ? "active" : "")
-                            }
-                          >
-                            <div className="numeros">
-                              <div className="numero">{indexStage + 1}</div>
-                            </div>
-                            <h3>{stageMaped.name}</h3>
-                          </div>
-                        );
-                      })}
-                  </div>
                   {stages_active[stage].kind == "pasajes_1" ||
                   stages_active[stage].kind == "pasajes_2" ? (
                     <StagePasajes
@@ -267,6 +266,7 @@ useEffect(() => {
             convenios={props.convenios}
             mediosDePago={props.mediosDePago}
             setCarro={setCarro}
+            boletoValido={boletoValido}
         />
       ) : (
         ""

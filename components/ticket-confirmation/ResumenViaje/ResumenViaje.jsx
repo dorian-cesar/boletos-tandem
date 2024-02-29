@@ -152,7 +152,7 @@ export const ResumenViaje = (props) => {
       let data;
       try {
         const response = await axios.post(
-          "/api/ticket_sale/cambiar-boleto",
+          "/api/ticket_sale/confirmar-boleto",
           cambiarBoleto
         );
         data = response.data;
@@ -160,7 +160,7 @@ export const ResumenViaje = (props) => {
         data = error.response.data;
       }
       if (data.status) {
-        const url = `/respuesta-transaccion-cambio/${data.object.voucher.boleto}`;
+        const url = `/respuesta-transaccion-confirmacion/${data.object.voucher.boleto}`;
         router.push(url);
       } else {
         toast.warn(data.message, {
@@ -264,39 +264,6 @@ export const ResumenViaje = (props) => {
             ))}
         </div>
         <div className={styles["total-container"]}>
-          <div
-            className={`form-check form-switch ${styles["utiliza-monedero-virtual"]}`}
-          >
-            <input
-              className="form-check-input"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
-            />
-            <label
-              className="form-check-label"
-              htmlFor="flexSwitchCheckDefault"
-            >
-              Utilizar monedero virtual ({saldoMonederoVirtual})
-            </label>
-            <img src="/img/icon/general/information-circle-outline.svg" />
-            <span className={styles["tooltip-text"]}>
-              Sólo se puede pagar con el monedero cuando inicies sesión.
-            </span>
-          </div>
-          <div className={styles["contanedor-total-pagar"]}>
-            <span className={styles["valor-boleto"]}>
-              Valor boleto anterior:{" "}
-              {clpFormat.format(Number(boletoValido["valor"]))}
-            </span>
-            <span className={styles["valor-boleto"]}>
-              Valor boleto nuevo: {clpFormat.format(totalPagar)}
-            </span>
-            <span className={styles["total-pagar"]}>
-              Total a pagar:{" "}
-              {clpFormat.format(totalPagar - Number(boletoValido["valor"]))}
-            </span>
-          </div>
           <div className={styles["contenedor-checks"]}>
             <div className="form-check">
               <input
@@ -331,9 +298,8 @@ export const ResumenViaje = (props) => {
               sendToPayment();
             }}
           >
-            {totalPagar - Number(boletoValido["valor"]) === 0
-              ? "Continuar"
-              : "Pagar"}
+           Confirmar
+        
           </button>
           <form
             ref={payment_form}

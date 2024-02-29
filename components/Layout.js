@@ -34,28 +34,28 @@ export default function Layout({ children }) {
               </Link>
             </div>
             <div className="w-100">
-              <Link href="/Cuponera" legacyBehavior>
+              <Link href="/cuponera" legacyBehavior>
                 <a href="/Cuponera" className="cuponeras">
                   Cuponera
                 </a>
               </Link>
             </div>
             <div className="w-100">
-              <Link href="/ConfirmacionBoleto" legacyBehavior>
+              <Link href="/confirmacionBoleto" legacyBehavior>
                 <a href="" className="confirmacions">
                   Confirmación
                 </a>
               </Link>
             </div>
             <div className="w-100">
-              <Link href="/CambioBoleto" legacyBehavior>
+              <Link href="/cambioBoleto" legacyBehavior>
                 <a className="cambio-boleto">
                   Cambio de boleto
                 </a>
               </Link>
             </div>
             <div className="w-100">
-              <Link href="/Devolucion" legacyBehavior>
+              <Link href="/cevolucion" legacyBehavior>
                 <a className="devolucion">
                   Devolución de boleto
                 </a>
@@ -79,7 +79,7 @@ export default function Layout({ children }) {
             {/* <div className="w-100"><a href="#" className="ofertas">Ofertas</a></div> */}
             {/* <div className="w-100"><Link href="/confirmacion-boleto"legacyBehavior  ><a href="/confirmacion-boleto" className="conf-pasajes">Confirmación de pasajes</a></Link></div> */}
             <div className="w-100">
-              <Link href="/TeAyudamos" legacyBehavior>
+              <Link href="/teAyudamos" legacyBehavior>
                 <a className="ayuda">
                   Te ayudamos
                 </a>
