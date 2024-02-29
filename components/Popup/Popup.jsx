@@ -104,6 +104,20 @@ const Popup = ({ modalKey, modalClose , modalMethods}) => {
       imageIcon: "/img/icon/popup/warning-outline.svg",
       onClick: modalMethods
     },
+    [ModalEntities.change_password]: {
+      title: "¡Contraseña actualizada correctamente!",
+      body: "",
+      buttonMessage: "Volver",
+      imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
+      onClick: modalMethods
+    },
+    [ModalEntities.password_not_same]: {
+      title: "¡Contraseña nueva incorrecta!",
+      body: "Asegurece de escribir la misma contraseña en ambas casillas",
+      buttonMessage: "Ok",
+      imageIcon: "/img/icon/popup/warning-outline.svg",
+      onClick: modalMethods
+    }
   };
   
 

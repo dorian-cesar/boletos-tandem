@@ -12,7 +12,9 @@ const ModalEntities = {
     confirm_change: 'CONFIRM_CHANGE',
     confirm_success: 'CONFIRM_SUCCESS',
     delete_car: 'DELETE_CAR',
-    info_bad_return : 'INFO_BAD_RETURN'
+    info_bad_return: 'INFO_BAD_RETURN',
+    change_password: 'CHANGE_PASSWORD',
+    password_not_same: 'PASSWORD_NOT_SAME'
 }
 
 export default ModalEntities;
