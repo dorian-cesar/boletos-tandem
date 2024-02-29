@@ -15,7 +15,7 @@ const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
 import { ObtenerParrillaServicioDTO } from "dto/ParrillaDTO";
 import StagePasajes from "../../components/ticket-change/StagePasajes";
-import StagePago from "../../components/ticket-change/StagePago";
+import StagePago from "../../components/ticket-change/StagePago/StagePago";
 import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 
@@ -135,6 +135,26 @@ useEffect(() => {
             </div>
           </div>
         </div>
+        <div className="pasajes-compra bg-transparent">
+          <div className="container">
+            <ul className="d-flex flex-row justify-content-around py-4">
+              {
+                stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
+                  return(
+                    <div key={ `stage-${ indexStage }` } className={ "seleccion text-center " + (indexStage == stage ? "active" : "")}>
+                      <div className="numeros">
+                        <div className="numero">
+                          { indexStage + 1 }
+                        </div>
+                      </div>
+                      <h3>{stageMaped.name}</h3>
+                    </div>
+                  )
+                })
+              }
+            </ul>
+          </div>
+        </div>
       </div>
       {stage == 0 ? (
         <div className="codigo-boleto mb-5">
@@ -188,22 +208,6 @@ useEffect(() => {
                 
                 <div className="pasajes-compra py-5">
                 <div className="container">
-                  <ul className="d-flex flex-row justify-content-around py-4">
-                    {
-                      stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
-                        return(
-                          <div key={ `stage-${ indexStage }` } className={ "seleccion text-center " + (indexStage == stage ? "active" : "")}>
-                            <div className="numeros">
-                              <div className="numero">
-                                { indexStage + 1 }
-                              </div>
-                            </div>
-                            <h3>{stageMaped.name}</h3>
-                          </div>
-                        )
-                      })
-                    }
-                  </ul>
                   {stages_active[stage].kind == "pasajes_1" ||
                   stages_active[stage].kind == "pasajes_2" ? (
                     <StagePasajes
@@ -261,6 +265,7 @@ useEffect(() => {
             convenios={props.convenios}
             mediosDePago={props.mediosDePago}
             setCarro={setCarro}
+            boletoValido={boletoValido}
         />
       ) : (
         ""
