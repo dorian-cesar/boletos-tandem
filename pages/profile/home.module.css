@@ -1,0 +1,62 @@
+  .perfil-body {
+    background: var(--Azul-fondo, #E6ECF6);
+  }
+  
+  .container-perfil {
+    width: 1040px;
+    height: 240px;
+    border-radius: 16px 16px 0px 0px;
+    background: var(--azul-100, #3365B4);
+  
+  }
+  
+  .titulo-nombre {
+    color: #FFF;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-align: left;
+  }
+  
+  .titulo-nombre-sub {
+    color: #FFF;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: left;
+  }
+  
+  .imagen-monedero {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+  
+  .titulo-wallet {
+    color: #FFF;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  
+  .titulo-wallet-sub {
+    color: #FFF;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 26px;
+  }
+
+  .titulo-menu {
+    width: 500px;
+    height: 1px;
+    margin-top: 20px;
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }

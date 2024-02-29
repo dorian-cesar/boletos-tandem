@@ -43,7 +43,7 @@ const Login = (props) => {
     try {
       console.log("Iniciando sesión...");
       setIsLoading(true);
-      const res = await axios.post("/api/validar-login", { ...login });
+      const res = await axios.post("/api/user/validar-login", { ...login });
       const { token, usuario } = res.data.object;
       setItem("user", usuario);
       setItem("token", token);

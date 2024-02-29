@@ -1,0 +1,90 @@
+.menu-central {
+    margin-top: 25px;
+    width: 776px;
+    margin-left: -18px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    background: var(--Blanco, #FFF);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.bloque {
+    border-radius: 16px;
+    margin-bottom: 20px;
+    padding: 30px 30px 30px 30px;
+    background-color: #fff;
+}
+
+.bloque-margin{
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.bloque-pasajero{
+    margin-bottom: 20px;
+}
+
+.title-passenger {
+    color: #000;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.passenger-button-add {
+    display: inline-flex;
+    height: 32px;
+    padding: 0px 52px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: var(--naranjo-25, #FFD8BF);
+}
+
+.passenger-button-add .text {
+    color: var(--naranjo-100, #FF6500);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.container-pasajero {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 648px;
+    height: 106px;
+    flex-shrink: 0;
+    border-radius: 100px;
+    background: var(--azul-10, #EBF0F8);
+}
+
+.eliminar {
+    color: var(--gris-50, #7F7F7F);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration-line: underline;
+}
+
+.modificar {
+    color: var(--naranjo-100, #FF6500);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+
+.nombre {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
