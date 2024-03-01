@@ -7,23 +7,77 @@ import { useLocalStorage } from "hooks/useLocalStorage";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux'
 import Link from "next/link";
+import { autoUpdate, flip, offset, shift, useDismiss, useFloating, useFocus, useHover, useInteractions, useRole } from '@floating-ui/react';
+import styles from './Header.module.css';
+
+import { ResumenViaje } from 'components/ticket_sale/ResumenViaje/ResumenViaje';
 
 export default function Header({ openNav }: { openNav: any }) {
   const [user, setUser] = useState();
   const router = useRouter();
   const { getItem, clear } = useLocalStorage();
   const [carroCompras, setCarroCompras] = useState([]);
-  const data = useSelector((state:any) => state.compra?.listaCarrito) || [];
+  const data = useSelector((state:any) => state.compra?.listaCarrito) || {};
+
+  const [isOpen, setIsOpen] = useState(false);
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    whileElementsMounted: autoUpdate,
+    placement: 'bottom',
+    middleware: [
+      offset(5),
+      flip({
+        fallbackAxisSideDirection: "start"
+      }),
+      shift()
+    ]
+  });
+
+  // Event listeners to change the open state
+  const hover = useHover(context, { move: false });
+  const focus = useFocus(context);
+  const dismiss = useDismiss(context);
+  // Role props for screen readers
+  const role = useRole(context, { role: "tooltip" });
+
+  // Merge all the interactions into prop getters
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    dismiss,
+    role
+  ]);
+
+  function setData() {
+    const listaCarrito:any = [];
+    Object.entries(data).forEach(([key, value]) => {
+      if( data[key]['ida'] ) {
+        data[key]['ida'].forEach((element:any) => {
+          element.asientos.forEach((asiento:any) => listaCarrito.push(asiento));
+        });
+      }
+      if( data[key]['vuelta'] ) {
+        data[key]['vuelta'].forEach((element:any) => {
+          element.asientos.forEach((asiento:any) => listaCarrito.push(asiento));
+        });
+      }
+    });
+    setCarroCompras(listaCarrito);
+  }
   
   useEffect(() => {
     setUser(getItem("user"));
-    setCarroCompras(data);
+    setData();
   }, []);
+
+  useEffect(() => {
+    setData();
+  }, [data]);
 
   return (
     <>
-      <header>
-       
+      <header className="sticky-top bg-white">
           <div className="container">
             <div className="row">
               <div className="col-2 col-sm-1">
@@ -100,14 +154,24 @@ export default function Header({ openNav }: { openNav: any }) {
                     </li>
                   </ul>
                 )}
-                <Link href="/carrito" legacyBehavior>
-                  <a className="d-flex align-items-center">
-                    <img src="../img/cart-outline.svg" width={30} />
-                    <span className="badge bg-primary rounded-pill">
-                      {carroCompras.length}
-                    </span>
-                  </a>
-                </Link>
+                <a className="d-flex align-items-center" ref={refs.setReference} {...getReferenceProps()}>
+                  <img src="../img/cart-outline.svg" width={30} />
+                  { carroCompras.length > 0 &&
+                    (
+                      <span className="badge bg-primary rounded-pill">
+                        {carroCompras.length}
+                      </span>
+                    )
+                  }
+                </a>
+                {
+                  isOpen && carroCompras.length > 0 &&
+                  (
+                    <div className={ styles['tooltip-container'] } ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()}>
+                      <ResumenViaje />
+                    </div>
+                  )
+                }
               </div>
             </div>
           </div>

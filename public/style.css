@@ -971,7 +971,7 @@ select.form-control.seleccion {
 .home .bloque.m-neg {
   margin-top: -120px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .home .form-control {
@@ -2497,7 +2497,7 @@ footer .item a {
   .home .bloque.m-neg {
     margin-top: 0;
     position: relative;
-    z-index: 9999;
+    z-index: 2;
   }
 }
 
@@ -2510,7 +2510,7 @@ footer .item a {
   .home .bloque.m-neg {
     margin-top: 0;
     position: relative;
-    z-index: 9999;
+    z-index: 2;
   }
 }
 
@@ -2532,7 +2532,7 @@ footer .item a {
   .home .bloque.m-neg {
     margin-top: -80px;
     position: relative;
-    z-index: 9999;
+    z-index: 2;
   }
 }
 
@@ -2546,6 +2546,6 @@ footer .item a {
   .home .bloque.m-neg {
     margin-top: -110px;
     position: relative;
-    z-index: 9999;
+    z-index: 2;
   }
 }
