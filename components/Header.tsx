@@ -85,23 +85,6 @@ export default function Header({ openNav }: { openNav: any }) {
                           </Link>
                         </li>
                         <li>
-                          <Link href="/profile/mis-compras" legacyBehavior>
-                            <a className="dropdown-item" href="/mis-compras">
-                              Mis compras
-                            </a>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/profile/cambio-password" legacyBehavior>
-                            <a
-                              className="dropdown-item"
-                              href="/profile/cambio-password"
-                            >
-                              Cambiar contraseña
-                            </a>
-                          </Link>
-                        </li>
-                        <li>
                           <hr className="dropdown-divider" />
                         </li>
                         <li>
