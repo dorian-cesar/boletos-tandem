@@ -6,7 +6,7 @@ import { sessionOptions } from "lib/session";
 import getConfig from "next/config";
 import Link from "next/link";
 import { withIronSessionSsr } from 'iron-session/next'
-import styles from "./RespuestaTransaccionCambio.module.css"
+import styles from "./RespuestaTransaccionConfirmacion.module.css"
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
@@ -140,7 +140,7 @@ export default function Home(props) {
                     />  </p>  
                   </div>
                   <div className={"col-3"}>
-                  <p className={styles["data-passenger"]}>Total Pagado:</p>
+                  <p className={styles["data-passenger"]}>Valor boleto:</p>
                   </div>
                   <div className={"col-3"}>
                   <p className={styles["price-final"]}> ${informacionAgrupada[0]?.asientos[0]?.tarifa}</p>

@@ -43,7 +43,7 @@ const stages = [
 export default function Home(props) {
   async function validarBoleto() {
     try {
-      const { data } = await axios.post("/api/ticket_sale/validar-cambio", {
+      const { data } = await axios.post("/api/ticket_sale/validar-boleto-blanco", {
         boleto,
       });
       setBoletoValido(data);

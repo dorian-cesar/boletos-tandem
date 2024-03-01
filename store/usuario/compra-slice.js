@@ -130,6 +130,7 @@ export const compraSlice = createSlice({
             state.medioPago = payload;
         },
         limpiarListaCarrito: (state, action) => {
+            debugger;
             state.listaCarrito = {};
             state.informacionAgrupada = [];
             state.datosComprador = {};

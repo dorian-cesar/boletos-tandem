@@ -6,7 +6,7 @@ import Input from "../../components/Input";
 import { useEffect, useState, forwardRef } from "react";
 import es from "date-fns/locale/es";
 import { limpiarListaCarrito } from "store/usuario/compra-slice"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 registerLocale("es", es);
 
@@ -37,6 +37,7 @@ const BusquedaServicio = (props) => {
   const [destinos, setDestinos] = useState([]);
   const [startDate, setStartDate] = useState(dayjs().toDate());
   const [datePickerKey, setDatePickerKey] = useState(0);
+  const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
 
   async function getDestinos() {
     if (origen !== null) {
@@ -101,7 +102,9 @@ const BusquedaServicio = (props) => {
 
   async function searchParrilla() {
     try {
-      useDispatch(limpiarListaCarrito());
+      if(carroCompras.length > 0) {
+        useDispatch(limpiarListaCarrito());
+      }
       setLoadingParrilla(true);
 
       let data = {
