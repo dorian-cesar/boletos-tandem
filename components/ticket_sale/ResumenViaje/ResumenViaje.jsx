@@ -22,6 +22,8 @@ export const ResumenViaje = () => {
   const [totalPagar, setTotalPagar] = useState(0);
   const [payment, setPayment] = useState({});
   const payment_form = useRef(null);
+  const [terminos, setTerminos] = useState(false);
+  const [sendNews, setSendNews] = useState(false);
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const informacionAgrupada = useSelector((state) => state.compra?.informacionAgrupada) || [];
@@ -125,6 +127,15 @@ export const ResumenViaje = () => {
 
       if(!validator.valid){
         toast.error(validator.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+
+      if(!terminos){
+        toast.error("Debe aceptar los términos y condiciones", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -275,13 +286,13 @@ export const ResumenViaje = () => {
           </div>
           <div className={ styles['contenedor-checks'] }>
             <div className="form-check">
-              <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <input className="form-check-input" type="checkbox" value={terminos} onChange={()=> setTerminos(!terminos)} id="flexCheckDefault" />
               <label className="form-check-label" htmlFor="flexCheckDefault">
                 Acepto los términos y condiciones de la compra
               </label>
             </div>
             <div className="form-check">
-              <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <input className="form-check-input" type="checkbox" value={sendNews} onChange={()=> setSendNews(!sendNews)} id="flexCheckDefault" />
               <label className="form-check-label" htmlFor="flexCheckDefault">
                 Me gustaría recibir noticias, actualizaciones o información de Pullman Bus
               </label>

@@ -30,6 +30,8 @@ export const ResumenViaje = (props) => {
   const [totalPagar, setTotalPagar] = useState(0);
   const [payment, setPayment] = useState({});
   const payment_form = useRef(null);
+  const [terminos, setTerminos] = useState(false);
+  const [sendNews, setSendNews] = useState(true);
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const informacionAgrupada =
@@ -135,6 +137,14 @@ export const ResumenViaje = (props) => {
       validator = newIsValidComprador(datosComprador);
       if(!validator.valid){
         toast.error(validator.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+      if(!terminos){
+        toast.error("Debe aceptar los términos y condiciones", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -321,7 +331,8 @@ export const ResumenViaje = (props) => {
               <input
                 className="form-check-input"
                 type="checkbox"
-                value=""
+                value={terminos}
+                onChange={()=> setTerminos(!terminos)}
                 id="flexCheckDefault"
               />
               <label className="form-check-label" htmlFor="flexCheckDefault">
@@ -332,7 +343,8 @@ export const ResumenViaje = (props) => {
               <input
                 className="form-check-input"
                 type="checkbox"
-                value=""
+                value={sendNews}
+                onChange={()=> setSendNews(!sendNews)}
                 id="flexCheckDefault"
               />
               <label className="form-check-label" htmlFor="flexCheckDefault">
