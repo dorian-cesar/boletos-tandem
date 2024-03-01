@@ -20,11 +20,18 @@ const MediosPago = (props) => {
   useEffect(
     () =>
       async function obtenerMediosPagos() {
-        const { data } = await axios.post(
-          "/api/ticket_sale/obtener-medios-pago",
-          {}
-        );
-        setMediosPago(data);
+        try {
+          const res = await axios.post(
+            "/api/ticket_sale/obtener-medios-pago",
+            {}
+          );
+          console.log('aaa',res)
+          if (res.request.status) {
+              setMediosPago(res.data);
+          }
+        } catch (e) {
+ 
+        }
       },
     []
   );
