@@ -6,6 +6,7 @@ import MenuLateral from "../../components/profile/MenuLateral/MenuLateral";
 import RegistroPasajero from "../../components/profile/RegistroPasajero/RegistroPasajero";
 import CambiarPassword from "../../components/profile/CambiarPassword/CambiarPassword";
 import HistorialCompra from "../../components/profile/historial-compra";
+import RegistrarPasajero from "../../components/profile/RegistrarPasajero/RegistrarPasajero";
 import { useLocalStorage } from "/hooks/useLocalStorage";
 import Footer from "../../components/Footer";
 import { useRouter } from "next/router";
@@ -77,22 +78,29 @@ const Home = () => {
 
           <div className={"d-flex justify-content-center"}>
             <div className={"col-12 col-md-2"}>
-              <MenuLateral 
-              vista={vista} 
-              setVista={setVista}
-              setNombreVista={setNombreVista} />
+              <MenuLateral
+                vista={vista}
+                setVista={setVista}
+                setNombreVista={setNombreVista}
+              />
             </div>
             <div className={"col-12 col-md-5"}>
-              <div className={styles["titulo-menu"]}> Mi cuenta {">"} {nombreVista}</div>
+              <div className={styles["titulo-menu"]}>
+                {" "}
+                Mi cuenta {">"} {nombreVista}
+              </div>
               {vista === "miPerfil" && <ActualizarDatos />}
-              {vista === "registroPasajero" && <RegistroPasajero 
-              user={user} />}
-              {vista === "cambioContraseña" && <CambiarPassword 
-              setVista={setVista}/>}
+              {vista === "registroPasajero" && (
+                <RegistroPasajero user={user} setVista={setVista} />
+              )}
+              {vista === "cambioContraseña" && (
+                <CambiarPassword setVista={setVista} />
+              )}
               {vista === "historialCompra" && <HistorialCompra />}
               {vista === "confirmacion" && <MenuLateral />}
               {vista === "cambioBoleto" && <MenuLateral />}
               {vista === "devolucionBoleto" && <MenuLateral />}
+              {vista === "registrarPasajero" && <RegistrarPasajero />}
             </div>
           </div>
         </div>
