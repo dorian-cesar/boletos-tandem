@@ -636,14 +636,16 @@ const Parrilla = (props) => {
               >
                 <span>#Piso 1</span>
               </div>
-              <div
+              {
+                (props.asientos2) ? <div
                 className={`${styles["floor-button"]} ${
                   piso === 2 && styles["floor-button-selected"]
                 }`}
                 onClick={() => setPiso(2)}
               >
                 <span>#Piso 2</span>
-              </div>
+              </div> : ""
+              }
             </div>
           </div>
           <div className={styles["botones-pago"]}>

@@ -5,6 +5,8 @@ import Link from "next/link";
 import Input from "../../components/Input";
 import { useEffect, useState, forwardRef } from "react";
 import es from "date-fns/locale/es";
+import { limpiarListaCarrito } from "store/usuario/compra-slice"
+import { useDispatch } from "react-redux";
 
 registerLocale("es", es);
 
@@ -99,6 +101,7 @@ const BusquedaServicio = (props) => {
 */
   async function searchParrilla() {
     try {
+      useDispatch(limpiarListaCarrito());
       setLoadingParrilla(true);
 
       let data = {

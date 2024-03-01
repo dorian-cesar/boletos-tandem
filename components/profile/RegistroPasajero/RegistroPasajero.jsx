@@ -9,7 +9,7 @@ import styles from "./RegistroPasajero.module.css";
 import Popup from "../../Popup/Popup";
 
 const RegistroPasajero = (props) => {
-  const { user } = props;
+  const { user, setVista } = props;
   const router = useRouter();
   const { getItem } = useLocalStorage();
   const [isLoading, setIsLoading] = useState(true);
@@ -51,6 +51,10 @@ const RegistroPasajero = (props) => {
     obtenerPasajeros();
   }, []);
 
+  const registrarPasajero = () =>{
+    setVista("registrarPasajero");
+  }
+
   return (
     <>
       <div className={styles["menu-central"]}>
@@ -71,7 +75,7 @@ const RegistroPasajero = (props) => {
             <div className={"col-6"}>
               <div
                 className={styles["passenger-button-add"]}
-                onClick={abrirPopup}
+                onClick={registrarPasajero}
               >
                 <img src="../img/icon/profile/add-circle-outline.svg" alt="" />
                 <a className={styles["text"]}>Registrar pasajero</a>

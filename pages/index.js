@@ -8,7 +8,9 @@ import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import getConfig from "next/config";
 import { registerLocale } from "react-datepicker";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { limpiarListaCarrito } from "store/usuario/compra-slice";
 
 import Banner from "components/banner";
 
@@ -19,7 +21,10 @@ registerLocale("es", es);
 
 export default function Home(props) {
   const origenes = props.ciudades;
-  
+  const dispatch = useDispatch();
+
+  useEffect(() =>{ dispatch(limpiarListaCarrito()) }, []);
+
   return (
     <Layout>
       <Head>
@@ -32,7 +37,7 @@ export default function Home(props) {
           dias={props.dias}
           isShowMascota={true}
         />
-        
+
         <Ofertas />
       </div>
       <Footer />
@@ -44,7 +49,6 @@ export const getServerSideProps = withIronSessionSsr(async function ({
   req,
   res,
 }) {
-  
   let ciudades = await axios.get(
     publicRuntimeConfig.site_url + "/api/ciudades"
   );

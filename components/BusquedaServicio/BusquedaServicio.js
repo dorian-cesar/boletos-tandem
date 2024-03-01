@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Popup from "../Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
+import { limpiarListaCarrito } from "store/usuario/compra-slice"
 
 registerLocale("es", es);
 
@@ -79,6 +80,7 @@ const BusquedaServicio = (props) => {
   }
 
   async function redireccionarBuscarServicio() {
+     dispatch(limpiarListaCarrito());
     await router.push(
       `/comprar?origen=${origen}&destino=${destino}&startDate=${
         startDate && dayjs(startDate).format("YYYY-MM-DD")
