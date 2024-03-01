@@ -14,7 +14,9 @@ const ModalEntities = {
     delete_car: 'DELETE_CAR',
     info_bad_return: 'INFO_BAD_RETURN',
     change_password: 'CHANGE_PASSWORD',
-    password_not_same: 'PASSWORD_NOT_SAME'
+    password_not_same: 'PASSWORD_NOT_SAME',
+    request_for_help: 'REQUEST_FOR_HELP',
+    request_bad_help: 'REQUEST_BAD_HELP'
 }
 
 export default ModalEntities;

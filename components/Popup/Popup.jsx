@@ -3,7 +3,7 @@ import styles from "./Popup.module.css";
 import ModalEntities from "../../entities/ModalEntities";
 
 
-const Popup = ({ modalKey, modalClose , modalMethods}) => {
+const Popup = ({ modalKey, modalClose , modalMethods }) => {
 
   const popInfo = {
     [ModalEntities.email_success]: {
@@ -115,6 +115,20 @@ const Popup = ({ modalKey, modalClose , modalMethods}) => {
       title: "¡Contraseña nueva incorrecta!",
       body: "Asegurece de escribir la misma contraseña en ambas casillas",
       buttonMessage: "Ok",
+      imageIcon: "/img/icon/popup/warning-outline.svg",
+      onClick: modalMethods
+    },
+    [ModalEntities.request_for_help]: {
+      title: "¡Solicitud ingresada correctamente!",
+      body: "Se enviará un correo con el código de seguimiento",
+      buttonMessage: "Volver al inicio",
+      imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
+      onClick: modalMethods
+    },
+    [ModalEntities.request_bad_help]: {
+      title: "¡Problemas con la solicitud!",
+      body: "Problemas al enviar su solicitud, intente  más tarde.",
+      buttonMessage: "Volver al inicio",
       imageIcon: "/img/icon/popup/warning-outline.svg",
       onClick: modalMethods
     }

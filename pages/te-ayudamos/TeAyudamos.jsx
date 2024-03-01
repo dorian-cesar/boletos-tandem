@@ -139,7 +139,7 @@ const TeAyudamos = (props) => {
 
       {stage == 2 ? (
         <>
-          <NecesitasAyuda />
+          <NecesitasAyuda setStage={setStage} />
         </>
       ) : (
         <></>

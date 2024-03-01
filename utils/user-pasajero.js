@@ -205,3 +205,28 @@ export function isValidDatosComprador(cuerpo) {
         console.error(`Error al validar pasajero [${ message }]`);
     }
 };
+
+export function isValidDatosConsulta(cuerpo) {
+    try {
+        let isValid = true;
+        
+        if ( !cuerpo.nombreSolicitante || cuerpo.nombreSolicitante == '' ) {
+            isValid = false;
+        }
+
+        if ( !cuerpo.contacto || cuerpo.contacto == '' ) {
+            isValid = false;
+        }
+
+        if ( !cuerpo.mail || cuerpo.mail == '' ) {
+            isValid = false;
+        } else {
+            if ( !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(cuerpo.mail) ) {
+                isValid = false;
+            }
+        }
+        return isValid;
+    } catch ({ message }) {
+        console.error(`Error al validar consulta datos [${ message }]`);
+    }
+};
