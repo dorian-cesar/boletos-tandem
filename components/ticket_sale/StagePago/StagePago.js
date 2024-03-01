@@ -21,6 +21,7 @@ const StagePago = (props) => {
   const datosComprador = useSelector((state) => state.compra.datosComprador);
 
   const dispatch = useDispatch();
+  const [mediosPago, setMediosPago] = useState([]);
 
   const [convenioSelected, setConvenioSelected] = useState(null);
   const [convenio, setConvenio] = useState(null);
@@ -40,6 +41,21 @@ const StagePago = (props) => {
       }));
     }
   }, [usaDatosPasajeroPago])
+
+  async function obtenerMediosPagos() {
+    try {
+      const res = await axios.post(
+        "/api/ticket_sale/obtener-medios-pago",
+        {}
+      );
+      console.log('aaa',res)
+      if (res.request.status) {
+          setMediosPago(res.data);
+      }
+    } catch (e) {
+
+    }
+  }
 
   async function getConvenio() {
     try {
@@ -206,6 +222,12 @@ const StagePago = (props) => {
     (async () => await getConvenio())();
   }, [convenioSelected]);
 
+  useEffect(
+    () =>{
+      (async () => await obtenerMediosPagos())();
+      },
+    []
+  );
 
   /* Este metodo es para validar el uso de la cuponera en cuanto a origen destino, fecha servicio, id servicio y codigo cuponera
   -- si el wn pone cuponera debemos validar que corresponde a los origenes y destino y fecha
@@ -338,7 +360,10 @@ const StagePago = (props) => {
             title="Punto de embarque" 
             children={<PuntoEmbarque />}/> */}
         <Acordeon title="Medio de pago">
-          <MediosPago />
+          <MediosPago 
+            setMediosPago={setMediosPago}
+            mediosPago={mediosPago}
+          />
         </Acordeon>
       </section>
       <section className={styles["travel-summary"]}>

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { agregarMedioPago } from "store/usuario/compra-slice";
 
 const MediosPago = (props) => {
-  const [mediosPago, setMediosPago] = useState([]);
+  const {mediosPago, setMediosPago} = props;
   const [selectedMedioPago, setSelectedMedioPago] = useState(null); // no se si los podemos controlar con el store para pagar
   const [codigoCuponera, setCodigoCuponera] = useState(""); // lo mismo cuando seleccionen cuponera guardar esos datos en el store para hacer validaciones
 
@@ -16,25 +16,6 @@ const MediosPago = (props) => {
     dispatch(agregarMedioPago(id));
     setSelectedMedioPago(medioPago);
   };
-
-  useEffect(
-    () =>
-      async function obtenerMediosPagos() {
-        try {
-          const res = await axios.post(
-            "/api/ticket_sale/obtener-medios-pago",
-            {}
-          );
-          console.log('aaa',res)
-          if (res.request.status) {
-              setMediosPago(res.data);
-          }
-        } catch (e) {
- 
-        }
-      },
-    []
-  );
 
   return (
     <>
