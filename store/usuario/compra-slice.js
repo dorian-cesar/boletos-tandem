@@ -135,6 +135,7 @@ export const compraSlice = createSlice({
             state.informacionAgrupada = [];
             state.datosComprador = {};
             state.medioPago = '';
+            state.live_time = null;
             localStorage.removeItem(LocalStorageEntities.car);
         }
     },
