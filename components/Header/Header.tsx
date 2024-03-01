@@ -18,6 +18,9 @@ export default function Header({ openNav }: { openNav: any }) {
   const { getItem, clear } = useLocalStorage();
   const [carroCompras, setCarroCompras] = useState([]);
   const data = useSelector((state:any) => state.compra?.listaCarrito) || {};
+  const live_time = useSelector((state:any) => state.compra?.live_time) || null;
+  const [countdownInterval, setCountdownInterval] = useState<NodeJS.Timeout | null>(null);
+  const [timeToEnd, setTimeToEnd] = useState('');
 
   const [isOpen, setIsOpen] = useState(false);
   const { refs, floatingStyles, context } = useFloating({
@@ -65,6 +68,26 @@ export default function Header({ openNav }: { openNav: any }) {
     });
     setCarroCompras(listaCarrito);
   }
+
+  function setCountdown() {
+    if (!countdownInterval && live_time ) {
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = live_time - now;
+
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        setTimeToEnd(`${ minutes < 10 ? '0' : '' }${minutes}:${ seconds < 10 ? '0' : '' }${seconds}`);
+
+        if (distance < 0) {
+          clearInterval(interval);
+          setCountdownInterval(null);
+        }
+      }, 1000);
+      setCountdownInterval(interval);
+    }
+  }
   
   useEffect(() => {
     setUser(getItem("user"));
@@ -73,6 +96,7 @@ export default function Header({ openNav }: { openNav: any }) {
 
   useEffect(() => {
     setData();
+    setCountdown();
   }, [data]);
 
   return (
@@ -155,6 +179,9 @@ export default function Header({ openNav }: { openNav: any }) {
                   </ul>
                 )}
                 <a className="d-flex align-items-center" ref={refs.setReference} {...getReferenceProps()}>
+                  {
+                    live_time && countdownInterval && <span className="badge bg-primary rounded-pill">{ timeToEnd }</span>
+                  }
                   <img src="../img/cart-outline.svg" width={30} />
                   { carroCompras.length > 0 &&
                     (
