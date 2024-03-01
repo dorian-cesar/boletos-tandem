@@ -5,12 +5,13 @@ import { useRouter } from "next/router";
 import Login from "components/Login/Login";
 import { useLocalStorage } from "hooks/useLocalStorage";
 import { useEffect, useState } from "react";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Link from "next/link";
 import { autoUpdate, flip, offset, shift, useDismiss, useFloating, useFocus, useHover, useInteractions, useRole } from '@floating-ui/react';
 import styles from './Header.module.css';
 
 import { ResumenViaje } from 'components/ticket_sale/ResumenViaje/ResumenViaje';
+import { limpiarListaCarrito } from "store/usuario/compra-slice";
 
 export default function Header({ openNav }: { openNav: any }) {
   const [user, setUser] = useState();
@@ -52,6 +53,8 @@ export default function Header({ openNav }: { openNav: any }) {
     role
   ]);
 
+  const dispatch = useDispatch();
+
   function setData() {
     const listaCarrito:any = [];
     Object.entries(data).forEach(([key, value]) => {
@@ -83,6 +86,7 @@ export default function Header({ openNav }: { openNav: any }) {
         if (distance < 0) {
           clearInterval(interval);
           setCountdownInterval(null);
+          dispatch(limpiarListaCarrito(null));
         }
       }, 1000);
       setCountdownInterval(interval);
