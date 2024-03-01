@@ -77,7 +77,7 @@ export default function Header({ openNav }: { openNav: any }) {
 
   return (
     <>
-      <header className="sticky-top bg-white">
+      <header className="sticky-top shadow bg-white">
           <div className="container">
             <div className="row">
               <div className="col-2 col-sm-1">
