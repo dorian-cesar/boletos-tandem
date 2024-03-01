@@ -168,7 +168,7 @@ export default function Header({ openNav }: { openNav: any }) {
                   isOpen && carroCompras.length > 0 &&
                   (
                     <div className={ styles['tooltip-container'] } ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()}>
-                      <ResumenViaje />
+                      <ResumenViaje soloLectura={true} />
                     </div>
                   )
                 }

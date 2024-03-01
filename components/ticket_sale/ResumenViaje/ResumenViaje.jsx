@@ -7,7 +7,7 @@ import { newIsValidPasajero, newIsValidComprador } from "../../../utils/user-pas
 import { toast } from "react-toastify";
 import { ListaCarritoDTO, PasajeroListaCarritoDTO } from "../../../dto/PasajesDTO";
 
-export const ResumenViaje = () => {
+export const ResumenViaje = (props) => {
   
   const [resumen, setResumen] = useState({
     carro: {},
@@ -30,6 +30,13 @@ export const ResumenViaje = () => {
   const datosComprador = useSelector((state) => state.compra?.datosComprador) || {};
   const medioPago = useSelector((state) => state.compra.medioPago);
   const dispatch = useDispatch();
+  const [soloLectura, setSoloLectura] = useState(false);
+
+  useEffect(() => {
+    if( props.soloLectura ) {
+      setSoloLectura(props.soloLectura);
+    }
+  }, [])
 
   const obtenerInformacion = () => {
     {
@@ -273,38 +280,45 @@ export const ResumenViaje = () => {
             ))}
         </div>
         <div className={ styles['total-container'] }>
-          <div className={ `form-check form-switch ${ styles['utiliza-monedero-virtual'] }` }>
-            <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
-            <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-              Utilizar monedero virtual ({ saldoMonederoVirtual })
-            </label>
-            <img src="/img/icon/general/information-circle-outline.svg"/>
-            <span className={ styles['tooltip-text'] }>Sólo se puede pagar con el monedero cuando inicies sesión.</span>
-          </div>
+          { !soloLectura && (
+            <div className={ `form-check form-switch ${ styles['utiliza-monedero-virtual'] }` }>
+              <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
+              <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+                Utilizar monedero virtual ({ saldoMonederoVirtual })
+              </label>
+              <img src="/img/icon/general/information-circle-outline.svg"/>
+              <span className={ styles['tooltip-text'] }>Sólo se puede pagar con el monedero cuando inicies sesión.</span>
+            </div>
+          )}
           <div className={ styles['contanedor-total-pagar'] }>
             <span>Total a pagar: { clpFormat.format(totalPagar) }</span>
           </div>
-          <div className={ styles['contenedor-checks'] }>
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" value={terminos} onChange={()=> setTerminos(!terminos)} id="flexCheckDefault" />
-              <label className="form-check-label" htmlFor="flexCheckDefault">
-                Acepto los términos y condiciones de la compra
-              </label>
+          { !soloLectura && (
+            <div className={ styles['contenedor-checks'] }>
+              <div className="form-check">
+                <input className="form-check-input" type="checkbox" value={terminos} onChange={()=> setTerminos(!terminos)} id="flexCheckDefault" />
+                <label className="form-check-label" htmlFor="flexCheckDefault">
+                  Acepto los términos y condiciones de la compra
+                </label>
+              </div>
+              <div className="form-check">
+                <input className="form-check-input" type="checkbox" value={sendNews} onChange={()=> setSendNews(!sendNews)} id="flexCheckDefault" />
+                <label className="form-check-label" htmlFor="flexCheckDefault">
+                  Me gustaría recibir noticias, actualizaciones o información de Pullman Bus
+                </label>
+              </div>
             </div>
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" value={sendNews} onChange={()=> setSendNews(!sendNews)} id="flexCheckDefault" />
-              <label className="form-check-label" htmlFor="flexCheckDefault">
-                Me gustaría recibir noticias, actualizaciones o información de Pullman Bus
-              </label>
+          )}
+        </div>
+        { !soloLectura && (
+            <div className={ styles['contenedor-boton-pagar'] }>
+              <button className={ styles['boton-pagar'] } onClick={ () => sendToPayment() }>Pagar</button>
+              <form ref={ payment_form } style={{ display: 'none', }} method='POST' action={ payment.url }>
+                <input name='TBK_TOKEN' value={ payment.token }/>
+              </form>
             </div>
-          </div>
-        </div>
-        <div className={ styles['contenedor-boton-pagar'] }>
-          <button className={ styles['boton-pagar'] } onClick={ () => sendToPayment() }>Pagar</button>
-          <form ref={ payment_form } style={{ display: 'none', }} method='POST' action={ payment.url }>
-            <input name='TBK_TOKEN' value={ payment.token }/>
-          </form>
-        </div>
+          )
+        }
       </div>
     </div>
   );
