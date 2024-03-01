@@ -1,28 +1,65 @@
 import styles from "./RegistrarPasajero.module.css";
+import { useEffect, useState, forwardRef, useRef, useMemo } from "react";
+import { useForm } from "/hooks/useForm";
+import axios from "axios";
+import DatePicker, { registerLocale } from "react-datepicker";
+
+const CustomInput = forwardRef(({ value, onClick }, ref) => (
+  <input
+    type="text"
+    className={styles["input-data"]}
+    onClick={onClick}
+    ref={ref}
+    value={value}
+    onChange={() => {}}
+  />
+));
+
+
+const months = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
+
+const actualizarFormFields = {
+  rut: "",
+  apellidoMaterno: "",
+  apellidoPaterno: "",
+  correo: "",
+  correo2: "",
+  fechaNacimiento: "",
+  nombres: "",
+  tipoDocumento: "R",
+  sexo: "",
+};
+
 
 const RegistrarPasajero = (props) => {
-
+    const [fechaNacimiento, setFechaNacimiento] = useState("");
+    const { formState: data, onInputChange } = useForm(actualizarFormFields);
+    const listaYears = useMemo(() => {
+      let years = [];
+      for (let i = new Date().getFullYear(); i >= 1910; i--) {
+        years.push(i);
+      }
+      return years;
+    }, []);
     return(
         <>
          <div className={styles["menu-central"]}>
         <div className={`${styles["bloque"]} "col-12 col-md-12"`}>
-          <h1 className={styles["title-modify-data"]}>Modificar mis datos</h1>
-          {alerta?.visible ? (
-            <div className={"alert " + alerta?.type} role="alert">
-              {alerta?.msg}
-            </div>
-          ) : (
-            ""
-          )}
-          {isLoading2 ? (
-            <div className={"d-flex justify-content-center"}>
-              <div className={"spinner-border text-primary"} role="status">
-                <span className="visually-hidden"></span>
-              </div>
-            </div>
-          ) : (
-            ""
-          )}
+          <h1 className={styles["title-modify-data"]}>Registrar pasajero</h1>
+        
           <div className={"row"}>
             <div className={"col-6"}>
               <label className={styles["title-data"]}>Nombre(s)</label>
