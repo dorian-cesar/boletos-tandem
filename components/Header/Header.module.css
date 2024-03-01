@@ -3,5 +3,5 @@
     width: 500px;
     padding: 16px;
     border-radius: 16px;
-    border: 1px solid var(--gris-50, #7F7F7F);
+    /* border: 1px solid var(--gris-50, #7F7F7F); */
 }
