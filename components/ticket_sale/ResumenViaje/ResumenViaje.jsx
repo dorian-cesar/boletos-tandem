@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./ResumenViaje.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo"
-import { newIsValidPasajero } from "../../../utils/user-pasajero";
+import { newIsValidPasajero, newIsValidComprador } from "../../../utils/user-pasajero";
 import { toast } from "react-toastify";
 import { ListaCarritoDTO, PasajeroListaCarritoDTO } from "../../../dto/PasajesDTO";
 
@@ -110,9 +110,20 @@ export const ResumenViaje = () => {
 
   async function sendToPayment() {
     try {
-      const validator = isPaymentValid();
+      let validator = isPaymentValid();
 
       if( !validator.valid ) {
+        toast.error(validator.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+
+      validator = newIsValidComprador(datosComprador);
+
+      if(!validator.valid){
         toast.error(validator.error, {
           position: "top-right",
           autoClose: 5000,

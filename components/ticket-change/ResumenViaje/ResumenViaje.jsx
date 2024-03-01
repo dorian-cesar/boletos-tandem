@@ -4,7 +4,7 @@ import styles from "./ResumenViaje.module.css";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo";
-import { newIsValidPasajero } from "../../../utils/user-pasajero";
+import { newIsValidPasajero, newIsValidComprador } from "../../../utils/user-pasajero";
 import { toast } from "react-toastify";
 import {
   ListaCarritoDTO,
@@ -123,6 +123,25 @@ export const ResumenViaje = (props) => {
 
   async function sendToPayment() {
     try {
+      let validator = isPaymentValid();
+      if( !validator.valid ) {
+        toast.error(validator.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+      validator = newIsValidComprador(datosComprador);
+      if(!validator.valid){
+        toast.error(validator.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+
       let fechaServicioParse = formatearFecha(
         informacionAgrupada[0]?.fechaServicio
       );
