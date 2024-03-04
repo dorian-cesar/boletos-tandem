@@ -7,7 +7,7 @@ module.exports = {
         destination: '/devolucion/Devolucion',
       },
       {
-        source: '/duponera',
+        source: '/cuponera',
         destination: '/cuponera/Cuponera',
       },
       {

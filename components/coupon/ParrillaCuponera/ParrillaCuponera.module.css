@@ -9,51 +9,68 @@
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     background-image: url("../../../public/img/icon/cuponera/Boleto.svg");
     margin-bottom: 20px;
+    padding: 16px;
+    display: flex;
 }
 
 .container .title {
-    margin-top: 20px;
-    margin-left: 40px;
+    padding-top: 10px;
+    padding-inline: 40px;
     color: #000;
     font-size: 12px;
     font-style: normal;
     font-weight: 700;
-    line-height: normal; 
+    line-height: normal;
+    display: flex;
+    align-items: center;
+}
+
+.container .title span {
+    white-space: normal;
 }
 
 .container .sub-title {
-    margin-top: 10px;
-    margin-left: 100px;
     color: #000;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .container .sub-title-origen {
-    margin-top: 10px;
-    margin-left: 20px;
     color: #000;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal; 
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    align-items: center;
+    text-align: center;
+}
+
+.container .sub-title-origen span {
+    white-space: normal;
+    text-align: center;
 }
 
 .container .price{
-    margin-top: 10px;
-    margin-left: 80px;
     color: var(--azul-100, #3365B4);
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
     line-height: 26px; /* 108.333% */
+    display: flex;
+    justify-content: center;
 }
 
 .container .condition{
-    margin-top: 10px;
-    margin-left: 20px;
+    padding-top: 10px;
     color: #000;
     font-size: 14px;
     font-style: normal;
@@ -73,17 +90,16 @@
 }
 
 .dotted-line {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 20px;
-    width: 230px;
+    margin-block: 10px;
+    width: 100%;
     border-style: dashed;
     border-width: 1px; 
 }
 
 .button {
-    margin-top : 20px;
-    margin-left :45px;
+    margin-top: auto;
+    margin-inline: auto;
+    margin-bottom: 10px;
     display: flex;
     width: 180px;
     height: 32px;
@@ -98,4 +114,17 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    cursor: pointer;
+    transition: ease 0.3s;
+}
+
+.button:hover {
+    background: var(--naranjo-80, #f8ccaf);
+}
+
+.contenedor-cuponeras {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
 }

@@ -81,8 +81,8 @@ const BusquedaCuponera = (props) => {
   return (
     <>
       <div className={styles["container"]}>
-        <div className="row search-row">
-          <div className="col-12 col-md-6 col-lg-2">
+        <div className="search-row">
+          <div className="">
             <div className={styles["grupo-campos"]}>
               <label>Origen</label>
               <Input
@@ -100,7 +100,7 @@ const BusquedaCuponera = (props) => {
             </div>
           </div>
 
-          <div className="col-12 col-md-6 col-lg-2">
+          <div className="">
             <div className={styles["grupo-campos"]}>
               <label>Destino</label>
               <Input
@@ -124,7 +124,7 @@ const BusquedaCuponera = (props) => {
               />
             </div>
           </div>
-          <div className="col-12 col-md-12 col-lg-2">
+          <div className="">
             <div className={styles["grupo-campos"]}>
               <div
                 className={

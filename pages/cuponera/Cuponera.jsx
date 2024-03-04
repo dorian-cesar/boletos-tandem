@@ -51,7 +51,7 @@ export default function cuponera(props) {
         {stage == 0 ? (
           <>
             <div className={styles["container"]}>
-              <div className={"fila"}>
+              <div className={ styles["fila"] }>
                 <div className={styles["title"]}>Cuponera</div>
                 <div className={styles["sub-title"]}>
                   La cuponera es un talonario de boletos de ida y regreso a un
