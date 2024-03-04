@@ -26,16 +26,9 @@
 
 /*-------------------------------MENU MOVIL---------------------------------*/
 .overlay {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  background-color: rgb(0,0,0);
-  background: var(--Azul-fondo, #E6ECF6);
-  overflow-x: hidden;
-  transition: 0.5s;
+  background: var(--Azul-fondo, #E6ECF6) !important;
+  background-color: var(--Azul-fondo, #E6ECF6);
+  display: flex;
 }
 
 .overlay-content {
@@ -46,7 +39,10 @@
   /* text-align: center; */
   margin-top: 30px;
   padding: 30px 30px 30px 40px;
+  display: flex;
+  flex-direction: column;
 }
+
 
 .overlay a {
   padding: 8px 24px 8px 38px;
@@ -60,6 +56,7 @@
   background-repeat: no-repeat;
   background-position: 0 center;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .overlay a:hover, .overlay a:focus {
@@ -175,6 +172,16 @@
 .overlay .links-menu a.conocenos {background: url(img/menu/icon-conocenos.svg) 0 center no-repeat, url(img/menu/icon-flecha.svg) center right no-repeat;}
 .overlay .links-menu a.asistencia-viaje {background-image: url(img/menu/icon-asistencia-viaje.svg);}
 
+.overlay .contactanos-menu {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay .contactanos-menu :last-child {
+  display: flex;
+  justify-content: center;
+}
 
 .overlay .contactanos-menu span {
   color: #000;
@@ -183,9 +190,6 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-}
-.overlay .contactanos-menu a {
-  width: 100%;
 }
 .overlay .contactanos-menu a.correo {background-image: url(img/menu/icon-correo.svg);}
 .overlay .contactanos-menu a.face {background-image: url(img/menu/icon-facebook.svg);}

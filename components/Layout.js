@@ -2,6 +2,10 @@ import Head from "next/head";
 import Header from "./Header/Header";
 import { useState } from "react";
 import Link from "next/link";
+
+import Drawer from 'react-modern-drawer'
+import 'react-modern-drawer/dist/index.css'
+
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);
   const closeNav = () => {
@@ -20,7 +24,13 @@ export default function Layout({ children }) {
       <Header openNav={openNav} />
 
       <main>{children}</main>
-      <div id="myNav" className={"overlay " + (open ? "open" : "")}>
+      <Drawer
+        open={ open }
+        direction="left"
+        className="overlay"
+        zIndex={ 9999 }
+        size="50vh"
+      >
         <a className="closebtn" onClick={closeNav}>
           ×
         </a>
@@ -86,27 +96,25 @@ export default function Layout({ children }) {
               </Link>
             </div>
           </div>
-          <div className="w-100">
-            <div className="contactanos-menu">
-              <span>Síguenos :</span>
-              <div className="col-6 pt-8 d-flex justify-content-around">
-                <a target="_blank" href="https://www.facebook.com/Pullman.cl/">
-                  <img src="img/icon/chat/logo-facebook-color.svg" alt="" />
-                </a>
-                <a target="_blank" href="https://www.instagram.com/pullmanbus/">
-                  <img src="img/icon/chat/logo-instagram-color.svg" alt="" />
-                </a>
-                <a
-                  target="_blank"
-                  href="https://www.linkedin.com/company/pullman-bus/"
-                >
-                  <img src="img/icon/chat/logo-linkedin-color.svg" alt="" />
-                </a>
-              </div>
+          <div className="contactanos-menu">
+            <span>Síguenos :</span>
+            <div>
+              <a target="_blank" href="https://www.facebook.com/Pullman.cl/">
+                <img src="img/icon/chat/logo-facebook-color.svg" alt="" />
+              </a>
+              <a target="_blank" href="https://www.instagram.com/pullmanbus/">
+                <img src="img/icon/chat/logo-instagram-color.svg" alt="" />
+              </a>
+              <a
+                target="_blank"
+                href="https://www.linkedin.com/company/pullman-bus/"
+              >
+                <img src="img/icon/chat/logo-linkedin-color.svg" alt="" />
+              </a>
             </div>
           </div>
         </div>
-      </div>
+      </Drawer>
     </>
   );
 }
