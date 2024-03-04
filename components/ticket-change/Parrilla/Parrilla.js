@@ -223,6 +223,16 @@ const Parrilla = (props) => {
         new TomaAsientoDTO(parrillaServicio, "", "", asiento, piso, stage)
       );
       const reserva = data;
+
+      if( !reserva.estadoReserva ) {
+        toast.error('El asiento seleccionado ya se encuentra ocupado', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        })
+        throw new Error('Asiento tomado');
+      }
+
       if (reserva.estadoReserva) {
         if (isMascota) setModalMab(true);
         asientosTemporal.push(
@@ -246,8 +256,10 @@ const Parrilla = (props) => {
       const carrito = {
         servicio: parrilla.parrilla[indexParrilla],
         asiento,
-        tipoServicio: "ida",
+        tipoServicio: stage === 0 ? "ida" : "vuelta",
       };
+
+      setIsLoading(true);
 
       let asientosTemporal = asientosPorServicio || [];
 
@@ -260,18 +272,32 @@ const Parrilla = (props) => {
         asiento.estado == ASIENTO_LIBRE_MASCOTA
       ) {
 
-        if( cantidadIda >= MAXIMO_COMPRA_ASIENTO ){
-          toast.warn(
-            `Solo puede seleccionar 1 asiento para cambiar el pasaje.`,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-            }
-          );
-          return;
+        if (stage === STAGE_BOLETO_VUELTA) {
+          let dataVuelta = [];
+          let cantidadAsientos = 0;
+          Object.entries(carroCompras).map(([key, value]) => {
+            dataVuelta = value.vuelta || [];
+          });
+          Object.entries(dataVuelta).map(([key, value]) => {
+          
+            value.asientos.forEach((element) => {
+              cantidadAsientos = cantidadAsientos + 1;
+            });
+          });
+          if(cantidadIda === cantidadAsientos){
+            toast.warn(
+              `El número de asientos de regreso no puede exceder la cantidad de asientos seleccionados para el viaje de ida.`,
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+              }
+            );
+            return;
+          }
         }
 
+        if (!validarMaximoAsientos(asientosTemporal, asiento)) return;
         asientosTemporal = await servicioTomarAsiento(
           props.thisParrilla,
           asiento.asiento,
@@ -291,11 +317,29 @@ const Parrilla = (props) => {
             true
           );
         }
-
-        setCantidadIda(cantidadIda+1);
+        if(stage === STAGE_BOLETO_VUELTA){
+          setCantidadVuelta(cantidadVuelta+1);
+        }
+        if(stage === STAGE_BOLETO_IDA){
+          setCantidadIda(cantidadIda+1);
+        }
         
         dispatch(agregarServicio(carrito));
 
+        if (asiento.asientoAsociado) {
+          const newCarrito = {
+            ...carrito,
+            asiento: asignarAsientoAsociado(asiento),
+          };
+          if (newCarrito.asiento) dispatch(agregarServicio(newCarrito));
+          if(stage === STAGE_BOLETO_VUELTA){
+            setCantidadVuelta(cantidadVuelta+1);
+          }
+          if(stage === STAGE_BOLETO_IDA){
+            setCantidadIda(cantidadIda+1);
+          }
+        }
+        setIsLoading(false);
         await reloadPane(indexParrilla);
         return;
       }
@@ -306,15 +350,64 @@ const Parrilla = (props) => {
       ) {
         if (asientoSeleccionado) {
           await servicioLiberarAsiento(carrito, asiento.asiento, 1, piso);
-          setCantidadIda(cantidadIda-1);
+
+          if (
+            asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
+            asiento.tipo == ASIENTO_TIPO_MASCOTA
+          ) {
+            await servicioLiberarAsiento(
+              carrito,
+              asiento.asientoAsociado,
+              1,
+              piso
+            );
+          }
+
+          debugger;
+
           dispatch(eliminarServicio(carrito));
+          if(stage === STAGE_BOLETO_VUELTA){
+            setCantidadVuelta(cantidadVuelta-1);
+          }
+          if(stage === STAGE_BOLETO_IDA){
+            const valorNuevo = cantidadIda - 1;
+            if( valorNuevo <= 0 ) {
+              dispatch(limpiarListaCarrito());
+            }
+            setCantidadIda(valorNuevo);
+          }
+          
+          if (asiento.asientoAsociado) {
+            const newCarrito = {
+              ...carrito,
+              asiento: asignarAsientoAsociado(asiento),
+            };
+            if (newCarrito.asiento) dispatch(eliminarServicio(newCarrito));
+            if(stage === STAGE_BOLETO_VUELTA){
+              const valorNuevo = cantidadVuelta - 1;
+              setCantidadVuelta(valorNuevo);
+            }
+            if(stage === STAGE_BOLETO_IDA){
+              const valorNuevo = cantidadIda - 1;
+              if( valorNuevo <= 0 ) {
+                dispatch(limpiarListaCarrito());
+              }
+              setCantidadIda(valorNuevo);
+            }
+          }
+          setIsLoading(false);
           await reloadPane(indexParrilla);
           return;
         }
+        setIsLoading(false);
         return;
       }
+
+      setIsLoading(false);
     } catch ({ message }) {
       console.error(`Error al tomar asiento [${message}]`);
+      await reloadPane(indexParrilla);
+      setIsLoading(false);
     }
   }
 

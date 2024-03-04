@@ -1116,6 +1116,8 @@ select.form-control.seleccion {
 .pasajes {
   background-color: #fff;
   border-top:  1px solid #DDDDDD;
+  position: relative;
+  z-index: 10;
 }
 
 .pasajes-compra {

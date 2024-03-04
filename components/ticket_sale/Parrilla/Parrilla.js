@@ -231,6 +231,16 @@ const Parrilla = (props) => {
         new TomaAsientoDTO(parrillaServicio, "", "", asiento, piso, stage)
       );
       const reserva = data;
+
+      if( !reserva.estadoReserva ) {
+        toast.error('El asiento seleccionado ya se encuentra ocupado', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        })
+        throw new Error('Asiento tomado');
+      }
+
       if (reserva.estadoReserva) {
         if (isMascota) setModalMab(true);
         asientosTemporal.push(
@@ -245,6 +255,7 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
+      debugger;
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
 
       asiento['piso'] = piso;
@@ -396,10 +407,14 @@ const Parrilla = (props) => {
           await reloadPane(indexParrilla);
           return;
         }
+        setIsLoading(false);
         return;
       }
+
+      setIsLoading(false);
     } catch ({ message }) {
       console.error(`Error al tomar asiento [${message}]`);
+      await reloadPane(indexParrilla);
       setIsLoading(false);
     }
   }
