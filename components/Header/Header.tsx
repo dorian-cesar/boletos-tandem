@@ -20,7 +20,7 @@ export default function Header({ openNav }: { openNav: any }) {
   const [carroCompras, setCarroCompras] = useState([]);
   const data = useSelector((state:any) => state.compra?.listaCarrito) || {};
   const live_time = useSelector((state:any) => state.compra?.live_time) || null;
-  const [countdownInterval, setCountdownInterval] = useState<NodeJS.Timeout | null>(null);
+  const [countdownInterval, setCountdownInterval] = useState<any>(null);
   const [timeToEnd, setTimeToEnd] = useState('');
 
   const [isOpen, setIsOpen] = useState(false);
@@ -73,6 +73,7 @@ export default function Header({ openNav }: { openNav: any }) {
   }
 
   function setCountdown() {
+    debugger;
     if (!countdownInterval && live_time ) {
       const interval = setInterval(() => {
         const now = new Date().getTime();
@@ -92,6 +93,13 @@ export default function Header({ openNav }: { openNav: any }) {
       setCountdownInterval(interval);
     }
   }
+
+  useEffect(() => {
+    if( !live_time && countdownInterval ) {
+      clearInterval(countdownInterval);
+      setCountdownInterval(null);
+    }
+  }, [live_time])
   
   useEffect(() => {
     setUser(getItem("user"));

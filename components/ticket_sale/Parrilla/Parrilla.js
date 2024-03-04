@@ -9,7 +9,7 @@ import styles from "./Parrilla.module.css";
 import { AsientoDTO } from "dto/AsientoDTO";
 
 import { useSelector, useDispatch } from "react-redux";
-import { agregarServicio, eliminarServicio } from "store/usuario/compra-slice";
+import { agregarServicio, eliminarServicio, limpiarListaCarrito } from "store/usuario/compra-slice";
 import { toast } from "react-toastify";
 
 const ASIENTO_LIBRE = "libre";
@@ -245,7 +245,6 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
-      debugger;
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
 
       asiento['piso'] = piso;
@@ -359,12 +358,18 @@ const Parrilla = (props) => {
             );
           }
 
+          debugger;
+
           dispatch(eliminarServicio(carrito));
           if(stage === STAGE_BOLETO_VUELTA){
             setCantidadVuelta(cantidadVuelta-1);
           }
           if(stage === STAGE_BOLETO_IDA){
-            setCantidadIda(cantidadIda-1);
+            const valorNuevo = cantidadIda - 1;
+            if( valorNuevo <= 0 ) {
+              dispatch(limpiarListaCarrito());
+            }
+            setCantidadIda(valorNuevo);
           }
           
           if (asiento.asientoAsociado) {
@@ -374,10 +379,15 @@ const Parrilla = (props) => {
             };
             if (newCarrito.asiento) dispatch(eliminarServicio(newCarrito));
             if(stage === STAGE_BOLETO_VUELTA){
-              setCantidadVuelta(cantidadVuelta-1);
+              const valorNuevo = cantidadVuelta - 1;
+              setCantidadVuelta(valorNuevo);
             }
             if(stage === STAGE_BOLETO_IDA){
-              setCantidadIda(cantidadIda-1);
+              const valorNuevo = cantidadIda - 1;
+              if( valorNuevo <= 0 ) {
+                dispatch(limpiarListaCarrito());
+              }
+              setCantidadIda(valorNuevo);
             }
           }
 
