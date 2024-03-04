@@ -165,11 +165,11 @@
 .container-ticket input:checked ~ .grill-detail {
     display: block;
     margin-top: -40px;
-    height: 390px;
     animation-name: show;
     animation-duration: 1s;
     overflow: hidden;
     z-index: 1;
+    padding-bottom: 16px;
 }
 
 .container-ticket input ~ .grill-detail {

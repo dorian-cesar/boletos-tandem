@@ -82,7 +82,6 @@ const Parrilla = (props) => {
   let asientosPorServicio = [];
 
   function actualizarTotalPagar() {
-    debugger;
     let total = 0;
     Object.keys(carroCompras).forEach((servicios) => {
       carroCompras[servicios]?.ida?.forEach(
@@ -255,7 +254,6 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
-      debugger;
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
 
       asiento['piso'] = piso;
@@ -334,6 +332,8 @@ const Parrilla = (props) => {
         
         dispatch(agregarServicio(carrito));
 
+        debugger;
+
         if (asiento.asientoAsociado) {
           const newCarrito = {
             ...carrito,
@@ -370,8 +370,6 @@ const Parrilla = (props) => {
               piso
             );
           }
-
-          debugger;
 
           dispatch(eliminarServicio(carrito));
           if(stage === STAGE_BOLETO_VUELTA){
@@ -420,14 +418,17 @@ const Parrilla = (props) => {
   }
 
   function asignarAsientoAsociado(asiento) {
-    debugger;
     const asientos = [];
     props.thisParrilla.asientos1.map((array) =>
       array.map((asiento) => asientos.push(asiento))
     );
-    props.thisParrilla.asientos2.map((array) =>
-      array.map((asiento) => asientos.push(asiento))
-    );
+
+    if( props.thisParrilla.asientos2 ) {
+      props.thisParrilla.asientos2.map((array) =>
+        array.map((asiento) => asientos.push(asiento))
+      );
+    }
+
     const asientoAsociado = asientos.find(
       (i) => i.asiento === asiento.asientoAsociado
     );
@@ -454,8 +455,6 @@ const Parrilla = (props) => {
   }
 
   function validarMaximoAsientos(asientos, asientoSeleccion) {
-    debugger;
-
     const cantidadAsientos = asientos.length;
 
     if (cantidadAsientos >= MAXIMO_COMPRA_ASIENTO) {
@@ -532,9 +531,6 @@ const Parrilla = (props) => {
   }
 
   function getImage(sit, indexParrilla) {
-    if (sit.tipo === "pet") {
-      debugger;
-    }
     let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
     if (asientosSeleccionados.length > 0) {
