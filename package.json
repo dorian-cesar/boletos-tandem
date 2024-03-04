@@ -20,6 +20,7 @@
     "react-autosuggest": "^10.1.0",
     "react-datepicker": "^4.7.0",
     "react-dom": "^18.2.0",
+    "react-loading-overlay": "^1.0.1",
     "react-modern-drawer": "^1.2.2",
     "react-redux": "^9.1.0",
     "react-search-autocomplete": "^6.1.2",

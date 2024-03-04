@@ -8,12 +8,14 @@ import 'swiper/css';
 import 'swiper/css/effect-flip';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import LoadingOverlay from "react-loading-overlay";
 
 
 var customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 const Boleto = (props) => {
   const [isOpened, setIsOpened] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   let duracion = dayjs(
     props.fechaLlegada + " " + props.horaLlegada,
@@ -65,22 +67,30 @@ const Boleto = (props) => {
             <img src="img/icon-barra.svg" />
           </div>
         </div>
-        <div className={ styles['grill-detail'] }>
-          <Parrilla 
-            isShowParrilla={ isOpened }
-            thisParrilla={ props.thisParrilla }
-            setIsShowParrilla= { setIsOpened }
-            asientos1={ props.asientos1 }
-            asientos2={ props.asientos2 }
-            k={ props.k }
-            parrilla={props}
-            stage={props.stage}
-            setParrilla={props.setParrilla}
-            asientos_selected={props.asientos_selected}
-            setIsOpened={setIsOpened}
-            setPasaje={props.setPasaje}
-            />
-        </div>
+        <LoadingOverlay
+          active={ isLoading }
+          spinner
+          text="Tomando asiento..."
+          className={ styles['grill-detail'] }>
+          <div className={ styles['grill-detail'] }>
+            <Parrilla 
+              isShowParrilla={ isOpened }
+              thisParrilla={ props.thisParrilla }
+              setIsShowParrilla= { setIsOpened }
+              asientos1={ props.asientos1 }
+              asientos2={ props.asientos2 }
+              k={ props.k }
+              parrilla={props}
+              stage={props.stage}
+              setParrilla={props.setParrilla}
+              asientos_selected={props.asientos_selected}
+              setIsOpened={setIsOpened}
+              setPasaje={props.setPasaje}
+              isLoading={ isLoading }
+              setIsLoading={ setIsLoading }
+              />
+          </div>
+        </LoadingOverlay>
       </section>
     </>
   );

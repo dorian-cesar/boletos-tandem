@@ -59,6 +59,8 @@
     padding-inline: 32px;
     display: flex;
     flex-direction: row;
+    position: relative;
+    z-index: 2;
 }
 
 .container-ticket input {
@@ -167,6 +169,7 @@
     animation-name: show;
     animation-duration: 1s;
     overflow: hidden;
+    z-index: 1;
 }
 
 .container-ticket input ~ .grill-detail {

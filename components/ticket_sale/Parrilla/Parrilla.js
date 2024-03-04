@@ -26,7 +26,7 @@ const Parrilla = (props) => {
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const dispatch = useDispatch();
 
-  const { isShowParrilla = false, parrilla, stage, setParrilla } = props;
+  const { isShowParrilla = false, parrilla, stage, setParrilla, setIsLoading } = props;
 
   const [modalMab, setModalMab] = useState(false);
   const [openPane, setOpenPane] = useState(false);
@@ -256,6 +256,8 @@ const Parrilla = (props) => {
         tipoServicio: stage === 0 ? "ida" : "vuelta",
       };
 
+      setIsLoading(true);
+
       let asientosTemporal = asientosPorServicio || [];
 
       const asientoSeleccionado = asientosTemporal?.find(
@@ -334,7 +336,7 @@ const Parrilla = (props) => {
             setCantidadIda(cantidadIda+1);
           }
         }
-
+        setIsLoading(false);
         await reloadPane(indexParrilla);
         return;
       }
@@ -390,7 +392,7 @@ const Parrilla = (props) => {
               setCantidadIda(valorNuevo);
             }
           }
-
+          setIsLoading(false);
           await reloadPane(indexParrilla);
           return;
         }
