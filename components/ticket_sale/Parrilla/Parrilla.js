@@ -299,6 +299,7 @@ const Parrilla = (props) => {
                 hideProgressBar: false,
               }
             );
+            setIsLoading(false);
             return;
           }
         }
