@@ -400,6 +400,7 @@ const Parrilla = (props) => {
       }
     } catch ({ message }) {
       console.error(`Error al tomar asiento [${message}]`);
+      setIsLoading(false);
     }
   }
 
