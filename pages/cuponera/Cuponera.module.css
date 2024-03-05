@@ -53,12 +53,12 @@
     background: var(--Azul-fondo, #E6ECF6);
 }
 
-.coupon-buy .numbers {
+.numbers {
     display: flex;
     justify-content: center;
 }
 
-.coupon-buy .numbers .number {
+.numbers .number {
     background-color: #B8C3DE;
     border-radius: 100%;
     font-size: 20px;
@@ -69,6 +69,18 @@
     align-items: center;
     display: grid;
 }
+
+.active .number {
+    background-color: #3F64AE;
+    color: #fff;
+  }
+
+  .seleccion h3 {
+    font-size: 14px;
+    color: #3F64AE;
+    font-weight: 400;
+    margin-top: 8px;
+  }
 
 .coupon-buy h3{
     font-size: 12px;

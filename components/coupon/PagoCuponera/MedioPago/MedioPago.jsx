@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { agregarMedioPago } from "../../../../store/usuario/compra-cuponera-slice";
 import axios from "axios";
 
-const MedioPago = () => {
-  const [mediosPago, setMediosPago] = useState([]);
+const MedioPago = (props) => {
+  const { mediosPago, setMediosPago } = props;
   const [selectedMedioPago, setSelectedMedioPago] = useState(null);
   const dispatch = useDispatch();
 

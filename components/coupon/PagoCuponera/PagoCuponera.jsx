@@ -7,27 +7,42 @@ import styles from "./PagoCuponera.module.css";
 import { useEffect, useState } from "react";
 
 const PagoCuponera = (props) => {
-  const [ medioDePago, setMedioDePago] = useState("");
+  const [medioDePago, setMedioDePago] = useState("");
   const { parrillaSeleccionada, setParrillaSeleccionada } = props;
+  const [mediosPago, setMediosPago] = useState([]);
+
+  async function obtenerMediosPagos() {
+    try {
+      const res = await axios.post("/api/ticket_sale/obtener-medios-pago", {});
+      if (res.request.status) {
+        setMediosPago(res.data);
+      }
+    } catch (e) {}
+  }
+
   return (
     <>
       <div className="row">
-        <div className="col-12 col-md-8">
-          <Acordeon
-            title="Datos del comprador"
-            children={<InformacionComprador/>}
-          />
-          <Acordeon
-            title="Método de pago"
-            children={<MedioPago/>}
-          />
-        </div>
-        <div className="col-12 col-md-4">
-          <ResumenPago 
-          parrillaSeleccionada={parrillaSeleccionada} 
-          setMedioDePago={setMedioDePago}
-          />
-        </div>
+        <main className={styles["main-content"]}>
+          <section className={styles["info-list"]}>
+            <Acordeon title="Datos del comprador">
+              <InformacionComprador />
+            </Acordeon>
+
+            <Acordeon title="Método de pago">
+              <MedioPago
+                mediosPago={mediosPago}
+                setMediosPago={setMediosPago}
+              />
+            </Acordeon>
+          </section>
+          <section className={styles["travel-summary"]}>
+            <ResumenPago
+              parrillaSeleccionada={parrillaSeleccionada}
+              setMedioDePago={setMedioDePago}
+            />
+          </section>
+        </main>
       </div>
     </>
   );
