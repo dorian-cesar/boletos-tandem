@@ -48,7 +48,6 @@ const StagePago = (props) => {
         "/api/ticket_sale/obtener-medios-pago",
         {}
       );
-      console.log('aaa',res)
       if (res.request.status) {
           setMediosPago(res.data);
       }
