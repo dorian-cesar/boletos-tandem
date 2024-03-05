@@ -830,9 +830,9 @@ const Parrilla = (props) => {
             >
               <span>Continuar: ${totalPagar}</span>
             </div>
-            <div className={styles["button_little_car"]}>
+            {/* <div className={styles["button_little_car"]}>
               <span>Agregar al carro</span>
-            </div>
+            </div> */}
             <div className={styles["texto-cantidad-asientos"]}>
               <span>
                 Cantidad de asientos seleccionados: {asientosPorServicio.length}

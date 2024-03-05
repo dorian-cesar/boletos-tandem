@@ -12,6 +12,8 @@ import styles from './Header.module.css';
 
 import { ResumenViaje } from 'components/ticket_sale/ResumenViaje/ResumenViaje';
 import { limpiarListaCarrito } from "store/usuario/compra-slice";
+import Popup from "components/Popup/Popup";
+import ModalEntities from "entities/ModalEntities";
 
 export default function Header({ openNav }: { openNav: any }) {
   const [user, setUser] = useState();
@@ -22,6 +24,8 @@ export default function Header({ openNav }: { openNav: any }) {
   const live_time = useSelector((state:any) => state.compra?.live_time) || null;
   const [countdownInterval, setCountdownInterval] = useState<any>(null);
   const [timeToEnd, setTimeToEnd] = useState('');
+
+  const [isShowModalEndTime, setIsShowModalEndTime] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
   const { refs, floatingStyles, context } = useFloating({
@@ -88,10 +92,16 @@ export default function Header({ openNav }: { openNav: any }) {
           clearInterval(interval);
           setCountdownInterval(null);
           dispatch(limpiarListaCarrito(null));
+          setIsShowModalEndTime(true);
         }
       }, 1000);
       setCountdownInterval(interval);
     }
+  }
+
+  function timeEnd() {
+    setIsShowModalEndTime(false);
+    router.push('/');
   }
 
   useEffect(() => {
@@ -220,6 +230,12 @@ export default function Header({ openNav }: { openNav: any }) {
       cuponera={0}>
 
       </Login>
+      {isShowModalEndTime && 
+        <Popup 
+          modalKey={ ModalEntities.car_live_time_end }
+          modalClose={ null }
+          modalMethods={ timeEnd }/>
+      }
     </>
   );
 }

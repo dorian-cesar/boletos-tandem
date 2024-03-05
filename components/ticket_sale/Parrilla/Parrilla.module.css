@@ -249,6 +249,11 @@
     align-items: center;
     border-radius: 16px;
     background: var(--naranjo-100, #FF6500);
+    cursor: default;
+}
+
+.button_continue:hover {
+    background: var(--naranjo-80, #FF8A00);
 }
 
 .button_continue span{

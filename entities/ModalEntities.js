@@ -16,7 +16,8 @@ const ModalEntities = {
     change_password: 'CHANGE_PASSWORD',
     password_not_same: 'PASSWORD_NOT_SAME',
     request_for_help: 'REQUEST_FOR_HELP',
-    request_bad_help: 'REQUEST_BAD_HELP'
+    request_bad_help: 'REQUEST_BAD_HELP',
+    car_live_time_end: 'CAR_LIVE_TIME_END'
 }
 
 export default ModalEntities;

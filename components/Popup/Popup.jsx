@@ -131,6 +131,13 @@ const Popup = ({ modalKey, modalClose , modalMethods }) => {
       buttonMessage: "Volver al inicio",
       imageIcon: "/img/icon/popup/warning-outline.svg",
       onClick: modalMethods
+    },
+    [ModalEntities.car_live_time_end]: {
+      title: "¡Se acabo el tiempo 🥺!",
+      body: "Se ha terminado el tiempo para poder realizar su compra",
+      buttonMessage: "Volver al inicio",
+      imageIcon: "/img/icon/popup/warning-outline.svg",
+      onClick: modalMethods
     }
   };
   
