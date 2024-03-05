@@ -263,7 +263,7 @@
     padding-block: 10px;
     display: flex;
     flex-direction: column;
-    min-width: 200px;
+    width: 100%;
     padding-inline: 2px;
     overflow: hidden;
 }
@@ -292,6 +292,7 @@
     white-space: nowrap;
     color: #000;
     text-align: center;
+    margin: auto;
 }
 
 .ticket .itinerario .contenedor-itinerario ul li:after {

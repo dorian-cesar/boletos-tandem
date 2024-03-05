@@ -9,6 +9,9 @@ import 'swiper/css/effect-flip';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import LoadingOverlay from "react-loading-overlay";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { format } from "@formkit/tempo";
 
 
 var customParseFormat = require("dayjs/plugin/customParseFormat");
@@ -17,6 +20,7 @@ const Boleto = (props) => {
   const [isOpened, setIsOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isShowItinerary, setIsShowItinerary] = useState(false);
+  const [itinerario, setItinerario] = useState([]);
 
   let duracion = dayjs(
     props.fechaLlegada + " " + props.horaLlegada,
@@ -28,9 +32,20 @@ const Boleto = (props) => {
 
   duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
 
-  function showItinerary() {
+  async function showItinerary() {
+    if( itinerario.length === 0 ) {
+      try {
+        const { data } = await axios.post("/api/itinerario", { servicio: props.idServicio });
+        setItinerario(data.object);
+      } catch (error) {
+        toast.error('Error al obtener el itinerario', {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+      }
+    }
     setIsShowItinerary(!isShowItinerary);
-    console.log('Is Show itinerary:::', isShowItinerary);
   }
 
   return (
@@ -88,56 +103,19 @@ const Boleto = (props) => {
                 </div>
                 <div className={ styles['contenedor-itinerario'] }>
                   <ul>
-                    <li>
-                      <div className={ styles['circle'] }></div>
-                      <b>1</b>
-                      <span>Terminal San Borja</span>
-                    </li>
-                    <li>
-                      <div className={ styles['circle'] }></div>
-                      <b>1</b>
-                      <span>Terminal San Borja</span>
-                    </li>
-                    <li>
-                      <div className={ styles['circle'] }></div>
-                      <b>1</b>
-                      <span>Terminal San Borja</span>
-                    </li>
-                    <li>
-                      <div className={ styles['circle'] }></div>
-                      <b>1</b>
-                      <span>Terminal San Borja</span>
-                    </li>
-                    <li>
-                      <div className={ styles['circle'] }></div>
-                      <b>1</b>
-                      <span>Terminal San Borja</span>
-                    </li>
-                    <li>
-                      <div className={ styles['circle'] }></div>
-                      <b>1</b>
-                      <span>Terminal San Borja</span>
-                    </li>
-                    <li>
-                      <div className={ styles['circle'] }></div>
-                      <b>1</b>
-                      <span>Terminal San Borja</span>
-                    </li>
-                    <li>
-                      <div className={ styles['circle'] }></div>
-                      <b>1</b>
-                      <span>Terminal San Borja</span>
-                    </li>
-                    <li>
-                      <div className={ styles['circle'] }></div>
-                      <b>1</b>
-                      <span>Terminal San Borja</span>
-                    </li>
-                    <li>
-                      <div className={ styles['circle'] }></div>
-                      <b>1</b>
-                      <span>Terminal San Borja Terminal San Borja Terminal San Borja Terminal San Borja</span>
-                    </li>
+                    {
+                      itinerario.length > 0 && itinerario.map(data => {
+                        const horaSalida = data.horaSalidaServicio;
+                        const hour = horaSalida.slice(0, 2) + ':' + horaSalida.slice(2);
+                        return (
+                          <li key={ data.id }>
+                            <div className={ styles['circle'] }></div>
+                            <b>{ hour }</b>
+                            <span>{ data.nombreTerminal }</span>
+                          </li>
+                        )
+                      })
+                    }
                   </ul>
                 </div>
               </div>
