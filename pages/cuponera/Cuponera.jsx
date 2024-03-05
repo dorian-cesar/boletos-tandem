@@ -51,7 +51,7 @@ export default function cuponera(props) {
         {stage == 0 ? (
           <>
             <div className={styles["container"]}>
-              <div className={ styles["fila"] }>
+              <div className={styles["fila"]}>
                 <div className={styles["title"]}>Cuponera</div>
                 <div className={styles["sub-title"]}>
                   La cuponera es un talonario de boletos de ida y regreso a un
@@ -74,6 +74,30 @@ export default function cuponera(props) {
                   setParrilla={setParrilla}
                   setLoadingParrilla={setLoadingParrilla}
                 />
+                <div className="pasajes-compra bg-transparent">
+                  <div className="container">
+                    <ul className="d-flex flex-row justify-content-around py-4">
+                      {stages
+                        .filter((stageMaped) => stageMaped.kind != "pasajes_2")
+                        .map((stageMaped, indexStage) => {
+                          return (
+                            <div
+                              key={`stage-${indexStage}`}
+                              className={
+                                "seleccion text-center " +
+                                (indexStage == stage ? "active" : "")
+                              }
+                            >
+                              <div className="numeros">
+                                <div className="numero">{indexStage + 1}</div>
+                              </div>
+                              <h3>{stageMaped.name}</h3>
+                            </div>
+                          );
+                        })}
+                    </ul>
+                  </div>
+                </div>
 
                 {loadingParrilla ? (
                   <Loader />
@@ -100,30 +124,31 @@ export default function cuponera(props) {
 
         {stage == 1 ? (
           <>
-            <div className={styles["coupon-buy"]}>
-              <div className="d-flex flex-row justify-content-around">
-                {stages
-                  .filter((stageMaped) => stageMaped.kind != "1")
-                  .map((stageMaped, indexStage) => {
-                    return (
-                      <div
-                        key={`stage-${indexStage}`}
-                        className={
-                          "seleccion" + (indexStage == stage ? "active" : "")
-                        }
-                      >
-                        <div className={styles["numbers"]}>
-                          <div className={styles["number"]}>
-                            {indexStage + 1}
-                          </div>
-                        </div>
-                        <h3>{stageMaped.name}</h3>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
             <div>
+              <div className="pasajes-compra bg-transparent">
+                <div className="container">
+                  <ul className="d-flex flex-row justify-content-around py-4">
+                    {stages
+                      .filter((stageMaped) => stageMaped.kind != "pasajes_2")
+                      .map((stageMaped, indexStage) => {
+                        return (
+                          <div
+                            key={`stage-${indexStage}`}
+                            className={
+                              "seleccion text-center " +
+                              (indexStage == stage ? "active" : "")
+                            }
+                          >
+                            <div className="numeros">
+                              <div className="numero">{indexStage + 1}</div>
+                            </div>
+                            <h3>{stageMaped.name}</h3>
+                          </div>
+                        );
+                      })}
+                  </ul>
+                </div>
+              </div>
               <PagoCuponera />
             </div>
           </>
