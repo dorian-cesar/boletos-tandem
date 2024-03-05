@@ -16,6 +16,7 @@ dayjs.extend(customParseFormat);
 const Boleto = (props) => {
   const [isOpened, setIsOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isShowItinerary, setIsShowItinerary] = useState(false);
 
   let duracion = dayjs(
     props.fechaLlegada + " " + props.horaLlegada,
@@ -27,44 +28,120 @@ const Boleto = (props) => {
 
   duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
 
+  function showItinerary() {
+    setIsShowItinerary(!isShowItinerary);
+    console.log('Is Show itinerary:::', isShowItinerary);
+  }
+
   return (
     <>
       <section className={ styles['container-ticket'] }>
-        <input type="checkbox" checked={isOpened} readOnly/>
-        <div className={ styles['ticket'] }>
-          <input type="checkbox" checked={isOpened} readOnly/>
-          <div className={ styles['ticket-details'] }>
-            <div className={ styles['ticket-details__header'] }>
-              <img src="img/logo-pullmanbus.svg" />
-              { props.mascota == '1' && <img src="img/icon/logos/paw-outline.svg" />}
-            </div>
-            <div className={ styles['ticket-details__travel'] }>
-              <div className={ styles['ticket-details__travel-detail'] }>
-                <span className={ styles['bold'] }>{ props.horaSalida }</span>
-                <span className={ styles['bold'] }>{ props.terminalSalida }</span>
-                <span>{ props.fechaSalida }</span>
+        <input type="checkbox" className={ styles['checkbox-open-pane'] } checked={isOpened} readOnly/>
+        <input type="checkbox" className={ styles['checkbox-show-itinerary'] } checked={isShowItinerary} readOnly />
+        <div className={ styles['flip-box'] }>
+          <div className={ styles['flip-box-inner'] }>
+            <div className={ `${ styles['ticket'] } ${ styles['flip-box-front'] }` }>
+              <input type="checkbox" checked={isOpened} readOnly/>
+              <div className={ styles['ticket-details'] }>
+                <div className={ styles['ticket-details__header'] }>
+                  <img src="img/logo-pullmanbus.svg" />
+                  { props.mascota == '1' && <img src="img/icon/logos/paw-outline.svg" />}
+                </div>
+                <div className={ styles['ticket-details__travel'] }>
+                  <div className={ styles['ticket-details__travel-detail'] }>
+                    <span className={ styles['bold'] }>{ props.horaSalida }</span>
+                    <span className={ styles['bold'] }>{ props.terminalSalida }</span>
+                    <span>{ props.fechaSalida }</span>
+                  </div>
+                  <div className={ styles['ticket-details__travel-detail'] }>
+                    <span>Duración</span>
+                    <span className={ styles['bold'] }>{ duracion }</span>
+                    <a className={ styles['link'] } onClick={ () => showItinerary() }>Itinerario</a>
+                  </div>
+                  <div className={ styles['ticket-details__travel-detail'] }>
+                    <span className={ styles['bold'] }>{ props.horaLlegada }</span>
+                    <span className={ styles['bold'] }>{ props.terminalDestino }</span>
+                    <span>{ props.fechaLlegada }</span>
+                  </div>
+                </div>
               </div>
-              <div className={ styles['ticket-details__travel-detail'] }>
-                <span>Duración</span>
-                <span className={ styles['bold'] }>{ duracion }</span>
-                <a className={ styles['link'] } onClick={ () => console.log('PROPS:::', props) }>Itinerario</a>
+              <div className={ styles['ticket-price'] }>
+                <div className={ styles['ticket-price__detail'] }>
+                </div>
+                <button onClick={() => setIsOpened(!isOpened)}>
+                  Comprar
+                </button>
               </div>
-              <div className={ styles['ticket-details__travel-detail'] }>
-                <span className={ styles['bold'] }>{ props.horaLlegada }</span>
-                <span className={ styles['bold'] }>{ props.terminalDestino }</span>
-                <span>{ props.fechaLlegada }</span>
+              <div className={ styles['animated-logo'] }>
+                <img src="img/icon-barra.svg" />
               </div>
             </div>
-          </div>
-          <div className={ styles['ticket-price'] }>
-            <div className={ styles['ticket-price__detail'] }>
+            <div className={ `${ styles['ticket'] } ${ styles['flip-box-back'] }` }>
+              <div className={ styles['itinerario'] }>
+                <div className={ styles['cabecera-itinerario'] }>
+                  <span>Itinerario</span>
+                  <img
+                    src="img/close.svg"
+                    className={ styles["cross"] }
+                    onClick={ () => showItinerary() }
+                  />
+                </div>
+                <div className={ styles['contenedor-itinerario'] }>
+                  <ul>
+                    <li>
+                      <div className={ styles['circle'] }></div>
+                      <b>1</b>
+                      <span>Terminal San Borja</span>
+                    </li>
+                    <li>
+                      <div className={ styles['circle'] }></div>
+                      <b>1</b>
+                      <span>Terminal San Borja</span>
+                    </li>
+                    <li>
+                      <div className={ styles['circle'] }></div>
+                      <b>1</b>
+                      <span>Terminal San Borja</span>
+                    </li>
+                    <li>
+                      <div className={ styles['circle'] }></div>
+                      <b>1</b>
+                      <span>Terminal San Borja</span>
+                    </li>
+                    <li>
+                      <div className={ styles['circle'] }></div>
+                      <b>1</b>
+                      <span>Terminal San Borja</span>
+                    </li>
+                    <li>
+                      <div className={ styles['circle'] }></div>
+                      <b>1</b>
+                      <span>Terminal San Borja</span>
+                    </li>
+                    <li>
+                      <div className={ styles['circle'] }></div>
+                      <b>1</b>
+                      <span>Terminal San Borja</span>
+                    </li>
+                    <li>
+                      <div className={ styles['circle'] }></div>
+                      <b>1</b>
+                      <span>Terminal San Borja</span>
+                    </li>
+                    <li>
+                      <div className={ styles['circle'] }></div>
+                      <b>1</b>
+                      <span>Terminal San Borja</span>
+                    </li>
+                    <li>
+                      <div className={ styles['circle'] }></div>
+                      <b>1</b>
+                      <span>Terminal San Borja Terminal San Borja Terminal San Borja Terminal San Borja</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
-            <button onClick={() => setIsOpened(!isOpened)}>
-              Comprar
-            </button>
-          </div>
-          <div className={ styles['animated-logo'] }>
-            <img src="img/icon-barra.svg" />
           </div>
         </div>
         <LoadingOverlay
