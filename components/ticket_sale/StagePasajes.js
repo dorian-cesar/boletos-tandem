@@ -125,7 +125,8 @@ const StagePasajes = (props) => {
     }
 
     function returnMappedParrilla() {
-        return returnSortedParrilla().map((mappedParrilla, indexParrilla) => {
+        let sortedParrilla = [];
+        returnSortedParrilla().map((mappedParrilla, indexParrilla) => {
             if ( filter_tipo.length > 0 && !filter_tipo.includes(mappedParrilla.servicioPrimerPiso) && !filter_tipo.includes(mappedParrilla.servicioSegundoPiso)) return;
 
             if ( mascota_allowed && mappedParrilla.mascota == 0 ) return;
@@ -145,7 +146,7 @@ const StagePasajes = (props) => {
                 if (!isTime) return;
             }
 
-            return (
+            sortedParrilla.push(
                 <Boleto
                     key={ `key-boleto-${ indexParrilla }`}
                     {...mappedParrilla }
@@ -159,6 +160,18 @@ const StagePasajes = (props) => {
                     setParrilla={setParrilla}/>
             );
         });
+
+        if( sortedParrilla.length > 0 ) {
+            return sortedParrilla.map(parrilla => parrilla);
+        } else {
+            return (
+                <h5 className="p-2">
+                    Lo sentimos, no existen
+                    resultados para su búsqueda, 
+                    busque en otro horario
+                </h5>
+            )
+        }
     }
 
     return (
