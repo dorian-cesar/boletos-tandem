@@ -2,11 +2,12 @@ import axios from "axios";
 import dayjs from "dayjs";
 import DatePicker, { registerLocale } from "react-datepicker";
 import Link from "next/link";
-import Input from "../../components/Input";
+import Input from "../../Input";
 import { useEffect, useState, forwardRef } from "react";
 import es from "date-fns/locale/es";
 import { limpiarListaCarrito } from "store/usuario/compra-slice"
 import { useDispatch, useSelector } from "react-redux";
+import styles from "./BusquedaServicio.module.css";
 
 registerLocale("es", es);
 
@@ -38,6 +39,10 @@ const BusquedaServicio = (props) => {
   const [startDate, setStartDate] = useState(dayjs().toDate());
   const [datePickerKey, setDatePickerKey] = useState(0);
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
+
+  useEffect(() => {
+    setDatePickerKey((prevKey) => prevKey + 1);
+  }, [startDate]);
 
   async function getDestinos() {
     if (origen !== null) {
@@ -84,17 +89,9 @@ const BusquedaServicio = (props) => {
     (async () => await getDestinos())();
   }, [origen]);
 
-  useEffect(() => {
-    if (boletoValido && boletoValido.fechaEmbarcacion) {
-      const formattedDate = dayjs(boletoValido.fechaEmbarcacion, 'DD/MM/YYYY').toDate();
-      setStartDate(formattedDate);
-    }
-  }, [boletoValido]);
-
-
+ 
   useEffect(() => {
     if (boletoValido) {
-      setStartDate(dayjs(boletoValido.fechaEmbarcacion, "DD/MM/YYYY").toDate());
       setOrigen(boletoValido.idOrigenServicio);
       setDestino(boletoValido.idDestinoServicio);
     }
@@ -115,7 +112,6 @@ const BusquedaServicio = (props) => {
 
       const parrilla = await axios.post("/api/parrilla", data
       );
-      console.log('Planilla de asientos', parrilla )
       setParrilla(parrilla.data.map((parrillaMapped, index) => {
           return {
               ...parrillaMapped,
@@ -136,7 +132,7 @@ const BusquedaServicio = (props) => {
 
   return (
     <div className="col-12 col-md-12">
-      <div className="bloque">
+      <div className={styles["bloque"]}>
         <div className="row">
           <div className="col-12 col-md-3">
             <div className="grupo-campos">
@@ -190,7 +186,7 @@ const BusquedaServicio = (props) => {
                 onChange={(date) => setStartDate(date)}
                 filterDate={isValidStart}
                 locale={"es"}
-                minDate={startDate}
+                minDate={new Date()}
                 dateFormat="dd/MM/yyyy"
                 customInput={<CustomInput />}
               />

@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { agregarMedioPago } from "store/usuario/compra-slice";
 
 const MediosPago = (props) => {
-  const [mediosPago, setMediosPago] = useState([]);
-  const [selectedMedioPago, setSelectedMedioPago] = useState(null); // no se si los podemos controlar con el store para pagar
-  const [codigoCuponera, setCodigoCuponera] = useState(""); // lo mismo cuando seleccionen cuponera guardar esos datos en el store para hacer validaciones
+  const {mediosPago, setMediosPago} = props;
+  const [selectedMedioPago, setSelectedMedioPago] = useState(null); 
+  const [codigoCuponera, setCodigoCuponera] = useState("");
 
   const dispatch = useDispatch();
   const medioPago = useSelector((state) => state.compra.medioPago);
@@ -32,9 +32,10 @@ const MediosPago = (props) => {
   return (
     <>
       <div className={styles["container"]}>
-        {mediosPago.map((element) => (
-          <div key={element.id} className={styles["body-pay"]}>
-            <input
+        {mediosPago.map((element) =>
+          element.valor2 === "WBPAY" ? (
+            <div key={element.id} className={styles["body-pay"]}>
+              <input
               type="radio"
               id={element.id}
               name="medioPago"
@@ -42,38 +43,22 @@ const MediosPago = (props) => {
               checked={selectedMedioPago === element.valor2}
               onChange={() => handleMedioPagoChange(element.valor2)}
             />
-            {element.valor2 === "WBPAY" ? (
-              <img src="/img/icon/cuponera/Logo-webpay.svg"></img>
-            ) : (
-              <label
-                className={
-                  element.valor2 === "CUP" ? styles["text-coupon"] : ""
-                }
-                htmlFor={element.id}
-              >
-                {element?.valor1}
-                <img src="/img/icon/cuponera/ticket-outline.svg"></img>
-              </label>
-            )}
-          </div>
-        ))}
-
-        {selectedMedioPago === "CUP" ? (
-          <>
-            <span className={styles["text-input-coupon"]}>
-              {" "}
-              Ingresa tu código de transacción aquí:{" "}
-            </span>
-            <input
-              type="codigoCuponera"
-              value={codigoCuponera}
-              name="codigoCuponera"
-              placeholder="Ej: XTQ1234567"
-              className={styles["input-body"]}
-              onChange={(e) => setCodigoCuponera(e.target.value)}
-            />
-          </>
-        ) : null}
+              {element.valor2 === "WBPAY" ? (
+                <img src="/img/icon/cuponera/Logo-webpay.svg"></img>
+              ) : (
+                <label
+                  className={
+                    element.valor2 === "CUP" ? styles["text-coupon"] : ""
+                  }
+                  htmlFor={element.id}
+                >
+                  {element?.valor1}
+                  <img src="/img/icon/cuponera/ticket-outline.svg"></img>
+                </label>
+              )}
+            </div>
+          ) : null
+        )}
       </div>
     </>
   );
