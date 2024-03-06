@@ -143,6 +143,16 @@ export const ResumenViaje = (props) => {
         });
         return;
       }
+
+      if(!medioPago){
+        toast.error("Debe seleccionar un medio de pago", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+      
       if(!terminos){
         toast.error("Debe aceptar los términos y condiciones", {
           position: "top-right",
