@@ -25,11 +25,11 @@ const PagoCuponera = (props) => {
       <div className="row">
         <main className={styles["main-content"]}>
           <section className={styles["info-list"]}>
-            <Acordeon title="Datos del comprador">
+            <Acordeon title="Datos del comprador" open={ true }>
               <InformacionComprador />
             </Acordeon>
 
-            <Acordeon title="Método de pago">
+            <Acordeon title="Método de pago" open={ true }>
               <MedioPago
                 mediosPago={mediosPago}
                 setMediosPago={setMediosPago}

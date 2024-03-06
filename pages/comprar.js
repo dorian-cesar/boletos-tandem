@@ -84,6 +84,10 @@ export default function Home(props) {
         searchParrilla();
     }, []);
 
+    useEffect(() => {
+        searchParrilla();
+    }, [router.query.startDate, router.query.endDate, router.query.origen, router.query.destino]);
+
     return (
         <Layout>
             <Head>

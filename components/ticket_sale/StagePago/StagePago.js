@@ -345,8 +345,8 @@ const StagePago = (props) => {
   return (
     <main className={styles["main-content"]}>
       <section className={ styles['info-list'] }>
-        <ResumenServicio />
-        <Acordeon title="Datos del comprador">
+        <ResumenServicio open={ true }/>
+        <Acordeon title="Datos del comprador" open={ true }>
           <div className="form-check">
             <input className="form-check-input" type="checkbox" value={ usaDatosPasajeroPago } id="flexCheckDefault" onChange={ () => setUsaDatosPasajeroPago(!usaDatosPasajeroPago) }/>
             <label className="form-check-label" htmlFor="flexCheckDefault">
@@ -358,7 +358,7 @@ const StagePago = (props) => {
         {/* <Acordeon 
             title="Punto de embarque" 
             children={<PuntoEmbarque />}/> */}
-        <Acordeon title="Medio de pago">
+        <Acordeon title="Medio de pago" open={ true }>
           <MediosPago 
             setMediosPago={setMediosPago}
             mediosPago={mediosPago}

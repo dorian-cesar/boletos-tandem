@@ -38,7 +38,12 @@ const CardOferta = (props) => {
                         <div className="row mt-2">
                             <div className="col-12 col-md-9 col-lg-9">
                                 <div className="d-flex justify-content-end align-items-center">
-                                    <div className="col-2"></div>
+                                    <div className="col-2">
+                                        <img
+                                            className="imagen-mascota"
+                                            src="img/bus-outline.svg"
+                                        />
+                                    </div>
                                     <div className="col-10">
                                         <span className="title-tipo-bus">
                                             { tipoBus }

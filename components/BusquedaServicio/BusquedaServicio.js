@@ -80,15 +80,17 @@ const BusquedaServicio = (props) => {
   }
 
   async function redireccionarBuscarServicio() {
+    debugger;
      dispatch(limpiarListaCarrito());
-    await router.push(
-      `/comprar?origen=${origen}&destino=${destino}&startDate=${
-        startDate && dayjs(startDate).format("YYYY-MM-DD")
-      }&endDate=${endDate && dayjs(endDate).format("YYYY-MM-DD")}`
-    );
-    if (router.asPath.includes("comprar")) {
-      router.reload();
-    }
+     await router.push({
+      pathname: '/comprar',
+      query: {
+        origen,
+        destino,
+        startDate: startDate ? dayjs(startDate).format("YYYY-MM-DD") : null,
+        endDate: endDate ? dayjs(endDate).format("YYYY-MM-DD") : null
+      }
+     }, '/comprar');
   }
 
   async function getDestinos() {

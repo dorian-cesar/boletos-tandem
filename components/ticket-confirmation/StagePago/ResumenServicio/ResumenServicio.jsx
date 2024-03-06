@@ -97,6 +97,7 @@ const ResumenServicio = (props) => {
               viaje={ info.viaje }
               fecha={ info.fecha }
               hora={ info.hora }
+              open={ true }
             >
               {
                 info.asientos.map((asiento, index) => {

@@ -3,8 +3,8 @@ import styles from './Acordeon.module.css';
 
 const Acordeon = (props) => {
 
-  const { title, viaje, fecha, hora, children } = props; 
-  const [isOpen, setIsOpen] = useState(false);
+  const { title, viaje, fecha, hora, children, open = false } = props; 
+  const [isOpen, setIsOpen] = useState(open);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
