@@ -48,7 +48,7 @@ const BusquedaBoletos = (props) => {
   }
 
   const handleCodigoTransaccionChange = (e) => {
-    setCodigoTransaccion(e.target.value);
+    setCodigoTransaccion(e.target.value.toUpperCase());
   };
 
 
