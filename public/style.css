@@ -1139,6 +1139,7 @@ select.form-control.seleccion {
   text-align: center;
   align-items: center;
   display: grid;
+  color: var(--azul-100, #3365B4);
 }
 
 .pasajes-compra .seleccion h3 {
