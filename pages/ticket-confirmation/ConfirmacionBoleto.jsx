@@ -1,7 +1,7 @@
 import axios from "axios";
 import Layout from "../../components/Layout";
 import Footer from "../../components/Footer";
-import BusquedaServicio from "../../components/ticket-confirmation/BusquedaServicio";
+import BusquedaServicio from "../../components/ticket-confirmation/BusquedaServicio/BusquedaServicio";
 import { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
@@ -201,7 +201,7 @@ useEffect(() => {
                 setParrilla={setParrilla}
                 setLoadingParrilla={setLoadingParrilla}
                 boletoValido={boletoValido}
-                buscaAlIniciar={false}
+                buscaAlIniciar={true}
               />
 
               <div className="contenido-busqueda">

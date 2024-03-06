@@ -26,7 +26,7 @@ const Parrilla = (props) => {
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const dispatch = useDispatch();
 
-  const { isShowParrilla = false, parrilla, stage, setParrilla } = props;
+  const { isShowParrilla = false, parrilla, stage, setParrilla, setIsLoading } = props;
 
   const [modalMab, setModalMab] = useState(false);
   const [openPane, setOpenPane] = useState(false);
@@ -252,59 +252,38 @@ const Parrilla = (props) => {
 
       asiento['piso'] = piso;
       asiento['claseBus'] = piso === 1 ? props.thisParrilla.idClaseBusPisoUno : props.thisParrilla.idClaseBusPisoDos;
-
       const carrito = {
         servicio: parrilla.parrilla[indexParrilla],
         asiento,
-        tipoServicio: stage === 0 ? "ida" : "vuelta",
+        tipoServicio: "ida",
       };
-
-      setIsLoading(true);
-
+      setIsLoading(true)
       let asientosTemporal = asientosPorServicio || [];
-
       const asientoSeleccionado = asientosTemporal?.find(
         (asientoBusqueda) => asiento.asiento == asientoBusqueda?.asiento
       );
-
       if (
         asiento.estado == ASIENTO_LIBRE ||
         asiento.estado == ASIENTO_LIBRE_MASCOTA
       ) {
-
-        if (stage === STAGE_BOLETO_VUELTA) {
-          let dataVuelta = [];
-          let cantidadAsientos = 0;
-          Object.entries(carroCompras).map(([key, value]) => {
-            dataVuelta = value.vuelta || [];
-          });
-          Object.entries(dataVuelta).map(([key, value]) => {
-          
-            value.asientos.forEach((element) => {
-              cantidadAsientos = cantidadAsientos + 1;
-            });
-          });
-          if(cantidadIda === cantidadAsientos){
-            toast.warn(
-              `El número de asientos de regreso no puede exceder la cantidad de asientos seleccionados para el viaje de ida.`,
-              {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-              }
-            );
-            return;
-          }
+        if( cantidadIda >= MAXIMO_COMPRA_ASIENTO ){
+          toast.warn(
+            `Solo puede seleccionar 1 asiento para cambiar el pasaje.`,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+            }
+          );
+          setIsLoading(false);
+          return;
         }
-
-        if (!validarMaximoAsientos(asientosTemporal, asiento)) return;
         asientosTemporal = await servicioTomarAsiento(
           props.thisParrilla,
           asiento.asiento,
           piso,
           asientosTemporal
         );
-
         if (
           asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
           asiento.tipo == ASIENTO_TIPO_MASCOTA
@@ -317,99 +296,32 @@ const Parrilla = (props) => {
             true
           );
         }
-        if(stage === STAGE_BOLETO_VUELTA){
-          setCantidadVuelta(cantidadVuelta+1);
-        }
-        if(stage === STAGE_BOLETO_IDA){
-          setCantidadIda(cantidadIda+1);
-        }
-        
+        setCantidadIda(cantidadIda+1);       
         dispatch(agregarServicio(carrito));
-
-        if (asiento.asientoAsociado) {
-          const newCarrito = {
-            ...carrito,
-            asiento: asignarAsientoAsociado(asiento),
-          };
-          if (newCarrito.asiento) dispatch(agregarServicio(newCarrito));
-          if(stage === STAGE_BOLETO_VUELTA){
-            setCantidadVuelta(cantidadVuelta+1);
-          }
-          if(stage === STAGE_BOLETO_IDA){
-            setCantidadIda(cantidadIda+1);
-          }
-        }
-        setIsLoading(false);
         await reloadPane(indexParrilla);
+        setIsLoading(false);
         return;
       }
-
       if (
         asiento.estado == ASIENTO_OCUPADO ||
         asiento.estado == ASIENTO_OCUPADO_MASCOTA
       ) {
         if (asientoSeleccionado) {
           await servicioLiberarAsiento(carrito, asiento.asiento, 1, piso);
-
-          if (
-            asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
-            asiento.tipo == ASIENTO_TIPO_MASCOTA
-          ) {
-            await servicioLiberarAsiento(
-              carrito,
-              asiento.asientoAsociado,
-              1,
-              piso
-            );
-          }
-
-          debugger;
-
+          setCantidadIda(cantidadIda-1);
           dispatch(eliminarServicio(carrito));
-          if(stage === STAGE_BOLETO_VUELTA){
-            setCantidadVuelta(cantidadVuelta-1);
-          }
-          if(stage === STAGE_BOLETO_IDA){
-            const valorNuevo = cantidadIda - 1;
-            if( valorNuevo <= 0 ) {
-              dispatch(limpiarListaCarrito());
-            }
-            setCantidadIda(valorNuevo);
-          }
-          
-          if (asiento.asientoAsociado) {
-            const newCarrito = {
-              ...carrito,
-              asiento: asignarAsientoAsociado(asiento),
-            };
-            if (newCarrito.asiento) dispatch(eliminarServicio(newCarrito));
-            if(stage === STAGE_BOLETO_VUELTA){
-              const valorNuevo = cantidadVuelta - 1;
-              setCantidadVuelta(valorNuevo);
-            }
-            if(stage === STAGE_BOLETO_IDA){
-              const valorNuevo = cantidadIda - 1;
-              if( valorNuevo <= 0 ) {
-                dispatch(limpiarListaCarrito());
-              }
-              setCantidadIda(valorNuevo);
-            }
-          }
-          setIsLoading(false);
           await reloadPane(indexParrilla);
+          setIsLoading(false);
           return;
         }
         setIsLoading(false);
         return;
       }
-
-      setIsLoading(false);
     } catch ({ message }) {
       console.error(`Error al tomar asiento [${message}]`);
-      await reloadPane(indexParrilla);
-      setIsLoading(false);
     }
   }
+
 
   async function servicioLiberarAsiento(
     parrillaServicio,
