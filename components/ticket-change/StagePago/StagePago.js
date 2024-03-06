@@ -6,7 +6,7 @@ import Acordeon from "../../Acordeon/Acordeon";
 import ResumenServicio from "./ResumenServicio/ResumenServicio";
 import PuntoEmbarque from "./ResumenServicio/PuntoEmbarque/PuntoEmbarque";
 import DatosPasajero from "./ResumenServicio/DatosPasajero/DatosPasajero";
-import MediosPago from "./ResumenServicio/MediosPago/MediosPago"
+import MediosPago from "./ResumenServicio/MediosPago/MediosPago";
 
 import styles from "./StagePago.module.css";
 import { ResumenViaje } from "../ResumenViaje/ResumenViaje";
@@ -15,9 +15,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { asignarDatosComprador } from "store/usuario/compra-slice";
 
 const StagePago = (props) => {
-  const { carro, nacionalidades, convenios, mediosDePago, setCarro, boletoValido } = props;
+  const {
+    carro,
+    nacionalidades,
+    convenios,
+    mediosDePago,
+    setCarro,
+    boletoValido,
+  } = props;
 
-  const informacionAgrupada = useSelector((state) => state.compra.informacionAgrupada);
+  const informacionAgrupada = useSelector(
+    (state) => state.compra.informacionAgrupada
+  );
   const datosComprador = useSelector((state) => state.compra.datosComprador);
 
   const dispatch = useDispatch();
@@ -27,19 +36,22 @@ const StagePago = (props) => {
   const [convenioActive, setConvenioActive] = useState(null);
   const [convenioFields, setConvenioFields] = useState({});
   const [usaDatosPasajeroPago, setUsaDatosPasajeroPago] = useState(false);
+  const [mediosPago, setMediosPago] = useState([]);
 
   useEffect(() => {
-    if( usaDatosPasajeroPago ) {
+    if (usaDatosPasajeroPago) {
       dispatch(asignarDatosComprador(informacionAgrupada[0].asientos[0]));
     } else {
-      dispatch(asignarDatosComprador({
-        nombre: "",
-        apellido: "",
-        email: "",
-        rut: "",
-      }));
+      dispatch(
+        asignarDatosComprador({
+          nombre: "",
+          apellido: "",
+          email: "",
+          rut: "",
+        })
+      );
     }
-  }, [usaDatosPasajeroPago])
+  }, [usaDatosPasajeroPago]);
 
   async function getConvenio() {
     try {
@@ -202,337 +214,55 @@ const StagePago = (props) => {
     ));
   }
 
+  async function obtenerMediosPagos() {
+    try {
+      const res = await axios.post(
+        "/api/ticket_sale/obtener-medios-pago",
+        {}
+      );
+      if (res.request.status) {
+          setMediosPago(res.data);
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  useEffect(() => {
+    (async () => await obtenerMediosPagos())();
+  }, []);
+
   useEffect(() => {
     (async () => await getConvenio())();
   }, [convenioSelected]);
 
-
-  /* Este metodo es para validar el uso de la cuponera en cuanto a origen destino, fecha servicio, id servicio y codigo cuponera
-  -- si el wn pone cuponera debemos validar que corresponde a los origenes y destino y fecha
-  -- me falta hacer un metodo para validar si la cuponera pertenece al usuario, pero de momento hagamoslo pasar que si, yo lo hago despues
-
-    async function validarUsoCuponera() {
-    try {
-      const primerCliente = carro.clientes_ida[0];
-      if (!primerCliente) {
-        return false;
-      }
-
-      let fecha = primerCliente.fechaServicio.replace(/\//g, "-");
-      const validarUsoCuponeraDTO = new ValidarUsoCuponeraDTO(
-        primerCliente.origen,
-        primerCliente.destino,
-        fecha,
-        primerCliente.idServicio,
-        carro.datos["codigoCuponera"]
-      );
-
-      const { data } = await axios.post(
-        "/api/coupon/validar-cuponera",
-        validarUsoCuponeraDTO
-      );
-      return data.status;
-    } catch (error) {
-      console.error(`Error al validarUsoCuponera [${error.message}]`);
-      return false;
-    }
-  }
-  
-  
-  */
-
-  /*
-
-    esta funcion usaba para canjear la cuponera, esta se tiene que canjear cuando el loco tenga un solo asiento tomado, esa es la regla, un codigo de cuponera para una toma de asiento
-    si tiene mas de 1 asiento no deberia poder usar la cuponera. esta definido 1 a 1
-    esto podriamos meterlo en el store 
-
-     function armarResponseCanjear(datos) {
-    let fechaServicioParse = formatearFecha(datos.fechaServicio);
-    let fechaServicioSalidarParse =
-      formatearFecha(datos.fechaSalida) + datos.horaSalida.replace(":", "");
-    let canjearCuponera = {
-      idSistema: 7,
-      idIntegrador: 1000,
-      codigoCuponera: carro.datos["codigoCuponera"],
-      boleto: {
-        asiento: datos.asiento.asiento,
-        clase: datos.clase,
-        idServicio: datos.idServicio,
-        fechaServicio: fechaServicioParse,
-        fechaSalida: fechaServicioSalidarParse,
-        piso: datos.asiento.piso,
-        email: datos.pasajero.email,
-        destino: datos.destino,
-        idOrigen: datos.origen,
-        idDestino: datos.destino,
-        rut: datos.pasajero.rut,
-        tipoDocumento: datos.pasajero.tipoRut,
-      },
-    };
-    setCanjearCuponera(canjearCuponera);
-  }
-
-  */
-
-  /* este era el servicio para la cuponera, tiene muchas weas innecesarias
-
-     async function sendToPayment() {
-    try {
-      const isValidCuponera = await validarUsoCuponera();
-      if (isValidCuponera) {
-        let datosArmado;
-        let pasajes = [
-          ...carro.clientes_ida.map((clientesIdaMapped, clientesIdaIndex) => {
-            datosArmado = clientesIdaMapped;
-          }),
-        ];
-        armarResponseCanjear(datosArmado);
-        const { email, rut } = carro.datos;
-
-        console.log('datos cuponera ?',canjeCuponera)
-        if(canjeCuponera != null){
-          const { data } = await axios.post(
-            "/api/coupon/canjear-cuponera",
-            canjeCuponera
-          );
-          if (data.resultado.exito) {
-            const url = `/respuesta-transaccion-canje/${data.voucher.boleto}`;
-            router.push(url);
-          } else {
-            toast.warn(data.resultado.mensaje, {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-            });
-          }
-        } 
-      } else {
-        toast.warn(`Cuponera no es valida para uso`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-        });
-      }
-    } catch (error) {
-      console.error(`Error al sendToPayment [${error.message}]`);
-      return false;
-    }
-  }
-  */
-
   return (
     <main className={styles["main-content"]}>
-      <section className={ styles['info-list'] }>
+      <section className={styles["info-list"]}>
         <ResumenServicio />
         <Acordeon title="Datos del comprador" open={ true }>
           <div className="form-check">
-            <input className="form-check-input" type="checkbox" value={ usaDatosPasajeroPago } id="flexCheckDefault" onChange={ () => setUsaDatosPasajeroPago(!usaDatosPasajeroPago) }/>
+            <input
+              className="form-check-input"
+              type="checkbox"
+              value={usaDatosPasajeroPago}
+              id="flexCheckDefault"
+              onChange={() => setUsaDatosPasajeroPago(!usaDatosPasajeroPago)}
+            />
             <label className="form-check-label" htmlFor="flexCheckDefault">
               Usar los datos del pasajero 1
             </label>
-          </div> 
-          <DatosPasajero asiento={ datosComprador }/>
+          </div>
+          <DatosPasajero asiento={datosComprador} />
         </Acordeon>
-        {/* <Acordeon 
-            title="Punto de embarque" 
-            children={<PuntoEmbarque />}/> */}
         <Acordeon title="Medio de pago" open={ true }>
-          <MediosPago />
+          <MediosPago mediosPago={mediosPago} setMediosPago={setMediosPago} />
         </Acordeon>
       </section>
       <section className={styles["travel-summary"]}>
-        <ResumenViaje boletoValido={ boletoValido }/>
+        <ResumenViaje boletoValido={boletoValido} />
       </section>
     </main>
-
-    // <div className='pago'>
-
-    //     <div className='container'>
-    //         <div className='bloque bg-white pasajeros'>
-    //             <h2>Registro de pasajeros</h2>
-    //             <ResumenPasaje tipoPasaje={ 'IDA' } pasaje={ carro.pasaje_ida }/>
-    //             {
-    //                 carro.clientes_ida.map((clienteMapped, indexCliente) => {
-    //                 return (
-    //                     <InformacionPasajero
-    //                         key={ `key-informacion-pasajero-ida-${ indexCliente }` }
-    //                         tipoViaje={ 'ida' }
-    //                         cliente={ clienteMapped }
-    //                         index={ indexCliente }
-    //                         nacionalidades={ nacionalidades }
-    //                         carro={ carro }
-    //                         setCarro={ setCarro }
-    //                         validarFormatoRut={ validarFormatoRut }/>
-    //                 );
-    //             })}
-    //             {
-    //                 carro.pasaje_vuelta ? (
-    //                     <>
-    //                         <ResumenPasaje tipoPasaje={ 'VUELTA' } pasaje={ carro.pasaje_vuelta }/>
-    //                         {
-    //                             carro.clientes_vuelta.map((clienteMapped, indexCliente) => {
-    //                                 return (
-    //                                     <InformacionPasajero
-    //                                         key={ `key-informacion-pasajero-vuelta-${ indexCliente }` }
-    //                                         tipoViaje={ 'ida' }
-    //                                         cliente={ clienteMapped }
-    //                                         index={ indexCliente }
-    //                                         nacionalidades={ nacionalidades }
-    //                                         carro={ carro }
-    //                                         setCarro={ setCarro }
-    //                                         validarFormatoRut={ validarFormatoRut }/>
-    //                                 );
-    //                             }
-    //                         )}
-    //                     </>
-    //                 ) : ('')
-    //             }
-    //         </div>
-
-    //         <InformacionComprador setCarro={ setCarro } carro={ carro } validarFormatoRut={ validarFormatoRut }/>
-
-    //         <div className='d-flex'>
-    //             <div className='col-12 col-md-12 m-1'>
-    //                 <div className='bloque  bg-white'>
-    //                     <h2>Convenios</h2>
-    //                     <div className='grupo-campos mt-5'>
-    //                         <label className='label-input input-op'>
-    //                             Convenios
-    //                         </label>
-    //                         <select
-    //                             name='convenios'
-    //                             id='cars'
-    //                             className='form-control seleccion'
-    //                             value={ convenioSelected }
-    //                             onChange={ (e) => setConvenioSelected(e.target.value) }>
-    //                             <option value=''>
-    //                                 Seleccione Convenio
-    //                             </option>
-    //                             {
-    //                                 convenios.map((convenioMapped) => (
-    //                                     <option value={ convenioMapped.idConvenio }>
-    //                                         { convenioMapped.descripcion }
-    //                                     </option>
-    //                                 ))
-    //                             }
-    //                         </select>
-    //                     </div>
-    //                     {
-    //                         convenio ? retornarFormularioConvenio() : ('')
-    //                     }
-    //                 </div>
-    //             </div>
-    //         </div>
-    //         <div className='bloque comprador  bg-white'>
-    //             <h2>Resumen de compra</h2>
-    //             <div className='row'>
-    //                 <div className='col-12 col-md-7'>
-    //                     {
-    //                         carro.clientes_ida ? (
-    //                             <div className='row cantidad-asiento mb-5'>
-    //                                 <div className='col-8'>
-    //                                     <div className='row'>
-    //                                         <div className='col-12'>
-    //                                             <strong>IDA</strong>
-    //                                         </div>
-    //                                     </div>
-    //                                     <div className='row'>
-    //                                         <div className='col-8'>
-    //                                             <h5>Cantidad de asientos</h5>
-    //                                         </div>
-    //                                         <div className='col-4'></div>
-    //                                     </div>
-    //                                     {
-    //                                         obtenerCantidadAsientos('clientes_ida')
-    //                                     }
-    //                                 </div>
-    //                             </div>
-    //                         ) : ('')
-    //                     }
-    //                     {
-    //                         carro.clientes_vuelta ? (
-    //                             <div className='row cantidad-asiento mb-5'>
-    //                                 <div className='col-8'>
-    //                                     <div className='row'>
-    //                                         <div className='col-12'>
-    //                                             <strong>VUELTA</strong>
-    //                                         </div>
-    //                                     </div>
-    //                                     <div className='row'>
-    //                                         <div className='col-8'>
-    //                                             <h5>Cantidad de asientos</h5>
-    //                                         </div>
-    //                                         <div className='col-4'></div>
-    //                                     </div>
-    //                                     {
-    //                                         obtenerCantidadAsientos('clientes_vuelta')
-    //                                     }
-    //                                 </div>
-    //                             </div>
-    //                         ) : ('')
-    //                     }
-    //                 </div>
-    //                 <div className='col-12 col-md-5 total-pagar'>
-    //                     <div className='row'>
-    //                         <div className='col-6 d-flex align-items-center'>
-    //                             <h3>Total a pagar:</h3>
-    //                         </div>
-    //                         <div className='col-6 d-flex justify-content-end'>
-    //                             <h2>${ getTotal().toLocaleString('es') }</h2>
-    //                         </div>
-    //                     </div>
-    //                     <div className='row my-5'>
-    //                         <div className='col-12'>
-    //                             {
-    //                                 mediosDePago.map(({ imagen }, indexImagen) => (
-    //                                     <img
-    //                                         key={ `key-imagen-medio-pago-${ indexImagen }`}
-    //                                         src={'data:image/png;base64,' + imagen }/>
-    //                                 ))
-    //                             }
-    //                         </div>
-    //                         <div className='col-12 p-2'>
-    //                             <label className='d-flex align-items-baseline mb-3 mt-3'>
-    //                                 <input type='checkbox' className='mr-2'/>
-    //                                 <small>
-    //                                     He leido los{' '}
-    //                                     <a href='/terminos' target='_blank'>
-    //                                         Terminos y Condiciones
-    //                                     </a>{' '}
-    //                                     de la compra
-    //                                 </small>
-    //                             </label>
-    //                             <label className='d-flex align-items-baseline'>
-    //                                 <input type='checkbox' className='mr-2'/>
-    //                                 <small>Me gustaria recibir noticias, actualizaciones o información de Pullman Bus</small>
-    //                             </label>
-    //                         </div>
-    //                     </div>
-    //                     <div className='row'>
-    //                         <div className='col-12'>
-    //                             <a
-    //                                 href='#'
-    //                                 className={ 'btn ' + (!isPaymentValid() ? 'disabled' : '') }
-    //                                 disabled={ !isPaymentValid() }
-    //                                 onClick={ (e) => {
-    //                                     e.preventDefault();
-    //                                     sendToPayment();
-    //                                 }}
-    //                             >
-    //                                 Pagar
-    //                             </a>
-
-    //                             <form ref={ payment_form } style={{ display: 'none', }} method='POST' action={ payment.url }>
-    //                                 <input name='TBK_TOKEN' value={ payment.token }/>
-    //                             </form>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>
-    // </div>
   );
 };
 

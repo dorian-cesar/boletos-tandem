@@ -1,0 +1,10 @@
+.bloque {
+    box-shadow: 0px 3px 8px 0px #d4dbec;
+    border-radius: 16px;
+    padding: 30px 30px 30px 30px;
+    background-color: #fff;
+    margin-top: 25px;
+    margin-inline: auto;
+    position: relative;
+    z-index: 10;
+  }
