@@ -161,7 +161,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                 <div className="row">
                   <div className="col-4">
                     <label className="contenedor">
-                      Rut
+                      RUT
                       <input 
                         type="checkbox" 
                         value={"R"} 
@@ -238,7 +238,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
             </div>
             <div className="row">
               <div className="col-6">
-                <label className="label-input-modal">Sexo</label>
+                <label className="label-input-modal">Género</label>
                 <select
                   name="sexo"
                   id="sexo"

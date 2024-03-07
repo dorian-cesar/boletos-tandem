@@ -55,7 +55,7 @@ label.label-input-modal {
 select.form-control-modal,
 input.fecha-input-modal,
 .sel-input-modal {
-    background-image: url(http://placehold.it/40x40);
+    background-image: url('img/icon/select/chevron-down-circle-outline.svg');
     background-position: 14px center;
     background-repeat: no-repeat;
     padding-left: 40px;
