@@ -111,3 +111,8 @@
     font-weight: 700;
     line-height: normal; 
 }
+
+.link-contacto {
+    color: #000;
+    text-decoration: none;
+}
