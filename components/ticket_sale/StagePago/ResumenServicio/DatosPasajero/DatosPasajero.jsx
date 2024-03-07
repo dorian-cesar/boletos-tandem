@@ -88,7 +88,7 @@ const DatosPasajero = (props) => {
             <div className={"row"}>
               <div className={"col"}>
                 <label className={"contenedor"}>
-                  <label className={styles["label"]}>rut</label>
+                  <label className={styles["label"]}>RUT</label>
                   <input
                     type="checkbox"
                     checked={asiento["tipoDocumento"] == "R" ? "checked" : ""}
@@ -101,7 +101,7 @@ const DatosPasajero = (props) => {
               </div>
               <div className={"col"}>
                 <label className={"contenedor"}>
-                  <label className={styles["label"]}>pasaporte</label>
+                  <label className={styles["label"]}>Pasaporte</label>
                   <input
                     type="checkbox"
                     checked={asiento["tipoDocumento"] == "P" ? "checked" : ""}
