@@ -46,6 +46,7 @@ export default function Home(props) {
     const endDate = dayjs(router.query.endDate).isValid() ? dayjs(router.query.endDate).toDate() : null;
     const origen = router.query.origen;
     const destino = router.query.destino != "null" ? router.query.destino : null;
+    const mascota_allowed = router.query.mascota_allowed ? (router.query.mascota_allowed === 'true') : false;
 
     const [modalMab, setModalMab] = useState(false);
     const [parrilla, setParrilla] = useState([]);
@@ -58,6 +59,11 @@ export default function Home(props) {
         datos: { tipoRut: "rut" },
     });
     const [stage, setStage] = useState(0);
+
+    useEffect(() => {
+        console.log(router.query);
+        if( mascota_allowed ) setModalMab(true);
+    }, [])
     
 
     async function searchParrilla(in_stage) {
@@ -133,7 +139,8 @@ export default function Home(props) {
                             carro={ carro }
                             setCarro={ setCarro }
                             setStage={ setStage }
-                            searchParrilla={ searchParrilla }/> : ('') 
+                            searchParrilla={ searchParrilla }
+                            mascota_allowed={ mascota_allowed }/> : ('') 
                     }
                     {
                         stages_active[stage].kind == "pago" ?  

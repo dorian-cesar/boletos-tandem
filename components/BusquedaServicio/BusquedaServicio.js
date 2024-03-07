@@ -88,7 +88,8 @@ const BusquedaServicio = (props) => {
         origen,
         destino,
         startDate: startDate ? dayjs(startDate).format("YYYY-MM-DD") : null,
-        endDate: endDate ? dayjs(endDate).format("YYYY-MM-DD") : null
+        endDate: endDate ? dayjs(endDate).format("YYYY-MM-DD") : null,
+        mascota_allowed
       }
      }, '/comprar');
   }

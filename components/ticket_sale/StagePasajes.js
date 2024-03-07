@@ -14,14 +14,14 @@ const STAGE_BOLETO_VUELTA = 1;
 
 const StagePasajes = (props) => {
 
-    const { parrilla, stage, loadingParrilla, setParrilla, startDate, endDate, carro, setCarro, setStage, searchParrilla } = props;
+    const { parrilla, stage, loadingParrilla, setParrilla, startDate, endDate, carro, setCarro, setStage, searchParrilla, mascota_allowed = false } = props;
 
     const [filter_tipo, setFilterTipo] = useState([]);
     const [filter_horas, setFilterHoras] = useState([]);
     const [filter_mascota, setFilterMascota] = useState([]);
     const [openPane, setOpenPane] = useState(false);
     const [sort, setSort] = useState(null);
-    const [mascota_allowed, setMascota] = useState(false);
+    const [mascotaAllowed, setMascotaAllowed] = useState(mascota_allowed);
     const [asientosIda, setAsientosIda] = useState([]);
     const [asientosVuelta, setAsientosVuelta] = useState([]);
     const [servicioIda, setServicioIda] = useState(null);
@@ -127,13 +127,13 @@ const StagePasajes = (props) => {
 
     function returnMappedParrilla() {
         let sortedParrilla = [];
+        debugger;
         returnSortedParrilla().map((mappedParrilla, indexParrilla) => {
             debugger;
             if ( filter_tipo.length > 0 && !filter_tipo.includes(mappedParrilla.servicioPrimerPiso) && !filter_tipo.includes(mappedParrilla.servicioSegundoPiso)) return;
 
-            if ( mascota_allowed && mappedParrilla.mascota == 0 ) return;
+            if ( mascotaAllowed && mappedParrilla.mascota == 0 ) return;
             
-            // TODO: Filtrar por horas, verificar fucionamiento ya que solo funciona cuando se marca 1 hora en el filtro
             if ( filter_horas.length > 0 ) {
                 let isTime = filter_horas.reduce((prevValue, actValue) => {
                     if ( !prevValue ) {
@@ -163,10 +163,12 @@ const StagePasajes = (props) => {
             );
         });
 
+        debugger;
+
         if( sortedParrilla.length > 0 ) {
             setServicios(sortedParrilla)
         } else {
-            setServicioIda(
+            setServicios(
                 <h5 className="p-2 empty-grill">
                     Lo sentimos, no existen
                     resultados para su búsqueda, 
@@ -178,7 +180,7 @@ const StagePasajes = (props) => {
 
     useEffect(() => {
         returnMappedParrilla();
-    }, [toggleTipo, toggleHoras, mascota_allowed, parrilla])
+    }, [toggleTipo, toggleHoras, mascotaAllowed, parrilla])
 
     return (
         
@@ -191,8 +193,8 @@ const StagePasajes = (props) => {
                 stage={ stage }
                 toggleTipo={ toggleTipo }
                 toggleHoras={ toggleHoras }
-                mascota_allowed={ mascota_allowed }
-                setMascota={ setMascota }
+                mascota_allowed={ mascotaAllowed }
+                setMascota={ setMascotaAllowed }
             />
             <div>
                 { loadingParrilla ? <div className="empty-grill"><Loader/></div> : parrilla.length > 0 ? servicios : 
