@@ -1,5 +1,5 @@
 .body {
-    height: 1021px;
+    padding-block-end: 26px;
     background: var(--Azul-fondo, #E6ECF6);
 }
 
@@ -33,7 +33,6 @@
 .other-body {
     margin-top: 20px;
     width: 512px;
-    height: 184px;
     display: inline-flex;
     padding: 47px 44px;
     flex-direction: column;
