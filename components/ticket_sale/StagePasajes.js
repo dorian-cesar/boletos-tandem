@@ -166,7 +166,7 @@ const StagePasajes = (props) => {
         if( sortedParrilla.length > 0 ) {
             setServicios(sortedParrilla)
         } else {
-            setServicioIda(
+            setServicios(
                 <h5 className="p-2 empty-grill">
                     Lo sentimos, no existen
                     resultados para su búsqueda, 
