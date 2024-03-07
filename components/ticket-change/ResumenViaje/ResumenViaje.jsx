@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo";
 import { newIsValidPasajero, newIsValidComprador } from "../../../utils/user-pasajero";
 import { toast } from "react-toastify";
+import { agregarCambio } from "store/usuario/cambio-boleto-slice";
 import {
   ListaCarritoDTO,
   PasajeroListaCarritoDTO,
@@ -152,7 +153,7 @@ export const ResumenViaje = (props) => {
         });
         return;
       }
-      
+
       if(!terminos){
         toast.error("Debe aceptar los términos y condiciones", {
           position: "top-right",
@@ -199,6 +200,7 @@ export const ResumenViaje = (props) => {
         data = error.response.data;
       }
       if (data.status) {
+        dispatch(agregarCambio(data.object))
         const url = `/respuesta-transaccion-cambio/${data.object.voucher.boleto}`;
         router.push(url);
       } else {

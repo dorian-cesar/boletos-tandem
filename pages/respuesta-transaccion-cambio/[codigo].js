@@ -9,6 +9,7 @@ import { withIronSessionSsr } from 'iron-session/next'
 import styles from "./RespuestaTransaccionCambio.module.css"
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { format } from "@formkit/tempo"
 
 
 const { publicRuntimeConfig } = getConfig();
@@ -16,164 +17,105 @@ const { publicRuntimeConfig } = getConfig();
 
 export default function Home(props) {
 
-  const [cuponeraData, setCuponeraData] = useState(null);
+  
+const mediosPago = {
+  WBPAY: {
+    nombre: "Webpay",
+    mensaje: 'Débito RedCompra (WebPay)',
+    imagen: "/img/icon/general/webpay.svg",
+  }
+}
+
+  const clpFormat = new Intl.NumberFormat('es-CL', {
+    style: 'currency',
+    currency: 'CLP',
+  });
+
 
   const informacionAgrupada =
     useSelector((state) => state.compra?.informacionAgrupada) || [];
 
-  /* 
-  se debe arreglar vista
-  se debe crear un metodo para volver al inicio y limpiar el carrito */
+  const respuestaCambio = useSelector((state) => state.cambioBoleto || {} );
+  const medioPago = useSelector((state) => state.compra?.medioPago) || '';
   
+  const descargarBoletos = async () =>{
+      try {
+      if (respuestaCambio != null) {
+          const linkSource = `data:application/pdf;base64,${respuestaCambio?.archivo?.archivo}`;
+          const downloadLink = document.createElement("a");
+          const fileName = respuestaCambio?.archivo?.nombre;
+          downloadLink.href = linkSource;
+          downloadLink.download = fileName;
+          downloadLink.click();
+      }
+    } catch (e) {}
+    
+  }
 
   return (
     <Layout>
-        <div className={styles["home"]}>
-          <div className={styles["container"]}>
-            <div className={"row justify-content-center"}>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-6 text-center"}>
-                    <img
-                      className={styles["image"]}
-                      src="/img/icon/coupon-response/ticket-outline.svg"
-                      alt=""
-                    />
-                    <img
-                      className={styles["image-check"]}
-                      src="/img/icon/coupon-response/checkmark-circle-outline.svg"
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-6 text-center"}>
-                    <h2 className={styles["title"]}>
-                      ¡Hemos cambiado tu viaje!
-                    </h2>
-                    <p className={styles["sub-title"]}>
-                      Tu boleto ha sido cambiado con éxito. <br />
-                      Dentro de poco te llegará un correo con el boleto para descargar.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-6 text-center"}>
-                    <p className={styles["orden"]}>
-                      Código de boleto:{" "}
-                      {props.boleto.codigo}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-6 text-center"}>
-                    <p className={styles["data-passenger"]}>
-                      Datos del pasajero
-                    </p>
-                    <p className={styles["name"]}>
-                      {informacionAgrupada[0]?.asientos[0]?.nombre}
-                    </p>
-                    <p className={styles["id"]}>
-                      {informacionAgrupada[0]?.asientos[0]?.rut}
-                    </p>
-                    <p className={styles["id"]}>
-                      {informacionAgrupada[0]?.asientos[0]?.email}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center mb-4"}>
-                  <div className={styles["dotted"]}></div>
-                </div>
-              </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-4"}>
-                    <div className={styles["container-cuponera"]}>
-                      <p className={styles["data-passenger"]}>
-                        
-                      </p>
-                      <p className={styles["id"]}>
-                      {informacionAgrupada[0]?.fechaServicio } 
-                      </p>
-                      <p className={styles["id"]}>
-                        &#8226; {informacionAgrupada[0]?.terminalOrigen } - { informacionAgrupada[0]?.horaSalida}
-                      </p>
-                      <p className={styles["id"]}>
-                        &#8226; {informacionAgrupada[0]?.terminalDestino } - { informacionAgrupada[0]?.horaLlegada}
-                      </p>
-                      <div className={"row justify-content-center"}>
-                        <div className={styles["dotted-line"]}></div>
-                        <p className={styles["id"]}>
-                          Valor Total:{" "}
-                          <span className={styles["price"]}>
-                            {" "}
-                            ${informacionAgrupada[0]?.asientos[0]?.tarifa }
-                          </span>
-                        </p>
-                        <div className={styles["dotted-line"]}></div>
-                      </div>
+        <section className={ styles['main-section'] }>
+            <div className={ styles['images-container'] }>
+              <img src="/img/ticket-outline.svg" alt="ticket" className={ styles['ticket-image'] } />
+              <img src="/img/checkmark-circle-outline.svg" alt="confirmado" className={ styles['confirmado-image'] } />
+            </div>
+            <h1>¡Hemos cambiado tu viaje!</h1>
+            <span className={ styles['compra-realizada'] }>Tu boleto ha sido cambiado con éxito. Próximamente, recibirás un correo electrónico con los boletos adquiridos.</span>
+            <div className={ styles['orden-compra'] }>
+              <span>Orden de compra: {props.boleto.codigo}</span>
+            </div>
+            <section className={ styles['detalle-viajes'] }>
+                  <div className={styles["servicio-ida"]} >
+                    <b className={ styles['titulo-servicio'] }>{  }</b>
+                    <div className={styles["detalle-container"]}>
+              
+                          <div className={styles["detalle-item"]}>
+                            <ul>
+                              <li>
+                                <div>{respuestaCambio?.voucher?.nombreTerminalOrigen}</div>
+                                <div>{ }</div>
+                              </li>
+                              <li>
+                                <div>{ respuestaCambio?.voucher?.nombreTerminalDestino }</div>
+                                <div>{ }</div>
+                              </li>
+                            </ul>
+                            <div className={ styles['resumen-servicio'] }>
+                              <span>Cantidad de Asientos: {}</span>
+                              <b>{ 1 }</b>
+                            </div>
+                          </div>
+                    
                     </div>
                   </div>
-                </div>
+            </section>
+            <section className={ styles['resumen-pago'] }>
+              <div className={ styles['contenedor-metodo-pago'] }>
+                <strong>Pagado con:</strong>
+                <span>
+                  <img src={ mediosPago[medioPago]?.imagen } alt={ `Icono ${mediosPago[medioPago]?.nombre}` }/>
+                  <img />
+                </span>
               </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center mb-3"}>
-                  <div className={styles["dotted"]}></div>
-                </div>
+              <div className={ styles['contenedor-total-pagar'] }>
+                <strong>Total Pagado:</strong>
+                <span>${ respuestaCambio?.voucher?.total }</span>
               </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-6"}>
-                    <p className={styles["pay-for"]}>Pagado con:</p>
-                    <p className={styles["detail-pay"]}> Débito RedCompra (WebPay)  <img
-                      className={styles["image"]}
-                      src="/img/icon/coupon-response/wbpay.svg"
-                      alt=""
-                    />  </p>  
-                  </div>
-                  <div className={"col-3"}>
-                  <p className={styles["data-passenger"]}>Total Pagado:</p>
-                  </div>
-                  <div className={"col-3"}>
-                  <p className={styles["price-final"]}> ${informacionAgrupada[0]?.asientos[0]?.tarifa}</p>
-                  </div>
-                </div>
+            </section>
+            <section className={ styles['action-container'] }>
+              <div className={ styles['contenedor-descarga-boletos']}>
+                <img src='/img/icon/general/download-outline.svg' />
+                <span onClick={()=> descargarBoletos()}>
+                  Descarga tus boletos aquí
+                </span>
               </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center mb-5"}>
-                  <div className={styles["dotted"]}></div>
-                </div>
+              <div className={ styles['contenedor-volver-inicio'] }>
+                <Link href="/" className={ styles['btn'] }>
+                  Volver al inicio
+                </Link>
               </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center mb-4"}>
-                  <div className={"col-6 text-center"}>
-
-                   
-                    <a className={styles["pay-for"]}> <img
-                      className={styles["image-download"]}
-                      src="/img/icon/coupon-response/download-outline.svg"
-                      alt=""
-                    /> Descarga tu cuponera aquí</a>
-                  </div>
-                  <div className={"col-6 text-center"}>
-
-                  <a href="/" className={styles["button-home"]}>
-                      Volver al inicio
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+            </section>
+          </section>
       <Footer />
     </Layout>
   );

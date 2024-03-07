@@ -11,6 +11,7 @@ import { registerLocale } from "react-datepicker";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { limpiarListaCarrito } from "store/usuario/compra-slice";
+import { limpiarCambio } from "store/usuario/cambio-boleto-slice";
 
 import Banner from "components/banner";
 
@@ -23,7 +24,10 @@ export default function Home(props) {
   const origenes = props.ciudades;
   const dispatch = useDispatch();
 
-  useEffect(() =>{ dispatch(limpiarListaCarrito()) }, []);
+  useEffect(() =>{ 
+    dispatch(limpiarListaCarrito()) 
+    dispatch(limpiarCambio())
+  }, []);
 
   return (
     <Layout>
