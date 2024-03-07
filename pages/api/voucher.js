@@ -7,24 +7,13 @@ const config = serverRuntimeConfig;
 export default async (req, res) => {
 
     try {
-        console.log(doLogin)
         let token = await doLogin();
-        console.log(req.query)
-        let data = await axios.post(config.service_url + `/integracion/generarComprobante`,{codigo: req.query.codigo, boleto:req.query.boleto},{
+        let data = await axios.post(config.service_url + `/integracion/generarComprobante`,{codigo: req.body.codigo, boleto:req.body.boleto},{
         headers: {
             'Authorization': `Bearer ${token.token}`
         }
         })
-        console.log(data.data)
-        const decoded = Buffer.from(data.data.archivo, 'base64');
-
-  
-        res.writeHead(200, {    
-            "Content-Disposition": "attachment;filename=" + data.data.nombre,
-            'Content-Type': 'application/pdf',
-            'Content-Length': decoded.length
-        });
-        res.end(decoded);
+        res.status(200).json(data.data);
     } catch(e){
         console.log(e)
         res.status(400).json(e)

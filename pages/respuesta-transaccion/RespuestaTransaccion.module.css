@@ -188,6 +188,7 @@
     align-items: center;
     align-content: center;
     gap: 8px;
+    cursor: pointer;
 }
 
 .action-container .contenedor-descarga-boletos span {
