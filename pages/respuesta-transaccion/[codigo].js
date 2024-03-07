@@ -175,26 +175,29 @@ export default function Home(props) {
     dispatch(limpiarListaCarrito());
   }, [resumen])
 
+  const descargarBoletos = () =>{
+    props.carro.carro.boletos.forEach( async (element) => {
+      let boleto = {
+        codigo: element.codigo,
+        boleto: element.boleto
+      }
+        try {
+        const res = await axios.post("/api/voucher", boleto);
+        if (res.request.status) {
+           const linkSource = `data:application/pdf;base64,${res.data?.archivo}`;
+           const downloadLink = document.createElement("a");
+           const fileName = res.data.nombre;
+           downloadLink.href = linkSource;
+           downloadLink.download = fileName;
+           downloadLink.click();
+        }
+      } catch (e) {}
+    });
+  }
   return (
     <Layout>
       {props.carro ? (
         <>
-          {/* <ul className="d-flex flex-row justify-content-around py-4">
-            {
-              stages.map((stageMaped, indexStage) => {
-                return(
-                  <div key={ `stage-${ indexStage }` } className={ "seleccion text-center " + (indexStage == 3 ? "active" : "")}>
-                    <div className="numeros">
-                      <div className="numero">
-                        { indexStage + 1 }
-                      </div>
-                    </div>
-                    <h3>{stageMaped.name}</h3>
-                  </div>
-                )
-              })
-            }
-          </ul> */}
           <section className={ styles['main-section'] }>
             <div className={ styles['images-container'] }>
               <img src="/img/ticket-outline.svg" alt="ticket" className={ styles['ticket-image'] } />
@@ -244,13 +247,13 @@ export default function Home(props) {
               </div>
               <div className={ styles['contenedor-total-pagar'] }>
                 <strong>Total Pagado:</strong>
-                <span>{ clpFormat.format(totalPagar) }</span>
+                <span>{ clpFormat.format(props?.carro?.carro?.monto) }</span>
               </div>
             </section>
             <section className={ styles['action-container'] }>
               <div className={ styles['contenedor-descarga-boletos']}>
                 <img src='/img/icon/general/download-outline.svg' />
-                <span>
+                <span onClick={()=> descargarBoletos()}>
                   Descarga tus boletos aquí
                 </span>
               </div>
