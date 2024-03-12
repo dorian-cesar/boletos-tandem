@@ -464,6 +464,7 @@ const Parrilla = (props) => {
         autoClose: 5000,
         hideProgressBar: false,
       });
+      setIsLoading(false);
       return false;
     }
 

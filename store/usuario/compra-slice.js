@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import LocalStorageEntities from 'entities/LocalStorageEntities';
 import { decryptData, encryptData, encryptDataNoTime } from 'utils/encrypt-data';
+import axios from "axios";
 
 let initialState = {
     idSistema: 7,
@@ -130,7 +131,46 @@ export const compraSlice = createSlice({
             state.medioPago = payload;
         },
         limpiarListaCarrito: (state, action) => {
-            debugger;
+            Object.entries(state.listaCarrito).map(([key, value]) => {
+                if(value.ida){
+                    value.ida.forEach(servicioIda => {
+                        servicioIda.asientos.forEach(async (elemento) =>{
+                            let liberarAsiento = {
+                                servicio: servicioIda?.idServicio,
+                                codigoReserva: 1,
+                                fecha: servicioIda?.fechaServicio,
+                                origen: servicioIda?.idTerminalOrigen,
+                                destino: servicioIda?.idTerminalDestino,
+                                integrador: 1000,
+                                asiento: elemento?.asiento,
+                                tarifa: elemento?.tarifa,
+                            }
+                            try {
+                                const { data } = await axios.post("/api/ticket_sale/liberar-asiento", liberarAsiento);
+                              } catch (e) {}
+                        })
+                    })
+                }
+                if(value.vuelta) {
+                    value.vuelta.forEach(servicioVuelta => {
+                        servicioVuelta.asientos.forEach(async (elemento) =>{
+                            let liberarAsiento = {
+                                servicio: servicioVuelta?.idServicio,
+                                codigoReserva: 1,
+                                fecha: servicioVuelta?.fechaServicio,
+                                origen: servicioVuelta?.idTerminalOrigen,
+                                destino: servicioVuelta?.idTerminalDestino,
+                                integrador: 1000,
+                                asiento: elemento?.asiento,
+                                tarifa: elemento?.tarifa,
+                            }
+                            try {
+                                const { data } = await axios.post("/api/ticket_sale/liberar-asiento", liberarAsiento);
+                              } catch (e) {}
+                        })
+                    })
+                }
+            })
             state.listaCarrito = {};
             state.informacionAgrupada = [];
             state.datosComprador = {};
