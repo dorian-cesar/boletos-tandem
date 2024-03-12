@@ -16,6 +16,7 @@ import es from "date-fns/locale/es";
 import { ObtenerParrillaServicioDTO } from "dto/ParrillaDTO";
 import StagePasajes from "../components/ticket_sale/StagePasajes";
 import StagePago from "../components/ticket_sale/StagePago/StagePago";
+import { useSelector, useDispatch } from "react-redux";
 
 registerLocale("es", es);
 
@@ -41,12 +42,14 @@ const stages = [
 export default function Home(props) {
     
     const router = useRouter();
+    const datosBusqueda = useSelector((state) => state.compra);
+    
 
-    const startDate = dayjs(router.query.startDate).isValid() ? dayjs(router.query.startDate).toDate(): null;
-    const endDate = dayjs(router.query.endDate).isValid() ? dayjs(router.query.endDate).toDate() : null;
-    const origen = router.query.origen;
-    const destino = router.query.destino != "null" ? router.query.destino : null;
-    const mascota_allowed = router.query.mascota_allowed ? (router.query.mascota_allowed === 'true') : false;
+    const startDate = dayjs(datosBusqueda.fechaSalida).isValid() ? dayjs(datosBusqueda.fechaSalida).toDate(): null;
+    const endDate = dayjs(datosBusqueda.fechaVuelta).isValid() ? dayjs(datosBusqueda.fechaVuelta).toDate() : null;
+    const origen = datosBusqueda.origen;
+    const destino = datosBusqueda.destino != "null" ? datosBusqueda.destino : null;
+    const mascota_allowed = datosBusqueda.mascota_allowed ? (datosBusqueda.mascota_allowed === 'true') : false;
 
     const [modalMab, setModalMab] = useState(false);
     const [parrilla, setParrilla] = useState([]);
@@ -92,7 +95,7 @@ export default function Home(props) {
 
     useEffect(() => {
         searchParrilla();
-    }, [router.query.startDate, router.query.endDate, router.query.origen, router.query.destino]);
+    }, [datosBusqueda.startDate, datosBusqueda.endDate, datosBusqueda.origen, datosBusqueda.destino]);
 
     return (
         <Layout>
