@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Popup from "../Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
-import { limpiarListaCarrito, guardarDatosBusqueda } from "store/usuario/compra-slice"
+import { limpiarListaCarrito } from "store/usuario/compra-slice"
 
 registerLocale("es", es);
 
@@ -82,14 +82,6 @@ const BusquedaServicio = (props) => {
   async function redireccionarBuscarServicio() {
     debugger;
      dispatch(limpiarListaCarrito());
-     let search = {
-      origen: origen,
-      destino: destino,
-      startDate: startDate ? dayjs(startDate).format("YYYY-MM-DD") : null,
-      endDate: endDate ? dayjs(endDate).format("YYYY-MM-DD") : null,
-      mascota_allowed: mascota_allowed
-     }
-     dispatch(guardarDatosBusqueda(search))
      await router.push({
       pathname: '/comprar',
       query: {

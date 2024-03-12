@@ -8,13 +8,7 @@ let initialState = {
     listaCarrito: {},
     informacionAgrupada: [],
     datosComprador: {},
-    medioPago: '',
-    origen: '',
-    destino: '',
-    fechaSalida: null,
-    fechaVuelta:null,
-    mascota_allowed: null
-
+    medioPago: ''
 }
 
 if (typeof window !== 'undefined') {
@@ -182,21 +176,8 @@ export const compraSlice = createSlice({
             state.datosComprador = {};
             state.medioPago = '';
             state.live_time = null;
-            state.origen = '';
-            state.destino = '';
-            state.fechaSalida = null;
-            state.fechaVuelta = null;
-            state.mascota_allowed = null;
             localStorage.removeItem(LocalStorageEntities.car);
-        },
-        guardarDatosBusqueda: (state, action) =>{
-            const { origen, destino, startDate, endDate, mascota_allowed } = action.payload;
-            state.origen = origen;
-            state.destino = destino;
-            state.fechaSalida = startDate;
-            state.fechaVuelta = endDate;
-            state.mascota_allowed = mascota_allowed;
-        },
+        }
     },
 });
 
@@ -207,8 +188,7 @@ export const {
     agregarInformacionAsiento, 
     asignarDatosComprador, 
     agregarMedioPago,
-    limpiarListaCarrito,
-    guardarDatosBusqueda
+    limpiarListaCarrito
 } = compraSlice.actions;
 
 export default compraSlice.reducer;
