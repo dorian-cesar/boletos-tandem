@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Popup from "../Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
 import { liberarAsientos } from "store/usuario/compra-slice"
+import { decryptDataNoSaved, encryptDataNoSave, encryptDataNoTime } from "utils/encrypt-data";
 
 registerLocale("es", es);
 
@@ -81,17 +82,25 @@ const BusquedaServicio = (props) => {
 
   async function redireccionarBuscarServicio() {
     debugger;
-     dispatch(liberarAsientos());
-     await router.push({
-      pathname: '/comprar',
-      query: {
-        origen,
-        destino,
-        startDate: startDate ? dayjs(startDate).format("YYYY-MM-DD") : null,
-        endDate: endDate ? dayjs(endDate).format("YYYY-MM-DD") : null,
-        mascota_allowed
-      }
-     }, '/comprar');
+    dispatch(liberarAsientos());
+    
+    const data = {
+       origen,
+       destino,
+       startDate: startDate ? dayjs(startDate).format("YYYY-MM-DD") : null,
+       endDate: endDate ? dayjs(endDate).format("YYYY-MM-DD") : null,
+       mascota_allowed
+    }
+
+    const encriptedData = encryptDataNoSave(data, 'search');
+
+    await router.push(
+      `/comprar?search=${ encriptedData }`
+    );
+
+    if (router.asPath.includes("comprar")) {
+      router.reload();
+    }
   }
 
   async function getDestinos() {
@@ -146,7 +155,9 @@ const BusquedaServicio = (props) => {
   }, [startDate]);
 
   useEffect(() => {
-    const { origen, destino, startDate, endDate } = router.query;
+    if( !router.query.search ) return;
+    const decryptedData =  decryptDataNoSaved(router.query.search, 'search');
+    const { origen, destino, startDate, endDate } = decryptedData;
     const startDateFromUrl =
       startDate && startDate !== "null" && dayjs(startDate).isValid()
         ? dayjs(startDate).toDate()
@@ -162,7 +173,7 @@ const BusquedaServicio = (props) => {
     if (endDate && endDate !== "null") {
       setEndDate(dayjs(endDate).toDate());
     }
-  }, [router.query]);
+  }, [router.query.search]);
 
   useEffect(() => {
     const savedActiveTab = localStorage.getItem("activeTab");
