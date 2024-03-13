@@ -117,10 +117,6 @@ const BusquedaServicio = (props) => {
     );
 
     setIsLoading(false);
-
-    if (router.asPath.includes("comprar")) {
-      router.reload();
-    }
   }
 
   async function getDestinos() {
