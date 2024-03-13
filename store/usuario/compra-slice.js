@@ -136,7 +136,6 @@ export const compraSlice = createSlice({
             state.datosComprador = {};
             state.medioPago = '';
             state.live_time = null;
-            localStorage.removeItem(LocalStorageEntities.car);
         },
         liberarAsientos: (state, action) => {
             Object.entries(state.listaCarrito).map(([key, value]) => {

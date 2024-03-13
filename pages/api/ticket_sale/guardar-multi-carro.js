@@ -1,7 +1,7 @@
 import doLogin from '../../../utils/oauth-token';
 import getConfig from 'next/config'
 import axios from "axios"
-const {serverRuntimeConfig} = getConfig();
+const {serverRuntimeConfig, publicRuntimeConfig} = getConfig();
 const config = serverRuntimeConfig;
 import { WebpayPlus, Environment, Options } from 'transbank-sdk';
 
@@ -33,7 +33,7 @@ export default async (req, res) => {
                 data.object.codigo,
                 data.object.codigo,
                 req.body.montoTotal,
-                serverRuntimeConfig.site_url + "/respuesta-transaccion/"+ data.object.codigo).then(async ({ url, token }) => {
+                publicRuntimeConfig.site_url + "/respuesta-transaccion/"+ data.object.codigo).then(async ({ url, token }) => {
                 
              
                 console.log({url, token, inputName: "TBK_TOKEN"})
