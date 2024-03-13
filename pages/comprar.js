@@ -17,6 +17,8 @@ import { ObtenerParrillaServicioDTO } from "dto/ParrillaDTO";
 import StagePasajes from "../components/ticket_sale/StagePasajes";
 import StagePago from "../components/ticket_sale/StagePago/StagePago";
 
+import { decryptDataNoSaved } from "utils/encrypt-data";
+
 registerLocale("es", es);
 
 const stages = [
@@ -41,14 +43,13 @@ const stages = [
 export default function Home(props) {
     
     const router = useRouter();
+    const decryptedData =  decryptDataNoSaved(router.query.search, 'search');
 
-    
-
-    const startDate = dayjs(router.query.startDate).isValid() ? dayjs(router.query.startDate).toDate(): null;
-    const endDate = dayjs(router.query.endDate).isValid() ? dayjs(router.query.endDate).toDate() : null;
-    const origen = router.query.origen;
-    const destino = router.query.destino != "null" ? router.query.destino : null;
-    const mascota_allowed = router.query.mascota_allowed ? (router.query.mascota_allowed === 'true') : false;
+    const startDate = dayjs(decryptedData.startDate).isValid() ? dayjs(decryptedData.startDate).toDate(): null;
+    const endDate = dayjs(decryptedData.endDate).isValid() ? dayjs(decryptedData.endDate).toDate() : null;
+    const origen = decryptedData.origen;
+    const destino = decryptedData.destino != "null" ? decryptedData.destino : null;
+    const mascota_allowed = decryptedData.mascota_allowed ? (decryptedData.mascota_allowed === 'true') : false;
 
     const [modalMab, setModalMab] = useState(false);
     const [parrilla, setParrilla] = useState([]);
@@ -63,7 +64,6 @@ export default function Home(props) {
     const [stage, setStage] = useState(0);
 
     useEffect(() => {
-        console.log(router.query);
         if( mascota_allowed ) setModalMab(true);
     }, [])
     
@@ -94,7 +94,7 @@ export default function Home(props) {
 
     useEffect(() => {
         searchParrilla();
-    }, [router.query.startDate, router.query.endDate, router.query.origen, router.query.destino]);
+    }, [router.query.search]);
 
     return (
         <Layout>

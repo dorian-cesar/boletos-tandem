@@ -11,6 +11,19 @@ export function encryptDataNoTime(data, key) {
     localStorage.setItem(key, encrypted);
 }
 
+export function encryptDataNoSave(data, key) {
+    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), key).toString();
+    const encodedData = encodeURIComponent(encryptedData);
+    return encodedData;
+}
+
+export function decryptDataNoSaved(data, key) {
+    const decodedData = decodeURIComponent(data);
+    let decrypted = CryptoJS.AES.decrypt(decodedData, key);
+    const transformData = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+    return transformData;
+}
+
 export function decryptData(key) {
     let encrypted = localStorage.getItem(key);
     if (!encrypted) {
