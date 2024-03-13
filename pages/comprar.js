@@ -45,13 +45,13 @@ const stages = [
 export default function Home(props) {
     
     const router = useRouter();
-    const decryptedData =  decryptDataNoSaved(router.query.search, 'search');
+    const decryptedData = router.query.search ? decryptDataNoSaved(router.query.search, 'search') : null;
 
-    const startDate = dayjs(decryptedData.startDate).isValid() ? dayjs(decryptedData.startDate).toDate(): null;
-    const endDate = dayjs(decryptedData.endDate).isValid() ? dayjs(decryptedData.endDate).toDate() : null;
-    const origen = decryptedData.origen.codigo;
-    const destino = decryptedData.destino != "null" ? decryptedData.destino.codigo : null;
-    const mascota_allowed = decryptedData.mascota_allowed ? (decryptedData.mascota_allowed === 'true') : false;
+    const startDate = dayjs(decryptedData?.startDate).isValid() ? dayjs(decryptedData?.startDate).toDate(): null;
+    const endDate = dayjs(decryptedData?.endDate).isValid() ? dayjs(decryptedData?.endDate).toDate() : null;
+    const origen = decryptedData?.origen.codigo;
+    const destino = decryptedData?.destino != "null" ? decryptedData?.destino.codigo : null;
+    const mascota_allowed = decryptedData?.mascota_allowed ? (decryptedData?.mascota_allowed === 'true') : false;
 
     const stateCompra = useSelector((state) => state.compra);
 
