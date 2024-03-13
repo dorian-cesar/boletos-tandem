@@ -184,6 +184,10 @@ export const compraSlice = createSlice({
                 state.live_time = null;
                 localStorage.removeItem(LocalStorageEntities.car);
             })
+        },
+        agregarOrigenDestino: (state, action) => {
+            state.origen = action.payload.origen;
+            state.destino = action.payload.destino;
         }
     },
 });
@@ -196,7 +200,8 @@ export const {
     asignarDatosComprador, 
     agregarMedioPago,
     limpiarListaCarrito,
-    liberarAsientos
+    liberarAsientos,
+    agregarOrigenDestino
 } = compraSlice.actions;
 
 export default compraSlice.reducer;

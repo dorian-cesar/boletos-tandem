@@ -107,7 +107,7 @@ const BusquedaServicio = (props) => {
     if (origen !== null) {
       try {
         let { data } = await axios.post("/api/destinos", {
-          id_ciudad: origen,
+          id_ciudad: origen.codigo,
         });
         setDestinos(data);
       } catch ({ message }) {
@@ -133,7 +133,7 @@ const BusquedaServicio = (props) => {
   function retornaCiudadesSelect(arrayCiudades) {
     return arrayCiudades.map((ciudad) => {
       return {
-        value: ciudad?.codigo,
+        value: ciudad,
         label: ciudad?.nombre,
       };
     });
@@ -251,7 +251,7 @@ const BusquedaServicio = (props) => {
                           selected={
                             origen &&
                             retornaCiudadesSelect([
-                              origenes.find((i) => i.codigo == origen),
+                              origenes.find((i) => i.codigo == origen.codigo),
                             ])
                           }
                           setSelected={cambiarOrigen}
@@ -282,7 +282,7 @@ const BusquedaServicio = (props) => {
                             destino &&
                             destinos.length > 0 &&
                             retornaCiudadesSelect([
-                              destinos.find((i) => i.codigo == destino),
+                              destinos.find((i) => i.codigo == destino.codigo),
                             ])
                           }
                           setSelected={setDestino}

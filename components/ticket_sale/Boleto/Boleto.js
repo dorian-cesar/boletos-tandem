@@ -12,6 +12,7 @@ import LoadingOverlay from "react-loading-overlay";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { format } from "@formkit/tempo";
+import { useSelector } from "react-redux";
 
 
 var customParseFormat = require("dayjs/plugin/customParseFormat");
@@ -21,6 +22,7 @@ const Boleto = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isShowItinerary, setIsShowItinerary] = useState(false);
   const [itinerario, setItinerario] = useState([]);
+  const { origen, destino } = useSelector((state) => state.compra);
 
   let duracion = dayjs(
     props.fechaLlegada + " " + props.horaLlegada,
@@ -65,7 +67,7 @@ const Boleto = (props) => {
                 <div className={ styles['ticket-details__travel'] }>
                   <div className={ styles['ticket-details__travel-detail'] }>
                     <span className={ styles['bold'] }>{ props.horaSalida }</span>
-                    <span className={ styles['bold'] }>{ props.terminalSalida }</span>
+                    <span className={ styles['bold'] }>{ props.stage === 0 ? origen?.nombre : destino?.nombre }</span>
                     <span>{ props.fechaSalida }</span>
                   </div>
                   <div className={ styles['ticket-details__travel-detail'] }>
@@ -75,7 +77,7 @@ const Boleto = (props) => {
                   </div>
                   <div className={ styles['ticket-details__travel-detail'] }>
                     <span className={ styles['bold'] }>{ props.horaLlegada }</span>
-                    <span className={ styles['bold'] }>{ props.terminalDestino }</span>
+                    <span className={ styles['bold'] }>{ props.stage === 0 ? destino?.nombre : origen?.nombre }</span>
                     <span>{ props.fechaLlegada }</span>
                   </div>
                 </div>

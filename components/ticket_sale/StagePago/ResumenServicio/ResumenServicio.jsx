@@ -11,6 +11,7 @@ const ResumenServicio = (props) => {
   const dispatch = useDispatch();
   const carroVenta = useSelector((state) => state.compra.listaCarrito);
   const informacionAgrupada = useSelector((state) => state.compra.informacionAgrupada);
+  const { origen, destino } = useSelector((state) => state.compra);
 
   function groupInfo() {
     const groupInfo = [];
@@ -18,15 +19,15 @@ const ResumenServicio = (props) => {
     Object.entries(carroVenta).map(([key, value]) => {
 
       value.ida.forEach(servicioIda => {
-        const findService = groupInfo.find(servicio => servicio.viaje === `${ servicioIda.terminalOrigen }-${ servicioIda.terminalDestino }` && servicio.fecha === servicioIda.fechaServicio && servicio.hora === servicioIda.horaSalida);
+        const findService = groupInfo.find(servicio => servicio.viaje === `${ origen?.nombre }-${ destino?.nombre }` && servicio.fecha === servicioIda.fechaServicio && servicio.hora === servicioIda.horaSalida);
         if( findService ) {
           groupInfo.map(servicio => {
-            if( servicio.viaje === `${ servicioIda.terminalOrigen }-${ servicioIda.terminalDestino }` && servicio.fecha === servicioIda.fechaServicio && servicio.hora === servicioIda.horaSalida ) {
+            if( servicio.viaje === `${ origen?.nombre }-${ destino?.nombre }` && servicio.fecha === servicioIda.fechaServicio && servicio.hora === servicioIda.horaSalida ) {
               servicio.asientos.push(...servicioIda.asientos);
             }
           });
         } else {
-          const viaje = `${ servicioIda.terminalOrigen }-${ servicioIda.terminalDestino }`;
+          const viaje = `${ origen?.nombre }-${ destino?.nombre }`;
           const fecha = servicioIda.fechaServicio;
           const hora = servicioIda.horaSalida;
           const asientos = [];
@@ -50,15 +51,15 @@ const ResumenServicio = (props) => {
 
       if( value.vuelta ) {
         value.vuelta.forEach(servicioVuelta => {
-          const findService = groupInfo.find(servicio => servicio.viaje === `${ servicioVuelta.terminalOrigen }-${ servicioVuelta.terminalDestino }` && servicio.fecha === servicioVuelta.fechaServicio && servicio.hora === servicioVuelta.horaSalida);
+          const findService = groupInfo.find(servicio => servicio.viaje === `${ destino?.nombre }-${ origen?.nombre }` && servicio.fecha === servicioVuelta.fechaServicio && servicio.hora === servicioVuelta.horaSalida);
           if( findService ) {
             groupInfo.map(servicio => {
-              if( servicio.viaje === `${ servicioVuelta.terminalOrigen }-${ servicioVuelta.terminalDestino }` && servicio.fecha === servicioVuelta.fechaServicio && servicio.hora === servicioVuelta.horaSalida ) {
+              if( servicio.viaje === `${ destino?.nombre }-${ origen?.nombre }` && servicio.fecha === servicioVuelta.fechaServicio && servicio.hora === servicioVuelta.horaSalida ) {
                 servicio.asientos.push(...servicioVuelta.asientos);
               }
             });
           } else {
-            const viaje = `${ servicioVuelta.terminalOrigen }-${ servicioVuelta.terminalDestino }`;
+            const viaje = `${ destino?.nombre }-${ origen?.nombre }`;
             const fecha = servicioVuelta.fechaServicio;
             const hora = servicioVuelta.horaSalida;
             const asientos = [];

@@ -18,6 +18,8 @@ import StagePasajes from "../components/ticket_sale/StagePasajes";
 import StagePago from "../components/ticket_sale/StagePago/StagePago";
 
 import { decryptDataNoSaved } from "utils/encrypt-data";
+import { useDispatch, useSelector } from "react-redux";
+import { agregarOrigenDestino } from "store/usuario/compra-slice";
 
 registerLocale("es", es);
 
@@ -47,9 +49,11 @@ export default function Home(props) {
 
     const startDate = dayjs(decryptedData.startDate).isValid() ? dayjs(decryptedData.startDate).toDate(): null;
     const endDate = dayjs(decryptedData.endDate).isValid() ? dayjs(decryptedData.endDate).toDate() : null;
-    const origen = decryptedData.origen;
-    const destino = decryptedData.destino != "null" ? decryptedData.destino : null;
+    const origen = decryptedData.origen.codigo;
+    const destino = decryptedData.destino != "null" ? decryptedData.destino.codigo : null;
     const mascota_allowed = decryptedData.mascota_allowed ? (decryptedData.mascota_allowed === 'true') : false;
+
+    const stateCompra = useSelector((state) => state.compra);
 
     const [modalMab, setModalMab] = useState(false);
     const [parrilla, setParrilla] = useState([]);
@@ -63,8 +67,15 @@ export default function Home(props) {
     });
     const [stage, setStage] = useState(0);
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         if( mascota_allowed ) setModalMab(true);
+        const origenDestino = {
+            origen: decryptedData?.origen,
+            destino: decryptedData?.destino
+        }
+        dispatch(agregarOrigenDestino(origenDestino));
     }, [])
     
 
@@ -142,6 +153,8 @@ export default function Home(props) {
                             setCarro={ setCarro }
                             setStage={ setStage }
                             searchParrilla={ searchParrilla }
+                            origen={ stages_active[stage].kind == "pasajes_1" ? stateCompra.origen : stateCompra.destino }
+                            destino={ stages_active[stage].kind == "pasajes_2" ? stateCompra.destino : stateCompra.origen }
                             mascota_allowed={ mascota_allowed }/> : ('') 
                     }
                     {

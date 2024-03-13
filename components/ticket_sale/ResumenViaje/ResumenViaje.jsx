@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import { ListaCarritoDTO, PasajeroListaCarritoDTO } from "../../../dto/PasajesDTO";
 
 export const ResumenViaje = (props) => {
+
+  const { origen, destino } = useSelector((state) => state.compra);
   
   const [resumen, setResumen] = useState({
     carro: {},
@@ -72,8 +74,8 @@ export const ResumenViaje = (props) => {
 
         Object.entries(idaList).map(([key, value]) => {
           const datos = {
-            origen: value.terminalOrigen,
-            destino: value.terminalDestino,
+            origen: `${ origen?.nombre } (${ value.terminalOrigen })`,
+            destino: `${ destino?.nombre } (${ value.terminalDestino })`,
             hora: value.horaSalida,
             horaLlegada: value.horaLlegada,
             cantidadAsientos: 0,
@@ -92,8 +94,8 @@ export const ResumenViaje = (props) => {
 
         Object.entries(vueltaList).map(([key, value]) => {
             const datos = {
-              origen: value.terminalOrigen,
-              destino: value.terminalDestino,
+              origen: `${ destino?.nombre } (${ value.terminalOrigen })`,
+              destino: `${ origen?.nombre } (${ value.terminalDestino })`,
               hora: value.horaSalida,
               horaLlegada: value.horaLlegada,
               cantidadAsientos: 0,
