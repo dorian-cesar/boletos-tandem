@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Popup from "../Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
-import { limpiarListaCarrito } from "store/usuario/compra-slice"
+import { liberarAsientos } from "store/usuario/compra-slice"
 import { decryptDataNoSaved, encryptDataNoSave, encryptDataNoTime } from "utils/encrypt-data";
 
 registerLocale("es", es);
@@ -82,7 +82,7 @@ const BusquedaServicio = (props) => {
 
   async function redireccionarBuscarServicio() {
     debugger;
-    dispatch(limpiarListaCarrito());
+    dispatch(liberarAsientos());
     
     const data = {
        origen,
@@ -155,6 +155,7 @@ const BusquedaServicio = (props) => {
   }, [startDate]);
 
   useEffect(() => {
+    if( !router.query.search ) return;
     const decryptedData =  decryptDataNoSaved(router.query.search, 'search');
     const { origen, destino, startDate, endDate } = decryptedData;
     const startDateFromUrl =

@@ -131,6 +131,14 @@ export const compraSlice = createSlice({
             state.medioPago = payload;
         },
         limpiarListaCarrito: (state, action) => {
+            state.listaCarrito = {};
+            state.informacionAgrupada = [];
+            state.datosComprador = {};
+            state.medioPago = '';
+            state.live_time = null;
+            localStorage.removeItem(LocalStorageEntities.car);
+        },
+        liberarAsientos: (state, action) => {
             Object.entries(state.listaCarrito).map(([key, value]) => {
                 if(value.ida){
                     value.ida.forEach(servicioIda => {
@@ -170,13 +178,13 @@ export const compraSlice = createSlice({
                         })
                     })
                 }
+                state.listaCarrito = {};
+                state.informacionAgrupada = [];
+                state.datosComprador = {};
+                state.medioPago = '';
+                state.live_time = null;
+                localStorage.removeItem(LocalStorageEntities.car);
             })
-            state.listaCarrito = {};
-            state.informacionAgrupada = [];
-            state.datosComprador = {};
-            state.medioPago = '';
-            state.live_time = null;
-            localStorage.removeItem(LocalStorageEntities.car);
         }
     },
 });
@@ -188,7 +196,8 @@ export const {
     agregarInformacionAsiento, 
     asignarDatosComprador, 
     agregarMedioPago,
-    limpiarListaCarrito
+    limpiarListaCarrito,
+    liberarAsientos
 } = compraSlice.actions;
 
 export default compraSlice.reducer;

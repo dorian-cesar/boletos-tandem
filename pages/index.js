@@ -10,7 +10,7 @@ import getConfig from "next/config";
 import { registerLocale } from "react-datepicker";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { limpiarListaCarrito } from "store/usuario/compra-slice";
+import { liberarAsientos } from "store/usuario/compra-slice";
 import { limpiarCambio } from "store/usuario/cambio-boleto-slice";
 
 import Banner from "components/banner";
@@ -25,7 +25,7 @@ export default function Home(props) {
   const dispatch = useDispatch();
 
   useEffect(() =>{ 
-    dispatch(limpiarListaCarrito()) 
+    dispatch(liberarAsientos()) 
     dispatch(limpiarCambio())
   }, []);
 
