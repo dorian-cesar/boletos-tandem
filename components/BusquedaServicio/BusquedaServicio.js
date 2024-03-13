@@ -54,6 +54,7 @@ const BusquedaServicio = (props) => {
   const [endDate, setEndDate] = useState(router.query.search && decryptedData?.endDate ? dayjs(decryptedData.endDate).toDate() : null);
   const [datePickerKey, setDatePickerKey] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useState("Búsqueda de Servicio");
 
@@ -89,7 +90,9 @@ const BusquedaServicio = (props) => {
   }
 
   async function redireccionarBuscarServicio() {
-    debugger;
+    if( isLoading ) return;
+    
+    setIsLoading(true);
     dispatch(liberarAsientos());
     
     const data = {
@@ -105,6 +108,8 @@ const BusquedaServicio = (props) => {
     await router.push(
       `/comprar?search=${ encriptedData }`
     );
+
+    setIsLoading(false);
 
     if (router.asPath.includes("comprar")) {
       router.reload();
@@ -340,7 +345,7 @@ const BusquedaServicio = (props) => {
                           className={styles["label-titulo-busqueda-servicio"]}
                         ></label>
                         <button
-                          className={`${styles["button-busqueda-servicio"]} `}
+                          className={`${styles["button-busqueda-servicio"]} ${ isLoading ? styles['loading-button'] : '' }`}
                           onClick={() => {
                              origen &&
                                 destino &&

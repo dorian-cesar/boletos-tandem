@@ -51,6 +51,12 @@
 
 
 }
+
 .button-busqueda-servicio:active {
     background: var(--naranjo-80, #f8ccaf); 
-  }
+}
+
+.loading-button {
+    background: var(--naranjo-80, #f8ccaf) !important; 
+    cursor: not-allowed !important;
+}
