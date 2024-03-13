@@ -66,15 +66,9 @@ const Parrilla = (props) => {
   }, [stage === STAGE_BOLETO_VUELTA]);
 
   useEffect(() => {
-    if (stage === STAGE_BOLETO_IDA) {
       setKey(
         `${props?.thisParrilla?.idTerminalOrigen}-${props?.thisParrilla?.idTerminalDestino}`
       );
-    } else if (stage === STAGE_BOLETO_VUELTA) {
-      setKey(
-        `${props?.thisParrilla?.idTerminalDestino}-${props?.thisParrilla?.idTerminalOrigen}`
-      );
-    }
   }, []);
 
   useEffect(() => actualizarTotalPagar(), [carroCompras]);
@@ -103,10 +97,12 @@ const Parrilla = (props) => {
   }
 
   function obtenerAsientosSeleccionados() {
+    debugger;
     const returnedArray = [];
     if (carroCompras[key]) {
       if (carroCompras[key][stage === 0 ? "ida" : "vuelta"]) {
         carroCompras[key][stage === 0 ? "ida" : "vuelta"].filter((carro) => {
+          debugger;
           if (
             carro.idServicio === props.thisParrilla.idServicio &&
             carro.fechaServicio === props.thisParrilla.fechaServicio
@@ -127,6 +123,7 @@ const Parrilla = (props) => {
   }
 
   const asientoClass = (asiento, indexParrilla) => {
+    debugger;
     try {
       let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
@@ -533,6 +530,7 @@ const Parrilla = (props) => {
   }
 
   function getImage(sit, indexParrilla) {
+    debugger;
     let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
     if (asientosSeleccionados.length > 0) {

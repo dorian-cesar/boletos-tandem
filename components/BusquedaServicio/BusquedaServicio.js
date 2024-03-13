@@ -91,7 +91,7 @@ const BusquedaServicio = (props) => {
 
   async function redireccionarBuscarServicio() {
     if( isLoading ) return;
-    
+
     setIsLoading(true);
     dispatch(liberarAsientos());
     
