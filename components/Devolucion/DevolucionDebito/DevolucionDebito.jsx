@@ -5,28 +5,29 @@ import axios from "axios";
 import { useForm } from "/hooks/useForm";
 import Popup from "../../Popup/Popup";
 import ModalEntities from "../../../entities/ModalEntities";
-
-const anularDatosForm = {
-  boleto: [],
-  codigoTransaccion: "",
-  rutSolicitante: "",
-  usuario: "",
-  banco: "",
-  tipoCuenta: "",
-  numeroCuenta: "",
-  rutTitular: "",
-  email: "",
-};
+import { toast } from "react-toastify";
 
 const DevolucionDebito = (props) => {
-  const { selectedBoletos, codigoTransaccion, tipoCompra, setStage, toast } = props;
+  const [carro, setCarro] = useState({
+    boleto: [],
+    codigoTransaccion: "",
+    rutSolicitante: "",
+    usuario: "",
+    banco: "",
+    tipoCuenta: "",
+    numeroCuenta: "",
+    rutTitular: "",
+    email: "",
+  });
+
+  const { selectedBoletos, codigoTransaccion, tipoCompra, setStage, toast } =
+    props;
   const [boletos, setBoletos] = useState("");
   const [tipoCuentas, setTipoCuentas] = useState([]);
   const [tipoCuenta, setTipoCuenta] = useState(null);
   const [bancos, setBancos] = useState([]);
   const [banco, setBanco] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { formState: registro, onInputChange } = useForm(anularDatosForm);
 
   const [mostrarPopup, setMostrarPopup] = useState(false);
   const [mostrarPopupFinalizar, setMostrarPopupFinalizar] = useState(false);
@@ -35,6 +36,41 @@ const DevolucionDebito = (props) => {
     errorMsg: "",
     status: false,
   });
+
+  function setDataDevolucion({ name, value }) {
+    try {
+      let carro_temp = { ...carro };
+      if (name === "rutSolicitante") {
+        value = validarFormatoRut(value);
+        if (value === null) {
+          toast.error(
+            "El formato del rut solicitante ingresado es incorrecto",
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+            }
+          );
+          return;
+        }
+      }
+      if (name === "rutTitular") {
+        value = validarFormatoRut(value);
+        if (value === null) {
+          toast.error("El formato del rut titular ingresado es incorrecto", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+          });
+          return;
+        }
+      }
+      carro_temp[name] = value;
+      setCarro(carro_temp);
+    } catch ({ message }) {
+      console.error(`Error al agregar informacion del comprador [${message}]`);
+    }
+  }
 
   const abrirPopup = () => {
     setMostrarPopup(true);
@@ -46,7 +82,6 @@ const DevolucionDebito = (props) => {
   const abrirPopupFinalizar = () => {
     setMostrarPopupFinalizar(true);
   };
-
 
   async function obtenerBancos() {
     let data = await axios.post("/api/bancos", {});
@@ -77,15 +112,15 @@ const DevolucionDebito = (props) => {
 
   async function anular() {
     let boleto = selectedBoletos;
-    registro.boleto = boleto;
-    registro.banco = banco;
-    registro.tipoCuenta = tipoCuenta;
-    registro.codigoTransaccion = codigoTransaccion;
+    carro.boleto = boleto;
+    carro.banco = banco;
+    carro.tipoCuenta = tipoCuenta;
+    carro.codigoTransaccion = codigoTransaccion;
     const formStatus = await validarForm();
     if (formStatus) {
       try {
         setIsLoading(true);
-        let resp = await axios.post("/api/anulacion", { ...registro });
+        let resp = await axios.post("/api/anulacion", { ...carro });
         if (resp.data.status) {
           setIsLoading(false);
           abrirPopupFinalizar();
@@ -104,35 +139,44 @@ const DevolucionDebito = (props) => {
 
   function validarForm() {
     return new Promise((resolve, reject) => {
-      const values = Object.values(registro);
+      const values = Object.values(carro);
       const camposVacios = values.filter((v) => v == "");
       if (camposVacios.length > 0) {
+        toast.error("Debe ingresar todos los datos solicitados", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
         cerrarPopup();
-        toast.warn(
-            `Asiento seleccionado superara el máximo de compra permitido`,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              
-            }
-          );
         resolve(false);
       } else {
-        let rutSolicitante = new Rut(registro?.rutSolicitante);
-        let rutTitular = new Rut(registro?.rutTitular);
+        let rutSolicitante = new Rut(carro?.rutSolicitante);
+        let rutTitular = new Rut(carro?.rutTitular);
         if (!rutSolicitante?.isValid) {
-          setError({
-            status: true,
-            errorMsg: "Se requiere ingresar un rut válido solicitante",
+          toast.error("Debe ingresar un rut válido para el solicitante", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
           });
+          cerrarPopup();
           return resolve(false);
         }
         if (!rutTitular?.isValid) {
-          setError({
-            status: true,
-            errorMsg: "Se requiere ingresar un rut válido titular",
+          toast.error("Debe ingresar un rut válido para el titular ", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
           });
+          cerrarPopup();
+          return resolve(false);
+        }
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(carro?.email)) {
+          toast.error("Debe ingresar un correo válido", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+          });
+          cerrarPopup();
           return resolve(false);
         }
 
@@ -165,6 +209,17 @@ const DevolucionDebito = (props) => {
 
   function volverAlInicio() {
     setStage(0);
+  }
+
+  function validarFormatoRut(validaRut) {
+    try {
+      let rut = new Rut(validaRut);
+      let rutConGuion = rut.getNiceRut(true);
+      return rutConGuion;
+    } catch ({ message }) {
+      console.error(`Error al validar formato de rut [${message}]`);
+      return validaRut;
+    }
   }
 
   return (
@@ -209,8 +264,8 @@ const DevolucionDebito = (props) => {
                       name="usuario"
                       placeholder="Nombre titular"
                       className={styles["input"]}
-                      value={registro?.usuario}
-                      onChange={onInputChange}
+                      value={carro?.usuario}
+                      onChange={(e) => setDataDevolucion(e.target)}
                     />
                   </div>
 
@@ -223,8 +278,8 @@ const DevolucionDebito = (props) => {
                       name="rutSolicitante"
                       placeholder="Rut solicitante : 11111111-1"
                       className={styles["input"]}
-                      value={registro?.rutSolicitante}
-                      onChange={onInputChange}
+                      value={carro?.rutSolicitante}
+                      onChange={(e) => setDataDevolucion(e.target)}
                     />
                   </div>
                 </div>
@@ -241,8 +296,8 @@ const DevolucionDebito = (props) => {
                       name="email"
                       placeholder="Email"
                       className={styles["input"]}
-                      value={registro?.email}
-                      onChange={onInputChange}
+                      value={carro?.email}
+                      onChange={(e) => setDataDevolucion(e.target)}
                     />
                   </div>
                   <div className={"col-3"}>
@@ -254,8 +309,8 @@ const DevolucionDebito = (props) => {
                       name="rutTitular"
                       placeholder="Rut del titular de la cuenta : 11111111-1"
                       className={styles["input"]}
-                      value={registro?.rutTitular}
-                      onChange={onInputChange}
+                      value={carro?.rutTitular}
+                      onChange={(e) => setDataDevolucion(e.target)}
                     />
                   </div>
                 </div>
@@ -311,8 +366,8 @@ const DevolucionDebito = (props) => {
                       name="numeroCuenta"
                       placeholder="Número de cuenta"
                       className={styles["input"]}
-                      value={registro?.numeroCuenta}
-                      onChange={onInputChange}
+                      value={carro?.numeroCuenta}
+                      onChange={(e) => setDataDevolucion(e.target)}
                     />
                   </div>
 
@@ -362,7 +417,6 @@ const DevolucionDebito = (props) => {
             modalMethods={volverAlInicio}
           />
         )}
-        
       </div>
     </>
   );

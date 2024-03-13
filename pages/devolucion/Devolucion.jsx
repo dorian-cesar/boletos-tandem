@@ -10,6 +10,7 @@ import BoletosSeleccion from "../../components/Devolucion/BoletosSeleccion/Bolet
 import ModoDevolucion from "../../components/Devolucion/ModoDevolucion/ModoDevolucion";
 import DevolucionDebito from "../../components/Devolucion/DevolucionDebito/DevolucionDebito";
 import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 const Devolucion = (props) => {
   const [stage, setStage] = useState(0);
@@ -105,6 +106,7 @@ const Devolucion = (props) => {
         )}
       </div>
 
+      <ToastContainer />
       <Footer />
     </Layout>
   );

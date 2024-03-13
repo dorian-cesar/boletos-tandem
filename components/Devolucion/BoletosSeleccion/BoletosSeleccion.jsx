@@ -1,5 +1,6 @@
 import styles from "./BoletosSeleccion.module.css";
 import { useEffect, useState, forwardRef } from "react";
+import { toast } from "react-toastify";
 
 const BoletosSeleccion = (props) => {
   const {
