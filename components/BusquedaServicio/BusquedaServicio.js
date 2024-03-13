@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Popup from "../Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
-import { limpiarListaCarrito } from "store/usuario/compra-slice"
+import { liberarAsientos } from "store/usuario/compra-slice"
 
 registerLocale("es", es);
 
@@ -81,7 +81,7 @@ const BusquedaServicio = (props) => {
 
   async function redireccionarBuscarServicio() {
     debugger;
-     dispatch(limpiarListaCarrito());
+     dispatch(liberarAsientos());
      await router.push({
       pathname: '/comprar',
       query: {
