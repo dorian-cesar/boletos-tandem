@@ -28,6 +28,15 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
 ));
 
 const BusquedaServicio = (props) => {
+
+  const router = useRouter();
+
+  let decryptedData;
+
+  if( router.query.search ) {
+    decryptedData = decryptDataNoSaved(router.query.search, 'search');
+  }
+
   const dispatch = useDispatch();
   const listaCarrito = useSelector((state) => state.compra.listaCarrito);
   const {
@@ -36,12 +45,13 @@ const BusquedaServicio = (props) => {
     isShowMascota = false,
     isHomeComponent = true,
   } = props;
+
   const [mascota_allowed, setMascota] = useState(false);
   const [origen, setOrigen] = useState(null);
   const [destino, setDestino] = useState(null);
   const [destinos, setDestinos] = useState([]);
-  const [startDate, setStartDate] = useState(dayjs().toDate());
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(router.query.search && decryptedData?.startDate ? dayjs(decryptedData.startDate).toDate() : dayjs().toDate());
+  const [endDate, setEndDate] = useState(router.query.search && decryptedData?.endDate ? dayjs(decryptedData.endDate).toDate() : null);
   const [datePickerKey, setDatePickerKey] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
@@ -55,8 +65,6 @@ const BusquedaServicio = (props) => {
   const cerrarPopup = () => {
     setMostrarPopup(false);
   };
-
-  const router = useRouter();
 
   useEffect(() => {
     setDatePickerKey((prevKey) => prevKey + 1);
