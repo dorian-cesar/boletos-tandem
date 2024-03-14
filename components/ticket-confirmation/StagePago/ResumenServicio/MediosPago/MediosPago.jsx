@@ -40,7 +40,7 @@ const MediosPago = (props) => {
               name="medioPago"
               value={element.valor2}
               checked={selectedMedioPago === element.valor2}
-              onChange={() => handleMedioPagoChange(element.valor2)}
+              onClick={() => handleMedioPagoChange(element.valor2)}
             />
             {element.valor2 === "WBPAY" ? (
               <img src="/img/icon/cuponera/Logo-webpay.svg"></img>
