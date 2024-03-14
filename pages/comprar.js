@@ -51,7 +51,7 @@ export default function Home(props) {
     const endDate = dayjs(decryptedData?.endDate).isValid() ? dayjs(decryptedData?.endDate).toDate() : null;
     const origen = decryptedData?.origen.codigo;
     const destino = decryptedData?.destino != "null" ? decryptedData?.destino.codigo : null;
-    const mascota_allowed = decryptedData?.mascota_allowed ? (decryptedData?.mascota_allowed === 'true') : false;
+    const mascota_allowed = decryptedData?.mascota_allowed;
 
     const stateCompra = useSelector((state) => state.compra);
 
