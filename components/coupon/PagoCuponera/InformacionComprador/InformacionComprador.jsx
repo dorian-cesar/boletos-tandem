@@ -8,13 +8,19 @@ const InformacionComprador = (props) => {
   const dispatch = useDispatch();
 
   const [carro, setCarro] = useState({
-    datos: { tipoRut: "rut" },
+    datos: { tipoDocumento: "R" },
   });
 
   function setDataComprador({ name, value }) {
     try {
       let carro_temp = { ...carro };
       value = validarFormatoRut(name, value);
+
+      if( carro.datos["tipoDocumento"] == "R" && name === 'rut' && value !== '' ) {
+        value = value.replace(/[^\dkK0-9.-]/g,'');
+        if( value.length > 12 ) return;
+      }
+
       carro_temp.datos[name] = value;
       dispatch(agregarComprador(carro_temp.datos));
       setCarro(carro_temp);
@@ -69,7 +75,7 @@ const InformacionComprador = (props) => {
           <div className={"row"}>
             <div className={"col"}>
               <label className={"contenedor"}>
-                <label className={styles["label"]}>rut</label>
+                <label className={styles["label"]}>RUT</label>
                 <input
                   type="checkbox"
                   checked={carro.datos["tipoDocumento"] == "R" ? "checked" : ""}
@@ -82,7 +88,7 @@ const InformacionComprador = (props) => {
             </div>
             <div className={"col"}>
               <label className={"contenedor"}>
-                <label className={styles["label"]}>pasaporte</label>
+                <label className={styles["label"]}>Pasaporte</label>
                 <input
                   type="checkbox"
                   checked={carro.datos["tipoDocumento"] == "P" ? "checked" : ""}
@@ -106,7 +112,7 @@ const InformacionComprador = (props) => {
                   ? "is-invalid"
                   : ""
               } ${styles["input"]}`}
-              onChange={(e) => setDataComprador(e.target)}
+              onChange={(e) => setDataComprador(e.target) }
             />
           </div>
         </div>
