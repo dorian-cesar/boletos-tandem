@@ -55,8 +55,21 @@ export const FiltroServicios = (props) => {
                             id="horaCheck1"
                             type="checkbox"
                             className={ styles['checkbox-round'] } 
-                            defaultChecked={ filter_horas.includes("6-12") }
-                            onClick={ () => toggleHoras("6-12") }/>
+                            defaultChecked={ filter_horas.includes("00:00-05:59") }
+                            onClick={ () => toggleHoras("00:00-05:59") }/>
+                        <label
+                            className="custom-control-label"
+                            htmlFor={"horaCheck1"}>
+                            &nbsp;00:00 AM a 5:59 AM
+                        </label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input
+                            id="horaCheck1"
+                            type="checkbox"
+                            className={ styles['checkbox-round'] } 
+                            defaultChecked={ filter_horas.includes("06:00-11:59") }
+                            onClick={ () => toggleHoras("06:00-11:59") }/>
                         <label
                             className="custom-control-label"
                             htmlFor={"horaCheck1"}>
@@ -68,8 +81,8 @@ export const FiltroServicios = (props) => {
                             id="horaCheck2"
                             type="checkbox"
                             className={ styles['checkbox-round'] } 
-                            defaultChecked={ filter_horas.includes("12-20") }
-                            onClick={ () => toggleHoras("12-20") }/>
+                            defaultChecked={ filter_horas.includes("12:00-20:00") }
+                            onClick={ () => toggleHoras("12:00-20:00") }/>
                         <label
                             className="custom-control-label"
                             htmlFor="horaCheck2">
@@ -81,8 +94,8 @@ export const FiltroServicios = (props) => {
                             id="horaCheck3"
                             type="checkbox"
                             className={ styles['checkbox-round'] } 
-                            defaultChecked={ filter_horas.includes("20-6") }
-                            onClick={() => toggleHoras("20-6") }/>
+                            defaultChecked={ filter_horas.includes("20:00-23:59") }
+                            onClick={() => toggleHoras("20:00-23:59") }/>
                         <label
                             className="custom-control-label"
                             htmlFor="horaCheck3">

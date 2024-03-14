@@ -134,17 +134,21 @@ const StagePasajes = (props) => {
 
             if ( mascotaAllowed && mappedParrilla.mascota == 0 ) return;
             
-            if ( filter_horas.length > 0 ) {
-                let isTime = filter_horas.reduce((prevValue, actValue) => {
-                    if ( !prevValue ) {
-                        let horaFiltro = actValue.split('-');
-                        let horaViaje = mappedParrilla.horaSalida.split('-');
-                        if( horaViaje[0] <= horaFiltro[1] && horaViaje[0] <= horaFiltro[0] ) {
-                            prevValue= true;
-                        }
-                        return prevValue;
+            if (filter_horas.length > 0) {
+                let horaSalida = mappedParrilla.horaSalida.split(':').map(Number);
+            
+                let isTime = filter_horas.some(horaFiltro => {
+                    let [inicio, fin] = horaFiltro.split('-').map(hora => hora.split(':').map(Number));
+            
+                    if (inicio[0] <= fin[0]) {
+                        return horaSalida[0] >= inicio[0] && horaSalida[0] <= fin[0] &&
+                               horaSalida[1] >= inicio[1] && horaSalida[1] <= fin[1];
+                    } else {
+                        return (horaSalida[0] >= inicio[0] || horaSalida[0] <= fin[0]) &&
+                               horaSalida[1] >= inicio[1] && horaSalida[1] <= fin[1];
                     }
-                }, false);
+                });
+            
                 if (!isTime) return;
             }
 
@@ -164,6 +168,8 @@ const StagePasajes = (props) => {
         });
 
         debugger;
+        console.log(sortedParrilla);
+        console.log(filter_horas);
 
         if( sortedParrilla.length > 0 ) {
             setServicios(sortedParrilla)
