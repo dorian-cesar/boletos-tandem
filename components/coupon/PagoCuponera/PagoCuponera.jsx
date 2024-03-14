@@ -5,6 +5,7 @@ import InformacionComprador from "./InformacionComprador/InformacionComprador.js
 import MedioPago from "./MedioPago/MedioPago.jsx";
 import styles from "./PagoCuponera.module.css";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const PagoCuponera = (props) => {
   const [medioDePago, setMedioDePago] = useState("");
@@ -19,6 +20,10 @@ const PagoCuponera = (props) => {
       }
     } catch (e) {}
   }
+
+  useEffect(() => {
+    obtenerMediosPagos()
+  }, [])
 
   return (
     <>

@@ -24,18 +24,6 @@ const MedioPago = (props) => {
     }
   }
 
-  useEffect(
-    () =>
-      async function obtenerMediosPagos() {
-        const { data } = await axios.post(
-          "/api/ticket_sale/obtener-medios-pago",
-          {}
-        );
-        setMediosPago(data);
-      },
-    []
-  );
-
   return (
     <>
       <div className={styles["container"]}>
@@ -49,7 +37,7 @@ const MedioPago = (props) => {
                   name='tipoMedioPago'
                   value={element.valor2}
                   checked={ carro.datos['tipoMedioPago'] === element.valor2 ? 'checked' : '' }
-                  onChange={ (e) => setDataMedioPago(e.target) }
+                  onClick={ (e) => setDataMedioPago(e.target) }
                 />
                 {element.valor2 === "WBPAY" ? (
                   <img src="/img/icon/cuponera/Logo-webpay.svg"></img>
