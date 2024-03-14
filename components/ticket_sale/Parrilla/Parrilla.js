@@ -562,7 +562,7 @@ const Parrilla = (props) => {
       return "img/a-pet-seleccionado.svg";
     }
     if (sit.estado === "libre" && sit.valorAsiento === 0) {
-      return "";
+      return "img/asiento_disponible.svg";
     }
   }
 
