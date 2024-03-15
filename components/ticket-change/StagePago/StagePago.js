@@ -48,6 +48,7 @@ const StagePago = (props) => {
           apellido: "",
           email: "",
           rut: "",
+          tipoDocumento: "R",
         })
       );
     }

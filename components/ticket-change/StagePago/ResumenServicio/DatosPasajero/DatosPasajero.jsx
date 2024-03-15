@@ -18,14 +18,30 @@ const DatosPasajero = (props) => {
     },
   });
 
+  useEffect(() => {
+    let asientoTemporal = { ...asiento };
+    asientoTemporal["tipoDocumento"] = "R";
+    const infoToDispatch = {
+      servicio,
+      asiento: asientoTemporal,
+    };
+    if (servicio) {
+      dispatch(agregarInformacionAsiento(infoToDispatch));
+    } else {
+      dispatch(asignarDatosComprador(asientoTemporal));
+    }
+  }, []);
+
   function setDataComprador({ name, value }) {
     try {
-      debugger;
       let carro_temp = { ...asiento };
-      if (!carro_temp.tipoDocumento) {
-        carro_temp["tipoDocumento"] = "R";
-      }
       value = validarFormatoRut(name, value);
+
+      if( asiento["tipoDocumento"] == "R" && name === 'rut' && value !== '' ) {
+        value = value.replace(/[^\dkK0-9.-]/g,'');
+        if( value.length > 12 ) return;
+      }
+
       carro_temp[name] = value;
       const infoToDispatch = {
         servicio,
@@ -44,7 +60,7 @@ const DatosPasajero = (props) => {
 
   function validarFormatoRut(name, value) {
     try {
-      if (name.trim() == "R" && value.length > 2) {
+      if (name.trim() == "rut" && value.length > 2) {
         let rut = new Rut(value);
         value = new Rut(rut.getCleanRut().replace("-", "")).getNiceRut(true);
       }

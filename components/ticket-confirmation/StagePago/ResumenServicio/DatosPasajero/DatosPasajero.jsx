@@ -18,6 +18,20 @@ const DatosPasajero = (props) => {
     },
   });
 
+  useEffect(() => {
+    let asientoTemporal = { ...asiento };
+    asientoTemporal["tipoDocumento"] = "R";
+    const infoToDispatch = {
+      servicio,
+      asiento: asientoTemporal,
+    };
+    if (servicio) {
+      dispatch(agregarInformacionAsiento(infoToDispatch));
+    } else {
+      dispatch(asignarDatosComprador(asientoTemporal));
+    }
+  }, []);
+
   function setDataComprador({ name, value }) {
     try {
       debugger;
