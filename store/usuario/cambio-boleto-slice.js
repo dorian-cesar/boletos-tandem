@@ -6,7 +6,7 @@ import { decryptData, encryptData, encryptDataNoTime } from 'utils/encrypt-data'
 let initialState = {
     archivo: {},
     resultado: {},
-    voucher: {}
+    voucher: {},
 }
 
 if (typeof window !== 'undefined') {
@@ -23,15 +23,18 @@ export const cambioBoletoSlice = createSlice({
     initialState,
     reducers: {
         agregarCambio: (state, action) => {
+            debugger;
             const { archivo, resultado, voucher } = action.payload;
             state.archivo = archivo;
             state.resultado = resultado;
             state.voucher = voucher;
+            encryptData(state, LocalStorageEntities.cam, Date.now() + (15 * 60 * 1000));
         },
         limpiarCambio: (state, action) => {
             state.archivo = {};
             state.resultado = {};
             state.voucher = {};
+            state.cambioBoleto = {};
             localStorage.removeItem(LocalStorageEntities.cam);
         }
     },

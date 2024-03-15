@@ -4,21 +4,47 @@ import styles from "./ResumenViaje.module.css";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo";
-import { newIsValidPasajero, newIsValidComprador } from "../../../utils/user-pasajero";
+import {
+  newIsValidPasajero,
+  newIsValidComprador,
+} from "../../../utils/user-pasajero";
 import { toast } from "react-toastify";
-import { agregarCambio } from "store/usuario/cambio-boleto-slice";
+import {
+  agregarCambio,
+  agregarResponseCambio,
+} from "store/usuario/cambio-boleto-slice";
 import {
   ListaCarritoDTO,
   PasajeroListaCarritoDTO,
 } from "../../../dto/PasajesDTO";
+import Popup from "../../Popup/Popup";
+import ModalEntities from "../../../entities/ModalEntities";
+import { useLocalStorage } from "/hooks/useLocalStorage";
 
 export const ResumenViaje = (props) => {
+  const buttonRef = useRef();
+  const { getItem } = useLocalStorage();
+  const [user, setUser] = useState(null);
+  const [mostrarPopup, setMostrarPopup] = useState(false);
   const { boletoValido } = props;
-
+  const [loginOculto, setLoginOculto] = useState(true);
   const router = useRouter();
   const [resumen, setResumen] = useState({
     carro: {},
   });
+  const [popup, setPopup] = useState({
+    modalKey: "",
+    modalClose: "",
+    modalMethods: "",
+    modalTitleButton: "",
+  });
+
+  useEffect(() => {
+    let checkUser = getItem("user");
+    if (checkUser != null) {
+      setUser(checkUser);
+    }
+  }, []);
 
   const clpFormat = new Intl.NumberFormat("es-CL", {
     style: "currency",
@@ -33,6 +59,7 @@ export const ResumenViaje = (props) => {
   const payment_form = useRef(null);
   const [terminos, setTerminos] = useState(false);
   const [sendNews, setSendNews] = useState(true);
+  const [valorCobrar, setValorCobrar] = useState(0);
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const informacionAgrupada =
@@ -126,8 +153,26 @@ export const ResumenViaje = (props) => {
 
   async function sendToPayment() {
     try {
+      debugger;
+      if (valorCobrar < 0) {
+        abrirPopup();
+      }
+
+      if (valorCobrar === 0) {
+        finalizarCambio();
+      }
+
+      if (valorCobrar > 0) {
+        finalizarCambioTBK();
+      }
+    } catch ({ response }) {}
+  }
+
+  async function finalizarCambio() {
+    try {
+      cerrarPopup();
       let validator = isPaymentValid();
-      if( !validator.valid ) {
+      if (!validator.valid) {
         toast.error(validator.error, {
           position: "top-right",
           autoClose: 5000,
@@ -136,7 +181,7 @@ export const ResumenViaje = (props) => {
         return;
       }
       validator = newIsValidComprador(datosComprador);
-      if(!validator.valid){
+      if (!validator.valid) {
         toast.error(validator.error, {
           position: "top-right",
           autoClose: 5000,
@@ -145,7 +190,7 @@ export const ResumenViaje = (props) => {
         return;
       }
 
-      if(!medioPago){
+      if (!medioPago) {
         toast.error("Debe seleccionar un medio de pago", {
           position: "top-right",
           autoClose: 5000,
@@ -154,7 +199,7 @@ export const ResumenViaje = (props) => {
         return;
       }
 
-      if(!terminos){
+      if (!terminos) {
         toast.error("Debe aceptar los términos y condiciones", {
           position: "top-right",
           autoClose: 5000,
@@ -162,7 +207,6 @@ export const ResumenViaje = (props) => {
         });
         return;
       }
-
       let fechaServicioParse = formatearFecha(
         informacionAgrupada[0]?.fechaServicio
       );
@@ -200,17 +244,138 @@ export const ResumenViaje = (props) => {
         data = error.response.data;
       }
       if (data.status) {
-        dispatch(agregarCambio(data.object))
+        dispatch(agregarCambio(data.object));
         const url = `/respuesta-transaccion-cambio/${data.object.voucher.boleto}`;
         router.push(url);
       } else {
-        toast.warn(data.message, {
+        toast.warn(data.object?.resultado?.mensaje, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
         });
       }
-    } catch ({ response }) {}
+    } catch (error) {}
+  }
+
+  async function finalizarCambioTBK() {
+    debugger;
+    try {
+      cerrarPopup();
+      let validator = isPaymentValid();
+      if (!validator.valid) {
+        toast.error(validator.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+      validator = newIsValidComprador(datosComprador);
+      if (!validator.valid) {
+        toast.error(validator.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+
+      if (!medioPago) {
+        toast.error("Debe seleccionar un medio de pago", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+
+      if (!terminos) {
+        toast.error("Debe aceptar los términos y condiciones", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        return;
+      }
+      let fechaServicioParse = formatearFecha(
+        informacionAgrupada[0]?.fechaServicio
+      );
+      let fechaServicioSalidarParse =
+        formatearFecha(informacionAgrupada[0]?.fechaSalida) +
+        informacionAgrupada[0]?.horaSalida.replace(":", "");
+      let cambiarBoleto = {
+        boleto: boletoValido?.boleto,
+        idSistema: 7,
+        idIntegrador: 1000,
+        asiento: informacionAgrupada[0]?.asientos[0]?.asiento,
+        clase: informacionAgrupada[0]?.asientos[0]?.claseBus,
+        idServicio: informacionAgrupada[0]?.idServicio,
+        fechaServicio: fechaServicioParse,
+        fechaSalida: fechaServicioSalidarParse,
+        piso: informacionAgrupada[0]?.asientos[0]?.piso,
+        email: informacionAgrupada[0]?.asientos[0]?.email,
+        destino: informacionAgrupada[0]?.idTerminalDestino,
+        idOrigen: informacionAgrupada[0]?.idTerminalOrigen,
+        idDestino: informacionAgrupada[0]?.idTerminalDestino,
+        rut: informacionAgrupada[0]?.asientos[0]?.rut
+          .replace(".", "")
+          .replace(".", ""),
+        tipoDocumento: informacionAgrupada[0]?.asientos[0]?.tipoDocumento,
+      };
+
+      if (!isPaymentValid()) return;
+
+      let data;
+      try {
+        const response = await axios.post(
+          "/api/ticket_sale/cambiar-boleto",
+          cambiarBoleto
+        );
+        data = response.data;
+      } catch (error) {
+        data = error.response.data;
+      }
+      console.log('daat', data)
+      if (data.status) {
+        debugger;
+        dispatch(agregarCambio(data.object));
+        await pagarWebPay(); 
+      } else {
+        toast.warn(data.object?.resultado?.mensaje, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+      }
+    } catch (error) {}
+  }
+
+  async function pagarWebPay(){
+    debugger;
+    let resumenCompra = {
+      medioDePago: medioPago,
+      montoTotal: valorCobrar,
+      idSistema: 7,
+      integrador: 1000,
+      datosComprador: datosComprador,
+      listaCarrito: [],
+    };
+
+    try {
+      debugger;
+      const response = await axios.post(
+        "/api/ticket_sale/guardar-transaccion-cambio",
+        resumenCompra
+      );
+      
+      setPayment({
+        ...payment,
+        url: response?.data.url,
+        token: response?.data.token,
+      });
+
+    } catch (error) {
+    }
   }
 
   function isPaymentValid() {
@@ -268,6 +433,37 @@ export const ResumenViaje = (props) => {
 
     setTotalPagar(total);
   }, [resumen]);
+
+  useEffect(() => {
+    setValorCobrar(Number(totalPagar) - Number(boletoValido["valor"]));
+  }, [resumen]);
+
+  const abrirPopup = () => {
+    if (user) {
+      let modal = { ...popup };
+      modal.modalClose = cerrarPopup;
+      modal.modalTitleButton = "Continuar";
+      modal.modalMethods = finalizarCambio;
+      modal.modalKey = ModalEntities.exchange_return_information_login;
+      setPopup(modal);
+    } else {
+      let modal = { ...popup };
+      modal.modalClose = cerrarPopup;
+      modal.modalTitleButton = "Iniciar sesión";
+      modal.modalMethods = iniciarSesion;
+      modal.modalKey = ModalEntities.exchange_return_information_no_login;
+      setPopup(modal);
+    }
+    setMostrarPopup(true);
+  };
+  const cerrarPopup = () => {
+    setMostrarPopup(false);
+  };
+
+  const iniciarSesion = () => {
+    buttonRef.current.click();
+    cerrarPopup();
+  };
 
   return (
     <div className={styles["resumen-container"]}>
@@ -334,8 +530,8 @@ export const ResumenViaje = (props) => {
               Valor boleto nuevo: {clpFormat.format(totalPagar)}
             </span>
             <span className={styles["total-pagar"]}>
-              Total a pagar:{" "}
-              {clpFormat.format(totalPagar - Number(boletoValido["valor"]))}
+              {valorCobrar < 0 ? "Saldo a favor " : "Total a cancelar "}
+              {clpFormat.format(valorCobrar)}
             </span>
           </div>
           <div className={styles["contenedor-checks"]}>
@@ -344,7 +540,7 @@ export const ResumenViaje = (props) => {
                 className="form-check-input"
                 type="checkbox"
                 value={terminos}
-                onChange={()=> setTerminos(!terminos)}
+                onChange={() => setTerminos(!terminos)}
                 id="flexCheckDefault"
               />
               <label className="form-check-label" htmlFor="flexCheckDefault">
@@ -356,7 +552,7 @@ export const ResumenViaje = (props) => {
                 className="form-check-input"
                 type="checkbox"
                 value={sendNews}
-                onChange={()=> setSendNews(!sendNews)}
+                onChange={() => setSendNews(!sendNews)}
                 id="flexCheckDefault"
               />
               <label className="form-check-label" htmlFor="flexCheckDefault">
@@ -374,9 +570,7 @@ export const ResumenViaje = (props) => {
               sendToPayment();
             }}
           >
-            {totalPagar - Number(boletoValido["valor"]) === 0
-              ? "Continuar"
-              : "Pagar"}
+            {valorCobrar <= 0 ? "Continuar" : "Pagar"}
           </button>
           <form
             ref={payment_form}
@@ -387,7 +581,22 @@ export const ResumenViaje = (props) => {
             <input name="TBK_TOKEN" value={payment.token} />
           </form>
         </div>
+
+        <div
+          className={styles["total-pagar"]}
+          ref={buttonRef}
+          data-bs-toggle="modal"
+          data-bs-target="#loginModal"
+        ></div>
       </div>
+      {mostrarPopup && (
+        <Popup
+          modalKey={popup.modalKey}
+          modalClose={popup.modalClose}
+          modalMethods={popup.modalMethods}
+          modalTitleButton={popup.modalTitleButton}
+        />
+      )}
     </div>
   );
 };

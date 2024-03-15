@@ -3,7 +3,7 @@ import styles from "./Popup.module.css";
 import ModalEntities from "../../entities/ModalEntities";
 
 
-const Popup = ({ modalKey, modalClose , modalMethods }) => {
+const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton }) => {
 
   const popInfo = {
     [ModalEntities.email_success]: {
@@ -136,6 +136,20 @@ const Popup = ({ modalKey, modalClose , modalMethods }) => {
       title: "¡Se acabo el tiempo 🥺!",
       body: "Se ha terminado el tiempo para poder realizar su compra",
       buttonMessage: "Volver al inicio",
+      imageIcon: "/img/icon/popup/warning-outline.svg",
+      onClick: modalMethods
+    },
+    [ModalEntities.exchange_return_information_no_login]: {
+      title: "¡Usuario(a)!",
+      body: "El saldo a favor será devuelto como dinero a su cuenta wallet, para ello debe iniciar sesión.",
+      buttonMessage: modalTitleButton,
+      imageIcon: "/img/icon/popup/warning-outline.svg",
+      onClick: modalMethods
+    },
+    [ModalEntities.exchange_return_information_login]: {
+      title: "¡Usuario(a)!",
+      body: "El saldo a favor será devuelto como dinero a su cuenta wallet.",
+      buttonMessage: modalTitleButton,
       imageIcon: "/img/icon/popup/warning-outline.svg",
       onClick: modalMethods
     }
