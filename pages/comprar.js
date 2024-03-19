@@ -123,7 +123,7 @@ export default function Home(props) {
             </div>
             <div className="pasajes-compra pb-5">
                 <div className="container">
-                    <ul className="d-flex flex-row justify-content-around py-4">
+                    <ul className="d-flex flex-row justify-content-around py-4 px-0">
                         {
                             stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
                                 return(

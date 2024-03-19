@@ -76,7 +76,7 @@ export default function cuponera(props) {
                 />
                 <div className="pasajes-compra bg-transparent">
                   <div className="container">
-                    <ul className="d-flex flex-row justify-content-around py-4">
+                    <ul className="d-flex flex-row justify-content-around py-4 px-0">
                       {stages
                         .filter((stageMaped) => stageMaped.kind != "pasajes_2")
                         .map((stageMaped, indexStage) => {
