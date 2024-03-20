@@ -157,11 +157,11 @@ export default function Home(props) {
                   <div className={"col-6 text-center"}>
 
                    
-                    <a className={styles["pay-for"]}> <img
+                    {/* <a className={styles["pay-for"]}> <img
                       className={styles["image-download"]}
                       src="/img/icon/coupon-response/download-outline.svg"
                       alt=""
-                    /> Descarga tu cuponera aquí</a>
+                    /> Descarga tu cuponera aquí</a> */}
                   </div>
                   <div className={"col-6 text-center"}>
 
