@@ -33,7 +33,7 @@ scenarios:
         - get:
             url: "/"
         - get:
-            url: "/compra"
+            url: "/comprar"
         - get:
             url: "/devolucion"
         - get:
