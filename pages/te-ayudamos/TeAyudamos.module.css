@@ -60,7 +60,11 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    
+    cursor: default;
+}
+
+.button:hover {
+    background: var(--naranjo-80, #f8ccaf);
 }
 
 .title-message{
