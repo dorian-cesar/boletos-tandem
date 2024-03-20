@@ -26,9 +26,8 @@ const Parrilla = (props) => {
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const dispatch = useDispatch();
 
-  const { isShowParrilla = false, parrilla, stage, setParrilla, setIsLoading } = props;
+  const { isShowParrilla = false, parrilla, stage, setParrilla, setIsLoading, setModalMab } = props;
 
-  const [modalMab, setModalMab] = useState(false);
   const [openPane, setOpenPane] = useState(false);
   const [key, setKey] = useState(null);
   const [totalPagar, setTotalPagar] = useState(0);
@@ -251,6 +250,7 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
+      debugger;
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
 
       asiento['piso'] = piso;
@@ -274,6 +274,10 @@ const Parrilla = (props) => {
         asiento.estado == ASIENTO_LIBRE ||
         asiento.estado == ASIENTO_LIBRE_MASCOTA
       ) {
+
+        if( asiento.tipo === ASIENTO_TIPO_MASCOTA ) {
+          setModalMab(true);
+        }
 
         if (stage === STAGE_BOLETO_VUELTA) {
           let dataVuelta = [];

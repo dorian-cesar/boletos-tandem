@@ -70,7 +70,7 @@ export default function Home(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if( mascota_allowed ) setModalMab(true);
+        // if( mascota_allowed ) setModalMab(true);
         const origenDestino = {
             origen: decryptedData?.origen,
             destino: decryptedData?.destino
@@ -155,6 +155,7 @@ export default function Home(props) {
                             searchParrilla={ searchParrilla }
                             origen={ stages_active[stage].kind == "pasajes_1" ? stateCompra.origen : stateCompra.destino }
                             destino={ stages_active[stage].kind == "pasajes_2" ? stateCompra.destino : stateCompra.origen }
+                            setModalMab={ setModalMab }
                             mascota_allowed={ mascota_allowed }/> : ('') 
                     }
                     {

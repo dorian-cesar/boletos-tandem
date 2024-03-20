@@ -14,7 +14,7 @@ const STAGE_BOLETO_VUELTA = 1;
 
 const StagePasajes = (props) => {
 
-    const { parrilla, stage, loadingParrilla, setParrilla, startDate, endDate, carro, setCarro, setStage, searchParrilla, mascota_allowed = false } = props;
+    const { parrilla, stage, loadingParrilla, setParrilla, startDate, endDate, carro, setCarro, setStage, searchParrilla, mascota_allowed = false, setModalMab } = props;
 
     const [filter_tipo, setFilterTipo] = useState([]);
     const [filter_horas, setFilterHoras] = useState([]);
@@ -26,7 +26,6 @@ const StagePasajes = (props) => {
     const [asientosVuelta, setAsientosVuelta] = useState([]);
     const [servicioIda, setServicioIda] = useState(null);
     const [servicioVuelta, setServicioVuelta] = useState(null);
-    const [modalMab, setModalMab] = useState(false);
     const [servicios, setServicios] = useState(null);
 
     const toggleTipo = useCallback((tipo) => {
@@ -163,7 +162,8 @@ const StagePasajes = (props) => {
                     setPasaje={ setPasaje }
                     setOpenPane={ setOpenPaneRoot }
                     parrilla={parrilla}
-                    setParrilla={setParrilla}/>
+                    setParrilla={setParrilla}
+                    setModalMab={setModalMab}/>
             );
         });
 

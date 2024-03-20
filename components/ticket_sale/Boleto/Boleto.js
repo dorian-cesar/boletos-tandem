@@ -145,6 +145,7 @@ const Boleto = (props) => {
               setPasaje={props.setPasaje}
               isLoading={ isLoading }
               setIsLoading={ setIsLoading }
+              setModalMab={props.setModalMab}
               />
           </div>
         </LoadingOverlay>
