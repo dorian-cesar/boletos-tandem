@@ -234,7 +234,8 @@ export default function Header({ openNav }: { openNav: any }) {
         <Popup 
           modalKey={ ModalEntities.car_live_time_end }
           modalClose={ null }
-          modalMethods={ timeEnd }/>
+          modalMethods={ timeEnd }
+          modalTitleButton={ '' }/>
       }
     </>
   );
