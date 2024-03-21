@@ -96,12 +96,10 @@ const Parrilla = (props) => {
   }
 
   function obtenerAsientosSeleccionados() {
-    debugger;
     const returnedArray = [];
     if (carroCompras[key]) {
       if (carroCompras[key][stage === 0 ? "ida" : "vuelta"]) {
         carroCompras[key][stage === 0 ? "ida" : "vuelta"].filter((carro) => {
-          debugger;
           if (
             carro.idServicio === props.thisParrilla.idServicio &&
             carro.fechaServicio === props.thisParrilla.fechaServicio
@@ -122,7 +120,6 @@ const Parrilla = (props) => {
   }
 
   const asientoClass = (asiento, indexParrilla) => {
-    debugger;
     try {
       let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
@@ -318,7 +315,7 @@ const Parrilla = (props) => {
           asiento.tipo == ASIENTO_TIPO_MASCOTA
         ) {
           asientosTemporal = await servicioTomarAsiento(
-            parrilla,
+            props.thisParrilla,
             asiento.asientoAsociado,
             piso,
             asientosTemporal,
@@ -341,10 +338,18 @@ const Parrilla = (props) => {
             ...carrito,
             asiento: asignarAsientoAsociado(asiento),
           };
+          newCarrito.asiento = { 
+            ...newCarrito.asiento,
+            piso, 
+            claseBus: piso === 1 ? props.thisParrilla.idClaseBusPisoUno : props.thisParrilla.idClaseBusPisoDos
+          }
+
           if (newCarrito.asiento) dispatch(agregarServicio(newCarrito));
+          
           if(stage === STAGE_BOLETO_VUELTA){
             setCantidadVuelta(cantidadVuelta+1);
           }
+          
           if(stage === STAGE_BOLETO_IDA){
             setCantidadIda(cantidadIda+1);
           }
@@ -534,7 +539,6 @@ const Parrilla = (props) => {
   }
 
   function getImage(sit, indexParrilla) {
-    debugger;
     let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
     if (asientosSeleccionados.length > 0) {
@@ -741,7 +745,7 @@ const Parrilla = (props) => {
                                   key={`columna-asiento-${kk}`}
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    tomarAsiento(ii, props, props.k, 1);
+                                    tomarAsiento(ii, props, props.k, 2);
                                   }}
                                   className={`${
                                     styles["columna"]

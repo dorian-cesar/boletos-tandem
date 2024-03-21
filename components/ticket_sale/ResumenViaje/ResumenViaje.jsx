@@ -177,8 +177,6 @@ export const ResumenViaje = (props) => {
         });
         resumenCompra.listaCarrito.push(carrito);
       });
-
-      console.log('carro', resumenCompra)
       const { data } = await axios.post("/api/ticket_sale/guardar-multi-carro", resumenCompra);
 
       if (Boolean(data.error)) {

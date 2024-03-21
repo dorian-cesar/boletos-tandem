@@ -127,8 +127,8 @@ export const compraSlice = createSlice({
             state.datosComprador = payload;
         },
         agregarMedioPago: (state, action) => {
-            const { payload } = action;
-            state.medioPago = payload;
+            const { medioPago } = action.payload;
+            state.medioPago = medioPago;
         },
         limpiarListaCarrito: (state, action) => {
             state.listaCarrito = {};

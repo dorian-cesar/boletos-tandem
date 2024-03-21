@@ -6,8 +6,8 @@ import { agregarMedioPago } from "store/usuario/compra-slice";
 
 const MediosPago = (props) => {
   const {mediosPago, setMediosPago} = props;
-  const [selectedMedioPago, setSelectedMedioPago] = useState(null); // no se si los podemos controlar con el store para pagar
-  const [codigoCuponera, setCodigoCuponera] = useState(""); // lo mismo cuando seleccionen cuponera guardar esos datos en el store para hacer validaciones
+  const [selectedMedioPago, setSelectedMedioPago] = useState(null); 
+  const [codigoCuponera, setCodigoCuponera] = useState(""); 
 
   const dispatch = useDispatch();
   const medioPago = useSelector((state) => state.compra.medioPago);
@@ -16,6 +16,21 @@ const MediosPago = (props) => {
     dispatch(agregarMedioPago(id));
     setSelectedMedioPago(medioPago);
   };
+
+  const [carro, setCarro] = useState({
+    datos: {},
+  });
+
+  function setDataMedioPago({ name, value }) {
+    try {
+      let carro_temp = { ...carro };
+      carro_temp.datos[name] = value;
+      dispatch(agregarMedioPago(carro_temp.datos));
+      setCarro(carro_temp);
+    } catch ({ message }) {
+      console.error(`Error al agregar informacion del comprador [${message}]`);
+    }
+  }
 
   return (
     <>
@@ -27,8 +42,8 @@ const MediosPago = (props) => {
               id={element.id}
               name="medioPago"
               value={element.valor2}
-              checked={selectedMedioPago === element.valor2}
-              onClick={() => handleMedioPagoChange(element.valor2)}
+              checked={ carro.datos['medioPago'] === element.valor2 ? 'checked' : '' }
+              onClick={ (e) => setDataMedioPago(e.target) }
             />
             {element.valor2 === "WBPAY" ? (
               <img src="/img/icon/cuponera/Logo-webpay.svg"></img>
@@ -58,7 +73,7 @@ const MediosPago = (props) => {
               name="codigoCuponera"
               placeholder="Ej: XTQ1234567"
               className={styles["input-body"]}
-              onChange={(e) => setCodigoCuponera(e.target.value)}
+              onChange={(e) => setCodigoCuponera(e.target.value.toUpperCase())}
             />
           </>
         ) : null}
