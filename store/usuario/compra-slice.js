@@ -25,7 +25,6 @@ export const compraSlice = createSlice({
     initialState,
     reducers: {
         agregarServicio: (state, action) => {
-            debugger;
             const { payload } = action;
             let key = '';
             
@@ -73,7 +72,6 @@ export const compraSlice = createSlice({
             }
         },
         eliminarServicio: (state, action) => {
-            debugger;
             const { payload } = action;
             let key = '';
             
@@ -106,13 +104,10 @@ export const compraSlice = createSlice({
             state.informacionAgrupada = payload;
         },
         agregarInformacionAsiento: (state, action) => {
-            debugger;
             const { payload } = action;
             state.informacionAgrupada = state.informacionAgrupada.map((servicio) => {
-                debugger;
                 if( servicio.idServicio === payload.servicio.idServicio ) {
                     servicio.asientos = servicio.asientos.map((asiento) => {
-                        debugger;
                         if( asiento.asiento === payload.asiento.asiento ) {
                             asiento = payload.asiento;
                         }

@@ -51,6 +51,26 @@ const DatosPasajero = (props) => {
 
       if (servicio) {
         dispatch(agregarInformacionAsiento(infoToDispatch));
+
+        //
+        // TODO:
+        // Para: Mi yo del futuro d=====(￣▽￣*)b
+        // Posiblemente te digan, "oh, queremos que la mascotita tenga su nombre" a los chistosos se les ocurre cuestiones todos los dias
+        // Aqui dejo una pista de que habria que borrar lo que esta abajo y validar que clase de información quieren (┬┬﹏┬┬)
+        // Tambien en ResumenServicio.jsx habria que eliminar la validacion que no muestra el acordeon de rellenar ingormacion del pasajero
+        // Eso TKM
+        //
+        if( asiento.asientoAsociado ) {
+          debugger;
+          let asientoMab = { ...servicio.asientos.find((asientoMab) => asientoMab.asiento === asiento.asientoAsociado) };
+          asientoMab[name] = value;
+          asientoMab["tipoDocumento"] = asiento.tipoDocumento;
+
+          dispatch(agregarInformacionAsiento({
+            servicio,
+            asiento: asientoMab
+          }));
+        }
       } else {
         dispatch(asignarDatosComprador(carro_temp));
       }

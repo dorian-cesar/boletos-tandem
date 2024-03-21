@@ -86,6 +86,24 @@ const ResumenServicio = (props) => {
     dispatch(agruparInformacionPago(groupInfo));
   }
 
+  function renderInformacionPasajero(info) {
+    let pasajero = 0;
+    const renderInfo = info.asientos.map((asiento, index) => {
+      if( asiento.tipo && asiento.tipo !== 'pet' ) {
+        pasajero++;
+        return (
+          <InformacionPasajero 
+            className='w-100' 
+            key={ `${ asiento.asiento }-key-${ index }` }
+            title={ asiento.asientoAsociado ? `Pasajero ${ pasajero } | Asiento ${ asiento.asiento } + Asiento ${ asiento.asientoAsociado } 🐾` : `Pasajero ${ pasajero } | Asiento ${ asiento.asiento }` }
+            asiento={ asiento }
+            servicio={ info } />
+        );
+      }
+    })
+    return renderInfo;
+  }
+
   useEffect(() => groupInfo(), []);
 
   return (
@@ -100,18 +118,7 @@ const ResumenServicio = (props) => {
               hora={ info.hora }
               open={ true }
             >
-              {
-                info.asientos.map((asiento, index) => {
-                  return (
-                    <InformacionPasajero 
-                      className='w-100' 
-                      key={ `${ asiento.asiento }-key-${ index }` }
-                      title={ `Pasajero ${ index + 1 } | Asiento ${ asiento.asiento }` }
-                      asiento={ asiento }
-                      servicio={ info } />
-                  );
-                })
-              }
+              { renderInformacionPasajero(info) }
             </Acordeon>
           );
         })
