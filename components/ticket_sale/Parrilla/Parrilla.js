@@ -35,6 +35,11 @@ const Parrilla = (props) => {
   const [cantidadIda, setCantidadIda] = useState(0);
   const [cantidadVuelta, setCantidadVuelta] = useState(0);
 
+  const clpFormat = new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  });
+
   useEffect(() => {
     if (isShowParrilla && !parrilla.length) {
       setOpenPaneRoot(props.k);
@@ -486,6 +491,7 @@ const Parrilla = (props) => {
           hideProgressBar: false,
         }
       );
+      setIsLoading(false);
       return false;
     }
 
@@ -508,6 +514,7 @@ const Parrilla = (props) => {
           autoClose: 5000,
           hideProgressBar: false,
         });
+        setIsLoading(false);
         return false;
       }
     }
@@ -835,7 +842,7 @@ const Parrilla = (props) => {
                 validarAsientosTomados() ? props.setPasaje(props) : "";
               }}
             >
-              <span>Continuar: ${totalPagar}</span>
+              <span>Continuar: { clpFormat.format(totalPagar)}</span>
             </div>
             {/* <div className={styles["button_little_car"]}>
               <span>Agregar al carro</span>
