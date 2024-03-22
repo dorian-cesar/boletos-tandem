@@ -8,13 +8,7 @@ export default async (req, res) => {
 
     try {
         let token = await doLogin();
-        let data = await axios.post(config.service_url + `/cuponera/validarUsoCuponera`, {
-            "origen":req.body.origen,
-            "destino":req.body.destino,
-            "fechaServicio":req.body.fechaServicio, /*dd-MM-yyyy*/
-            "idServicio":req.body.idServicio,
-            "codigoCuponera":req.body.codigoCuponera
-        }, {
+        let data = await axios.post(config.service_url + `/cuponera/validarUsoCuponera`, req.body, {
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
@@ -23,7 +17,7 @@ export default async (req, res) => {
         res.status(200).json(data.data);
     } catch(e){
         console.log(e)
-        res.status(400).json(e)
+        res.status(400).json(e?.response?.data)
     }
     
 }   

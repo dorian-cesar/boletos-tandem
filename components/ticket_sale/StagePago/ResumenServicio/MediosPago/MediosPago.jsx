@@ -5,17 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { agregarMedioPago } from "store/usuario/compra-slice";
 
 const MediosPago = (props) => {
-  const {mediosPago, setMediosPago} = props;
+  const {mediosPago, setMediosPago, codigoCuponera, setCodigoCuponera} = props;
   const [selectedMedioPago, setSelectedMedioPago] = useState(null); 
-  const [codigoCuponera, setCodigoCuponera] = useState(""); 
+  const [validar, setValidar] =useState(false);
 
   const dispatch = useDispatch();
   const medioPago = useSelector((state) => state.compra.medioPago);
-
-  const handleMedioPagoChange = (id) => {
-    dispatch(agregarMedioPago(id));
-    setSelectedMedioPago(medioPago);
-  };
 
   const [carro, setCarro] = useState({
     datos: {},
@@ -27,11 +22,12 @@ const MediosPago = (props) => {
       carro_temp.datos[name] = value;
       dispatch(agregarMedioPago(carro_temp.datos));
       setCarro(carro_temp);
+      setSelectedMedioPago(carro_temp.datos.medioPago)
     } catch ({ message }) {
       console.error(`Error al agregar informacion del comprador [${message}]`);
     }
   }
-
+  
   return (
     <>
       <div className={styles["container"]}>
@@ -61,7 +57,7 @@ const MediosPago = (props) => {
           </div>
         ))}
 
-        {selectedMedioPago === "CUP" ? (
+        { selectedMedioPago === 'CUP' ? (
           <>
             <span className={styles["text-input-coupon"]}>
               {" "}

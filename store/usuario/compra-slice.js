@@ -8,7 +8,10 @@ let initialState = {
     listaCarrito: {},
     informacionAgrupada: [],
     datosComprador: {},
-    medioPago: ''
+    medioPago: '',
+    archivo: {},
+    resultado: {},
+    voucher: {},
 }
 
 if (typeof window !== 'undefined') {
@@ -188,7 +191,13 @@ export const compraSlice = createSlice({
         agregarOrigenDestino: (state, action) => {
             state.origen = action.payload.origen;
             state.destino = action.payload.destino;
-        }
+        },
+        agregarCompraCuponera: (state, action) => {
+            const { archivo, resultado, voucher } = action.payload;
+            state.archivo = archivo;
+            state.resultado = resultado;
+            state.voucher = voucher;
+        },
     },
 });
 
@@ -201,7 +210,8 @@ export const {
     agregarMedioPago,
     limpiarListaCarrito,
     liberarAsientos,
-    agregarOrigenDestino
+    agregarOrigenDestino,
+    agregarCompraCuponera
 } = compraSlice.actions;
 
 export default compraSlice.reducer;

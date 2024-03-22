@@ -6,7 +6,7 @@ import Acordeon from "../../Acordeon/Acordeon";
 import ResumenServicio from "./ResumenServicio/ResumenServicio";
 import PuntoEmbarque from "./ResumenServicio/PuntoEmbarque/PuntoEmbarque";
 import DatosPasajero from "./ResumenServicio/DatosPasajero/DatosPasajero";
-import MediosPago from "./ResumenServicio/MediosPago/MediosPago"
+import MediosPago from "./ResumenServicio/MediosPago/MediosPago";
 
 import styles from "./StagePago.module.css";
 import { ResumenViaje } from "../ResumenViaje/ResumenViaje";
@@ -17,7 +17,9 @@ import { asignarDatosComprador } from "store/usuario/compra-slice";
 const StagePago = (props) => {
   const { carro, nacionalidades, convenios, mediosDePago, setCarro } = props;
 
-  const informacionAgrupada = useSelector((state) => state.compra.informacionAgrupada);
+  const informacionAgrupada = useSelector(
+    (state) => state.compra.informacionAgrupada
+  );
   const datosComprador = useSelector((state) => state.compra.datosComprador);
 
   const dispatch = useDispatch();
@@ -28,33 +30,31 @@ const StagePago = (props) => {
   const [convenioActive, setConvenioActive] = useState(null);
   const [convenioFields, setConvenioFields] = useState({});
   const [usaDatosPasajeroPago, setUsaDatosPasajeroPago] = useState(false);
+  const [codigoCuponera, setCodigoCuponera] = useState("");
 
   useEffect(() => {
-    if( usaDatosPasajeroPago ) {
+    if (usaDatosPasajeroPago) {
       dispatch(asignarDatosComprador(informacionAgrupada[0].asientos[0]));
     } else {
-      dispatch(asignarDatosComprador({
-        nombre: "",
-        apellido: "",
-        email: "",
-        rut: "",
-        tipoDocumento: "R",
-      }));
+      dispatch(
+        asignarDatosComprador({
+          nombre: "",
+          apellido: "",
+          email: "",
+          rut: "",
+          tipoDocumento: "R",
+        })
+      );
     }
-  }, [usaDatosPasajeroPago])
+  }, [usaDatosPasajeroPago]);
 
   async function obtenerMediosPagos() {
     try {
-      const res = await axios.post(
-        "/api/ticket_sale/obtener-medios-pago",
-        {}
-      );
+      const res = await axios.post("/api/ticket_sale/obtener-medios-pago", {});
       if (res.request.status) {
-          setMediosPago(res.data);
+        setMediosPago(res.data);
       }
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   async function getConvenio() {
@@ -222,35 +222,43 @@ const StagePago = (props) => {
     (async () => await getConvenio())();
   }, [convenioSelected]);
 
-  useEffect(
-    () =>{
-      (async () => await obtenerMediosPagos())();
-      },
-    []
-  );
+  useEffect(() => {
+    (async () => await obtenerMediosPagos())();
+  }, []);
 
   return (
     <main className={styles["main-content"]}>
-      <section className={ styles['info-list'] }>
-        <ResumenServicio open={ true }/>
-        <Acordeon title="Datos del comprador" open={ true }>
+      <section className={styles["info-list"]}>
+        <ResumenServicio open={true} />
+        <Acordeon title="Datos del comprador" open={true}>
           <div className="form-check">
-            <input className="form-check-input" type="checkbox" value={ usaDatosPasajeroPago } id="flexCheckDefault" onChange={ () => setUsaDatosPasajeroPago(!usaDatosPasajeroPago) }/>
+            <input
+              className="form-check-input"
+              type="checkbox"
+              value={usaDatosPasajeroPago}
+              id="flexCheckDefault"
+              onChange={() => setUsaDatosPasajeroPago(!usaDatosPasajeroPago)}
+            />
             <label className="form-check-label" htmlFor="flexCheckDefault">
               Usar los datos del pasajero 1
             </label>
-          </div> 
-          <DatosPasajero asiento={ datosComprador }/>
+          </div>
+          <DatosPasajero asiento={datosComprador} />
         </Acordeon>
-        <Acordeon title="Medio de pago" open={ true }>
-          <MediosPago 
+        <Acordeon title="Medio de pago" open={true}>
+          <MediosPago
             setMediosPago={setMediosPago}
             mediosPago={mediosPago}
+            codigoCuponera={codigoCuponera}
+            setCodigoCuponera={setCodigoCuponera}
           />
         </Acordeon>
       </section>
       <section className={styles["travel-summary"]}>
-        <ResumenViaje />
+        <ResumenViaje
+          codigoCuponera={codigoCuponera}
+          setCodigoCuponera={setCodigoCuponera}
+        />
       </section>
     </main>
   );
