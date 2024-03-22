@@ -7,6 +7,7 @@
     align-items: flex-start;
     gap: 16px; 
     border-radius: 16px;
+    margin-bottom: 16px;
     background: var(--Blanco, #FFF);
 }
 

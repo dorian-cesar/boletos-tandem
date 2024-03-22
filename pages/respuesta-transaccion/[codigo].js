@@ -176,6 +176,7 @@ export default function Home(props) {
   }, [resumen])
 
   const descargarBoletos = () =>{
+    console.log(props);
     props.carro.carro.boletos.forEach( async (element) => {
       let boleto = {
         codigo: element.codigo,
@@ -211,7 +212,8 @@ export default function Home(props) {
             <section className={ styles['detalle-viajes'] }>
               {Array.isArray(resumen.carro.lista) &&
                 resumen.carro.lista.map((element) => (
-                  <div className={styles["servicio-ida"]} key={element.titulo}>
+                  element.titulo && 
+                  (<div className={styles["servicio-ida"]} key={element.titulo}>
                     <b className={ styles['titulo-servicio'] }>{ element.titulo }</b>
                     <div className={styles["detalle-container"]}>
                       {Array.isArray(element.detalle) &&
@@ -234,7 +236,7 @@ export default function Home(props) {
                           </div>
                         ))}
                     </div>
-                  </div>
+                  </div>)
                 ))}
             </section>
             <section className={ styles['resumen-pago'] }>
