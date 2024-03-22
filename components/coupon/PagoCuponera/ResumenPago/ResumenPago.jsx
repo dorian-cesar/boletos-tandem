@@ -94,7 +94,7 @@ const ResumenPago = (props) => {
                   <span>
                     Cantidad de cupones: {carroCuponera.cantidadCupones} {(carroCuponera.cuponesExtras > 0) ? " + "+ carroCuponera.cuponesExtras+" cupon extra":""}
                   </span>
-                  <b>{carroCuponera.valorTotalCuponera}</b>
+                  <b>{ clpFormat.format(carroCuponera.valorTotalCuponera) }</b>
                 </div>
               </div>
             </div>

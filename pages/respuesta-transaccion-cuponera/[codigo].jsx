@@ -87,7 +87,7 @@ export default function Home(props) {
                 <div className={"row justify-content-center"}>
                   <div className={"col-6 text-center"}>
                     <p className={styles["data-passenger"]}>
-                      Datos del pasajero
+                      Datos del comprador
                     </p>
                     <p className={styles["name"]}>
                       {cuponeraData?.response?.encabezado?.nombre}{" "}
