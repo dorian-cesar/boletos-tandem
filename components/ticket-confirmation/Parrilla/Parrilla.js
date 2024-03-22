@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 
 const ASIENTO_LIBRE = "libre";
 const ASIENTO_LIBRE_MASCOTA = "pet-free";
-const STAGE_BOLETO_IDA = 0;
+const STAGE_BOLETO_IDA = 1;
 const STAGE_BOLETO_VUELTA = 1;
 const ASIENTO_TIPO_MASCOTA = "pet";
 const ASIENTO_TIPO_ASOCIADO = "asociado";
@@ -26,7 +26,7 @@ const Parrilla = (props) => {
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const dispatch = useDispatch();
 
-  const { isShowParrilla = false, parrilla, stage, setParrilla, setIsLoading } = props;
+  const { isShowParrilla = false, parrilla, stage, setParrilla, setIsLoading, boletoValido } = props;
 
   const [modalMab, setModalMab] = useState(false);
   const [openPane, setOpenPane] = useState(false);
@@ -34,6 +34,11 @@ const Parrilla = (props) => {
   const [totalPagar, setTotalPagar] = useState(0);
   const [piso, setPiso] = useState(1);
   const [cantidadIda, setCantidadIda] = useState(0);
+
+  const clpFormat = new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  });
 
   useEffect(() => {
     if (isShowParrilla && !parrilla.length) {
@@ -179,12 +184,15 @@ const Parrilla = (props) => {
         classes += styles["vacio"] + " ";
       }
 
+      if( asiento.estado === 'libre' && boletoValido.clase !== asiento.clase ) {
+        classes += styles["reservado"] + " ";
+      }
+
       return classes.trim();
     } catch (error) {
       console.log(
         `Error al obtener clases para el asiento ${JSON.stringify(asiento)}`
       );
-      console.log(obtenerAsientosSeleccionados());
       console.error(`Error al obtener clases de asiento [${error}]`);
     }
   };
@@ -249,6 +257,20 @@ const Parrilla = (props) => {
     try {
       debugger;
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
+
+      
+      if ( asiento.clase !== boletoValido.clase ) {
+        toast.warn(
+          `No puede seleccionar un asiento con clase distinta a la del boleto en blanco`,
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+          }
+        );
+        setIsLoading(false);
+        return;
+      }
 
       asiento['piso'] = piso;
       asiento['claseBus'] = piso === 1 ? props.thisParrilla.idClaseBusPisoUno : props.thisParrilla.idClaseBusPisoDos;
@@ -382,6 +404,9 @@ const Parrilla = (props) => {
     if (sit.clase && sit.estado === "seleccion") {
       return "img/asiento_seleccionado.svg";
     }
+    if( sit.estado === 'libre' && boletoValido.clase !== sit.clase ) {
+      return "img/asiento_ocupado.svg";
+    }
     if (sit.estado === "libre" && sit.valorAsiento > 0) {
       return "img/asiento_disponible.svg";
     }
@@ -402,43 +427,11 @@ const Parrilla = (props) => {
     }
   }
 
-  function cantidadAsientosSeleccionados() {
-    return asientosPorServicio.filter(
-      (i) =>
-        i.idServicio === props.thisParrilla.idServicio &&
-        i.fechaServicio === props.thisParrilla.fechaServicio
-    ).length;
-  }
-
   function validarAsientosTomados() {
     if (stage === STAGE_BOLETO_IDA) {
       if (cantidadIda === 0) {
         toast.warn(
           `Debe seleccionar al menos un asiento de ida para continuar`,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-          }
-        );
-        return false;
-      }
-    }
-    if (stage === STAGE_BOLETO_VUELTA) {
-      if (cantidadVuelta === 0) {
-        toast.warn(
-          `Debe seleccionar al menos un asiento de vuelta para continuar`,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-          }
-        );
-        return false;
-      }
-      if (cantidadIda > cantidadVuelta) {
-        toast.warn(
-          `La cantidad de asientos de regreso debe coincidir con la cantidad de asientos seleccionados para el viaje de ida.`,
           {
             position: "top-right",
             autoClose: 5000,
@@ -662,13 +655,10 @@ const Parrilla = (props) => {
                 validarAsientosTomados() ? props.setPasaje(props) : "";
               }}
             >
-              <span>Continuar: ${totalPagar}</span>
-            </div>
-            <div className={styles["button_little_car"]}>
-              <span>Agregar al carro</span>
+              <span>Continuar: { clpFormat.format(totalPagar) }</span>
             </div>
             <div className={styles["texto-cantidad-asientos"]}>
-              <span>
+              <span onClick={ () => console.log(boletoValido, parrilla) }>
                 Cantidad de asientos seleccionados: {asientosPorServicio.length}
               </span>
             </div>

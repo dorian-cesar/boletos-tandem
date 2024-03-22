@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import Boleto from './Boleto/Boleto';
 import Loader from "../Loader";
@@ -14,18 +14,18 @@ const STAGE_BOLETO_VUELTA = 1;
 
 const StagePasajes = (props) => {
 
-    const { parrilla, stage, loadingParrilla, setParrilla, startDate, endDate, carro, setCarro, setStage, searchParrilla } = props;
+    const { parrilla, stage, loadingParrilla, setParrilla, startDate, endDate, carro, setCarro, setStage, searchParrilla, boletoValido } = props;
 
     const [filter_tipo, setFilterTipo] = useState([]);
     const [filter_horas, setFilterHoras] = useState([]);
     const [filter_mascota, setFilterMascota] = useState([]);
     const [openPane, setOpenPane] = useState(false);
     const [sort, setSort] = useState(null);
-    const [mascota_allowed, setMascota] = useState(false);
     const [asientosIda, setAsientosIda] = useState([]);
     const [asientosVuelta, setAsientosVuelta] = useState([]);
+    const [servicios, setServicios] = useState(null);
 
-    function toggleTipo(tipo) {
+    const toggleTipo = useCallback((tipo) => {
         let listaTipoTemporal = [...filter_tipo];
         if (filter_tipo.includes(tipo)) {
             listaTipoTemporal = filter_tipo.filter((i) => i != tipo);
@@ -33,9 +33,9 @@ const StagePasajes = (props) => {
             listaTipoTemporal.push(tipo);
         }
         setFilterTipo(listaTipoTemporal);
-    };
+    }, [filter_tipo]);
 
-    function toggleHoras(horas) {
+    const toggleHoras = useCallback((horas) => {
         let listaHorasTemporal = [...filter_horas];
         if (filter_horas.includes(horas)) {
             listaHorasTemporal = listaHorasTemporal.filter((i) => i != horas);
@@ -43,7 +43,7 @@ const StagePasajes = (props) => {
             listaHorasTemporal.push(horas);
         }
         setFilterHoras(listaHorasTemporal);
-    };
+    }, [filter_horas]);
 
     const tipos_servicio = parrilla.reduce((a, b) => {
         if (!a.includes(b.servicioPrimerPiso) && b.servicioPrimerPiso != "") {
@@ -122,10 +122,9 @@ const StagePasajes = (props) => {
     }
 
     function returnMappedParrilla() {
-        return returnSortedParrilla().map((mappedParrilla, indexParrilla) => {
+        let sortedParrilla = [];
+        returnSortedParrilla().map((mappedParrilla, indexParrilla) => {
             if ( filter_tipo.length > 0 && !filter_tipo.includes(mappedParrilla.servicioPrimerPiso) && !filter_tipo.includes(mappedParrilla.servicioSegundoPiso)) return;
-
-            if ( mascota_allowed && mappedParrilla.mascota == 0 ) return;
             
             if (filter_horas.length > 0) {
                 let horaSalida = mappedParrilla.horaSalida.split(':').map(Number);
@@ -145,23 +144,44 @@ const StagePasajes = (props) => {
                 if (!isTime) return;
             }
 
-            return (
+            if ( mappedParrilla.mascota === '1' ) return;
+
+            sortedParrilla.push(
                 <Boleto
                     key={ `key-boleto-${ indexParrilla }`}
                     {...mappedParrilla }
                     thisParrilla={ mappedParrilla }
                     k={ indexParrilla }
                     asientos_selected={ stage == STAGE_BOLETO_IDA ? asientosIda : asientosVuelta }
+                    stage={ stage }
                     setPasaje={ setPasaje }
                     setOpenPane={ setOpenPaneRoot }
                     parrilla={parrilla}
-                    setParrilla={setParrilla}/>
+                    setParrilla={setParrilla}
+                    boletoValido={boletoValido}/>
             );
         });
+
+        debugger;
+
+        if( sortedParrilla.length > 0 ) {
+            setServicios(sortedParrilla)
+        } else {
+            setServicios(
+                <h5 className="p-2 empty-grill">
+                    Lo sentimos, no existen
+                    resultados para su búsqueda, 
+                    busque en otro horario
+                </h5>
+            )
+        }
     }
 
+    useEffect(() => {
+        returnMappedParrilla();
+    }, [toggleTipo, toggleHoras, parrilla])
+
     return (
-        
         <div className="d-flex justify-content-center">
             <FiltroServicios 
                 tipos_servicio={ tipos_servicio }
@@ -171,11 +191,9 @@ const StagePasajes = (props) => {
                 stage={ stage }
                 toggleTipo={ toggleTipo }
                 toggleHoras={ toggleHoras }
-                mascota_allowed={ mascota_allowed }
-                setMascota={ setMascota }
             />
             <div>
-                { loadingParrilla ? <div className="empty-grill"><Loader/></div> : parrilla.length > 0 ? returnMappedParrilla() : 
+                { loadingParrilla ? <div className="empty-grill"><Loader/></div> : parrilla.length > 0 ? servicios : 
                     <h5 className="p-2">
                         Lo sentimos, no existen
                         resultados para su búsqueda, 

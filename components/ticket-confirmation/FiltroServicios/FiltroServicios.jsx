@@ -8,16 +8,6 @@ export const FiltroServicios = (props) => {
         <div key={stage + "it"}>
             <div className={ styles["container-filtro"] }>
                 <h2 className="container-title">Filtrar por:</h2>
-                <div className="form-check form-switch d-flex align-content-center">
-                    <input 
-                        className="form-check-input" 
-                        type="checkbox" 
-                        role="switch" 
-                        id="flexSwitchCheckDefault"
-                        defaultChecked={ mascota_allowed }
-                        onClick={ () => setMascota(!mascota_allowed) } />
-                    <label className={ `form-check-label ms-1 ${ styles['custom-form-check-label'] }` } htmlFor="flexSwitchCheckDefault">Mascota a Bordo</label>
-                </div>
                 <div className={ styles['container-service-type'] }>
                     <span className="container-sub-title">Tipo de servicio</span>
                     {

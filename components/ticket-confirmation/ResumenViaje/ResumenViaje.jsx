@@ -187,6 +187,7 @@ export const ResumenViaje = (props) => {
         );
         data = response.data;
       } catch (error) {
+        console.log('ERROR CONFIRMAR BOLETO:::', error)
         data = error.response.data;
       }
       if (data.status) {

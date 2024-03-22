@@ -146,6 +146,7 @@ const Boleto = (props) => {
               setPasaje={props.setPasaje}
               isLoading={ isLoading }
               setIsLoading={ setIsLoading }
+              boletoValido={ props.boletoValido }
               />
           </div>
         </LoadingOverlay>

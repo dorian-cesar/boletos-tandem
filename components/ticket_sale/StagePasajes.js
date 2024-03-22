@@ -126,9 +126,7 @@ const StagePasajes = (props) => {
 
     function returnMappedParrilla() {
         let sortedParrilla = [];
-        debugger;
         returnSortedParrilla().map((mappedParrilla, indexParrilla) => {
-            debugger;
             if ( filter_tipo.length > 0 && !filter_tipo.includes(mappedParrilla.servicioPrimerPiso) && !filter_tipo.includes(mappedParrilla.servicioSegundoPiso)) return;
 
             if ( mascotaAllowed && mappedParrilla.mascota == 0 ) return;
