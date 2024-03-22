@@ -89,7 +89,7 @@ const ResumenServicio = (props) => {
   function renderInformacionPasajero(info) {
     let pasajero = 0;
     const renderInfo = info.asientos.map((asiento, index) => {
-      if( asiento.tipo && asiento.tipo !== 'pet' ) {
+      if( asiento.tipo !== 'pet') {
         pasajero++;
         return (
           <InformacionPasajero 
