@@ -53,21 +53,20 @@ const Parrilla = (props) => {
       dataIda = value.ida || [];
       dataVuelta = value.vuelta || [];
     });
+
+    let cantidadAsientosIda = 0;
     Object.entries(dataIda).map(([key, value]) => {
-      let cantidadAsientos = 0;
-      value.asientos.forEach((element) => {
-        cantidadAsientos = cantidadAsientos + 1;
-      });
-      setCantidadIda(cantidadAsientos);
+      value.asientos.forEach((_) => cantidadAsientosIda += 1);
     });
+    setCantidadIda(cantidadAsientosIda);
+
+    let cantidadAsientosVuelta = 0;
     Object.entries(dataVuelta).map(([key, value]) => {
-      let cantidadAsientos = 0;
-      value.asientos.forEach((element) => {
-        cantidadAsientos = cantidadAsientos + 1;
-      });
-      setCantidadVuelta(cantidadAsientos);
+      value.asientos.forEach((_) => cantidadAsientosVuelta += 1);
     });
-  }, [stage === STAGE_BOLETO_VUELTA]);
+    setCantidadVuelta(cantidadAsientosVuelta);
+
+  }, [carroCompras]);
 
   useEffect(() => {
       setKey(
@@ -252,7 +251,6 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
-      debugger;
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
 
       asiento['piso'] = piso;
@@ -327,16 +325,8 @@ const Parrilla = (props) => {
             true
           );
         }
-        if(stage === STAGE_BOLETO_VUELTA){
-          setCantidadVuelta(cantidadVuelta+1);
-        }
-        if(stage === STAGE_BOLETO_IDA){
-          setCantidadIda(cantidadIda+1);
-        }
         
         dispatch(agregarServicio(carrito));
-
-        debugger;
 
         if (asiento.asientoAsociado) {
           const newCarrito = {
@@ -351,13 +341,6 @@ const Parrilla = (props) => {
 
           if (newCarrito.asiento) dispatch(agregarServicio(newCarrito));
           
-          if(stage === STAGE_BOLETO_VUELTA){
-            setCantidadVuelta(cantidadVuelta+1);
-          }
-          
-          if(stage === STAGE_BOLETO_IDA){
-            setCantidadIda(cantidadIda+1);
-          }
         }
         setIsLoading(false);
         await reloadPane(indexParrilla);
