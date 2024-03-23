@@ -41,6 +41,11 @@ const Parrilla = (props) => {
   const [piso, setPiso] = useState(1);
   const [cantidadIda, setCantidadIda] = useState(0);
 
+  const clpFormat = new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  });
+
   useEffect(() => {
     if (isShowParrilla && !parrilla.length) {
       setOpenPaneRoot(props.k);
@@ -674,7 +679,7 @@ const Parrilla = (props) => {
                 validarAsientosTomados() ? props.setPasaje(props) : "";
               }}
             >
-              <span>Continuar: ${totalPagar}</span>
+              <span>Continuar: { clpFormat.format(totalPagar) }</span>
             </div>
             <div className={styles["texto-cantidad-asientos"]}>
               <span>

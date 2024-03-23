@@ -1,7 +1,8 @@
 .main-content {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
+    margin-bottom: 24px;
     gap: 16px;
 }
 

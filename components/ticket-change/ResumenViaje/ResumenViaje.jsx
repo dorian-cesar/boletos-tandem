@@ -190,15 +190,6 @@ export const ResumenViaje = (props) => {
         return;
       }
 
-      if (!medioPago) {
-        toast.error("Debe seleccionar un medio de pago", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-        });
-        return;
-      }
-
       if (!terminos) {
         toast.error("Debe aceptar los términos y condiciones", {
           position: "top-right",
@@ -436,6 +427,7 @@ export const ResumenViaje = (props) => {
 
   useEffect(() => {
     setValorCobrar(Number(totalPagar) - Number(boletoValido["valor"]));
+    props.setTotal(Number(totalPagar) - Number(boletoValido["valor"]));
   }, [resumen]);
 
   const abrirPopup = () => {

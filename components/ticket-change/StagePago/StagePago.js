@@ -37,6 +37,7 @@ const StagePago = (props) => {
   const [convenioFields, setConvenioFields] = useState({});
   const [usaDatosPasajeroPago, setUsaDatosPasajeroPago] = useState(false);
   const [mediosPago, setMediosPago] = useState([]);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     if (usaDatosPasajeroPago) {
@@ -256,12 +257,17 @@ const StagePago = (props) => {
           </div>
           <DatosPasajero asiento={datosComprador} />
         </Acordeon>
-        <Acordeon title="Medio de pago" open={ true }>
-          <MediosPago mediosPago={mediosPago} setMediosPago={setMediosPago} />
-        </Acordeon>
+        {
+          total > 0 ? (
+            <Acordeon title="Medio de pago" open={ true }>
+              <MediosPago mediosPago={mediosPago} setMediosPago={setMediosPago} />
+            </Acordeon>
+          ) :
+          <></>
+        }
       </section>
       <section className={styles["travel-summary"]}>
-        <ResumenViaje boletoValido={boletoValido} />
+        <ResumenViaje boletoValido={boletoValido} setTotal={setTotal}/>
       </section>
     </main>
   );

@@ -120,16 +120,20 @@ export default function Home(props) {
               </div>
             </section>
             <section className={styles["resumen-pago"]}>
-              <div className={styles["contenedor-metodo-pago"]}>
-                <strong>Pagado con:</strong>
-                <span>
-                  <img
-                    src={mediosPago[medioPago]?.imagen}
-                    alt={`Icono ${mediosPago[medioPago]?.nombre}`}
-                  />
-                  <img />
-                </span>
-              </div>
+              {
+                (props?.carro?.carro?.monto && !props?.carro?.carro?.monto > 0) ? (
+                  <div className={styles["contenedor-metodo-pago"]}>
+                    <strong>Pagado con:</strong>
+                    <span>
+                      <img
+                        src={mediosPago[medioPago]?.imagen}
+                        alt={`Icono ${mediosPago[medioPago]?.nombre}`}
+                      />
+                      <img />
+                    </span>
+                  </div>
+                ) : <></>
+              }
               <div className={styles["contenedor-total-pagar"]}>
                 <strong>Total Pagado:</strong>
                 {(!props?.carro?.carro?.monto) ? <span>{clpFormat.format(0)}</span> : <span>{clpFormat.format(props?.carro?.carro?.monto)}</span>} 
