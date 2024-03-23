@@ -92,7 +92,6 @@ const Devolucion = (props) => {
         {stage == 3 ? (
           tipoCompra === "VD" ? (
             <DevolucionDebito
-              toast={toast}
               setStage={setStage}
               tipoCompra={tipoCompra}
               selectedBoletos={selectedBoletos}

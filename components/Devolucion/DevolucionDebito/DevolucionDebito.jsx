@@ -6,6 +6,7 @@ import { useForm } from "/hooks/useForm";
 import Popup from "../../Popup/Popup";
 import ModalEntities from "../../../entities/ModalEntities";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const DevolucionDebito = (props) => {
   const [carro, setCarro] = useState({
@@ -20,7 +21,7 @@ const DevolucionDebito = (props) => {
     email: "",
   });
 
-  const { selectedBoletos, codigoTransaccion, tipoCompra, setStage, toast } =
+  const { selectedBoletos, codigoTransaccion, tipoCompra, setStage } =
     props;
   const [boletos, setBoletos] = useState("");
   const [tipoCuentas, setTipoCuentas] = useState([]);
@@ -37,6 +38,8 @@ const DevolucionDebito = (props) => {
     status: false,
   });
 
+  const router = useRouter();
+  
   function setDataDevolucion({ name, value }) {
     try {
       let carro_temp = { ...carro };
@@ -208,7 +211,7 @@ const DevolucionDebito = (props) => {
   }
 
   function volverAlInicio() {
-    setStage(0);
+    router.push('/');
   }
 
   function validarFormatoRut(validaRut) {

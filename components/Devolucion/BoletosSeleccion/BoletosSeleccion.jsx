@@ -46,17 +46,17 @@ const BoletosSeleccion = (props) => {
                   <div className="col-5"></div>
                   <div className="col-6"></div>
                   <div className="col-1">
-                    {element.estado === "NUL" ? (
-                      <br></br>
-                    ) : (
+                    {element.estado === "ACT" ? (
                       <input
-                        type="checkbox"
-                        id={element.boleto}
-                        name="boleto"
-                        value={element.boleto}
-                        checked={selectedBoletos.includes(element.boleto)}
-                        onChange={() => handleCheckboxChange(element.boleto)}
-                      />
+                      type="checkbox"
+                      id={element.boleto}
+                      name="boleto"
+                      value={element.boleto}
+                      checked={selectedBoletos.includes(element.boleto)}
+                      onChange={() => handleCheckboxChange(element.boleto)}
+                    />
+                    ) : (
+                      <br></br>
                     )}
                   </div>
                 </div>
