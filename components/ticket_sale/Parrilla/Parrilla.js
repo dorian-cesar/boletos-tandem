@@ -255,7 +255,7 @@ const Parrilla = (props) => {
 
       asiento['piso'] = piso;
       asiento['claseBus'] = piso === 1 ? props.thisParrilla.idClaseBusPisoUno : props.thisParrilla.idClaseBusPisoDos;
-      asiento['idaVuelta'] = stage ? stage : STAGE_BOLETO_IDA;
+      asiento['idaVuelta'] = stage ? true : false;
 
       const carrito = {
         servicio: parrilla.parrilla[indexParrilla],
