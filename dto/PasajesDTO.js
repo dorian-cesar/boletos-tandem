@@ -117,7 +117,7 @@ export class PasajeroListaCarritoDTO {
     constructor(asiento) {
         this.monto = asiento?.tarifa || '';
         this.precio = asiento?.tarifa || '';
-        this.idaVuelta = false
+        this.idaVuelta = asiento?.idaVuelta || '0';
         this.piso = asiento?.piso || 1;
         this.asiento = asiento?.asiento || '';
         this.clase = asiento?.claseBus || '';
