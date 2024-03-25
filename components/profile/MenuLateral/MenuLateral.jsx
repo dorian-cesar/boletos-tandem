@@ -31,14 +31,13 @@ const MenuLateral = (props) => {
 
   return (
     <>
-      <div className={ `${styles["menu-lateral"]} "col-12 col-md-2"`}>
+      <div className={ `${styles["menu-lateral"]}`}>
       {menu.map((opcion) => (
-        
-        <div key={opcion.idMenu} className={ `${styles["item-menu-lateral"]} "row"`} onClick={() => cambiarVista(opcion.opcionMenu, opcion.nombreMenu)}>
-          <div className="col-10">
+        <div key={opcion.idMenu} className={ `${styles["item-menu-lateral"]}`} onClick={() => cambiarVista(opcion.opcionMenu, opcion.nombreMenu)}>
+          <div className="">
             <a className={styles[opcion.classname]}>{opcion.nombreMenu}</a>
           </div>
-          <div className={"col-2"}>
+          <div>
             <img
               src="../img/icon/profile/chevron-forward-circle-outline.svg"
               alt=""

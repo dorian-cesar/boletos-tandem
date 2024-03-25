@@ -21,6 +21,11 @@ const Home = () => {
   const [nombreVista, setNombreVista] = useState("");
   const router = useRouter();
 
+  const clpFormat = new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  });
+
   useEffect(() => {
     let checkUser = getItem("user");
     if (checkUser == null) router.push("/");
@@ -35,8 +40,60 @@ const Home = () => {
       <Head>
         <title>PullmanBus | Mi Perfil</title>
       </Head>
-      <>
-        <div className={`${styles["perfil-body"]} "row"`}>
+      <section className={ styles['perfil-body'] }>
+        <section className={ `container ${ styles['header-profile'] }` }>
+          <div className={ styles['user-info'] }>
+            <img src="../img/icon/profile/Perfil.svg" alt=""></img>
+            <div className={ styles['user-name'] }>
+              <h2>¡Hola,</h2>
+              <h2>{user?.nombres} {user?.apellidoPaterno}!</h2>
+            </div>
+          </div>
+          <div className={ styles['wallet-info'] }>
+            <div className={ styles['wallet-title'] }>
+              <img
+                className={ styles["imagen-monedero"] }
+                src="../img/icon/profile/wallet-outline.svg"
+                alt=""
+              ></img>
+              <div className={ styles['wallet-title-text'] }>
+                <h2>Monedero</h2>
+                <h2>Virtual</h2>
+              </div>
+            </div>
+            <h2 className={ styles['wallet-mount'] }>
+              { clpFormat.format(user?.saldo || 0) }
+            </h2>
+          </div>
+        </section>
+        <section className={ `container ${ styles['profile-body-container']}` }>
+          <MenuLateral
+            vista={vista}
+            setVista={setVista}
+            setNombreVista={setNombreVista}
+          />
+          <div>
+            <div className={styles["titulo-menu"]}>
+                  {" "}
+                  Mi cuenta {">"} {nombreVista}
+                </div>
+                {vista === "miPerfil" && <ActualizarDatos />}
+                {vista === "registroPasajero" && (
+                  <RegistroPasajero user={user} setVista={setVista} />
+                )}
+                {vista === "cambioContraseña" && (
+                  <CambiarPassword setVista={setVista} />
+                )}
+                {vista === "historialCompra" && <HistorialCompra />}
+                {vista === "confirmacion" && <MenuLateral />}
+                {vista === "cambioBoleto" && <MenuLateral />}
+                {vista === "devolucionBoleto" && <MenuLateral />}
+                {vista === "registrarPasajero" && <RegistrarPasajero />}
+          </div>
+        </section>
+
+
+        {/* <div className={`${styles["perfil-body"]} "row"`}>
           <div className={"d-flex justify-content-center"}>
             <div
               className={`${styles["container-perfil"]} "col-12 col-md-8 bloque mb-5"`}
@@ -103,8 +160,8 @@ const Home = () => {
               {vista === "registrarPasajero" && <RegistrarPasajero />}
             </div>
           </div>
-        </div>
-      </>
+        </div> */}
+      </section>
 
       <Footer />
     </Layout>
