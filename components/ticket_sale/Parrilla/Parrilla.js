@@ -256,6 +256,8 @@ const Parrilla = (props) => {
       asiento['piso'] = piso;
       asiento['claseBus'] = piso === 1 ? props.thisParrilla.idClaseBusPisoUno : props.thisParrilla.idClaseBusPisoDos;
       asiento['idaVuelta'] = stage ? true : false;
+      asiento['tipoMascota'] = false;
+      asiento['relacionAsiento'] = asiento.asientoAsociado ? asiento.asientoAsociado : "";
 
       const carrito = {
         servicio: parrilla.parrilla[indexParrilla],
@@ -337,7 +339,8 @@ const Parrilla = (props) => {
           newCarrito.asiento = { 
             ...newCarrito.asiento,
             piso, 
-            claseBus: piso === 1 ? props.thisParrilla.idClaseBusPisoUno : props.thisParrilla.idClaseBusPisoDos
+            claseBus: piso === 1 ? props.thisParrilla.idClaseBusPisoUno : props.thisParrilla.idClaseBusPisoDos,
+            tipoMascota: true 
           }
 
           if (newCarrito.asiento) dispatch(agregarServicio(newCarrito));
