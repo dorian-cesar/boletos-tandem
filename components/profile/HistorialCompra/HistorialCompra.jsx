@@ -1,38 +1,11 @@
-import axios from "axios";
-import DatePicker, { registerLocale } from "react-datepicker";
-import Layout from "../Layout";
-import { useEffect, useState, forwardRef, useRef, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocalStorage } from "/hooks/useLocalStorage";
 import { useRouter } from "next/router";
 import { useForm } from "/hooks/useForm";
-import Head from "next/head";
-import Input from "../Input";
+import styles from './HistorialCompra.module.css';
+import axios from "axios";
+import { useId } from "react";
 
-const CustomInput = forwardRef(({ value, onClick }, ref) => (
-  <input
-    type="text"
-    className="fecha-input-modal form-control form-control-modal"
-    onClick={onClick}
-    ref={ref}
-    value={value}
-    onChange={() => {}}
-  />
-));
-
-const months = [
-  "Enero",
-  "Febrero",
-  "Marzo",
-  "Abril",
-  "Mayo",
-  "Junio",
-  "Julio",
-  "Agosto",
-  "Septiembre",
-  "Octubre",
-  "Noviembre",
-  "Diciembre",
-];
 
 const actualizarFormFields = {
   rut: "",
@@ -53,12 +26,9 @@ const HistorialCompra = () => {
   const { getItem } = useLocalStorage();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoading2, setIsLoading2] = useState(false);
-  const [alerta, setAlerta] = useState({
-    msg: "",
-    visible: false,
-    type: "",
-  });
+  const [historial, setHistorial] = useState([]);
+
+  const id = useId();
 
   useEffect(() => {
     let checkUser = getItem("user");
@@ -90,66 +60,48 @@ const HistorialCompra = () => {
     data.fechaNacimiento = fechaNacimiento;
   }, [fechaNacimiento]);
 
-  const listaYears = useMemo(() => {
-    let years = [];
-    for (let i = new Date().getFullYear(); i >= 1910; i--) {
-      years.push(i);
+  useEffect(() => {
+    if( user ) {
+      axios.post("/api/user/historial-compra", {
+        email: user.correo,
+      }).then(({ data }) => {
+        setHistorial(data.object);
+      }).catch((error) => console.log('ERROR:::', error));
     }
-    return years;
-  }, []);
+  }, [user])
 
-  const HistorialCompra = async () => {
-    const formStatus = await validarForm();
-    if (formStatus) {
-      setIsLoading2(true);
-      const res = await axios.post("../api/user/actualizar-datos-perfil", {
-        ...data,
+  const MemoizedComponent = useMemo(function renderHistorial() {
+    if( historial.length === 0 ) {
+      return (<h3>No hay registros</h3>)
+    } else {
+      const renderedComponent = [];
+
+      historial.map((itemHistorial, index) => {
+        renderedComponent.push(
+          <div key={ `${ id }-${ index }` }>
+              { itemHistorial.estado }
+              { itemHistorial.monto }
+          </div>
+        )
       });
-      if (res.data.status) {
-        setIsLoading2(false);
-        setAlerta({
-          visible: true,
-          msg: res.data.message,
-          type: "alert-success",
-        });
-        setTimeout(() => {
-          setAlerta({ visible: false, msg: "", type: "" });
-        }, 5000);
-      }
-      setIsLoading2(false);
-    }
-  };
 
-  const validarForm = () => {
-    return new Promise((resolve, reject) => {
-      const values = Object.values(data);
-      const camposVacios = values.filter((v) => v == "");
-      if (camposVacios.length > 0) {
-        setAlerta({
-          visible: true,
-          msg: "Se requiere rellenar todos los campos.",
-          type: "alert-danger",
-        });
-        resolve(false);
-      } else {
-        if (data?.correo != data?.correo2) {
-          setAlerta({
-            visible: true,
-            msg: "Los correos no coinciden. Por favor, verificar.",
-            type: "alert-danger",
-          });
-          resolve(false);
-        } else {
-          setAlerta({ visible: false, msg: "", type: "" });
-          resolve(true);
-        }
-      }
-    });
-  };
+      return renderedComponent;
+    }
+  }, [historial]);
 
   return (
     <>
-      <div className="col-12 col-md-6 ">
+      <div className={ styles['menu-central'] }>
+        <h1>Historial de compras</h1>
+        <span>
+          Mantén un registro de todos los viajes realizados. Recuerda
+          que solo podrás descargar tu pasaje mientras esté activo.
+        </span>
+        {
+          !isLoading ? MemoizedComponent : ''
+        }
+      </div>
+      {/* <div className="col-12 col-md-6 ">
         <div className="menu-central">
           <div className="col-12 col-md-12 bloque">
             <h1 className="titulo-modificar-datos">Historial de compra</h1>
@@ -207,7 +159,7 @@ const HistorialCompra = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

@@ -5,7 +5,7 @@ import ActualizarDatos from "../../components/profile/ActualizarDatos/Actualizar
 import MenuLateral from "../../components/profile/MenuLateral/MenuLateral";
 import RegistroPasajero from "../../components/profile/RegistroPasajero/RegistroPasajero";
 import CambiarPassword from "../../components/profile/CambiarPassword/CambiarPassword";
-import HistorialCompra from "../../components/profile/historial-compra";
+import HistorialCompra from "../../components/profile/HistorialCompra/HistorialCompra";
 import RegistrarPasajero from "../../components/profile/RegistrarPasajero/RegistrarPasajero";
 import { useLocalStorage } from "/hooks/useLocalStorage";
 import Footer from "../../components/Footer";
@@ -72,23 +72,22 @@ const Home = () => {
             setVista={setVista}
             setNombreVista={setNombreVista}
           />
-          <div>
+          <div className={ styles['view-container']}>
             <div className={styles["titulo-menu"]}>
-                  {" "}
-                  Mi cuenta {">"} {nombreVista}
-                </div>
-                {vista === "miPerfil" && <ActualizarDatos />}
-                {vista === "registroPasajero" && (
-                  <RegistroPasajero user={user} setVista={setVista} />
-                )}
-                {vista === "cambioContraseña" && (
-                  <CambiarPassword setVista={setVista} />
-                )}
-                {vista === "historialCompra" && <HistorialCompra />}
-                {vista === "confirmacion" && <MenuLateral />}
-                {vista === "cambioBoleto" && <MenuLateral />}
-                {vista === "devolucionBoleto" && <MenuLateral />}
-                {vista === "registrarPasajero" && <RegistrarPasajero />}
+              Mi cuenta {">"} {nombreVista}
+            </div>
+            {vista === "miPerfil" && <ActualizarDatos />}
+            {vista === "registroPasajero" && (
+              <RegistroPasajero user={user} setVista={setVista} />
+            )}
+            {vista === "cambioContraseña" && (
+              <CambiarPassword setVista={setVista} />
+            )}
+            {vista === "historialCompra" && <HistorialCompra />}
+            {vista === "confirmacion" && <MenuLateral />}
+            {vista === "cambioBoleto" && <MenuLateral />}
+            {vista === "devolucionBoleto" && <MenuLateral />}
+            {vista === "registrarPasajero" && <RegistrarPasajero />}
           </div>
         </section>
 

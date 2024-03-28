@@ -2,6 +2,12 @@ import styles from "./BoletosSeleccion.module.css";
 import { useEffect, useState, forwardRef } from "react";
 import { toast } from "react-toastify";
 
+const estadoBoleto = {
+  'ACT': 'Activo',
+  'NUL': 'Nulo',
+  'VEN': 'Fuera de plazo'
+}
+
 const BoletosSeleccion = (props) => {
   const {
     setStage,
@@ -98,7 +104,8 @@ const BoletosSeleccion = (props) => {
                   <div className="col-5">
                     <span className={styles["text-estado-valor"]}>
                       {" "}
-                      {element.estado === "ACT" ? "Activa" : "Nula"}
+                      { estadoBoleto[element.estado] }
+                      {/* {element.estado === "ACT" ? "Activa" : "Nula"} */}
                     </span>
                   </div>
                   <div className="col-3">

@@ -247,8 +247,8 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                   onChange={ onInputChange }
                 >
                   <option value={""}>Seleccione una opción...</option>
-                  <option value={"FEMENINO"}>Femenino</option>
-                  <option value={"MASCULINO"}>Masculino</option>
+                  <option value={"Hombre"}>Hombre</option>
+                  <option value={"Mujer"}>Mujer</option>
                   <option value={"OTRO"}>Prefiero no especificar</option>
                 </select>
               </div>

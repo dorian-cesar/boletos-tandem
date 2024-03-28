@@ -121,17 +121,13 @@
 
 .profile-body-container {
   display: flex;
-  justify-content: space-between;
   gap: 16px;
   padding-block-end: 16px;
   padding-inline: 0;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-/* .profile-body-container :first-child{
-  flex-grow: 1;
+.profile-body-container .view-container {
+  flex-grow: 3;
 }
-
-.profile-body-container :last-child{
-  flex-grow: 2;
-} */
