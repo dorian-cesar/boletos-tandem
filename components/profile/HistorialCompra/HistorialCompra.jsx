@@ -19,6 +19,16 @@ const actualizarFormFields = {
   sexo: "",
 };
 
+const estadoBoleto = {
+  'ACTI': 'Activo',
+  'NUL': 'Nulo'
+}
+
+const clpFormat = new Intl.NumberFormat("es-CL", {
+  style: "currency",
+  currency: "CLP",
+});
+
 const HistorialCompra = () => {
   const { formState: data, onInputChange } = useForm(actualizarFormFields);
   const [fechaNacimiento, setFechaNacimiento] = useState("");
@@ -65,6 +75,7 @@ const HistorialCompra = () => {
       axios.post("/api/user/historial-compra", {
         email: user.correo,
       }).then(({ data }) => {
+        console.log(data.object);
         setHistorial(data.object);
       }).catch((error) => console.log('ERROR:::', error));
     }
@@ -78,12 +89,47 @@ const HistorialCompra = () => {
 
       historial.map((itemHistorial, index) => {
         renderedComponent.push(
-          <div key={ `${ id }-${ index }` }>
-              { itemHistorial.estado }
-              { itemHistorial.monto }
-          </div>
+          <tr>
+            <td>{ itemHistorial.codigo }</td>
+            <td>{ itemHistorial.fechaCompraFormato }</td>
+            <td>{ clpFormat.format(itemHistorial.monto) }</td>
+            <td>{ estadoBoleto[itemHistorial.estado] }</td>
+            <td className={ styles['boton-descargar']}>
+              { itemHistorial.estado === 'ACTI' && (
+                <a href={ `/generarBoletos/${ itemHistorial.codigo }` } target="_blank">
+                  <img src='/img/icon/general/download-outline.svg' />
+                </a>
+              )}
+            </td>
+          </tr>
         )
       });
+
+      // historial.map((itemHistorial, index) => {
+      //   renderedComponent.push(
+      //     <div key={ `${ id }-${ index }` } className={ styles['boleto'] }>
+      //       <div className={ styles['origen-destino'] }>
+      //         <span>[ORIGEN]</span>
+      //         <span>[DESTINO]</span>
+      //       </div>
+      //       <div className={ styles['linea-divisora'] }>
+      //         <img src="/img/icon-barra.svg" />
+      //       </div>
+      //       <div className={ styles['informacion-adicional'] }>
+      //         <div className={ styles['estado'] }>
+      //           <h5>Estado: </h5>
+      //           <strong>{ estadoBoleto[itemHistorial.estado] }</strong>
+      //         </div>
+      //         <div className={ styles['monto'] }>
+      //           <span>{ itemHistorial.monto }</span>
+      //         </div>
+      //         {/* <div className={ styles['asientos'] }>
+
+      //         </div> */}
+      //       </div>
+      //     </div>
+      //   )
+      // });
 
       return renderedComponent;
     }
@@ -97,69 +143,25 @@ const HistorialCompra = () => {
           Mantén un registro de todos los viajes realizados. Recuerda
           que solo podrás descargar tu pasaje mientras esté activo.
         </span>
-        {
-          !isLoading ? MemoizedComponent : ''
-        }
+        <table className={`table ${ styles['tabla-informacion'] }`}>
+          <thead>
+            <tr>
+              <th scope="col">Transacción</th>
+              <th scope="col">Fecha Transacción</th>
+              <th scope="col">Monto</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Descargar Boletos</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              !isLoading ? MemoizedComponent : ''
+            }
+          </tbody>
+        </table>
+        <section className={ styles['contenedor-historial'] }>
+        </section>
       </div>
-      {/* <div className="col-12 col-md-6 ">
-        <div className="menu-central">
-          <div className="col-12 col-md-12 bloque">
-            <h1 className="titulo-modificar-datos">Historial de compra</h1>
-            <div className="row ">
-              <div className="col-12">
-                <label className="label-input-modal">
-                  Mantén un registro de todos los viajes realizados. Recuerda
-                  que solo podrás descargar tu pasaje mientras esté activo.
-                </label>
-              </div>
-            </div>
-            <div className="row ">
-              <div className="col-4"></div>
-              <div className="col-4"></div>
-              <div className="col-4">
-                <Input className="sel-input origen" placeholder="Estado" />
-              </div>
-            </div>
-            <div className="row">
-              <div className="row container-historial">
-                <div className="row col-12">
-                  <div className="col-3 ">
-                    <label className="label-input-modal">Arica</label>
-                  </div>
-                  <div className="col-3 ">
-                    <label className="label-input-modal"></label>
-                  </div>
-                  <div className="col-3 ">
-                    <label className="label-input-modal">Hora</label>
-                  </div>
-                </div>
-                <div className="row col-12">
-                  <div className="col-3 ">
-                    <label className="label-input-modal">..........................................................................................................................................</label>
-                  </div>
-                  <div className="col-3 ">
-                    <label className="label-input-modal"></label>
-                  </div>
-                  <div className="col-3 ">
-                    <label className="label-input-modal"></label>
-                  </div>
-                </div>
-                <div className="row col-12">
-                  <div className="col-3 ">
-                    <label className="label-input-modal">Estado</label>
-                  </div>
-                  <div className="col-3 ">
-                    <label className="label-input-modal">$53.300</label>
-                  </div>
-                  <div className="col-3 ">
-                    <label className="label-input-modal">N° asiento</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </>
   );
 };
