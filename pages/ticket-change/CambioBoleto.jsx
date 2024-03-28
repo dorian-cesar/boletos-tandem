@@ -50,7 +50,8 @@ export default function Home(props) {
       setStage(1);
     } catch ({ response }) {
       const { message } = response.data;
-      toast.error(message, {
+      const { object } = response.data;
+      toast.error(message+" ("+object?.resultado?.mensaje+")", {
         position: "bottom-center",
         autoClose: 5000,
         hideProgressBar: false,
