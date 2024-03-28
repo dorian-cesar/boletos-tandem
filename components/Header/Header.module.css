@@ -5,3 +5,9 @@
     border-radius: 16px;
     /* border: 1px solid var(--gris-50, #7F7F7F); */
 }
+
+@media print {
+    .header {
+        display: none;
+    }
+}

@@ -20,6 +20,7 @@ export default function Home(props) {
         publicRuntimeConfig.site_url + "/api/coupon/obtener-cuponera",
         props.codigo
       );
+      console.log('CUPONERAA:::', response);
       setCuponeraData(response.data);
     } catch (error) {}
   }
@@ -41,7 +42,7 @@ export default function Home(props) {
     <Layout>
       {props.carro ? (
         <div className={styles["home"]}>
-          <div className={styles["container"]}>
+          <div className={ `container ${ styles['container']}`}>
             <div className={"row justify-content-center"}>
               <div className={"col-12"}>
                 <div className={"row justify-content-center"}>
@@ -76,14 +77,23 @@ export default function Home(props) {
               <div className={"col-12"}>
                 <div className={"row justify-content-center"}>
                   <div className={"col-6 text-center"}>
-                    <p className={styles["orden"]}>
+                    <p className={styles["orden-compra"]}>
                       Orden de compra:{" "}
                       {cuponeraData?.response?.encabezado?.codigo}
                     </p>
                   </div>
                 </div>
+                <div className={ `row justify-content-center mt-2 ${ styles['contenedor-codigo-seguridad']}` }>
+                  <div className={"col-6 text-center"}>
+                  <img src={ `https://barcode.tec-it.com/barcode.ashx?data=${ cuponeraData?.response?.codigoSeguridad }&code=MobileQRCode&eclevel=L` } className="my-4" width='162' height='162'/>
+                    <p className={styles["codigo-seguridad"]}>
+                      Código:{" "}
+                      {cuponeraData?.response?.codigoSeguridad}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className={"col-12"}>
+              <div className={ `col-12 ${ styles['datos-comprador'] }`}>
                 <div className={"row justify-content-center"}>
                   <div className={"col-6 text-center"}>
                     <p className={styles["data-passenger"]}>
@@ -154,7 +164,7 @@ export default function Home(props) {
                   <div className={styles["dotted"]}></div>
                 </div>
               </div>
-              <div className={"col-12"}>
+              <div className={ `col-12 ${ styles['contenedor-pagado']}` }>
                 <div className={"row justify-content-center"}>
                   <div className={"col-6"}>
                     <p className={styles["pay-for"]}>Pagado con:</p>
@@ -177,16 +187,16 @@ export default function Home(props) {
                   <div className={styles["dotted"]}></div>
                 </div>
               </div>
-              <div className={"col-12"}>
+              <div className={ `col-12 ${ styles['botones-inferiores'] }`}>
                 <div className={"row justify-content-center mb-4"}>
                   <div className={"col-6 text-center"}>
 
                    
-                    {/* <a className={styles["pay-for"]}> <img
+                    <a className={styles["pay-for"]} onClick={() => window.print() }> <img
                       className={styles["image-download"]}
                       src="/img/icon/coupon-response/download-outline.svg"
                       alt=""
-                    /> Descarga tu cuponera aquí</a> */}
+                    /> Descarga tu cuponera aquí</a>
                   </div>
                   <div className={"col-6 text-center"}>
 
