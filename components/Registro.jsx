@@ -74,7 +74,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
     if(formStatus){
       try{
         setIsLoading(true);
-        const res = await axios.post("/api/registro-usuario", {...registro});
+        const res = await axios.post("/api/user/registro-usuario", {...registro});
         if(res.data.status){
           onChangeAlert({
             msg: '¡Registro completado con éxito!',
