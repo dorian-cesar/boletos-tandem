@@ -218,6 +218,9 @@ export const ResumenViaje = (props) => {
         destino: informacionAgrupada[0]?.idTerminalDestino,
         idOrigen: informacionAgrupada[0]?.idTerminalOrigen,
         idDestino: informacionAgrupada[0]?.idTerminalDestino,
+        fechaLlegada: informacionAgrupada[0]?.fechaLlegada,
+        horaLlegada: informacionAgrupada[0]?.horaLlegada,
+        valorCambio: valorCobrar,
         rut: informacionAgrupada[0]?.asientos[0]?.rut
           .replace(".", "")
           .replace(".", ""),
@@ -308,6 +311,9 @@ export const ResumenViaje = (props) => {
         destino: informacionAgrupada[0]?.idTerminalDestino,
         idOrigen: informacionAgrupada[0]?.idTerminalOrigen,
         idDestino: informacionAgrupada[0]?.idTerminalDestino,
+        fechaLlegada: informacionAgrupada[0]?.fechaLlegada,
+        horaLlegada: informacionAgrupada[0]?.horaLlegada,
+        valorCambio: valorCobrar,
         rut: informacionAgrupada[0]?.asientos[0]?.rut
           .replace(".", "")
           .replace(".", ""),

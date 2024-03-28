@@ -128,6 +128,8 @@ export class PasajeroListaCarritoDTO {
         this.apellido = asiento?.apellido || '';
         this.telefono = asiento?.telefono || '';
         this.tipoDocumento = asiento?.tipoDocumento || '';
+        this.tipoMascota = asiento?.tipoMascota || false;
+        this.relacionAsiento = asiento?.asientoAsociado || "";
     }
 }
 
