@@ -17,20 +17,42 @@ const BoletosSeleccion = (props) => {
     setSelectedBoletos,
   } = props;
 
-  async function handleCheckboxChange (boleto) {
- 
-    const isSelected = selectedBoletos.includes(boleto);
-    if (isSelected) {
-      setSelectedBoletos(
-        selectedBoletos.filter((selected) => selected !== boleto)
-      );
+  async function handleCheckboxChange(boleto) {
+    const isSelected = selectedBoletos.includes(boleto.boleto);
+    if (!isSelected) {
+      if (boleto.asientoAsociado > 0) {
+        const associatedBoletos = boletos.filter((element) => element.asiento === boleto.asientoAsociado);
+        const associatedBoletosIds = associatedBoletos.map((item) => item.boleto);
+        const newSelectedBoletos = new Set(selectedBoletos);
+        newSelectedBoletos.add(boleto.boleto);
+        associatedBoletosIds.forEach((codigoBoleto) => {
+        newSelectedBoletos.add(codigoBoleto);
+        });
+        setSelectedBoletos(Array.from(newSelectedBoletos));
+        return;
+      }
+      setSelectedBoletos([...selectedBoletos, boleto.boleto]);
     } else {
-      setSelectedBoletos([...selectedBoletos, boleto]);
+      if (boleto.asientoAsociado > 0) {
+        const associatedBoletos = boletos.filter((element) => element.asiento === boleto.asientoAsociado);
+        const associatedBoletosIds = associatedBoletos.map((item) => item.boleto);
+        const newSelectedBoletos = new Set(selectedBoletos);
+        associatedBoletosIds.forEach((codigoBoleto) => {
+          newSelectedBoletos.delete(codigoBoleto);
+        });
+        newSelectedBoletos.delete(boleto.boleto);
+        setSelectedBoletos(Array.from(newSelectedBoletos));
+        return
+      }   
+      const newSelectedBoletos = selectedBoletos.filter((selected) => selected !== boleto.boleto);
+      setSelectedBoletos(newSelectedBoletos);
     }
-    console.log('boletos seleccionados', selectedBoletos)
   };
+  
+  
 
   function volverAtras() {
+    setSelectedBoletos([]);
     setStage(0);
   }
   function siguiente() {
@@ -50,7 +72,12 @@ const BoletosSeleccion = (props) => {
               <div className={styles["body-pay"]}>
                 <div className={"row"}>
                   <div className="col-5"></div>
-                  <div className="col-6"></div>
+                  <div className="col-5"></div>
+                  <div className="col-1">{
+                    element.asientoAsociado > 0 ? <img
+                    src="img/icon/buttons/paw-outline-orange.svg"
+                  /> : ""
+                  }</div>
                   <div className="col-1">
                     {element.estado === "ACT" ? (
                       <input
@@ -59,7 +86,7 @@ const BoletosSeleccion = (props) => {
                       name="boleto"
                       value={element.boleto}
                       checked={selectedBoletos.includes(element.boleto)}
-                      onChange={() => handleCheckboxChange(element.boleto)}
+                      onChange={() => handleCheckboxChange(element)}
                     />
                     ) : (
                       <br></br>
