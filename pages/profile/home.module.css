@@ -1,0 +1,133 @@
+  .perfil-body {
+    background: var(--Azul-fondo, #E6ECF6);
+    padding-top: 16px;
+  }
+  
+  .container-perfil {
+    width: 1040px;
+    height: 240px;
+    border-radius: 16px 16px 0px 0px;
+    background: var(--azul-100, #3365B4);
+  
+  }
+  
+  .titulo-nombre {
+    color: #FFF;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-align: left;
+  }
+  
+  .titulo-nombre-sub {
+    color: #FFF;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: left;
+  }
+  
+  .imagen-monedero {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+  
+  .titulo-wallet {
+    color: #FFF;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  
+  .titulo-wallet-sub {
+    color: #FFF;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 26px;
+  }
+
+  .titulo-menu {
+    width: 500px;
+    height: 1px;
+    margin-top: 20px;
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+.header-profile {
+  border-radius: 16px 16px 0px 0px;
+  background: var(--azul-100, #3365B4);
+  min-height: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: white;
+  padding-inline: 70px;
+  align-content: center;
+  line-height: 1 !important;
+  flex-wrap: wrap;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user-info .user-name * {
+  line-height: 1 !important;
+}
+
+.user-info .user-name :last-child {
+  font-weight: bold;
+}
+
+.wallet-info {
+  display: flex;
+  flex-direction: column;
+  margin-block: auto;
+}
+
+.wallet-info .wallet-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px;
+}
+
+.wallet-info .wallet-title * {
+  line-height: 0.7 !important;
+}
+
+.wallet-info .wallet-title .wallet-title-text :last-child {
+  font-weight: bold;
+}
+
+.wallet-info .wallet-mount {
+  text-align: center;
+}
+
+.profile-body-container {
+  display: flex;
+  gap: 16px;
+  padding-block-end: 16px;
+  padding-inline: 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.profile-body-container .view-container {
+  flex-grow: 3;
+}

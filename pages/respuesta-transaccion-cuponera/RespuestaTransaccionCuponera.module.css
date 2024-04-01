@@ -1,0 +1,231 @@
+.home {
+    background: var(--Azul-fondo, #E6ECF6);
+    margin: 0;
+    display: grid;
+    place-items: center;
+}
+
+.container{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: var(--Blanco, #FFF);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding: 16px;
+}
+
+.image{
+    width: 112px;
+    height: 117px;
+    padding: 6.882px 3.393px 0px 0px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+     
+}
+
+.image-check{
+    width: 48px;
+    height: 48px;
+    padding: 6.882px 3.393px 0px 0px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 60px;
+    margin-left: -45px;  
+}
+
+.title{
+    color: var(--azul-100, #3365B4);
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.sub-title{
+    color: #000;
+    text-align: center;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.orden-compra {
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: var(--azul-100, #3365B4);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    color: var(--Blanco, #FFF);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding-block: 16px;
+
+    /* Centrar el contenido */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.data-passenger{
+    color: #000;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.name{
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.id{
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.dotted {
+    height: 0px;
+    flex-shrink: 0;
+    color: #000;
+    stroke-width: 1px;
+    stroke: #000;
+    width: 936px;
+    flex-shrink: 0;
+    height: 1px;
+    border-style: dashed;
+    border-width: 1px; 
+}
+
+.dotted-line {
+    flex-shrink: 0;
+    border-bottom: 1px solid #000;
+}
+
+.container-cuponera{
+    margin-block-end: 16px;
+}
+
+.price {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.price-final {
+    color: var(--naranjo-100, #FF6500);
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.pay-for {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-left: 120px;
+    cursor: pointer;
+}
+
+.detail-pay{
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-left: 120px;
+    margin-top: -65px;
+}
+
+.button-home{
+    display: flex;
+    width: 384px;
+    height: 40px;
+    align-items: flex-start;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 0;
+    border-radius: 16px;
+    background: var(--naranjo-100, #FF6500);
+    color: var(--Blanco, #FFF);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.image-download{
+    width: 24px;
+    height: 24px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center; 
+}
+
+.contenedor-codigo-seguridad {
+    display: none !important;
+}
+
+.codigo-seguridad {
+    flex-shrink: 0;
+    border-radius: 16px;
+    color: var(--Blanco, #FFF);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding-block: 16px;
+
+    /* Centrar el contenido */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media print {
+
+    .contenedor-codigo-seguridad {
+        display: flex !important;
+    }
+
+    .botones-inferiores {
+        display: none;
+    }
+
+    .contenedor-pagado {
+        display: none;
+    }
+
+    .dotted {
+        display: none;
+    }
+
+    .datos-comprador {
+        display: none;
+    }
+
+    .sub-title {
+        display: none;
+    }
+
+    .orden-compra {
+        display: none;
+    }
+}

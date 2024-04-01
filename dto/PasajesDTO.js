@@ -84,6 +84,52 @@ export class PasajePagoDTO {
         };
         this.tipoServicio = null;
         this.asientoAsociado = null;
+        this.codigoCuponera = pasaje.codigoCuponera || '';
+    }
+}
+
+export class ListaCarritoDTO {
+    constructor(servicio, asiento) {
+        debugger;
+        this.servicio = servicio?.idServicio || '';
+        this.fechaServicio = servicio?.fechaServicio || '';
+        this.fechaPasada = servicio?.fechaLlegada || '';
+        this.fechaLlegada = servicio?.fechaLlegada || '';
+        this.horaSalida = servicio?.horaSalida || '';
+        this.horaLlegada = servicio?.horaLlegada || '';
+        this.origen = servicio?.idTerminalOrigen || '';
+        this.destino = servicio?.idTerminalDestino || '';
+        this.codigoReserva = '1'
+        this.descuento = 0
+        this.empresa = servicio?.empresa || '';
+        this.clase = asiento?.claseBus || '';
+        this.bus = servicio?.busPiso1 || '';
+        this.integrador = servicio?.integrador || 1000;
+        this.datoConvenio = servicio?.datoConvenio ? servicio.datoConvenio : '';
+        this.convenio = servicio?.convenioActivo ? servicio.convenioActivo : '';
+        // this.tipoServicio = null;
+        // this.asientoAsociado = null;
+        this.pasajeros = [];
+    }
+}
+
+export class PasajeroListaCarritoDTO {
+    constructor(asiento) {
+        this.monto = asiento?.tarifa || '';
+        this.precio = asiento?.tarifa || '';
+        this.idaVuelta = asiento?.idaVuelta || false;
+        this.piso = asiento?.piso || 1;
+        this.asiento = asiento?.asiento || '';
+        this.clase = asiento?.claseBus || '';
+        this.documento = asiento?.rut || '';
+        this.email = asiento?.email || '';
+        this.nacionalidad = asiento?.nacionalidad || '';
+        this.nombre = asiento?.nombre || '';
+        this.apellido = asiento?.apellido || '';
+        this.telefono = asiento?.telefono || '';
+        this.tipoDocumento = asiento?.tipoDocumento || '';
+        this.tipoMascota = asiento?.tipoMascota || false;
+        this.relacionAsiento = asiento?.asientoAsociado || "";
     }
 }
 
@@ -95,5 +141,40 @@ export class GuardarCarroDTO {
         this.montoTotal = total;
         this.idSistema = 7;
         this.listaCarrito = carrito;
+    }
+} 
+
+export class GuardarCarroCuponeraDTO {
+    constructor(email, rut, total, carrito) {
+        this.email = email || '';
+        this.rut = rut.replace(".", "").replace(".", "") || '';
+        this.medioDePago = 'WBPAY';
+        this.montoTotal = total;
+        this.idSistema = 7;
+        this.integrador = 1000;
+        this.carroCuponera = carrito;
+       
+    }
+} 
+
+export class ValidarUsoCuponeraDTO {
+    constructor(origen, destino, fechaServicio, idServicio, codigoCuponera) {
+        this.origen = origen || '';
+        this.destino = destino || '';
+        this.fechaServicio = fechaServicio;
+        this.idServicio = idServicio;
+        this.codigoCuponera = codigoCuponera;    
+    }
+} 
+
+export class CanjearCuponeraDTO {
+    constructor(email, rut, total, carrito, codigoCuponera) {
+        this.email = email || '';
+        this.rut = rut.replace(".", "").replace(".", "") || '';
+        this.medioDePago = 'WBPAY';
+        this.montoTotal = total;
+        this.idSistema = 7;
+        this.listaCarrito = carrito;
+        this.codigoCuponera = codigoCuponera;
     }
 } 

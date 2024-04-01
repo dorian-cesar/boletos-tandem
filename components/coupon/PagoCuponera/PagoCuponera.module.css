@@ -1,0 +1,21 @@
+.main-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap: 16px;
+    padding-bottom: 24px;
+}
+
+.travel-summary {
+    display: flex;
+    width: 380px;
+    padding-block: 15px;
+    padding-inline: 27px;
+    border-radius: 16px;
+    background-color: var(--Blanco, #FFF);
+    height: fit-content;
+}
+
+.info-list {
+    width: 612px;
+}

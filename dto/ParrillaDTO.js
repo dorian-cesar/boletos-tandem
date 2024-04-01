@@ -7,3 +7,10 @@ export class ObtenerParrillaServicioDTO {
         this.startDate = dayjs(stage_active == 0 ? startDate : endDate).format("YYYYMMDD");
     }
 }
+
+export class ObtenerParrillaCuponeraServicioDTO {
+    constructor(origen, destino) {
+        this.origen = origen;
+        this.destino = destino;
+    }
+}

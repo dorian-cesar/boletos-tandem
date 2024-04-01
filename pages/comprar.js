@@ -1,7 +1,7 @@
 import axios from "axios";
 import Layout from "components/Layout";
 import Footer from 'components/Footer';
-import BusquedaServicio from 'components/BusquedaServicio';
+import BusquedaServicio from 'components/BusquedaServicio/BusquedaServicio';
 import { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
@@ -14,18 +14,22 @@ import { ToastContainer } from "react-toastify";
 const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
 import { ObtenerParrillaServicioDTO } from "dto/ParrillaDTO";
-import StagePasajes from "../components/StagePasajes";
-import StagePago from "../components/StagePago";
+import StagePasajes from "../components/ticket_sale/StagePasajes/StagePasajes";
+import StagePago from "../components/ticket_sale/StagePago/StagePago";
+
+import { decryptDataNoSaved } from "utils/encrypt-data";
+import { useDispatch, useSelector } from "react-redux";
+import { agregarOrigenDestino } from "store/usuario/compra-slice";
 
 registerLocale("es", es);
 
 const stages = [
     {
-        name: "Selección viaje IDA",
+        name: "Servicio ida",
         kind: "pasajes_1",
     },
     {
-        name: "Selección viaje VUELTA",
+        name: "Servicio vuelta",
         kind: "pasajes_2",
     },
     {
@@ -41,11 +45,15 @@ const stages = [
 export default function Home(props) {
     
     const router = useRouter();
+    const decryptedData = router.query.search ? decryptDataNoSaved(router.query.search, 'search') : null;
 
-    const startDate = dayjs(router.query.startDate).isValid() ? dayjs(router.query.startDate).toDate(): null;
-    const endDate = dayjs(router.query.endDate).isValid() ? dayjs(router.query.endDate).toDate() : null;
-    const origen = router.query.origen;
-    const destino = router.query.destino != "null" ? router.query.destino : null;
+    const startDate = dayjs(decryptedData?.startDate).isValid() ? dayjs(decryptedData?.startDate).toDate(): null;
+    const endDate = dayjs(decryptedData?.endDate).isValid() ? dayjs(decryptedData?.endDate).toDate() : null;
+    const origen = decryptedData?.origen.codigo;
+    const destino = decryptedData?.destino != "null" ? decryptedData?.destino.codigo : null;
+    const mascota_allowed = decryptedData?.mascota_allowed;
+
+    const stateCompra = useSelector((state) => state.compra);
 
     const [modalMab, setModalMab] = useState(false);
     const [parrilla, setParrilla] = useState([]);
@@ -58,6 +66,17 @@ export default function Home(props) {
         datos: { tipoRut: "rut" },
     });
     const [stage, setStage] = useState(0);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        // if( mascota_allowed ) setModalMab(true);
+        const origenDestino = {
+            origen: decryptedData?.origen,
+            destino: decryptedData?.destino
+        }
+        dispatch(agregarOrigenDestino(origenDestino));
+    }, [router.query.search])
     
 
     async function searchParrilla(in_stage) {
@@ -65,7 +84,7 @@ export default function Home(props) {
             const stage_active = in_stage ?? stage;
             setLoadingParrilla(true);
             const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
-            console.log('Datos parrilla', parrilla)
+            // console.log('Planilla de asientos', parrilla )
             setParrilla(parrilla.data.map((parrillaMapped, index) => {
                 return {
                     ...parrillaMapped,
@@ -84,17 +103,27 @@ export default function Home(props) {
         searchParrilla();
     }, []);
 
+    useEffect(() => {
+        searchParrilla();
+    }, [router.query.search]);
+
     return (
         <Layout>
             <Head>
                 <title>PullmanBus | Compra Boleto</title>
             </Head>
             <div className="pasajes">
-                <BusquedaServicio origenes={ props.ciudades } dias={ props.dias }/>
-            </div>
-            <div className="pasajes-compra py-5">
                 <div className="container">
-                    <div className="d-flex flex-row justify-content-around">
+                    <BusquedaServicio 
+                        origenes={ props.ciudades } 
+                        dias={ props.dias } 
+                        isShowMascota={ false }
+                        isHomeComponent={ false }/>
+                </div>
+            </div>
+            <div className="pasajes-compra pb-5">
+                <div className="container">
+                    <ul className="d-flex flex-row justify-content-around py-4 px-0">
                         {
                             stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
                                 return(
@@ -109,7 +138,7 @@ export default function Home(props) {
                                 )
                             })
                         }
-                    </div>
+                    </ul>
                     { 
                         stages_active[stage].kind == "pasajes_1" || stages_active[stage].kind == "pasajes_2" ? 
                         <StagePasajes 
@@ -123,7 +152,11 @@ export default function Home(props) {
                             carro={ carro }
                             setCarro={ setCarro }
                             setStage={ setStage }
-                            searchParrilla={ searchParrilla }/> : ('') 
+                            searchParrilla={ searchParrilla }
+                            origen={ stages_active[stage].kind == "pasajes_1" ? stateCompra.origen : stateCompra.destino }
+                            destino={ stages_active[stage].kind == "pasajes_2" ? stateCompra.destino : stateCompra.origen }
+                            setModalMab={ setModalMab }
+                            mascota_allowed={ mascota_allowed }/> : ('') 
                     }
                     {
                         stages_active[stage].kind == "pago" ?  

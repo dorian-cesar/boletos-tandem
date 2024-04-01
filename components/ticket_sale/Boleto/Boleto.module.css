@@ -1,0 +1,323 @@
+@keyframes inicio {
+    from {
+        left: 26px;
+        transition: all 0.9s ease;
+    }
+
+    to {
+        left: 500px;
+        transition: all 1.2s ease;
+    }
+}
+
+@keyframes final {
+    from {
+        left: 500px;
+        transition: all 0.9s ease;
+    }
+
+    to {
+        left: 26px;
+        transition: all 1.2s ease;
+    }
+}
+
+@keyframes show {
+    0% {
+        height: 0px;
+        transition: all 0.9s ease;
+    }
+
+    100% {
+        height: 390px;
+        transition: all 0.9s ease;
+    }
+}
+
+@keyframes hide {
+    0% {
+        height: 390px;
+        transition: all 0.9s ease;
+    }
+
+    100% {
+        height: 0px;
+        transition: all 0.9s ease;
+    }
+}
+
+.ticket {
+    background-image: url(../../../public/img/Boleto.svg) !important;
+    height: 168px;
+    width: 776px;
+    fill: var(--Blanco, #FFF);
+    stroke-width: 1px;
+    stroke: var(--gris-15, #D9D9D9);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border-radius: 16px;
+    margin-block-end: 16px;
+    padding-inline: 32px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    z-index: 2;
+}
+
+.container-ticket input {
+    display: none;
+}
+
+.ticket-details {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    border-right: dashed 1px #7F7F7F;
+    margin-block: 10px;
+    width: 500px;
+}
+
+.ticket-details .ticket-details__header {
+    margin-block-start: 12px;
+    margin-inline-end: 12px; 
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gris-oscuro, #4F4F4F);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding-inline-end: 12px;
+}
+
+.ticket-details .ticket-details__travel {
+    border-bottom: dashed 1px #7F7F7F;
+    margin-block-start: 12px;
+    padding-block-end: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.ticket-details .ticket-details__travel .ticket-details__travel-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.ticket-details .ticket-details__travel .ticket-details__travel-detail:nth-child(2) * {
+    margin-inline: auto;
+}
+
+.ticket-details .ticket-details__travel .ticket-details__travel-detail .bold {
+    font-weight: 700;
+}
+
+.ticket-details .ticket-details__travel .ticket-details__travel-detail .link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.ticket .ticket-price {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-inline: auto;
+    padding-block: 12px;
+    padding-inline-start: 13px;
+}
+
+.ticket .ticket-price button {
+    display: flex;
+    width: 204px;
+    padding-block: 8px;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 16px;
+    background: var(--naranjo-100, #FF6500);
+    color: #FFF;
+    border: none;
+    cursor: default;
+}
+
+.ticket .ticket-price button:hover {
+    background: var(--naranjo-80, #FF8A00);
+}
+
+.ticket .animated-logo {
+    position: absolute;
+    top: 125px;
+}
+
+.container-ticket .checkbox-open-pane ~ .animated-logo {
+    position: absolute;
+    animation-name: final;
+    animation-duration: 0.5s;
+}
+
+.container-ticket .checkbox-open-pane:checked ~ .animated-logo {
+    position: absolute;
+    left: 500px;
+    animation-name: inicio;
+    animation-duration: 1s;
+}
+
+.container-ticket .checkbox-open-pane:checked ~ .grill-detail {
+    display: block;
+    margin-top: -40px;
+    animation-name: show;
+    animation-duration: 1s;
+    overflow: hidden;
+    z-index: 1;
+    padding-bottom: 16px;
+}
+
+.container-ticket .checkbox-open-pane ~ .grill-detail {
+    flex-direction: column;
+    margin-block: 10px;
+    background-color: #FFF;
+    width: 776px;
+    border-radius: 16px;
+    padding-inline: 32px;
+    overflow: hidden;
+}
+
+.flip-box {
+    background-color: transparent;
+    perspective: 1000px;
+    position: relative;
+    z-index: 2;
+    height: 168px;
+    width: 776px;
+}
+
+.flip-box-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.container-ticket .checkbox-show-itinerary:checked ~ .flip-box .flip-box-inner {
+    transform: rotateX(-180deg);
+}
+
+.flip-box-front, .flip-box-back {
+    position: absolute;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.flip-box-back {
+    transform: rotateX(180deg);
+}
+
+.ticket .itinerario {
+    width: 100%;
+}
+
+.ticket .itinerario .cabecera-itinerario {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 16px;
+    overflow-x: hidden;
+}
+
+.ticket .itinerario .cabecera-itinerario span {
+    font-size: 19px;
+    color: var(--azul-100, #3365B4);
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.ticket .itinerario .cabecera-itinerario .cross {
+    cursor: pointer;
+    width: 32px;
+}
+
+.ticket .itinerario .contenedor-itinerario {
+    display: flex;
+    justify-content: center;
+    padding-inline: 24px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.ticket .itinerario .contenedor-itinerario ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    list-style: none;
+    padding: 0;
+}
+
+.ticket .itinerario .contenedor-itinerario ul li {
+    position: relative;
+    padding-block: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-inline: 2px;
+    overflow: hidden;
+}
+
+.ticket .itinerario .contenedor-itinerario ul li .circle {
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--azul-100, #3365B4);
+    background-color: var(--azul-100, #3365B4);
+    border-radius: 50%;
+    margin-inline: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.ticket .itinerario .contenedor-itinerario ul li span {
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    margin: 0 5px 0 5px;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #000;
+    text-align: center;
+    margin: auto;
+}
+
+.ticket .itinerario .contenedor-itinerario ul li:after {
+    content: '';
+    width: 100%;
+    border: 1px dashed var(--gris-50, #7F7F7F);
+    position: absolute;
+    top: 12px;
+}
+
+.ticket .itinerario .contenedor-itinerario ul li:first-child:after {
+    content: '';
+    width: 50%;
+    border: 1px dashed var(--gris-50, #7F7F7F);
+    position: absolute;
+    top: 12px;
+    left: 50%;
+}
+
+.ticket .itinerario .contenedor-itinerario ul li:last-child:after {
+    content: '';
+    width: 50%;
+    border: 1px dashed var(--gris-50, #7F7F7F);
+    position: absolute;
+    top: 12px;
+    right: 50%;
+    z-index: 1;
+}

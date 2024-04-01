@@ -1,0 +1,20 @@
+
+.container {
+    display: flex;
+    width: 644px;
+    height: 272px; 
+    padding: 8px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px; 
+    border-radius: 16px;
+    background: var(--Blanco, #FFF);
+}
+
+.dotted-line {
+    background: #3365B4;
+    width: 612px;
+    height: 1px;
+    border-style: dashed;
+    border-width: 1px; 
+}

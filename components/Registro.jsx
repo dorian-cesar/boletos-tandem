@@ -74,7 +74,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
     if(formStatus){
       try{
         setIsLoading(true);
-        const res = await axios.post("/api/registro-usuario", {...registro});
+        const res = await axios.post("/api/user/registro-usuario", {...registro});
         if(res.data.status){
           onChangeAlert({
             msg: '¡Registro completado con éxito!',
@@ -161,7 +161,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                 <div className="row">
                   <div className="col-4">
                     <label className="contenedor">
-                      Rut
+                      RUT
                       <input 
                         type="checkbox" 
                         value={"R"} 
@@ -238,7 +238,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
             </div>
             <div className="row">
               <div className="col-6">
-                <label className="label-input-modal">Sexo</label>
+                <label className="label-input-modal">Género</label>
                 <select
                   name="sexo"
                   id="sexo"
@@ -247,9 +247,9 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                   onChange={ onInputChange }
                 >
                   <option value={""}>Seleccione una opción...</option>
-                  <option value={"FEMENINO"}>Femenino</option>
-                  <option value={"MASCULINO"}>Masculino</option>
-                  <option value={"OTRO"}>Otro</option>
+                  <option value={"Hombre"}>Hombre</option>
+                  <option value={"Mujer"}>Mujer</option>
+                  <option value={"OTRO"}>Prefiero no especificar</option>
                 </select>
               </div>
               <div className="col-6">

@@ -59,7 +59,7 @@ const VerBoletos = ({compra}) => {
         const getBoletos = async () => {
             setIsLoading(true);
             try {
-                const res = await axios.post("/api/obtener-boletos-codigo", {...compra});
+                const res = await axios.post("/api/user/obtener-boletos-codigo", {...compra});
                 if(res.data.status){
                     setData(res.data?.object);
                 }

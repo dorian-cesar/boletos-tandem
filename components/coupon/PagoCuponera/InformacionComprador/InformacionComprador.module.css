@@ -1,0 +1,48 @@
+.container {
+    width: 600px;
+    display: flex;
+    padding: 8px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px; 
+    border-radius: 16px;
+    background: var(--Blanco, #FFF);
+}
+
+.container-text{
+    margin-left: 0px;
+    margin-bottom: 12px;
+}
+
+.grupo-campos {
+    margin-bottom: 25px !important;
+}
+
+.dotted-line {
+    background: #3365B4;
+    width: 612px;
+    height: 1px;
+    border-style: dashed;
+    border-width: 1px; 
+}
+
+.input {
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: 16px;
+    border: 1px solid var(--azul-50, #98B1D9);
+    background: var(--Blanco, #FFF);
+    width: 100%;
+}
+
+.label {
+    color: var(--Negro, #000);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
