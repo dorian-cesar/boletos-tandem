@@ -280,7 +280,7 @@
 }
 
 .ticket .itinerario .contenedor-itinerario ul li span {
-    width: 200px;
+    width: 100%;
     padding: 0;
     overflow: hidden;
     position: relative;

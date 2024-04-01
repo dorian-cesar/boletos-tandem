@@ -206,167 +206,144 @@ const BusquedaServicio = (props) => {
   }
 
   return (
-    <div className={isHomeComponent ? "container pb-5" : "container py-1"}>
-      <div className="row ">
-        <div className="col-12">
-          <div className={isHomeComponent ? "bloque m-neg" : "m-neg"}>
-            <div className="row mb-3 ">
-              <div className="col-12">
-                <div className="tab-content">
-                  <div className="col-12 col-md-12">
-                    {isHomeComponent && (
-                      <h1 className={styles["titulo-azul"]}>
-                        ¿Cúal es tu próximo destino?
-                      </h1>
-                    )}
-                    {mostrarPopup && (
-                      <Popup
-                        modalKey={ModalEntities.delete_car}
-                        modalClose={cerrarPopup}
-                        modalMethods={null}
-                      />
-                    )}
-                    {isShowMascota && (
-                      <div
-                        className={styles["title-mascota-abordo"]}
-                        onClick={() => setMascota(!mascota_allowed)}
-                      >
-                        <img
-                          src={
-                            mascota_allowed
-                              ? "img/icon/buttons/paw-outline-orange.svg"
-                              : "img/icon/buttons/paw-outline.svg"
-                          }
-                          style={{
-                            marginRight: "5px",
-                            color: mascota_allowed
-                              ? "var(--color-icon-activo, #00FF00)"
-                              : "var(--color-icon-inactivo, #FF0000)",
-                          }}
-                        />
-                        <span
-                          className={styles["label-titulo-busqueda-servicio"]}
-                        >
-                          Mascota a bordo
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="row search-row">
-                    <div className="col-sm-12 col-md-10 col-lg-4 col-xl-4 col-xxl-5 d-flex flex-row justify-content-evenly align-items-end">
-                      <div className={styles["grupo-campos"]}>
-                        <label
-                          className={styles["label-titulo-busqueda-servicio"]}
-                        >
-                          Origen
-                        </label>
-                        <Input
-                          className="sel-input origen"
-                          placeholder="Seleccione origen"
-                          items={retornaCiudadesSelect(origenes)}
-                          selected={
-                            origen &&
-                            retornaCiudadesSelect([
-                              origenes.find((i) => i.codigo == origen.codigo),
-                            ])
-                          }
-                          setSelected={cambiarOrigen}
-                        />
-                      </div>
-                      <img
-                        src="img/repeat-outline.svg"
-                        onClick={() => invertirDestinos()}
-                        className="pointer"
-                      />
-                      <div className={styles["grupo-campos"]}>
-                        <label
-                          className={styles["label-titulo-busqueda-servicio"]}
-                        >
-                          Destino
-                        </label>
-                        <Input
-                          className="sel-input destino"
-                          placeholder="Seleccione destino"
-                          items={retornaCiudadesSelect([
-                            ...destinos,
-                            {
-                              codigo: "NO_OPTIONS",
-                              nombre: "Por favor seleccione un origen",
-                            },
-                          ])}
-                          selected={
-                            destino &&
-                            destinos.length > 0 &&
-                            retornaCiudadesSelect([
-                              destinos.find((i) => i.codigo == destino.codigo),
-                            ])
-                          }
-                          setSelected={setDestino}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2">
-                      <div className={styles["grupo-campos"]}>
-                        <label
-                          className={styles["label-titulo-busqueda-servicio"]}
-                        >
-                          Salida
-                        </label>
-                        <DatePicker
-                          key={datePickerKey}
-                          selected={startDate}
-                          onChange={(date) => setStartDate(date)}
-                          filterDate={isValidStart}
-                          locale={"es"}
-                          minDate={new Date()}
-                          dateFormat="dd/MM/yyyy"
-                          customInput={<CustomInput />}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2">
-                      <div className={styles["grupo-campos"]}>
-                        <label
-                          className={styles["label-titulo-busqueda-servicio"]}
-                        >
-                          Vuelta
-                        </label>
-                        <DatePicker
-                          selected={endDate}
-                          onChange={(date) => setEndDate(date)}
-                          filterDate={isValidAfter}
-                          locale={"es"}
-                          minDate={startDate}
-                          dateFormat="dd/MM/yyyy"
-                          customInput={<CustomInput />}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2">
-                      <div className={styles["grupo-campos"]}>
-                        <label
-                          className={styles["label-titulo-busqueda-servicio"]}
-                        ></label>
-                        <button
-                          className={`${styles["button-busqueda-servicio"]} ${ isLoading ? styles['loading-button'] : '' }`}
-                          onClick={() => {
-                             origen &&
-                                destino &&
-                                redireccionarBuscarServicio();
-                          }}
-                        >
-                          <img src="img/icon-buscar-blanco.svg" /> Buscar
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+    <>
+      <section className={ isHomeComponent ? 'container pb-5' : 'container py-1' }>
+        <div className={ isHomeComponent && styles['seleccion-servicio'] }>
+          <div>
+            {isHomeComponent && (
+              <h1 className={styles["titulo-azul"]}>
+                ¿Cúal es tu próximo destino?
+              </h1>
+            )}
+            {mostrarPopup && (
+              <Popup
+                modalKey={ModalEntities.delete_car}
+                modalClose={cerrarPopup}
+                modalMethods={null}
+              />
+            )}
+            {isShowMascota && (
+              <div
+                className={styles["title-mascota-abordo"]}
+                onClick={() => setMascota(!mascota_allowed)}
+              >
+                <img
+                  src={
+                    mascota_allowed
+                      ? "img/icon/buttons/paw-outline-orange.svg"
+                      : "img/icon/buttons/paw-outline.svg"
+                  }
+                  style={{
+                    marginRight: "5px",
+                    color: mascota_allowed
+                      ? "var(--color-icon-activo, #00FF00)"
+                      : "var(--color-icon-inactivo, #FF0000)",
+                  }}
+                />
+                <span
+                  className={styles["label-titulo-busqueda-servicio"]}
+                >
+                  Mascota a bordo
+                </span>
               </div>
+            )}
+          </div>
+          <div className={ styles['input-container'] }>
+            <div className={styles["grupo-campos"]}>
+              <label className={styles["label-titulo-busqueda-servicio"]}>Origen</label>
+              <Input
+                className="sel-input origen"
+                placeholder="Seleccione origen"
+                items={retornaCiudadesSelect(origenes)}
+                selected={
+                  origen &&
+                  retornaCiudadesSelect([
+                    origenes.find((i) => i.codigo == origen.codigo),
+                  ])
+                }
+                setSelected={cambiarOrigen}/>
+            </div>
+            <img
+              src="img/repeat-outline.svg"
+              onClick={() => invertirDestinos()}
+              className="pointer"
+            />
+            <div className={ styles["grupo-campos"] }>
+              <label className={ styles["label-titulo-busqueda-servicio"] }>
+                Destino
+              </label>
+              <Input
+                className="sel-input destino"
+                placeholder="Seleccione destino"
+                items={retornaCiudadesSelect([
+                  ...destinos,
+                  {
+                    codigo: "NO_OPTIONS",
+                    nombre: "Por favor seleccione un origen",
+                  },
+                ])}
+                selected={
+                  destino &&
+                  destinos.length > 0 &&
+                  retornaCiudadesSelect([
+                    destinos.find((i) => i.codigo == destino.codigo),
+                  ])
+                }
+                setSelected={setDestino}/>
+            </div>
+            <div className={styles["grupo-campos"]}>
+              <label
+                className={styles["label-titulo-busqueda-servicio"]}
+              >
+                Salida
+              </label>
+              <DatePicker
+                key={datePickerKey}
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                filterDate={isValidStart}
+                locale={"es"}
+                minDate={new Date()}
+                dateFormat="dd/MM/yyyy"
+                customInput={<CustomInput />}
+              />
+            </div>
+            <div className={styles["grupo-campos"]}>
+              <label
+                className={styles["label-titulo-busqueda-servicio"]}
+              >
+                Vuelta
+              </label>
+              <DatePicker
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+                filterDate={isValidAfter}
+                locale={"es"}
+                minDate={startDate}
+                dateFormat="dd/MM/yyyy"
+                className={ styles['input'] }
+                customInput={<CustomInput />}
+              />
+            </div>
+            <div className={styles["grupo-campos"]}>
+              <label
+                className={styles["label-titulo-busqueda-servicio"]}
+              ></label>
+              <button
+                className={`${styles["button-busqueda-servicio"]} ${ isLoading ? styles['loading-button'] : '' }`}
+                onClick={() => {
+                  origen &&
+                      destino &&
+                      redireccionarBuscarServicio();
+                }}
+              >
+                <img src="img/icon-buscar-blanco.svg" /> Buscar
+              </button>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 

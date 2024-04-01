@@ -2562,3 +2562,8 @@ footer .item a {
     display: none;
   }
 }
+
+
+.react-datepicker-wrapper {
+  display: block !important;
+}
