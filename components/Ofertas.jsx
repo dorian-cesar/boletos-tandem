@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { Navigation, Autoplay, Pagination } from 'swiper/modules';
+import { Navigation, Autoplay, Pagination, FreeMode } from 'swiper/modules';
 
 const customStyles = {
   control: (provided) => ({
@@ -73,55 +73,8 @@ const ofertas = [{
 
 const Ofertas = (props) => {
 
-  useEffect(() => doSomething(), []);
-  const [valoresArregloOfertas, setValoresArregloOfertas] = useState([]);
-
-
-  function doSomething() {
-    if ( valoresArregloOfertas.length > 0 ) {
-      return;
-    }
-
-    const firstArray = [];
-    let secondArray = [];
-
-    ofertas.map((oferta) => {
-      if( secondArray.length < 3 ) {
-        secondArray.push(oferta);
-      } else {
-        firstArray.push(secondArray);
-        secondArray = [];
-        secondArray.push(oferta);
-      }
-    });
-
-    if ( secondArray.length > 0 ) {
-      firstArray.push(secondArray);
-    }
-
-    setValoresArregloOfertas(firstArray);
-  }
-
-  function renderCardOferta(firstArray) {
-    if ( firstArray.length === 0 ) {
-      return;
-    } else if ( firstArray.length === 1 ) {
-      return (
-        <>
-        <div className="col-12 col-md-6 col-lg-4"></div>
-        <div className="col-12 col-md-6 col-lg-4"></div>
-        </>
-      );
-    } else if ( firstArray.length === 2 ) {
-      return (
-        <>
-        <div className="col-12 col-md-6 col-lg-4"></div>
-        </>
-      );
-
-    }
-  }
-
+  // useEffect(() => doSomething(), []);
+  const [valoresArregloOfertas, setValoresArregloOfertas] = useState(ofertas);
 
   return (
     <div className="container">
@@ -130,20 +83,36 @@ const Ofertas = (props) => {
         Infórmate sobre nuestros servicios, convenios y otros.
       </div>
       <Swiper
-        className="mt-5 pb-5"
-        centeredSlides={ true }
+        className="mt-5 pb-5 w-100"
+        slidesPerView={3}
+        spaceBetween={30}
+        freeMode={true}
         loop={ true }
         navigation={ true }
-        autoplay={{ delay: 7000, disableOnInteraction: false }}
         pagination={{ clickable: true }}
-        slidesPerView={1}
-        spaceBetween={30}
-        modules={[Navigation, Autoplay, Pagination]}>
+        modules={[FreeMode, Navigation, Pagination]}
+        breakpoints={{
+          500: {
+            slidesPerView: 1,
+            spaceBetween: 10
+          },
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 4,
+            spaceBetween: 40,
+          },
+          1024: {
+            slidesPerView: 5,
+            spaceBetween: 50,
+          },
+        }}>
         {
-          valoresArregloOfertas.map((firstArray, index) => (
-            <SwiperSlide key={ index } className="row d-flex justify-content-around ps-5">
-              { firstArray.map((oferta, index) => (<CardOferta key={ index } {...oferta} />)) }
-              { renderCardOferta(firstArray) }
+          valoresArregloOfertas.map((oferta, index) => (
+            <SwiperSlide key={ index } id="swiper-ofertas">
+              <CardOferta key={ index } {...oferta} />
             </SwiperSlide>
           ))
         }

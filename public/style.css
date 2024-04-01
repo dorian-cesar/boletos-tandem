@@ -2567,3 +2567,15 @@ footer .item a {
 .react-datepicker-wrapper {
   display: block !important;
 }
+
+#swiper-ofertas {
+  text-align: center;
+  /* font-size: 18px; */
+  /* background: #fff; */
+  width: fit-content !important;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

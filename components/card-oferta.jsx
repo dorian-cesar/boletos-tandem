@@ -14,7 +14,7 @@ const CardOferta = (props) => {
     } = props;
 
     return (
-        <div className="col-12 col-md-6 col-lg-4">
+        <div className="d-flex w-100">
             <div className="card-ofertas mobile-view">
                 <img className="card-img-top imagen" src="img/icon/images/antofagasta.jpeg"/>
                 <div className="col-12 col-md-12 col-lg-11">
