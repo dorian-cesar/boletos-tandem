@@ -266,7 +266,7 @@ const BusquedaServicio = (props) => {
             <img
               src="img/repeat-outline.svg"
               onClick={() => invertirDestinos()}
-              className="pointer"
+              className={ styles["pointer"] }
             />
             <div className={ styles["grupo-campos"] }>
               <label className={ styles["label-titulo-busqueda-servicio"] }>
@@ -337,7 +337,7 @@ const BusquedaServicio = (props) => {
                       redireccionarBuscarServicio();
                 }}
               >
-                <img src="img/icon-buscar-blanco.svg" /> Buscar
+                <img className={styles["incon-buscar"]} src="img/icon-buscar-blanco.svg" /> Buscar
               </button>
             </div>
           </div>
