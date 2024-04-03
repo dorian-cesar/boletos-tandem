@@ -93,7 +93,8 @@ export class ListaCarritoDTO {
         debugger;
         this.servicio = servicio?.idServicio || '';
         this.fechaServicio = servicio?.fechaServicio || '';
-        this.fechaPasada = servicio?.fechaLlegada || '';
+        // TODO: REVISAR FECHA PASADA EN ALGUN FUTURO
+        this.fechaPasada = servicio?.fechaServicio || '';
         this.fechaLlegada = servicio?.fechaLlegada || '';
         this.horaSalida = servicio?.horaSalida || '';
         this.horaLlegada = servicio?.horaLlegada || '';
