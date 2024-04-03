@@ -77,7 +77,6 @@ export default function Header({ openNav }: { openNav: any }) {
   }
 
   function setCountdown() {
-    debugger;
     if (!countdownInterval && live_time ) {
       const interval = setInterval(() => {
         const now = new Date().getTime();
