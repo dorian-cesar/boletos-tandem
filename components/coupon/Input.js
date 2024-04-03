@@ -4,8 +4,8 @@ const customStyles = {
   control: (provided) => ({
     ...provided,
     display: 'flex', 
-    width: '320px',
-    height: '40px',
+    width: '100%',
+    height: '100%',
     padding: '8px', 
     borderRadius: '16px',
     gap: '10px', 
