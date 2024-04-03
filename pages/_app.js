@@ -1,6 +1,6 @@
 import { AppProps } from 'next/app'
 import { store } from 'store/store';
-import { Provider } from 'react-redux'
+import { Provider, useDispatch } from 'react-redux'
 import { SWRConfig } from 'swr'
 import fetchJson from 'lib/fetchJson'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -11,6 +11,8 @@ import '../public/modal.css'
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from "react";
 import { Titillium_Web } from 'next/font/google';
+import { useRouter } from 'next/router';
+import { Content } from './content';
 
 const titillium = Titillium_Web({
   weight: ['400', '600', '700'],
@@ -23,6 +25,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap");
   }, []);
+
   return (
     <Provider store={store}>
       <SWRConfig
@@ -33,9 +36,11 @@ function MyApp({ Component, pageProps }) {
           },
         }}
       >
-        <main className={titillium.className}>
-          <Component {...pageProps} />
-        </main>
+        <Content>
+          <main className={titillium.className}>
+            <Component {...pageProps} />
+          </main>
+        </Content>
       </SWRConfig>
     </Provider>
   )

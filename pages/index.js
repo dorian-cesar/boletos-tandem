@@ -10,24 +10,16 @@ import getConfig from "next/config";
 import { registerLocale } from "react-datepicker";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { liberarAsientos } from "store/usuario/compra-slice";
-import { limpiarCambio } from "store/usuario/cambio-boleto-slice";
-
 import Banner from "components/banner";
 
 const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
+import { useRouter } from "next/router";
 
 registerLocale("es", es);
 
 export default function Home(props) {
   const origenes = props.ciudades;
-  const dispatch = useDispatch();
-
-  useEffect(() =>{ 
-    dispatch(liberarAsientos()) 
-    dispatch(limpiarCambio())
-  }, []);
 
   return (
     <Layout>
