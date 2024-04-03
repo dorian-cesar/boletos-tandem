@@ -43,30 +43,10 @@ const DevolucionDebito = (props) => {
   function setDataDevolucion({ name, value }) {
     try {
       let carro_temp = { ...carro };
-      if (name === "rutSolicitante") {
+      if (name === "rutSolicitante" || name === "rutTitular") {
         value = validarFormatoRut(value);
-        if (value === null) {
-          toast.error(
-            "El formato del rut solicitante ingresado es incorrecto",
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-            }
-          );
-          return;
-        }
-      }
-      if (name === "rutTitular") {
-        value = validarFormatoRut(value);
-        if (value === null) {
-          toast.error("El formato del rut titular ingresado es incorrecto", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-          });
-          return;
-        }
+        value = value.replace(/[^\dkK0-9.-]/g, "");
+        if (value.length > 12) return;
       }
       carro_temp[name] = value;
       setCarro(carro_temp);
@@ -214,16 +194,18 @@ const DevolucionDebito = (props) => {
     router.push('/');
   }
 
-  function validarFormatoRut(validaRut) {
+  function validarFormatoRut(value) {
     try {
-      let rut = new Rut(validaRut);
-      let rutConGuion = rut.getNiceRut(true);
-      return rutConGuion;
+      if (value.length > 2) {
+        let rut = new Rut(value);
+        value = new Rut(rut.getCleanRut().replace("-", "")).getNiceRut(true);
+      }
+      return value;
     } catch ({ message }) {
       console.error(`Error al validar formato de rut [${message}]`);
-      return validaRut;
     }
   }
+
 
   return (
     <>

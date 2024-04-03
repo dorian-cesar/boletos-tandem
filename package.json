@@ -14,6 +14,7 @@
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.0",
     "iron-session": "latest",
+    "moment": "^2.30.1",
     "next": "latest",
     "octokit": "^1.7.0",
     "react": "^18.2.0",

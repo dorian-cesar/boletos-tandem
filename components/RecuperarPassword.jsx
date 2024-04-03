@@ -27,7 +27,7 @@ const RecuperarPassword = ({ onChangeMode,  onChangeAlert }) => {
 
     try{
       setIsLoading(true);
-      const res = await axios.post("/api/recuperar-password", {...recuperar});
+      const res = await axios.post("/api/user/recuperar-password", {...recuperar});
       if(res.data.status){
         onChangeAlert({
           msg: res.data.message,

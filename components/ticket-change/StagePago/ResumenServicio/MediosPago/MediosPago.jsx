@@ -5,16 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { agregarMedioPago } from "store/usuario/compra-slice";
 
 const MediosPago = (props) => {
-  const {mediosPago, setMediosPago} = props;
+  const {mediosPago, setMediosPago, setMedioPago} = props;
   const [selectedMedioPago, setSelectedMedioPago] = useState(null); 
   const [codigoCuponera, setCodigoCuponera] = useState("");
 
   const dispatch = useDispatch();
-  const medioPago = useSelector((state) => state.compra.medioPago);
 
-  const handleMedioPagoChange = (id) => {
-    dispatch(agregarMedioPago(id));
-    setSelectedMedioPago(medioPago);
+  const handleMedioPagoChange = ({ name, value }) => {
+    try {
+      setMedioPago(value);
+      setSelectedMedioPago(value)
+    } catch ({ message }) {
+      console.error(`Error al agregar informacion del comprador [${message}]`);
+    }
   };
 
   useEffect(
@@ -41,7 +44,7 @@ const MediosPago = (props) => {
               name="medioPago"
               value={element.valor2}
               checked={selectedMedioPago === element.valor2}
-              onClick={() => handleMedioPagoChange(element.valor2)}
+              onClick={(e) => handleMedioPagoChange(e.target)}
             />
               {element.valor2 === "WBPAY" ? (
                 <img src="/img/icon/cuponera/Logo-webpay.svg"></img>

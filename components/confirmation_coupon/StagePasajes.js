@@ -9,6 +9,7 @@ import { LiberarAsientoDTO, TomaAsientoDTO } from "dto/TomaAsientoDTO";
 import { BuscarPlanillaVerticalDTO } from "dto/MapaAsientosDTO";
 import { AsientoDTO } from "dto/AsientoDTO";
 import { PasajeDTO } from "dto/PasajesDTO";
+import moment from "moment";
 
 const ASIENTO_LIBRE = 'libre';
 const ASIENTO_LIBRE_MASCOTA = 'pet-free';
@@ -242,16 +243,15 @@ const StagePasajes = (props) => {
             if ( mascota_allowed && mappedParrilla.mascota == 0 ) return;
             
             if ( filter_horas.length > 0 ) {
-                let isTime = filter_horas.reduce((prevValue, actValue) => {
-                    if ( !prevValue ) {
-                        let horaFiltro = actValue.split('-');
-                        let horaViaje = mappedParrilla.horaSalida.split('-');
-                        if( horaViaje[0] <= horaFiltro[1] && horaViaje[0] <= horaFiltro[0] ) {
-                            prevValue= true;
-                        }
-                        return prevValue;
-                    }
-                }, false);
+                const horaSalida = moment(mappedParrilla.horaSalida, 'hh:mm');
+            
+                let isTime = filter_horas.some(horaFiltro => {
+                    let [inicio, fin] = horaFiltro.split('-');
+                    const horaInicio = moment(inicio, 'hh:mm');
+                    const horaFin = moment(fin, 'hh:mm');
+                    
+                    return horaSalida >= horaInicio && horaSalida <= horaFin;
+                });
                 if (!isTime) return;
             }
 

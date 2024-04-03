@@ -8,6 +8,7 @@ import { BuscarPlanillaVerticalDTO } from "dto/MapaAsientosDTO";
 import { PasajeDTO } from "dto/PasajesDTO";
 import { FiltroServicios } from "../FiltroServicios/FiltroServicios";
 import styles from './StagePasajes.module.css';
+import moment from "moment";
 
 
 const STAGE_BOLETO_IDA = 0;
@@ -133,18 +134,14 @@ const StagePasajes = (props) => {
             if ( mascotaAllowed && mappedParrilla.mascota == 0 ) return;
             
             if (filter_horas.length > 0) {
-                let horaSalida = mappedParrilla.horaSalida.split(':').map(Number);
+                const horaSalida = moment(mappedParrilla.horaSalida, 'hh:mm');
             
                 let isTime = filter_horas.some(horaFiltro => {
-                    let [inicio, fin] = horaFiltro.split('-').map(hora => hora.split(':').map(Number));
-            
-                    if (inicio[0] <= fin[0]) {
-                        return horaSalida[0] >= inicio[0] && horaSalida[0] <= fin[0] &&
-                               horaSalida[1] >= inicio[1] && horaSalida[1] <= fin[1];
-                    } else {
-                        return (horaSalida[0] >= inicio[0] || horaSalida[0] <= fin[0]) &&
-                               horaSalida[1] >= inicio[1] && horaSalida[1] <= fin[1];
-                    }
+                    let [inicio, fin] = horaFiltro.split('-');
+                    const horaInicio = moment(inicio, 'hh:mm');
+                    const horaFin = moment(fin, 'hh:mm');
+                    
+                    return horaSalida >= horaInicio && horaSalida <= horaFin;
                 });
             
                 if (!isTime) return;
@@ -165,10 +162,6 @@ const StagePasajes = (props) => {
                     setModalMab={setModalMab}/>
             );
         });
-
-        debugger;
-        console.log(sortedParrilla);
-        console.log(filter_horas);
 
         if( sortedParrilla.length > 0 ) {
             setServicios(sortedParrilla)

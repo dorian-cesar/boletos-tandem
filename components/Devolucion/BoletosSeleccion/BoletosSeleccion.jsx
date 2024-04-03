@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 const estadoBoleto = {
   'ACT': 'Activo',
   'NUL': 'Nulo',
-  'VEN': 'Fuera de plazo'
+  'VEN': 'Fuera de plazo',
+  'NOP': 'No se puede anular'
 }
 
 const BoletosSeleccion = (props) => {

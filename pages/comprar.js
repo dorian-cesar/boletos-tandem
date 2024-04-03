@@ -201,19 +201,13 @@ export default function Home(props) {
                                 />
                                 <ul className="p-1 list-style-dot">
                                     <li>
-                                        Solo podrán viajar Perros y Gatos en un
-                                        Canil que no exceda los 60 cm de largo,
-                                        34 cm de alto y 38,5 cm de ancho.
+                                        Sólo puede viajar una mascota por pasajero.
                                     </li>
                                     <li>
-                                        Solo puede viajar una mascota por
-                                        pasajero.
+                                        Sólo transportamos a perros y gatos que quepan cómodamente en un canil rígido y cerrado que va sobre el asiento asignado. El canil no puede superar los 60 cm de largo, 39 cm de ancho y 34 cm de alto.
                                     </li>
                                     <li>
-                                        {" "}
-                                        Debe firmar una "Declaración Jurada de
-                                        Tenencia Responsable" antes del viaje
-                                        que se enviará junto el pasaje.
+                                        Debe llevar firmada una "Declaración Jurada de tenencia responsable" al momento de abordar la cual se adjunta con el envío de pasajes MAB al correo.
                                     </li>
                                 </ul>
                             </div>
