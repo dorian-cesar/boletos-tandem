@@ -11,10 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { format } from "@formkit/tempo";
 import { limpiarListaCarrito } from "store/usuario/compra-slice";
+import { decryptData } from 'utils/encrypt-data';
 
 const { publicRuntimeConfig } = getConfig();
 
 export default function Home(props) {
+
+  const { carro } = props;
+
   const [respuestaCambio, setRespuestaCambio] = useState({
     voucher: {
       fechaSalida: "",
@@ -28,6 +32,20 @@ export default function Home(props) {
       total: "",
     },
   });
+
+  useEffect(() => {
+    const cambiarBoleto = decryptData('CHN_TKT');
+    if( carro.cerrar.estado && carro.commit.status === 'AUTHORIZED' && cambiarBoleto) {
+      axios.post(
+        "/api/ticket_sale/cambiar-boleto",
+        cambiarBoleto
+      ).then(response => {
+        setRespuestaCambio(response.data?.object);
+        localStorage.removeItem('CHN_TKT');
+      })
+      .catch(error => console.error('ERROR AL CAMBIAR BOLETO:', error));
+    }
+  }, []);
 
   const dispatch = useDispatch();
   const [medioPago, setMedioPago] = useState("WBPAY");
@@ -44,8 +62,6 @@ export default function Home(props) {
     currency: "CLP",
   });
 
-  const cambioRespuesta = useSelector((state) => state.cambioBoleto);
-
   const descargarBoletos = async () => {
     try {
       if (respuestaCambio != null) {
@@ -58,10 +74,6 @@ export default function Home(props) {
       }
     } catch (e) {}
   };
-
-  useEffect(()=>{
-    setRespuestaCambio(cambioRespuesta);
-  },[])
 
   useEffect(() => {
     dispatch(limpiarListaCarrito());
@@ -186,6 +198,7 @@ export const getServerSideProps = withIronSessionSsr(async function (context) {
       publicRuntimeConfig.site_url + "/api/carro-cambio",
       context.query
     );
+    Object.assign(carro, { statusTransaccion: true });
     console.log("datos", carro);
   } catch (error) {}
 

@@ -62,7 +62,7 @@ const MediosPago = (props) => {
           <>
             <span className={styles["text-input-coupon"]}>
               {" "}
-              Ingresa tu código de transacción aquí:{" "}
+              Ingresa tu código de cuponera aquí:{" "}
             </span>
             <input
               type="codigoCuponera"

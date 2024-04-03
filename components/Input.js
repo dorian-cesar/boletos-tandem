@@ -20,7 +20,7 @@ const customStyles = {
     lineHeight: 'normal',
   }),
 };
-const Input = ({ items, selected, setSelected, className, placeholder }) => {
+const Input = ({ items, selected, setSelected, className, placeholder, isDisabled }) => {
   return (
     <>
       {" "}
@@ -33,6 +33,7 @@ const Input = ({ items, selected, setSelected, className, placeholder }) => {
           setSelected(e.value);
         }}
         instanceId={useId()}
+        isDisabled={ isDisabled }
       />
     </>
   );

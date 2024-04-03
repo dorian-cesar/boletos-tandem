@@ -20,13 +20,14 @@ import {
 import Popup from "../../Popup/Popup";
 import ModalEntities from "../../../entities/ModalEntities";
 import { useLocalStorage } from "/hooks/useLocalStorage";
+import { encryptDataNoTime } from 'utils/encrypt-data.js'
 
 export const ResumenViaje = (props) => {
   const buttonRef = useRef();
   const { getItem } = useLocalStorage();
   const [user, setUser] = useState(null);
   const [mostrarPopup, setMostrarPopup] = useState(false);
-  const { boletoValido } = props;
+  const { boletoValido, medioPago } = props;
   const [loginOculto, setLoginOculto] = useState(true);
   const router = useRouter();
   const [resumen, setResumen] = useState({
@@ -66,7 +67,6 @@ export const ResumenViaje = (props) => {
     useSelector((state) => state.compra?.informacionAgrupada) || [];
   const datosComprador =
     useSelector((state) => state.compra?.datosComprador) || {};
-  const medioPago = useSelector((state) => state.compra.medioPago);
   const dispatch = useDispatch();
 
   const obtenerInformacion = () => {
@@ -318,32 +318,13 @@ export const ResumenViaje = (props) => {
           .replace(".", "")
           .replace(".", ""),
         tipoDocumento: informacionAgrupada[0]?.asientos[0]?.tipoDocumento,
+        valorBoletoCambio: totalPagar
       };
 
-      if (!isPaymentValid()) return;
+      encryptDataNoTime(cambiarBoleto, 'CHN_TKT');
 
-      let data;
-      try {
-        const response = await axios.post(
-          "/api/ticket_sale/cambiar-boleto",
-          cambiarBoleto
-        );
-        data = response.data;
-      } catch (error) {
-        data = error.response.data;
-      }
-      console.log('daat', data)
-      if (data.status) {
-        debugger;
-        dispatch(agregarCambio(data.object));
-        await pagarWebPay(); 
-      } else {
-        toast.warn(data.object?.resultado?.mensaje, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-        });
-      }
+      if (!isPaymentValid()) return;
+      await pagarWebPay(); 
     } catch (error) {}
   }
 
