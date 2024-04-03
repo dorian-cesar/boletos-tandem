@@ -539,9 +539,9 @@ export const ResumenViaje = (props) => {
                 type="checkbox"
                 value={terminos}
                 onChange={() => setTerminos(!terminos)}
-                id="flexCheckDefault"
+                id="flexCheckTerms"
               />
-              <label className="form-check-label" htmlFor="flexCheckDefault">
+              <label className="form-check-label" htmlFor="flexCheckTerms">
                 Acepto los términos y condiciones de la compra
               </label>
             </div>
@@ -551,9 +551,9 @@ export const ResumenViaje = (props) => {
                 type="checkbox"
                 value={sendNews}
                 onChange={() => setSendNews(!sendNews)}
-                id="flexCheckDefault"
+                id="flexCheckNews"
               />
-              <label className="form-check-label" htmlFor="flexCheckDefault">
+              <label className="form-check-label" htmlFor="flexCheckNews">
                 Me gustaría recibir noticias, actualizaciones o información de
                 Pullman Bus
               </label>
