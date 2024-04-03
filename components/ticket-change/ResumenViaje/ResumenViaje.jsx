@@ -225,6 +225,7 @@ export const ResumenViaje = (props) => {
           .replace(".", "")
           .replace(".", ""),
         tipoDocumento: informacionAgrupada[0]?.asientos[0]?.tipoDocumento,
+        valorBoletoCambio: totalPagar
       };
       if (!isPaymentValid()) return;
       let data;
