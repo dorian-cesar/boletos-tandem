@@ -1,3 +1,4 @@
+
 .home {
     background: var(--Azul-fondo, #E6ECF6);
     margin: 0;
@@ -8,11 +9,12 @@
 .container{
     margin-top: 20px;
     margin-bottom: 20px;
+    width: 1039px;
+    height: 1108px;
     flex-shrink: 0;
     border-radius: 16px;
     background: var(--Blanco, #FFF);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    padding: 16px;
 }
 
 .image{
@@ -53,7 +55,9 @@
     line-height: normal;
 }
 
-.orden-compra {
+.orden {
+    width: 514px;
+    height: 63px;
     flex-shrink: 0;
     border-radius: 16px;
     background: var(--azul-100, #3365B4);
@@ -63,7 +67,6 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    padding-block: 16px;
 
     /* Centrar el contenido */
     display: flex;
@@ -72,6 +75,14 @@
 }
 
 .data-passenger{
+    color: #000;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.data-cuponera{
     color: #000;
     font-size: 20px;
     font-style: normal;
@@ -109,12 +120,16 @@
 }
 
 .dotted-line {
+    width: 310px;
+    height: 1px;
     flex-shrink: 0;
     border-bottom: 1px solid #000;
 }
 
 .container-cuponera{
-    margin-block-end: 16px;
+    width: 300px;
+    height: 250px;   
+    
 }
 
 .price {
@@ -140,7 +155,6 @@
     font-weight: 700;
     line-height: normal;
     margin-left: 120px;
-    cursor: pointer;
 }
 
 .detail-pay{
@@ -179,6 +193,247 @@
     align-items: center; 
 }
 
+
+.main-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    background: var(--Blanco, #FFF);
+    margin-inline: auto;
+    margin-block-start: 64px;
+    margin-block-end: 109px;
+    padding-block: 52px;
+    padding-inline: 51px;
+    border-radius: 16px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.main-section h1 {
+    color: var(--azul-100, #3365B4);
+    text-align: center;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding-block: 16px
+}
+
+.main-section .images-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.main-section .images-container .confirmado-image {
+    margin-inline-start: -35px;
+}
+
+.main-section .compra-realizada {
+    max-width: 714px;
+    color: #000;
+    text-align: center;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.main-section .orden-compra {
+    margin-block: 16px;
+    display: flex;
+    padding: 16px 103px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    background: var(--azul-100, #3365B4);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    color: var(--Blanco, #FFF);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.main-section .detalle-viajes {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-block: 16px;
+    border-top: 1px dashed #000;
+    border-bottom: 1px dashed #000;
+}
+
+.detalle-viajes .servicio-ida, .detalle-viajes .servicio-vuelta {
+    padding: 8px;
+    width: 350px;
+}
+
+.detalle-container {
+    margin-top: 16px;
+}
+
+.detalle-item ul {
+    list-style-type: none;
+    padding-left: 0;
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 0;
+}
+
+.detalle-item ul li {
+    position: relative;
+    margin: 0;
+    padding-bottom: 1em;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.detalle-item ul li:before {
+    content: '';
+    border: 0.1em dashed #FF6500;
+    position: absolute;
+    bottom: 0px;
+    top: 10px;
+    left: 5px;
+}
+
+.detalle-item ul li:after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: #FF6500;
+    border-radius: 50%;
+    position: absolute;
+    left: 2px;
+    top: 7px;
+}
+
+.detalle-item ul li:last-child::before {
+    top: 1px;
+    bottom: 20px !important;
+}
+
+.resumen-servicio {
+    display: flex;
+    justify-content: space-between;
+    padding-block: 16px;
+    border-top: 1px dotted #000;
+    border-bottom: 1px dotted #000;
+}
+
+.resumen-servicio-detalle {
+    display: flex;
+    justify-content: space-between;
+    padding-block: 16px;
+    border-bottom: 1px dotted #000;
+}
+
+.resumen-pago {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    padding-block: 32px;
+    border-bottom: 1px dashed #000;
+}
+
+.resumen-pago .contenedor-metodo-pago {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.resumen-pago .contenedor-metodo-pago span img {
+    margin-left: 16px;
+}
+
+.resumen-pago .contenedor-total-pagar {
+    display: flex;
+    align-items: center;
+    gap: 75px;
+}
+
+.resumen-pago .contenedor-total-pagar strong {
+    color: #000;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.resumen-pago .contenedor-total-pagar span {
+    color: var(--naranjo-100, #FF6500);
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.action-container {
+    display: flex;
+    justify-content: space-around;
+    padding-block: 32px;
+    width: 100%;
+}
+
+.action-container .contenedor-descarga-boletos {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.action-container .contenedor-descarga-boletos span {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-decoration-line: underline;
+}
+
+.action-container .contenedor-volver-inicio {
+    display: flex;
+    align-items: center;
+    min-width: 300px;
+}
+
+.btn {
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 0;
+    border-radius: 16px;
+    background: var(--naranjo-100, #FF6500);
+    color: white;
+    width: 100%;
+}
+
+.btn:hover {
+    color: white;
+}
+
+
+.image-download{
+    width: 24px;
+    height: 24px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center; 
+}
+
 .contenedor-codigo-seguridad {
     display: none !important;
 }
@@ -205,11 +460,15 @@
         display: flex !important;
     }
 
-    .botones-inferiores {
+    .compra-realizada {
         display: none;
     }
 
-    .contenedor-pagado {
+    .main-section .orden-compra{
+        display: none;
+    }
+
+    .data-cuponera {
         display: none;
     }
 
@@ -217,15 +476,27 @@
         display: none;
     }
 
-    .datos-comprador {
+    .data-passenger {
         display: none;
     }
 
     .sub-title {
         display: none;
     }
+ 
+    .contenedor-metodo-pago{
+        display: none;
+    }
 
-    .orden-compra {
+    .action-container{
+        display: none;
+    }
+
+    .dotted{
+        display: none;
+    }
+
+    .dotted-line {
         display: none;
     }
 }

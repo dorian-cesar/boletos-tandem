@@ -34,8 +34,6 @@ const ResumenPago = (props) => {
   
   async function pagar() {
     if (isPaymentValid()) {
-      dispatch(agregarMontoTotal(carroCuponera));
-
       try {
         const { data } = await axios.post(
           "/api/coupon/guardar-cuponera",
@@ -70,11 +68,14 @@ const ResumenPago = (props) => {
     }
   }, [payment]);
 
+  useEffect(()=>{
+    dispatch(agregarMontoTotal(carroCuponera));
+  }, []);
+
   return (
     
 
       <div className={styles["resumen-container"]}>{
-        console.log('datos', carroCuponera)
       }
         <h3>Resumen del viaje</h3>
         <div className={styles["contenedor-servicios"]}>
