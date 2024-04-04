@@ -8,11 +8,46 @@ import Link from "next/link";
 import { withIronSessionSsr } from "iron-session/next";
 import { useEffect, useState } from "react";
 import styles from "./RespuestaTransaccionCuponera.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { limpiarCuponera } from "store/usuario/compra-cuponera-slice";
 
 const { publicRuntimeConfig } = getConfig();
 
 export default function Home(props) {
+  const dispatch = useDispatch();
+  const informacionCompra = useSelector((state) => state.compraCuponera) || {};
   const [cuponeraData, setCuponeraData] = useState(null);
+  const [datosCompra, setDatosCompra] = useState({
+    carroCuponera: {
+      cantidadCupones: 0,
+      codigoCuponera: "",
+      cuponesExtras: 0,
+      destino: "",
+      destinoDescripcion: "",
+      dias: "0000000",
+      diasDuracion: 0,
+      empresa: "",
+      estado: "",
+      estadoNominativa: false,
+      estadoVentanilla: false,
+      estadoWeb: false,
+      horaDesde: "0000",
+      horaHasta: "0000",
+      nombreCuponera: "",
+      origen: "",
+      origenDescripcion: "",
+      valorCupon: 0,
+      valorTotalCuponera: 0,
+  },
+  });
+  const [medioPago, setMedioPago] = useState("WBPAY");
+  const mediosPago = {
+    WBPAY: {
+      nombre: "Webpay",
+      mensaje: "Débito RedCompra (WebPay)",
+      imagen: "/img/icon/general/webpay.svg",
+    },
+  };
 
   async function obtenerCuponera() {
     try {
@@ -20,10 +55,23 @@ export default function Home(props) {
         publicRuntimeConfig.site_url + "/api/coupon/obtener-cuponera",
         props.codigo
       );
-      console.log('CUPONERAA:::', response);
       setCuponeraData(response.data);
     } catch (error) {}
   }
+
+  const clpFormat = new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  });
+
+
+  useEffect(() => {
+    if(informacionCompra){
+      setDatosCompra(informacionCompra)
+      dispatch(limpiarCuponera());
+    }
+   
+  },[]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,177 +86,177 @@ export default function Home(props) {
 
     fetchData();
   }, [props.cuponera, props.codigo]);
+
+  function interpretarSecuenciaDias(secuencia) {
+    const diasSemana = [
+      "Lunes ",
+      "Martes ",
+      "Miércoles ",
+      "Jueves ",
+      "Viernes ",
+      "Sábado ",
+      "Domingo ",
+    ];
+    let diasActivos = [];
+    for (let i = 0; i < secuencia.length; i++) {
+      if (secuencia[i] === "1") {
+        diasActivos.push(diasSemana[i]);
+      }
+    }
+    return diasActivos;
+  }
+
+  function formatearHora(cadenaHora) {
+    if (cadenaHora.length !== 4) {
+      throw new Error("La cadena de hora debe tener cuatro dígitos.");
+    }
+    const hora = cadenaHora.slice(0, 2);
+    const minutos = cadenaHora.slice(2);
+    return `${hora}:${minutos}`;
+  }
+
   return (
     <Layout>
       {props.carro ? (
-        <div className={styles["home"]}>
-          <div className={ `container ${ styles['container']}`}>
-            <div className={"row justify-content-center"}>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-6 text-center"}>
-                    <img
-                      className={styles["image"]}
-                      src="/img/icon/coupon-response/ticket-outline.svg"
-                      alt=""
-                    />
-                    <img
-                      className={styles["image-check"]}
-                      src="/img/icon/coupon-response/checkmark-circle-outline.svg"
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-6 text-center"}>
-                    <h2 className={styles["title"]}>
-                      ¡Muchas gracias por tu compra!
-                    </h2>
-                    <p className={styles["sub-title"]}>
-                      Tu compra se ha realizado con éxito. <br />
-                      Dentro de poco te llegará un correo con el código de uso
-                      para la cuponera.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-6 text-center"}>
-                    <p className={styles["orden-compra"]}>
-                      Orden de compra:{" "}
-                      {cuponeraData?.response?.encabezado?.codigo}
-                    </p>
-                  </div>
-                </div>
-                <div className={ `row justify-content-center mt-2 ${ styles['contenedor-codigo-seguridad']}` }>
-                  <div className={"col-6 text-center"}>
-                  <img src={ `https://barcode.tec-it.com/barcode.ashx?data=${ cuponeraData?.response?.codigoSeguridad }&code=MobileQRCode&eclevel=L` } className="my-4" width='162' height='162'/>
-                    <p className={styles["codigo-seguridad"]}>
-                      Código:{" "}
-                      {cuponeraData?.response?.codigoSeguridad}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className={ `col-12 ${ styles['datos-comprador'] }`}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-6 text-center"}>
-                    <p className={styles["data-passenger"]}>
-                      Datos del comprador
-                    </p>
-                    <p className={styles["name"]}>
-                      {cuponeraData?.response?.encabezado?.nombre}{" "}
-                      {cuponeraData?.response?.encabezado?.apellido}
-                    </p>
-                    <p className={styles["id"]}>
-                      {cuponeraData?.response?.encabezado?.rut}
-                    </p>
-                    <p className={styles["id"]}>
-                      {cuponeraData?.response?.encabezado?.email}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center mb-4"}>
-                  <div className={styles["dotted"]}></div>
-                </div>
-              </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-4"}>
-                    <div className={styles["container-cuponera"]}>
-                      <p className={styles["data-passenger"]}>
-                        {cuponeraData?.response?.datosCuponera?.nombre}
-                      </p>
-                      <p className={styles["id"]}>
-                        Duración:
-                        {
-                          cuponeraData?.response?.datosCuponera?.diasDuracion
-                        }{" "}
-                        días para uso a partir del día de compra
-                      </p>
-                      <p className={styles["id"]}>
-                        &#8226; {cuponeraData?.response?.datosCuponera?.cupones}{" "}
-                        Cupones
-                      </p>
-                      <p className={styles["id"]}>
-                        &#8226;{" "}
-                        {cuponeraData?.response?.datosCuponera?.cuponesExtra ===
-                        0
-                          ? cuponeraData?.response?.datosCuponera
-                              ?.cuponesExtra + " Cupón extra"
-                          : cuponeraData?.response?.datosCuponera
-                              ?.cuponesExtra + " Cupones extras"}
-                      </p>
-                      <div className={"row justify-content-center"}>
-                        <div className={styles["dotted-line"]}></div>
-                        <p className={styles["id"]}>
-                          Valor Total:{" "}
-                          <span className={styles["price"]}>
-                            {" "}
-                            ${cuponeraData?.response?.encabezado?.totalVenta}
-                          </span>
-                        </p>
-                        <div className={styles["dotted-line"]}></div>
+        <section className={styles["main-section"]}>
+          <div className={styles["images-container"]}>
+            <img
+              src="/img/ticket-outline.svg"
+              alt="ticket"
+              className={styles["ticket-image"]}
+            />
+            <img
+              src="/img/checkmark-circle-outline.svg"
+              alt="confirmado"
+              className={styles["confirmado-image"]}
+            />
+          </div>
+          <h1>¡Muchas gracias por tu compra!</h1>
+          <span className={styles["compra-realizada"]}>
+            Tu compra se ha realizado con éxito. Dentro de poco te llegará un
+            correo con el código de uso para la cuponera.
+          </span>
+          <div className={styles["orden-compra"]}>
+            Orden de compra: {props?.codigo}
+          </div>
+          <p className={styles["data-cuponera"]}>
+            <strong>Código cuponera:</strong>{" "}
+            {cuponeraData?.response?.codigoSeguridad}
+          </p>
+          <div
+            className={`row justify-content-center mt-2 ${styles["contenedor-codigo-seguridad"]}`}
+          >
+            <div className={"col-9 text-center"}>
+              <img
+                src={`https://barcode.tec-it.com/barcode.ashx?data=${cuponeraData?.response?.codigoSeguridad}&code=MobileQRCode&eclevel=L`}
+                className="my-4"
+                width="162"
+                height="162"
+              />
+              <p className={styles["codigo-seguridad"]}>
+                Código cuponera: {cuponeraData?.response?.codigoSeguridad}
+              </p>
+            </div>
+          </div>
+          <section className={styles["detalle-viajes"]}>
+            <div className={styles["servicio-ida"]}>
+              <b className={styles["titulo-servicio"]}>{}</b>
+              <div className={styles["detalle-container"]}>
+                <div className={styles["detalle-item"]}>
+                  <ul>
+                    <li>
+                      <div>
+                        {datosCompra?.carroCuponera?.origenDescripcion}
                       </div>
-                    </div>
+                      <div>{}</div>
+                    </li>
+                    <li>
+                      <div>
+                        {datosCompra?.carroCuponera?.destinoDescripcion}
+                      </div>
+                      <div>{}</div>
+                    </li>
+                  </ul>
+                  <div className={styles["resumen-servicio"]}>
+                    <span>Cantidad cupones: {}</span>
+                    <b>
+                      {cuponeraData?.response?.datosCuponera?.cupones +
+                        cuponeraData?.response?.datosCuponera?.cuponesExtra}
+                    </b>
                   </div>
-                </div>
-              </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center mb-3"}>
-                  <div className={styles["dotted"]}></div>
-                </div>
-              </div>
-              <div className={ `col-12 ${ styles['contenedor-pagado']}` }>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-6"}>
-                    <p className={styles["pay-for"]}>Pagado con:</p>
-                    <p className={styles["detail-pay"]}> Débito RedCompra (WebPay)  <img
-                      className={styles["image"]}
-                      src="/img/icon/coupon-response/wbpay.svg"
-                      alt=""
-                    />  </p>  
+                  <div className={styles["resumen-servicio-detalle"]}>
+                    <span>Días de uso: </span>
+                    <b>
+                      {interpretarSecuenciaDias(
+                        datosCompra?.carroCuponera?.dias
+                      )}
+                    </b>
                   </div>
-                  <div className={"col-3"}>
-                  <p className={styles["data-passenger"]}>Total Pagado:</p>
+                  <div className={styles["resumen-servicio-detalle"]}>
+                    <span>Horario de uso: </span>
+                    <b>
+                      {formatearHora(
+                        datosCompra?.carroCuponera?.horaDesde
+                      )}{" "}
+                      a{" "}
+                      {formatearHora(
+                        datosCompra?.carroCuponera?.horaHasta
+                      )}{" "}
+                      hrs
+                    </b>
                   </div>
-                  <div className={"col-3"}>
-                  <p className={styles["price-final"]}> ${cuponeraData?.response?.encabezado?.totalVenta}</p>
+                  <div className={styles["resumen-servicio-detalle"]}>
+                    <span>Duración cuponera: </span>
+                    <b>{datosCompra?.carroCuponera?.diasDuracion} Días</b>
                   </div>
-                </div>
-              </div>
-              <div className={"col-12"}>
-                <div className={"row justify-content-center mb-5"}>
-                  <div className={styles["dotted"]}></div>
-                </div>
-              </div>
-              <div className={ `col-12 ${ styles['botones-inferiores'] }`}>
-                <div className={"row justify-content-center mb-4"}>
-                  <div className={"col-6 text-center"}>
-
-                   
-                    <a className={styles["pay-for"]} onClick={() => window.print() }> <img
-                      className={styles["image-download"]}
-                      src="/img/icon/coupon-response/download-outline.svg"
-                      alt=""
-                    /> Descarga tu cuponera aquí</a>
-                  </div>
-                  <div className={"col-6 text-center"}>
-
-                  <a href="/" className={styles["button-home"]}>
-                      Volver al inicio
-                    </a>
+                  <div className={styles["resumen-servicio-detalle"]}>
+                    <span>Nominativa al comprador: </span>
+                   {(datosCompra?.carroCuponera?.estadoNominativa) ? <b>Si</b> : <b>No</b>} 
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </section>
+          <section className={styles["resumen-pago"]}>
+            <div className={styles["contenedor-metodo-pago"]}>
+              <strong>Pagado con:</strong>
+              <span>
+                <img
+                  src={mediosPago[medioPago]?.imagen}
+                  alt={`Icono ${mediosPago[medioPago]?.nombre}`}
+                />
+                <img />
+              </span>
+            </div>
+
+            <div className={styles["contenedor-total-pagar"]}>
+              <strong>Total Pagado:</strong>
+              <span>
+                {clpFormat.format(
+                  cuponeraData?.response?.encabezado?.totalVenta
+                )}{" "}
+              </span>
+            </div>
+          </section>
+          <section className={styles["action-container"]}>
+            <div className={styles["contenedor-descarga-boletos"]}>
+              <a className={styles["pay-for"]} onClick={() => window.print()}>
+                {" "}
+                <img
+                  className={styles["image-download"]}
+                  src="/img/icon/coupon-response/download-outline.svg"
+                  alt=""
+                />{" "}
+                Descarga tu cuponera aquí
+              </a>
+            </div>
+            <div className={styles["contenedor-volver-inicio"]}>
+              <Link href="/" className={styles["btn"]}>
+                Volver al inicio
+              </Link>
+            </div>
+          </section>
+        </section>
       ) : (
         <>
           <div className="row justify-content-center mb-5">
