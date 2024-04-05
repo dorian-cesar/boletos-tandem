@@ -1,3 +1,4 @@
+// export default Parrilla;
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
@@ -648,7 +649,7 @@ const Parrilla = (props) => {
                 </div>
               )}
               <div className={`${styles["fila"]} ${styles["fila-vacia"]}`}>
-                <div className={styles["columna"]}></div>
+                {/* <div className={styles["columna"]}>1</div> */}
                 <div className={styles["columna"]}></div>
                 <div className={styles["columna"]}></div>
                 <div className={styles["columna"]}></div>
@@ -781,22 +782,6 @@ const Parrilla = (props) => {
                 : ""}
             </div>
           </div>
-          <div className={styles["estados-disponibilidad"]}>
-            <div>
-              <div className={styles["asiento-disponible"]}></div>
-              <span>Disponible</span>
-            </div>
-            <div>
-              <div className={styles["asiento-seleccionado"]}></div>
-              <span>Seleccionado</span>
-            </div>
-            <div>
-              <div className={styles["asiento-reservado"]}></div>
-              <span>Reservado</span>
-            </div>
-          </div>
-        </div>
-        <div className={styles["botones-inferiores"]}>
           <div className={styles["botones-seleccion-piso"]}>
             <div className={styles["seleccion-pisos"]}>
               <div
@@ -820,6 +805,23 @@ const Parrilla = (props) => {
               
             </div>
           </div>
+          <div className={styles["estados-disponibilidad"]}>
+            <div>
+              <div className={styles["asiento-disponible"]}></div>
+              <span>Disponible</span>
+            </div>
+            <div>
+              <div className={styles["asiento-seleccionado"]}></div>
+              <span>Seleccionado</span>
+            </div>
+            <div>
+              <div className={styles["asiento-reservado"]}></div>
+              <span>Reservado</span>
+            </div>
+          </div>
+        </div>
+        <div className={styles["botones-inferiores"]}>
+          
           <div className={styles["botones-pago"]}>
             <div
               className={styles["button_continue"]}
