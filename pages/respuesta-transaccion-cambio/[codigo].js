@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { format } from "@formkit/tempo";
 import { limpiarListaCarrito } from "store/usuario/compra-slice";
+import { limpiarCambio } from "store/usuario/cambio-boleto-slice" 
 import { decryptData } from 'utils/encrypt-data';
 
 const { publicRuntimeConfig } = getConfig();
@@ -33,19 +34,30 @@ export default function Home(props) {
     },
   });
 
+  const cambioRespuesta = useSelector((state) => state.cambioBoleto);
+
   useEffect(() => {
-    const cambiarBoleto = decryptData('CHN_TKT');
-    if( carro.cerrar.estado && carro.commit.status === 'AUTHORIZED' && cambiarBoleto) {
-      axios.post(
-        "/api/ticket_sale/cambiar-boleto",
-        cambiarBoleto
-      ).then(response => {
-        setRespuestaCambio(response.data?.object);
-        localStorage.removeItem('CHN_TKT');
-      })
-      .catch(error => console.error('ERROR AL CAMBIAR BOLETO:', error));
-    }
+    debugger;
+    if(cambioRespuesta?.resultado?.exito){
+      setRespuestaCambio(cambioRespuesta);
+      dispatch(limpiarCambio());
+      return;
+    }else{
+      const cambiarBoleto = decryptData('CHN_TKT');
+      if( carro.cerrar.estado && carro.commit.status === 'AUTHORIZED' && cambiarBoleto) {
+        axios.post(
+          "/api/ticket_sale/cambiar-boleto",
+          cambiarBoleto
+        ).then(response => {
+          setRespuestaCambio(response.data?.object);
+          localStorage.removeItem('CHN_TKT');
+        })
+        .catch(error => console.error('ERROR AL CAMBIAR BOLETO:', error));
+      }
+    } 
   }, []);
+
+  
 
   const dispatch = useDispatch();
   const [medioPago, setMedioPago] = useState("WBPAY");
