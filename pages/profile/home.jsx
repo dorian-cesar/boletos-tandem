@@ -76,6 +76,7 @@ const Home = () => {
             <div className={styles["titulo-menu"]}>
               Mi cuenta {">"} {nombreVista}
             </div>
+            <div>
             {vista === "miPerfil" && <ActualizarDatos />}
             {vista === "registroPasajero" && (
               <RegistroPasajero user={user} setVista={setVista} />
@@ -88,6 +89,7 @@ const Home = () => {
             {vista === "cambioBoleto" && <MenuLateral />}
             {vista === "devolucionBoleto" && <MenuLateral />}
             {vista === "registrarPasajero" && <RegistrarPasajero />}
+            </div>
           </div>
         </section>
 
