@@ -5,16 +5,25 @@
     gap: 16px;
 }
 
-.travel-summary {
+/* .travel-summary {
     display: flex;
-    width: 380px;
+    width: 100%;
     padding-block: 15px;
     padding-inline: 27px;
     border-radius: 16px;
     background-color: var(--Blanco, #FFF);
     height: fit-content;
-}
+} */
 
 .info-list {
-    width: 612px;
+    width: 100%;
+}
+
+@media screen and (max-width: 1000px) {
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
