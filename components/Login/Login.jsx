@@ -5,10 +5,12 @@ import { useForm } from "/hooks/useForm";
 import { useLocalStorage } from "/hooks/useLocalStorage";
 import axios from "axios";
 import styles from "./Login.module.css";
+import { encryptData } from "utils/encrypt-data";
+import LocalStorageEntities from "entities/LocalStorageEntities";
 
 const loginFormFields = {
-  correo: "",
-  contraseña: "",
+  mail: "",
+  password: "",
 };
 
 const Login = (props) => {
@@ -31,7 +33,7 @@ const Login = (props) => {
   };
 
   const onLogin = async () => {
-    if (login.correo == "" || login.contraseña == "") {
+    if (login.mail == "" || login.password == "") {
       setAlert({
         msg: "Rellene los campos vacios",
         visible: true,
@@ -45,9 +47,18 @@ const Login = (props) => {
       setIsLoading(true);
       const res = await axios.post("/api/user/validar-login", { ...login });
       const { token, usuario } = res.data.object;
-      setItem("user", usuario);
-      setItem("token", token);
+
+      console.log(usuario, typeof(usuario.fechaNacimiento));
+
+      Object.assign(usuario.wallet, { last_update: new Date() })
+
+      console.log('USUARIO:::', usuario);
+
+      encryptData(usuario, LocalStorageEntities.user_auth);
+      encryptData(token, LocalStorageEntities.user_token);
+
       setIsLoading(false);
+
       const myModal = document.getElementById("loginModal");
       myModal.hidden = true;
       window.location.reload(false);
@@ -126,8 +137,8 @@ const Login = (props) => {
                         type="text"
                         placeholder="Ej: example@example.com"
                         className="form-control"
-                        name="correo"
-                        value={login?.correo}
+                        name="mail"
+                        value={login?.mail}
                         onChange={onInputChange}
                       />
                     </div>
@@ -139,8 +150,8 @@ const Login = (props) => {
                         type="password"
                         placeholder="Ej: ******"
                         className="form-control"
-                        name="contraseña"
-                        value={login?.contraseña}
+                        name="password"
+                        value={login?.password}
                         onChange={onInputChange}
                       />
                     </div>
@@ -150,7 +161,7 @@ const Login = (props) => {
                       className="btn-link btn-modal-link"
                       onClick={(e) => changeMode("1")}
                     >
-                      ¿Olvidé mi contraseña?
+                      ¿Olvidé mi password?
                     </button>
                   </div>
                   <div className="d-flex justify-content-center">

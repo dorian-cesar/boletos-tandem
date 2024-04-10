@@ -33,10 +33,10 @@ const registroFormFields = {
   rut:"",
   apellidoMaterno:"",
   apellidoPaterno:"",
-  contraseña:"",
-  contraseña2: "",
-  correo:"",
-  correo2:"",
+  password:"",
+  password2: "",
+  mail:"",
+  mail2:"",
   fechaNacimiento:"",
   nombres:"",
   tipoDocumento:"R",
@@ -111,10 +111,10 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
             return resolve(false);
           }
         }
-        if(registro?.correo != registro?.correo2){
+        if(registro?.mail != registro?.mail2){
           setError({ status: true, errorMsg: 'Los correo no coinciden. Por favor, verificar.' });
           resolve(false);
-        } else if(registro?.contraseña != registro?.contraseña2){
+        } else if(registro?.password != registro?.password2){
           setError({ status: true, errorMsg: 'Las contraseñas no coinciden. Por favor, verificar.' });
           resolve(false);
         } else {
@@ -318,7 +318,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                   type="email"
                   className={"form-control form-control-modal"}
                   name="correo"
-                  value={registro?.correo}
+                  value={registro?.mail}
                   onChange={onInputChange}
                 />
               </div>
@@ -328,7 +328,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                   type="email"
                   className={"form-control form-control-modal"}
                   name="correo2"
-                  value={registro?.correo2}
+                  value={registro?.mail2}
                   onChange={onInputChange}
                 />
               </div>
@@ -340,7 +340,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                   type="password"
                   className={"form-control form-control-modal"}
                   name="contraseña"
-                  value={registro?.contraseña}
+                  value={registro?.password}
                   onChange={onInputChange}
                 />
               </div>
@@ -350,7 +350,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                   type="password"
                   className={"form-control form-control-modal"}
                   name="contraseña2"
-                  value={registro?.contraseña2}
+                  value={registro?.password2}
                   onChange={onInputChange}
                 />
               </div>

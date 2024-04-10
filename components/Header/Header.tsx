@@ -14,6 +14,8 @@ import { ResumenViaje } from 'components/ticket_sale/ResumenViaje/ResumenViaje';
 import { limpiarListaCarrito } from "store/usuario/compra-slice";
 import Popup from "components/Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
+import LocalStorageEntities from "entities/LocalStorageEntities";
+import { decryptData } from "utils/encrypt-data";
 
 export default function Header({ openNav }: { openNav: any }) {
   const [user, setUser] = useState();
@@ -111,7 +113,8 @@ export default function Header({ openNav }: { openNav: any }) {
   }, [live_time])
   
   useEffect(() => {
-    setUser(getItem("user"));
+    const user = decryptData(LocalStorageEntities.user_auth);
+    setUser(user);
     setData();
   }, []);
 

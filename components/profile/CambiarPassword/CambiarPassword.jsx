@@ -7,18 +7,20 @@ import styles from "./CambiarPassword.module.css";
 import Popup from "../../Popup/Popup";
 import { toast } from "react-toastify";
 import ModalEntities from "../../../entities/ModalEntities";
+import { decryptData } from "utils/encrypt-data.js";
+import LocalStorageEntities from "entities/LocalStorageEntities";
 
 const changePasswordFormFields = {
-  correo: "",
-  contraseña: null,
-  contraseñaNueva: null,
-  contraseñaNueva2: null,
+  mail: "",
+  password: null,
+  newPassword: null,
+  newPassword2: null,
 };
 
 const CambiarPassword = (props) => {
   const { setVista } = props;
   const [mostrarPopup, setMostrarPopup] = useState(false);
-  const [mostrarContraseñaIncorrectaPopup, setmostrarContraseñaIncorrectaPopup] = useState(false);
+  const [mostrarPasswordIncorrectaPopup, setmostrarPasswordIncorrectaPopup] = useState(false);
   const { formState: changePassword, onInputChange } = useForm(
     changePasswordFormFields
   );
@@ -29,14 +31,14 @@ const CambiarPassword = (props) => {
   const [isLoading2, setIsLoading2] = useState(false);
 
   useEffect(() => {
-    let checkUser = getItem("user");
+    let checkUser = decryptData(LocalStorageEntities.user_auth);
     if (checkUser == null) router.push("/");
     setUser(checkUser);
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    changePassword.correo = user?.correo;
+    changePassword.mail = user?.mail;
   }, [user]);
 
   const cambiarPassword = async () => {
@@ -48,9 +50,9 @@ const CambiarPassword = (props) => {
           ...changePassword,
         });
         if (res.data.status) {
-          changePassword.contraseña = "";
-          changePassword.contraseñaNueva = "";
-          changePassword.contraseñaNueva2 = "";
+          changePassword.password = "";
+          changePassword.newPassword = "";
+          changePassword.newPassword2 = "";
           abrirPopup()
         }
       } catch (e) {
@@ -68,15 +70,15 @@ const CambiarPassword = (props) => {
     debugger;
     return new Promise((resolve, reject) => {
       if (
-        changePassword.contraseña == "" ||
-        changePassword.contraseñaNueva == "" ||
-        changePassword.contraseñaNueva2 == ""
+        changePassword.password == "" ||
+        changePassword.newPassword == "" ||
+        changePassword.newPassword2 == ""
       ) {
         return resolve(false);
       } else if (
-        changePassword.contraseñaNueva != changePassword.contraseñaNueva2
+        changePassword.newPassword != changePassword.newPassword2
       ) {
-        abrirContraseñaIncorrectaPopup()
+        abrirPasswordIncorrectaPopup()
         return resolve(false);
       } else {
         return resolve(true);
@@ -91,11 +93,11 @@ const CambiarPassword = (props) => {
     setMostrarPopup(false);
   };
 
-  const abrirContraseñaIncorrectaPopup = () => {
-    setmostrarContraseñaIncorrectaPopup(true);
+  const abrirPasswordIncorrectaPopup = () => {
+    setmostrarPasswordIncorrectaPopup(true);
   };
-  const cerrarContraseñaIncorrectaPopup = () => {
-    setmostrarContraseñaIncorrectaPopup(false);
+  const cerrarPasswordIncorrectaPopup = () => {
+    setmostrarPasswordIncorrectaPopup(false);
   };
 
   const volverInicio = () =>{
@@ -116,8 +118,8 @@ const CambiarPassword = (props) => {
             <input
               type="password"
               className={styles["input-data"]}
-              name="contraseña"
-              value={changePassword?.contraseña}
+              name="password"
+              value={changePassword?.password}
               onChange={onInputChange}
             />
           </div>
@@ -128,8 +130,8 @@ const CambiarPassword = (props) => {
             <input
               type="password"
               className={styles["input-data"]}
-              name="contraseñaNueva"
-              value={changePassword?.contraseñaNueva}
+              name="newPassword"
+              value={changePassword?.newPassword}
               onChange={onInputChange}
             />
           </div>
@@ -140,8 +142,8 @@ const CambiarPassword = (props) => {
             <input
               type="password"
               className={styles["input-data"]}
-              name="contraseñaNueva2"
-              value={changePassword?.contraseñaNueva2}
+              name="newPassword2"
+              value={changePassword?.newPassword2}
               onChange={onInputChange}
             />
           </div>
@@ -155,8 +157,8 @@ const CambiarPassword = (props) => {
           <div className={"col-6"}>
             <div
               type="button"
-              className={ (changePassword.contraseña && changePassword.contraseñaNueva) ? styles["button-update"] : styles["button-update-disabled"]}
-              onClick={(e) => (changePassword.contraseña && changePassword.contraseñaNueva && changePassword.contraseña2) ? "" : cambiarPassword()}
+              className={ (changePassword.password && changePassword.newPassword) ? styles["button-update"] : styles["button-update-disabled"]}
+              onClick={(e) => (changePassword.password && changePassword.newPassword && changePassword.newPassword2) && cambiarPassword() }
             >
               Cambiar contraseña
             </div>
@@ -170,11 +172,11 @@ const CambiarPassword = (props) => {
             modalMethods={volverInicio}
           />
         )}
-      {mostrarContraseñaIncorrectaPopup && (
+      {mostrarPasswordIncorrectaPopup && (
         <Popup
           modalKey={ModalEntities.password_not_same}
-          modalClose={cerrarContraseñaIncorrectaPopup}
-          modalMethods={cerrarContraseñaIncorrectaPopup}
+          modalClose={cerrarPasswordIncorrectaPopup}
+          modalMethods={cerrarPasswordIncorrectaPopup}
         />
       )}
     </div>

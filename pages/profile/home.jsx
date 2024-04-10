@@ -11,6 +11,9 @@ import { useLocalStorage } from "/hooks/useLocalStorage";
 import Footer from "../../components/Footer";
 import { useRouter } from "next/router";
 import styles from "./home.module.css";
+import { decryptData } from "utils/encrypt-data.js";
+import LocalStorageEntities from "entities/LocalStorageEntities";
+import axios from "axios";
 
 const Home = () => {
   const { getItem } = useLocalStorage();
@@ -19,6 +22,7 @@ const Home = () => {
   const [isLoading2, setIsLoading2] = useState(false);
   const [vista, setVista] = useState(null);
   const [nombreVista, setNombreVista] = useState("");
+  const [buscarSaldo, setBuscarSaldo] = useState(false);
   const router = useRouter();
 
   const clpFormat = new Intl.NumberFormat("es-CL", {
@@ -27,13 +31,32 @@ const Home = () => {
   });
 
   useEffect(() => {
-    let checkUser = getItem("user");
+    let checkUser = decryptData(LocalStorageEntities.user_auth);
     if (checkUser == null) router.push("/");
     setUser(checkUser);
     setIsLoading(false);
     setVista("miPerfil");
     setNombreVista("Mi perfil");
+    setBuscarSaldo(!buscarSaldo);
   }, []);
+
+  useEffect(() => {
+    actualizarSaldoWallet().then();
+  }, [buscarSaldo])
+
+  async function actualizarSaldoWallet() {
+    if( !!user ) {
+      try {
+        const { data } = await axios.post('/api/user/consulta-saldo-wallet', user);
+        setUser({
+          ...user,
+          wallet: data.object
+        })
+      } catch (error) {
+        console.error("Error al actualizar el saldo de la billetera:", error);
+      }
+    }
+  }
 
   return (
     <Layout>
@@ -62,7 +85,7 @@ const Home = () => {
               </div>
             </div>
             <h2 className={ styles['wallet-mount'] }>
-              { clpFormat.format(user?.saldo || 0) }
+              { clpFormat.format(user?.wallet?.saldoContable || 0) }
             </h2>
           </div>
         </section>

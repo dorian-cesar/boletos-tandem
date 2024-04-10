@@ -90,7 +90,6 @@ export class PasajePagoDTO {
 
 export class ListaCarritoDTO {
     constructor(servicio, asiento) {
-        debugger;
         this.servicio = servicio?.idServicio || '';
         this.fechaServicio = servicio?.fechaServicio || '';
         // TODO: REVISAR FECHA PASADA EN ALGUN FUTURO
@@ -116,8 +115,9 @@ export class ListaCarritoDTO {
 
 export class PasajeroListaCarritoDTO {
     constructor(asiento) {
-        this.monto = asiento?.tarifa || '';
-        this.precio = asiento?.tarifa || '';
+        debugger;
+        this.monto = asiento?.tarifa.toString() || '0';
+        this.precio = asiento?.precio.toString() || asiento?.tarifa.toString() || '0';
         this.idaVuelta = asiento?.idaVuelta || false;
         this.piso = asiento?.piso || 1;
         this.asiento = asiento?.asiento || '';

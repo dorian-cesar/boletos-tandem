@@ -25,24 +25,47 @@ export default async (req, res) => {
             WebpayPlus.environment = Environment.Production;     
             
         }
-        let commit = await tx.commit(req.body.token_ws || '');
-        console.log('COMMIT::::', commit);
+
         let dataCerrar;
-        if(commit.status == 'AUTHORIZED'){
+
+        let commit;
+
+        if( req.body.token_ws ) {
+            commit = await tx.commit(req.body.token_ws || '');
+            console.log('COMMIT::::', commit);
+    
+            if(commit.status == 'AUTHORIZED'){
+                let dataSentCerrar = {
+                        "codigo":req.body.codigo,
+                        "codigotransbank":commit.authorization_code,
+                        "numerocuota":commit.installments_number,
+                        "numerotarjeta":commit.card_detail.card_number,
+                        "tipocuota":commit.payment_type_code
+                    }
+                console.log(dataSentCerrar)
+                dataCerrar = await axios.post(config.service_url + `/integracion/terminarTransaccion`,dataSentCerrar,{
+                    headers: {
+                        'Authorization': `Bearer ${token.token}`
+                    }
+                })
+            }
+        } else {
+
             let dataSentCerrar = {
-                    "codigo":req.body.codigo,
-                    "codigotransbank":commit.authorization_code,
-                    "numerocuota":commit.installments_number,
-                    "numerotarjeta":commit.card_detail.card_number,
-                    "tipocuota":commit.payment_type_code
+                    "codigo":req.body.codigo,
+                    "codigotransbank": '0000',
+                    "numerocuota": '0',
+                    "numerotarjeta": 'WALLET',
+                    "tipocuota": 'WALLET'
                 }
-            console.log(dataSentCerrar)
+
             dataCerrar = await axios.post(config.service_url + `/integracion/terminarTransaccion`,dataSentCerrar,{
                 headers: {
                     'Authorization': `Bearer ${token.token}`
                 }
             })
-        }
+        } 
+
 
         let data = await axios.post(config.service_url + `/integracion/obtenerTransaccion`,{
             "codigo": req.body.codigo
@@ -51,13 +74,9 @@ export default async (req, res) => {
                 'Authorization': `Bearer ${token.token}`
             }
         })
-       
-        console.log(commit, data.data, dataCerrar.data)
-        
-      
 
        
-        res.status(200).json({carro: data.data, cerrar:dataCerrar.data, commit: commit});
+        res.status(200).json({ carro: data.data, cerrar:dataCerrar.data, commit: commit });
     } catch(e){
         console.log(e)
         res.status(400).json(e)
