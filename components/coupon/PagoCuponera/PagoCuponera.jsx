@@ -6,11 +6,19 @@ import MedioPago from "./MedioPago/MedioPago.jsx";
 import styles from "./PagoCuponera.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import LocalStorageEntities from "entities/LocalStorageEntities";
+import { decryptData } from "utils/encrypt-data";
 
 const PagoCuponera = (props) => {
   const [medioDePago, setMedioDePago] = useState("");
   const { parrillaSeleccionada, setParrillaSeleccionada } = props;
   const [mediosPago, setMediosPago] = useState([]);
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    const localUser = decryptData(LocalStorageEntities.user_auth);
+    setUsuario(localUser);
+  }, []);
 
   async function obtenerMediosPagos() {
     try {
@@ -31,7 +39,7 @@ const PagoCuponera = (props) => {
         <main className={styles["main-content"]}>
           <section className={styles["info-list"]}>
             <Acordeon title="Datos del comprador" open={ true }>
-              <InformacionComprador />
+              <InformacionComprador usuario={ usuario }/>
             </Acordeon>
 
             <Acordeon title="Método de pago" open={ true }>

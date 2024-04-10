@@ -9,14 +9,18 @@ import {
 } from "store/usuario/compra-slice";
 
 const DatosPasajero = (props) => {
-  const { servicio, asiento } = props;
+  const { servicio, asiento, usuario } = props;
   const dispatch = useDispatch();
 
-  const [carro, setCarro] = useState({
-    datos: {
-      tipoDocumento: "R",
-    },
-  });
+  function retornarDatosCompradorUsuario() {
+    let asientoTemporal = { ...asiento };
+    asientoTemporal['nombre'] = usuario?.nombres;
+    asientoTemporal['apellido'] = usuario?.apellidoPaterno;
+    asientoTemporal['tipoDocumento'] = usuario?.tipoDocumento;
+    asientoTemporal['rut'] = usuario?.rut;
+    asientoTemporal['email'] = usuario?.mail;
+    return asientoTemporal;
+  }
 
   useEffect(() => {
     let asientoTemporal = { ...asiento };
@@ -28,13 +32,20 @@ const DatosPasajero = (props) => {
     if (servicio) {
       dispatch(agregarInformacionAsiento(infoToDispatch));
     } else {
-      dispatch(asignarDatosComprador(asientoTemporal));
+      const datosCompradorUsuario = retornarDatosCompradorUsuario();
+      dispatch(asignarDatosComprador(usuario !== null ? datosCompradorUsuario : asientoTemporal));
     }
   }, []);
 
+  useEffect(() => {
+    if( usuario ) {
+      const datosCompradorUsuario = retornarDatosCompradorUsuario();
+      dispatch(asignarDatosComprador(datosCompradorUsuario));
+    }
+  }, [usuario])
+
   function setDataComprador({ name, value }) {
     try {
-      debugger;
       let carro_temp = { ...asiento };
       value = validarFormatoRut(name, value);
 
@@ -104,6 +115,7 @@ const DatosPasajero = (props) => {
                 name="nombre"
                 placeholder="Ej: Juan Andrés"
                 className={styles["input"]}
+                disabled={ usuario }
                 onChange={(e) => setDataComprador(e.target)}
               />
             </div>
@@ -117,6 +129,7 @@ const DatosPasajero = (props) => {
                 name="apellido"
                 placeholder="Ej: Espinoza Arcos"
                 className={styles["input"]}
+                disabled={ usuario }
                 onChange={(e) => setDataComprador(e.target)}
               />
             </div>
@@ -131,6 +144,7 @@ const DatosPasajero = (props) => {
                     checked={asiento["tipoDocumento"] == "R" ? "checked" : ""}
                     value="R"
                     name="tipoDocumento"
+                    disabled={ usuario }
                     onChange={(e) => setDataComprador(e.target)}
                   />
                   <span className="checkmark"></span>
@@ -144,6 +158,7 @@ const DatosPasajero = (props) => {
                     checked={asiento["tipoDocumento"] == "P" ? "checked" : ""}
                     value="P"
                     name="tipoDocumento"
+                    disabled={ usuario }
                     onChange={(e) => setDataComprador(e.target)}
                   />
                   <span className={"checkmark"}></span>
@@ -162,6 +177,7 @@ const DatosPasajero = (props) => {
                     ? "is-invalid"
                     : ""
                 } ${styles["input"]}`}
+                disabled={ usuario }
                 onChange={(e) => setDataComprador(e.target)}
               />
             </div>
@@ -182,6 +198,7 @@ const DatosPasajero = (props) => {
                 name="email"
                 placeholder="Ej: correo@correo.cl"
                 className={styles["input"]}
+                disabled={ usuario }
                 onChange={(e) => setDataComprador(e.target)}
               />
             </div>

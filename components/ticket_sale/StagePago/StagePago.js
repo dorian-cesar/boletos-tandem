@@ -14,6 +14,9 @@ import { ResumenViaje } from "../ResumenViaje/ResumenViaje";
 import { useDispatch, useSelector } from "react-redux";
 import { asignarDatosComprador } from "store/usuario/compra-slice";
 
+import LocalStorageEntities from "entities/LocalStorageEntities";
+import { decryptData } from "utils/encrypt-data";
+
 const StagePago = (props) => {
   const { carro, nacionalidades, convenios, mediosDePago, setCarro } = props;
 
@@ -31,6 +34,12 @@ const StagePago = (props) => {
   const [convenioFields, setConvenioFields] = useState({});
   const [usaDatosPasajeroPago, setUsaDatosPasajeroPago] = useState(false);
   const [codigoCuponera, setCodigoCuponera] = useState("");
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    const localUser = decryptData(LocalStorageEntities.user_auth);
+    setUsuario(localUser);
+  }, []);
 
   useEffect(() => {
     if (usaDatosPasajeroPago) {
@@ -237,13 +246,14 @@ const StagePago = (props) => {
               type="checkbox"
               value={usaDatosPasajeroPago}
               id="flexCheckDefault"
+              disabled={ usuario }
               onChange={() => setUsaDatosPasajeroPago(!usaDatosPasajeroPago)}
             />
             <label className="form-check-label" htmlFor="flexCheckDefault">
               Usar los datos del pasajero 1
             </label>
           </div>
-          <DatosPasajero asiento={datosComprador} />
+          <DatosPasajero asiento={datosComprador} usuario={ usuario }/>
         </Acordeon>
         <Acordeon title="Medio de pago" open={true}>
           <MediosPago

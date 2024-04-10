@@ -5,11 +5,48 @@ import Rut from "rutjs";
 import { agregarComprador } from "../../../../store/usuario/compra-cuponera-slice";
 
 const InformacionComprador = (props) => {
+
+  const { usuario } = props;
+
   const dispatch = useDispatch();
 
   const [carro, setCarro] = useState({
     datos: { tipoDocumento: "R" },
   });
+
+  function retornarDatosCompradorUsuario() {
+    let carroTemporal = { ...carro };
+    carroTemporal['nombre'] = usuario?.nombres;
+    carroTemporal['apellido'] = usuario?.apellidoPaterno;
+    carroTemporal['tipoDocumento'] = usuario?.tipoDocumento;
+    carroTemporal['rut'] = usuario?.rut;
+    carroTemporal['email'] = usuario?.mail;
+    return carroTemporal;
+  }
+
+  useEffect(() => {
+    let carroTemporal = { ...carro };
+    carroTemporal["tipoDocumento"] = "R";
+    if (usuario) {
+      const datosCompradorUsuario = retornarDatosCompradorUsuario();
+      setCarro({
+        datos: datosCompradorUsuario
+      });
+      dispatch(agregarComprador(datosCompradorUsuario));
+    } else {
+      dispatch(agregarComprador(carroTemporal));
+    }
+  }, []);
+
+  useEffect(() => {
+    if( usuario ) {
+      const datosCompradorUsuario = retornarDatosCompradorUsuario();
+      setCarro({
+        datos: datosCompradorUsuario
+      });
+      dispatch(agregarComprador(datosCompradorUsuario));
+    }
+  }, [usuario])
 
   function setDataComprador({ name, value }) {
     try {
@@ -54,6 +91,7 @@ const InformacionComprador = (props) => {
               name="nombre"
               placeholder="Ej: Juan Andrés"
               className={styles["input"]}
+              disabled={ usuario }
               onChange={(e) => setDataComprador(e.target)}
             />
           </div>
@@ -67,6 +105,7 @@ const InformacionComprador = (props) => {
               name="apellido"
               placeholder="Ej: Espinoza Arcos"
               className={styles["input"]}
+              disabled={ usuario }
               onChange={(e) => setDataComprador(e.target)}
             />
           </div>
@@ -81,6 +120,7 @@ const InformacionComprador = (props) => {
                   checked={carro.datos["tipoDocumento"] == "R" ? "checked" : ""}
                   value="R"
                   name="tipoDocumento"
+                  disabled={ usuario }
                   onChange={(e) => setDataComprador(e.target)}
                 />
                 <span className="checkmark"></span>
@@ -94,6 +134,7 @@ const InformacionComprador = (props) => {
                   checked={carro.datos["tipoDocumento"] == "P" ? "checked" : ""}
                   value="P"
                   name="tipoDocumento"
+                  disabled={ usuario }
                   onChange={(e) => setDataComprador(e.target)}
                 />
                 <span className={"checkmark"}></span>
@@ -112,6 +153,7 @@ const InformacionComprador = (props) => {
                   ? "is-invalid"
                   : ""
               } ${styles["input"]}`}
+              disabled={ usuario }
               onChange={(e) => setDataComprador(e.target) }
             />
           </div>
@@ -132,6 +174,7 @@ const InformacionComprador = (props) => {
               name="email"
               placeholder="Ej: correo@correo.cl"
               className={styles["input"]}
+              disabled={ usuario }
               onChange={(e) => setDataComprador(e.target)}
             />
           </div>
