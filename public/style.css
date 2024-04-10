@@ -438,7 +438,7 @@ input:checked + .slider:before,  .switch.checked .slider::before {
 
 .boleto .barra {
   background-image: url('img/linea.svg');
-  /* background-repeat-y: no-repeat; */
+  background-repeat-y: no-repeat;
   background-position: center center;
   position: relative;
   height: 30px;
@@ -1788,6 +1788,11 @@ th {
 
 
 
+footer.psjes {
+  padding: 100px 0px;
+  background-color: #3365B4;
+}
+
 footer.psjes h3 {
   font-size: 18px;
   color: #fff;
@@ -1812,6 +1817,7 @@ footer.psjes h4 {
   margin-top: 10px;
 }
 
+
 footer.psjes ul li {
   font-size: 15px;
   color: #fff;
@@ -1822,6 +1828,8 @@ footer.psjes ul {
   list-style-type: none;
   padding-left: 0px;
 }
+
+
 
 footer {
   color: #fff;
@@ -1834,22 +1842,6 @@ footer .item a {
   color: #fff;
   text-decoration:  none;
 }
-
-/* Estilos responsivos */
-@media (max-width: 768px) {
-  .psjes .col-md-3 {
-    width: 50%;
-    margin-bottom: 30px;
-  }
-}
-
-@media (max-width: 575px) {
-  .psjes .col-md-3 {
-    width: 100%;
-    margin-bottom: 30px;
-  }
-}
-
 
 /* lg */
 @media(max-width: 1199.98px) {
@@ -2369,7 +2361,7 @@ footer .item a {
 
 .cuponera .barra {
   background-image: url('img/linea.svg');
-  /* background-repeat-y: no-repeat; */
+  background-repeat-y: no-repeat;
   background-position: center center;
   position: relative;
   height: 30px;

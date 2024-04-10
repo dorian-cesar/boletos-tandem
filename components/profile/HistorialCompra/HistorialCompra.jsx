@@ -30,8 +30,6 @@ const clpFormat = new Intl.NumberFormat("es-CL", {
   currency: "CLP",
 });
 
-const itemsPerPage = 9;
-
 const HistorialCompra = () => {
   const { formState: data, onInputChange } = useForm(actualizarFormFields);
   const [fechaNacimiento, setFechaNacimiento] = useState("");
@@ -40,7 +38,6 @@ const HistorialCompra = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [historial, setHistorial] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const id = useId();
 
@@ -75,7 +72,7 @@ const HistorialCompra = () => {
   }, [fechaNacimiento]);
 
   useEffect(() => {
-    if (user) {
+    if( user ) {
       axios.post("/api/user/historial-compra", {
         email: user.mail,
       }).then(({ data }) => {
@@ -86,127 +83,68 @@ const HistorialCompra = () => {
   }, [user])
 
   const MemoizedComponent = useMemo(function renderHistorial() {
-    if (historial.length === 0) {
+    if( historial.length === 0 ) {
       return (<h3>No hay registros</h3>)
     } else {
-      const startIndex = (currentPage - 1) * itemsPerPage;
-      const endIndex = startIndex + itemsPerPage;
-      const currentItems = historial.slice(startIndex, endIndex);
+      const renderedComponent = [];
 
-      return currentItems.map((itemHistorial, index) => (
+      historial.map((itemHistorial, index) => {
+        renderedComponent.push(
+          <tr>
+            <td>{ itemHistorial.codigo }</td>
+            <td>{ itemHistorial.fechaCompraFormato }</td>
+            <td>{ clpFormat.format(itemHistorial.monto) }</td>
+            <td>{ estadoBoleto[itemHistorial.estado] }</td>
+            <td className={ styles['boton-descargar']}>
+              { itemHistorial.estado === 'ACTI' && (
+                <a href={ `/generarBoletos/${ itemHistorial.codigo }` } target="_blank">
+                  <img src='/img/icon/general/download-outline.svg' />
+                </a>
+              )}
+            </td>
+          </tr>
+        )
+      });
 
-        <tr key={index}>
-          <td>{itemHistorial.codigo}</td>
-          <td>{itemHistorial.fechaCompraFormato}</td>
-          <td>{clpFormat.format(itemHistorial.monto)}</td>
-          <td>{estadoBoleto[itemHistorial.estado]}</td>
-          <td className={styles['boton-descargar']}>
-            {itemHistorial.estado === 'ACTI' && (
-              <a href={`/generarBoletos/${itemHistorial.codigo}`} target="_blank">
-                <img src='/img/icon/general/download-outline.svg' />
-              </a>
-            )}
-          </td>
-        </tr>
+      // historial.map((itemHistorial, index) => {
+      //   renderedComponent.push(
+      //     <div key={ `${ id }-${ index }` } className={ styles['boleto'] }>
+      //       <div className={ styles['origen-destino'] }>
+      //         <span>[ORIGEN]</span>
+      //         <span>[DESTINO]</span>
+      //       </div>
+      //       <div className={ styles['linea-divisora'] }>
+      //         <img src="/img/icon-barra.svg" />
+      //       </div>
+      //       <div className={ styles['informacion-adicional'] }>
+      //         <div className={ styles['estado'] }>
+      //           <h5>Estado: </h5>
+      //           <strong>{ estadoBoleto[itemHistorial.estado] }</strong>
+      //         </div>
+      //         <div className={ styles['monto'] }>
+      //           <span>{ itemHistorial.monto }</span>
+      //         </div>
+      //         {/* <div className={ styles['asientos'] }>
 
-      ));
+      //         </div> */}
+      //       </div>
+      //     </div>
+      //   )
+      // });
+
+      return renderedComponent;
     }
-  }, [historial, currentPage]);
-
-
-  // historial.map((itemHistorial, index) => {
-  //   renderedComponent.push(
-  //     <div key={ `${ id }-${ index }` } className={ styles['boleto'] }>
-  //       <div className={ styles['origen-destino'] }>
-  //         <span>[ORIGEN]</span>
-  //         <span>[DESTINO]</span>
-  //       </div>
-  //       <div className={ styles['linea-divisora'] }>
-  //         <img src="/img/icon-barra.svg" />
-  //       </div>
-  //       <div className={ styles['informacion-adicional'] }>
-  //         <div className={ styles['estado'] }>
-  //           <h5>Estado: </h5>
-  //           <strong>{ estadoBoleto[itemHistorial.estado] }</strong>
-  //         </div>
-  //         <div className={ styles['monto'] }>
-  //           <span>{ itemHistorial.monto }</span>
-  //         </div>
-  //         {/* <div className={ styles['asientos'] }>
-
-  //         </div> */}
-  //       </div>
-  //     </div>
-  //   )
-  // });
-
-  const totalPages = Math.ceil(historial.length / itemsPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    if (pageNumber >= 1 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const renderPagination = () => {
-    const pages = [];
-    const maxVisiblePages = 3;
-
-    const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
-
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(
-        <li key={i} className={`page-item ${currentPage === i ? 'active' : ''}`}>
-          <a className="page-link" onClick={() => handlePageChange(i)}>{i}</a>
-        </li>
-      );
-    }
-
-    if (currentPage > 1) {
-      pages.unshift(
-        <li key="previous" className="page-item">
-          <a className="page-link" aria-label="Previous" onClick={handlePreviousPage}>
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-      );
-    }
-
-    if (currentPage < totalPages) {
-      pages.push(
-        <li key="next" className="page-item">
-          <a className="page-link" aria-label="Next" onClick={handleNextPage}>
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      );
-    }
-
-    return pages;
-  };
+  }, [historial]);
 
   return (
     <>
-      <div className={styles['menu-central']}>
-        <h1 className="title-historial">Historial de compras</h1>
+      <div className={ styles['menu-central'] }>
+        <h1>Historial de compras</h1>
         <span>
           Mantén un registro de todos los viajes realizados. Recuerda
           que solo podrás descargar tu pasaje mientras esté activo.
         </span>
-        <table className={`table ${styles['tabla-informacion']}`}>
+        <table className={`table ${ styles['tabla-informacion'] }`}>
           <thead>
             <tr>
               <th scope="col">Transacción</th>
@@ -222,11 +160,8 @@ const HistorialCompra = () => {
             }
           </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-          <ul className={`pagination ${styles['pagination-css']}`}>
-            {renderPagination()}
-          </ul>
-        </nav>
+        <section className={ styles['contenedor-historial'] }>
+        </section>
       </div>
     </>
   );

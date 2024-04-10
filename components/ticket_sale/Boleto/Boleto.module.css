@@ -121,7 +121,7 @@
 .ticket .ticket-price {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     margin-inline: auto;
     padding-block: 12px;
     padding-inline-start: 13px;
@@ -129,7 +129,7 @@
 
 .ticket .ticket-price button {
     display: flex;
-    width: 100%;
+    width: 204px;
     padding-block: 8px;
     flex-direction: column;
     align-items: center;
@@ -164,112 +164,19 @@
 
 .container-ticket .checkbox-open-pane:checked ~ .grill-detail {
     display: block;
-    margin-top:2%;
+    margin-top: -40px;
     animation-name: show;
     animation-duration: 1s;
     overflow: hidden;
     z-index: 1;
     padding-bottom: 16px;
-    height: 100% ;
-    width: 100%;
-    padding-top: 48px;
-
-}
-
-@media  (max-width: 400px) {
-   
-    .ticket .ticket-price button {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        padding-block: 8px;
-        flex-direction: column;
-        align-items: center;
-        transform: rotate(-90deg);
-        
-    
-    }
-    .ticket-details .ticket-details__travel {
-        border-bottom: dashed 1px #7F7F7F;
-        margin-block-start: 12px;
-        padding-block-end: 8px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        width: 100%;
-        padding-bottom: 20px;
-    }
-
-    .ticket-details .ticket-details__travel .ticket-details__travel-detail {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        height: 80px;
-        width: 82px;
-        padding-right: 8px;
-        padding-bottom: 20px;
-    }
-
-    .ticket .ticket-price {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 0;
-        padding: 0;
-        
-    }
-}
-
-@media screen and (min-width: 400px) and (max-width: 767px) {
-     .ticket-details .ticket-details__travel {
-        border-bottom: dashed 1px #7F7F7F;
-        margin-block-start: 12px;
-        padding-block-end: 8px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        width: 100%;
-        padding-bottom: 20px;
-    }
-    
-    .container-ticket .checkbox-open-pane:checked ~ .grill-detail {
-        width: 100%;
-        height: 700px ;
-    
-    }
-    .ticket-details {
-        padding: 3px;
-    }
-    
-    .ticket .ticket-price button {
-        display: flex;
-        width: 100%;
-        padding-block: 8px;
-        flex-direction: column;
-        align-items: center;
-    }
-}
-
-@media screen and (min-width:449px ) and (max-width: 1024px) {
-    
-    .ticket-details .ticket-details__travel {
-        padding-block-end: 27px;
-    }    
-}
-
-@media  (min-width:1025px)  {
-    
-    .ticket-details .ticket-details__travel {
-        padding-block-end: 27px;
-    
-    }
 }
 
 .container-ticket .checkbox-open-pane ~ .grill-detail {
     flex-direction: column;
     margin-block: 10px;
     background-color: #FFF;
-    width: 550px;
+    width: 776px;
     border-radius: 16px;
     padding-inline: 32px;
     overflow: hidden;
@@ -281,7 +188,7 @@
     position: relative;
     z-index: 2;
     height: 168px;
-    width: 100%;
+    width: 776px;
 }
 
 .flip-box-inner {
@@ -301,7 +208,6 @@
     position: absolute;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    width: 100%;
 }
 
 .flip-box-back {
@@ -415,4 +321,3 @@
     right: 50%;
     z-index: 1;
 }
-

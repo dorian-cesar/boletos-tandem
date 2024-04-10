@@ -3,11 +3,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: auto;
+    width: 80%;
     background: var(--Blanco, #FFF);
     margin-inline: auto;
-    margin: 5%;
-    padding: 5%;
+    margin-block-start: 64px;
+    margin-block-end: 109px;
+    padding-block: 52px;
+    padding-inline: 51px;
     border-radius: 16px;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
@@ -191,7 +193,6 @@
 
 .action-container .contenedor-descarga-boletos span {
     color: #000;
-    
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
@@ -215,25 +216,8 @@
     background: var(--naranjo-100, #FF6500);
     color: white;
     width: 100%;
-    margin-top: 2%;
 }
 
 .btn:hover {
     color: white;
 }
-
-@media screen and (max-width: 750px) {
-    .action-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        padding-block: 32px;
-        width: 100%;
-    }
-
-    .main-section .orden-compra {
-        padding: 16px 17px;
-        width: 100%;
-    }
-}
-

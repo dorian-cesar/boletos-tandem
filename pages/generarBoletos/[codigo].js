@@ -63,10 +63,10 @@ export default function Home(props) {
             </div>
             <h1>¡Muchas gracias por tu compra!</h1>
             <span className={styles["compra-realizada"]}>
-              Pinche el botón descargar, para obtener sus boletos.
+              Pinche el botón descargar para obtener sus boletos.
             </span>
             <div className={styles["orden-compra"]}>
-              <span>Orden de Compra: {props.codigo}</span>
+              <span>Orden de compra: {props.codigo}</span>
             </div>
 
             <section className={styles["action-container"]}>

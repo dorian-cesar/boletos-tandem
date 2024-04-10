@@ -3,21 +3,16 @@
   border-radius: 16px;
   background: var(--Blanco, #FFF);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  width: 100%;
 }
   
 .bloque {
-  display: flex;
-  flex-direction: column;
   border-radius: 16px;
-  padding: 20px;
+  padding: 30px 30px 30px 30px;
   background-color: #fff;
-  width: 100%;
-  
 }
 
 .title-modify-data{
-  color: var(--azul-100, #3365B4);
+  color: #000;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -34,7 +29,7 @@
   }
 
 .input-data{
-  width: 100%;
+  width: 336px;
   height: 40px;
   display: flex;
   padding: 8px 16px;
@@ -63,7 +58,7 @@
 
 .button-update{
   margin-top: 30px;
-  width: 100%;
+  width: 336px;
   height: 40px;
   display: flex;
   padding: 8px 16px;

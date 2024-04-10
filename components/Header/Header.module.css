@@ -1,10 +1,9 @@
 .tooltip-container {
     background-color: white;
-    width: 50%;
+    width: 500px;
     padding: 16px;
     border-radius: 16px;
     /* border: 1px solid var(--gris-50, #7F7F7F); */
-
 }
 
 @media print {
@@ -12,19 +11,3 @@
         display: none;
     }
 }
-
-@media screen and (max-width:430px) {
-    .tooltip-container {
-        /* background-color: red; */
-        display: flex;
-        width: 80%;
-        padding: 16px;
-        border-radius: 16px;
-        /* border: 1px solid var(--gris-50, #7F7F7F); */
-    }
-
-    
-}
-
-
-

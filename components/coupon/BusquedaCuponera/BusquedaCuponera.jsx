@@ -82,11 +82,11 @@ const BusquedaCuponera = (props) => {
     <>
       <div className={styles["container"]}>
         <div className="search-row">
+          <div className="">
             <div className={styles["grupo-campos"]}>
               <label>Origen</label>
-              <div style={{ width: '100%' }}>
-                <Input     
-                className={` ${styles["sel-input"]} ${styles["origen"]}`}           
+              <Input
+                className="sel-input origen"
                 placeholder="Seleccione origen"
                 items={retornaCiudadesSelect(origenes)}
                 selected={
@@ -97,15 +97,14 @@ const BusquedaCuponera = (props) => {
                 }
                 setSelected={cambiarOrigen}
               />
-              </div>
-         
             </div>
+          </div>
 
-
+          <div className="">
             <div className={styles["grupo-campos"]}>
               <label>Destino</label>
               <Input
-                className={`${styles["sel-input"]} ${styles["destino"]}`}
+                className="sel-input destino"
                 placeholder="Seleccione destino"
                 items={retornaCiudadesSelect([
                   ...destinos,
@@ -124,7 +123,8 @@ const BusquedaCuponera = (props) => {
                 setSelected={setDestino}
               />
             </div>
-
+          </div>
+          <div className="">
             <div className={styles["grupo-campos"]}>
               <div
                 className={
@@ -137,6 +137,7 @@ const BusquedaCuponera = (props) => {
                 <img src="../img/icon/cuponera/search-outline.svg" /> Buscar
               </div>
             </div>
+          </div>
         </div>
       </div>
     </>

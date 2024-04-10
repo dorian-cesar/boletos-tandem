@@ -54,7 +54,7 @@ const StagePago = (props) => {
       if (res.request.status) {
         setMediosPago(res.data);
       }
-    } catch (e) { }
+    } catch (e) {}
   }
 
   async function getConvenio() {
@@ -187,7 +187,6 @@ const StagePago = (props) => {
 
     return Object.keys(listaServicios).map((servicio) => (
       <>
-
         <div className="row">
           <div className="col-8">
             <h4>
@@ -229,7 +228,6 @@ const StagePago = (props) => {
 
   return (
     <main className={styles["main-content"]}>
-
       <section className={styles["info-list"]}>
         <ResumenServicio open={true} />
         <Acordeon title="Datos del comprador" open={true}>
@@ -256,18 +254,12 @@ const StagePago = (props) => {
           />
         </Acordeon>
       </section>
-
-
-      
-        <Acordeon title="Resumen del viaje" open={true}>
-          <ResumenViaje
-            codigoCuponera={codigoCuponera}
-            setCodigoCuponera={setCodigoCuponera}
-          />
-        </Acordeon>
-      
-
-
+      <section className={styles["travel-summary"]}>
+        <ResumenViaje
+          codigoCuponera={codigoCuponera}
+          setCodigoCuponera={setCodigoCuponera}
+        />
+      </section>
     </main>
   );
 };

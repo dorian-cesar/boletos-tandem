@@ -13,7 +13,7 @@ const Acordeon = (props) => {
   return (
     <div className={styles['accordion']}>
       <div className={`${ styles['accordion-header'] } ${ isOpen && styles['accordion-open'] }`} onClick={toggleAccordion}>
-        { title && <h3>{title}</h3> }
+        { title && <span>{title}</span> }
         { !title && 
         <>
           <div className={ styles['travel-info'] }>
@@ -43,13 +43,8 @@ const Acordeon = (props) => {
           { children }
         </div>
       }
-
-
-
     </div>
-    
   );  
 };
 
 export default Acordeon;
-

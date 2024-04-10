@@ -135,10 +135,8 @@
 
 .utiliza-monedero-virtual .tooltip-text {
     visibility: hidden;
-    /* width: 800px; */
+    width: 200px;
     background-color: #fff;
-    background-color: red;
-
     color: #000;
     text-align: center;
     border-radius: 6px;

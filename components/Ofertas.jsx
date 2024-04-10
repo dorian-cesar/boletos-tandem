@@ -1,12 +1,10 @@
 import { useEffect, useState, forwardRef } from "react";
-import CardOferta from '.././card-oferta';
+import CardOferta from './card-oferta';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import styles from '../Ofertas/ofertas.module.css'
-
 
 import { Navigation, Autoplay, Pagination, FreeMode } from 'swiper/modules';
 
@@ -30,7 +28,7 @@ const ofertas = [{
 },
 {
   origen: 'Santiago',
-  destino: 'Valparaiso',
+  destino: 'La Serena',
   precioAnterior: '18.000',
   precio: '15.000',
   descuento: '20%',
@@ -41,7 +39,7 @@ const ofertas = [{
 },
 {
   origen: 'Santiago',
-  destino: 'Viña del mar',
+  destino: 'La Serena',
   precioAnterior: '18.000',
   precio: '15.000',
   descuento: '20%',
@@ -52,7 +50,7 @@ const ofertas = [{
 },
 {
   origen: 'Santiago',
-  destino: 'Coquimbo',
+  destino: 'La Serena',
   precioAnterior: '18.000',
   precio: '15.000',
   descuento: '20%',
@@ -63,7 +61,7 @@ const ofertas = [{
 },
 {
   origen: 'Santiago',
-  destino: 'Ovalle',
+  destino: 'La Serena',
   precioAnterior: '18.000',
   precio: '15.000',
   descuento: '20%',
@@ -79,41 +77,37 @@ const Ofertas = (props) => {
   const [valoresArregloOfertas, setValoresArregloOfertas] = useState(ofertas);
 
   return (
-    <div className={styles["container"]}>
+    <div className="container">
       <div className="title-ofertas">Ofertas destacadas</div>
       <div className="sub-title-ofertas">
         Infórmate sobre nuestros servicios, convenios y otros.
       </div>
       <Swiper
-        className={`mt-5 pb-5 w-100 d-flex  ${styles["swiper-container"]}`} // Added "swiper-container" class
+        className="mt-5 pb-5 w-100"
         slidesPerView={3}
-        spaceBetween={40}
+        spaceBetween={30}
         freeMode={true}
         loop={ true }
         navigation={ true }
         pagination={{ clickable: true }}
         modules={[FreeMode, Navigation, Pagination]}
         breakpoints={{
-          320: {
+          500: {
             slidesPerView: 1,
             spaceBetween: 10
           },
-          768: {
+          640: {
             slidesPerView: 2,
             spaceBetween: 20,
           },
-          1060: {
-            slidesPerView: 3,
-            spaceBetween: 30,
-          },
-          1440: {
+          768: {
             slidesPerView: 4,
-            spaceBetween: 20,
+            spaceBetween: 40,
           }
         }}>
         {
           valoresArregloOfertas.map((oferta, index) => (
-            <SwiperSlide key={ index } className="swiper-slide"> {/* Added "swiper-slide" class */}
+            <SwiperSlide key={ index } id="swiper-ofertas">
               <CardOferta key={ index } {...oferta} />
             </SwiperSlide>
           ))
