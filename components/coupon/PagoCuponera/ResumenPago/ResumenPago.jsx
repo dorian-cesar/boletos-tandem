@@ -101,28 +101,6 @@ const ResumenPago = (props) => {
             </div>
           </div>
           <div className={styles["total-container"]}>
-            {!soloLectura && (
-              <div
-                className={`form-check form-switch ${styles["utiliza-monedero-virtual"]}`}
-              >
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-                <label
-                  className="form-check-label"
-                  htmlFor="flexSwitchCheckDefault"
-                >
-                  Utilizar monedero virtual ({saldoMonederoVirtual})
-                </label>
-                <img src="/img/icon/general/information-circle-outline.svg" />
-                <span className={styles["tooltip-text"]}>
-                  Sólo se puede pagar con el monedero cuando inicies sesión.
-                </span>
-              </div>
-            )}
             <div className={styles["contanedor-total-pagar"]}>
               <span>Total a pagar: {clpFormat.format(carroCuponera.valorTotalCuponera)}</span>
             </div>

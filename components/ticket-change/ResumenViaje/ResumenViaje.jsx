@@ -481,26 +481,6 @@ export const ResumenViaje = (props) => {
             ))}
         </div>
         <div className={styles["total-container"]}>
-          <div
-            className={`form-check form-switch ${styles["utiliza-monedero-virtual"]}`}
-          >
-            <input
-              className="form-check-input"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
-            />
-            <label
-              className="form-check-label"
-              htmlFor="flexSwitchCheckDefault"
-            >
-              Utilizar monedero virtual ({saldoMonederoVirtual})
-            </label>
-            <img src="/img/icon/general/information-circle-outline.svg" />
-            <span className={styles["tooltip-text"]}>
-              Sólo se puede pagar con el monedero cuando inicies sesión.
-            </span>
-          </div>
           <div className={styles["contanedor-total-pagar"]}>
             <span className={styles["valor-boleto"]}>
               Valor boleto anterior:{" "}
