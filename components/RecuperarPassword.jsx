@@ -3,7 +3,7 @@ import { useForm } from "/hooks/useForm";
 import axios from "axios";
 
 const recuperarPasswordFormFields = {
-  correo:""
+  mail:""
 }
 const RecuperarPassword = ({ onChangeMode,  onChangeAlert }) => {
   const { formState: recuperar, onInputChange } = useForm(recuperarPasswordFormFields);
@@ -18,7 +18,7 @@ const RecuperarPassword = ({ onChangeMode,  onChangeAlert }) => {
   };
 
   const recuperarPassword = async () => {
-    if(recuperar.correo == '') {
+    if(recuperar.mail == '') {
       return setError({
         errorMsg: 'Se requiere ingresar un correo electrónico para recuperar la contraseña',
         status: true

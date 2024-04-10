@@ -6,6 +6,8 @@ import { useLocalStorage } from "/hooks/useLocalStorage";
 import { useRouter } from "next/router";
 import { useForm } from "/hooks/useForm";
 import Head from "next/head";
+import { decryptData } from "utils/encrypt-data.js";
+import LocalStorageEntities from "entities/LocalStorageEntities";
 
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <input
@@ -60,7 +62,7 @@ const ActualizarDatos = () => {
   });
 
   useEffect(() => {
-    let checkUser = getItem("user");
+    let checkUser = decryptData(LocalStorageEntities.user_auth);
     if (checkUser == null) router.push("/");
     setUser(checkUser);
     setIsLoading(false);

@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import { useForm } from "/hooks/useForm";
 import Head from "next/head";
 import { useTable, usePagination } from "react-table";
+import { decryptData } from "utils/encrypt-data.js";
+import LocalStorageEntities from "entities/LocalStorageEntities";
 
 const MisCompras = () => {
   const columns = useMemo(
@@ -54,7 +56,7 @@ const MisCompras = () => {
     tableInstance;
 
   useEffect(() => {
-    let checkUser = getItem("user");
+    let checkUser = decryptData(LocalStorageEntities.user_auth);
     if (!!checkUser){
         setUser(checkUser);
         setIsLoading(false);

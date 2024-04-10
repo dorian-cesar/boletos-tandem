@@ -14,6 +14,8 @@ import {
 } from "../../../dto/PasajesDTO";
 import { agregarCompraCuponera } from "store/usuario/compra-slice";
 import { useRouter } from "next/router";
+import LocalStorageEntities from "entities/LocalStorageEntities";
+import { decryptData, encryptData } from "utils/encrypt-data";
 
 export const ResumenViaje = (props) => {
   const { origen, destino } = useSelector((state) => state.compra);
@@ -29,14 +31,15 @@ export const ResumenViaje = (props) => {
     currency: "CLP",
   });
 
-  const [saldoMonederoVirtual, setSaldoMonederoVirtual] = useState(
-    clpFormat.format(0)
-  );
+  const [saldoMonederoVirtual, setSaldoMonederoVirtual] = useState(0);
+
   const [totalPagar, setTotalPagar] = useState(0);
   const [payment, setPayment] = useState({});
   const payment_form = useRef(null);
   const [terminos, setTerminos] = useState(false);
   const [sendNews, setSendNews] = useState(false);
+  const [user, setUser] = useState({});
+  const [usaWallet, setUsaWallet] = useState(false);
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const informacionAgrupada =
@@ -52,6 +55,27 @@ export const ResumenViaje = (props) => {
       setSoloLectura(props.soloLectura);
     }
   }, []);
+
+  useEffect(() => {
+    const localUser = decryptData(LocalStorageEntities.user_auth);
+    setUser(localUser);
+  }, []);
+
+  useEffect(() => {
+    actualizarSaldoWallet().then();
+  }, [user])
+
+  async function actualizarSaldoWallet() {
+    if( !!user ) {
+      try {
+        const response = await axios.post('/api/user/consulta-saldo-wallet', user);
+        const saldo = response.data.object.saldoContable || 0;
+        setSaldoMonederoVirtual(saldo);
+      } catch (error) {
+        // console.error("Error al actualizar el saldo de la billetera:", error);
+      }
+    }
+  }
 
   const obtenerInformacion = () => {
     {
@@ -177,23 +201,47 @@ export const ResumenViaje = (props) => {
         return;
       }
 
+      let montoUsoWallet = 0;
+
+      if( medioPago !== 'CUP' && usaWallet ) {
+        await actualizarSaldoWallet();
+        const valorNuevo = totalPagar - saldoMonederoVirtual;
+        montoUsoWallet = valorNuevo < 0 ? totalPagar : saldoMonederoVirtual;
+      }
+
       let resumenCompra = {
         medioDePago: medioPago,
-        montoTotal: totalPagar,
+        montoTotal: totalPagar - montoUsoWallet,
         idSistema: 7,
         integrador: 1000,
         datosComprador: datosComprador,
+        montoUsoWallet,
         listaCarrito: [],
       };
+
+      let restoUsoWallet = montoUsoWallet;
 
       informacionAgrupada.forEach((servicio) => {
         const carrito = new ListaCarritoDTO(servicio, servicio.asientos[0]);
         servicio.asientos.forEach((asiento) => {
-          carrito.pasajeros.push(new PasajeroListaCarritoDTO(asiento));
+          const nuevoAsiento = {
+            ...asiento,
+            precio: asiento.tarifa
+          }
+
+          debugger;
+
+          if( medioPago !== 'CUP' && usaWallet && restoUsoWallet > 0 ) {
+            debugger;
+            const montoUsar = Math.min(restoUsoWallet, nuevoAsiento.tarifa);
+            nuevoAsiento.precio = Math.max(nuevoAsiento.tarifa - montoUsar, 0);
+            restoUsoWallet -= montoUsar;
+          }
+
+          carrito.pasajeros.push(new PasajeroListaCarritoDTO(nuevoAsiento));
         });
         resumenCompra.listaCarrito.push(carrito);
       });
-      
 
       if (medioPago === "CUP") {
         if (resumenCompra.listaCarrito.length > 1) {
@@ -456,12 +504,19 @@ export const ResumenViaje = (props) => {
                 type="checkbox"
                 role="switch"
                 id="flexSwitchCheckDefault"
+                disabled={ !user }
+                value={ usaWallet }
+                onClick={ () => {
+                    actualizarSaldoWallet().then();
+                    setUsaWallet(!usaWallet) 
+                  }
+                }
               />
               <label
                 className="form-check-label"
                 htmlFor="flexSwitchCheckDefault"
               >
-                Utilizar monedero virtual ({saldoMonederoVirtual})
+                Utilizar monedero virtual ({ clpFormat.format(saldoMonederoVirtual) })
               </label>
               <img src="/img/icon/general/information-circle-outline.svg" />
               <span className={styles["tooltip-text"]}>

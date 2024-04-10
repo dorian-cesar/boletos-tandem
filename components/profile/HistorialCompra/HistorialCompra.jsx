@@ -5,7 +5,8 @@ import { useForm } from "/hooks/useForm";
 import styles from './HistorialCompra.module.css';
 import axios from "axios";
 import { useId } from "react";
-
+import { decryptData } from "utils/encrypt-data.js";
+import LocalStorageEntities from "entities/LocalStorageEntities";
 
 const actualizarFormFields = {
   rut: "",
@@ -41,7 +42,7 @@ const HistorialCompra = () => {
   const id = useId();
 
   useEffect(() => {
-    let checkUser = getItem("user");
+    let checkUser = decryptData(LocalStorageEntities.user_auth);
     if (checkUser == null) router.push("/");
     setUser(checkUser);
     setIsLoading(false);
@@ -52,8 +53,8 @@ const HistorialCompra = () => {
     data.apellidoPaterno = user?.apellidoPaterno;
     data.apellidoMaterno = user?.apellidoMaterno;
     data.sexo = user?.sexo;
-    data.correo = user?.correo;
-    data.correo2 = user?.correo;
+    data.mail = user?.mail;
+    data.mail = user?.mail;
     data.rut = user?.rut;
     if (!!user?.fechaNacimiento) {
       let fecha = new Date(
@@ -73,7 +74,7 @@ const HistorialCompra = () => {
   useEffect(() => {
     if( user ) {
       axios.post("/api/user/historial-compra", {
-        email: user.correo,
+        email: user.mail,
       }).then(({ data }) => {
         console.log(data.object);
         setHistorial(data.object);

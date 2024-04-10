@@ -15,6 +15,13 @@ export default async (req, res) => {
             }
         })
         if(data.status){
+
+            const { montoTotal } = req.body;
+
+            if( montoTotal === 0 ) {
+                res.status(200).json({ url: "/respuesta-transaccion/" + data.object.codigo, token, inputName: "TBK_TOKEN" });
+            }
+
             let commerceCode = 597035840877;
             let apiKey = '4c69649914993ff286f7888fb7f4366c';
             let tx;
