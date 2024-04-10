@@ -461,7 +461,7 @@ export const ResumenViaje = (props) => {
 
   return (
     <div className={styles["resumen-container"]}>
-      <h3>Resumen del viaje</h3>
+      {/* <h3>Resumen del viaje</h3> */}
       <div className={styles["contenedor-servicios"]}>
         <div className={styles["servicio-ida"]}>
           {Array.isArray(resumen.carro.lista) &&

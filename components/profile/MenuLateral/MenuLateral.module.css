@@ -6,6 +6,7 @@
   padding: 27px 24px;
   flex-grow: 1;
   height: fit-content !important;
+  margin: 5%;
 }
   
 .item-menu-lateral{
@@ -37,4 +38,10 @@
     font-weight: 700;
     line-height: normal;
     text-decoration-line: underline;
+  }
+
+  @media screen and (min-width:991px){
+    .menu-lateral{
+      margin: 3%;
+    }
   }

@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-block-start: 25px;
+    align-items: flex-end;
 }
 
 .cross-container {
@@ -15,7 +15,7 @@
     display: flex;
     justify-content: flex-end;
     padding-inline-end: 20px;
-    padding-block: 20px;
+    padding-left: 20px;
     cursor: pointer;
 }
 
@@ -25,14 +25,16 @@
     border-radius: 10px;
     display: flex;
     flex-direction: row;
-    width: 465px;
+    width: 500px;
     align-items: flex-start;
+    transform: rotate(90deg);
 }
 
 .bus .fila {
     width: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
 }
 
 .bus .fila .imagen-volante {
@@ -63,6 +65,7 @@
     position: absolute;
     width: 24px;
     height: 24px;
+    margin: 10px;
     transform: rotate(90deg);
     color: var(--naranjo);
 }
@@ -73,7 +76,7 @@
     font-size: 10px;
     text-align: center;
     padding-inline-end: 2px;
-    transform: rotate(90deg);
+    /* transform: rotate(180deg); */
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -92,6 +95,34 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 565px;
+    height: 236px;
+    margin-top: 0px;
+}
+
+@media screen  and (max-width: 767px) {
+    .grill-detail {
+        align-items: center;
+        height: 100%;   
+    }
+    .disponibilidad-bus {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 40px;
+        width: 451px;
+        height: 500px;
+    }
+
+    .bus {
+        height: auto;
+        align-items: center;
+        transform: rotate(90deg);
+        margin: 10px;
+    }
+    .cross-container {
+        margin-left: 80px;
+    }
+
 }
 
 .disponibilidad-bus .estados-disponibilidad {
@@ -135,6 +166,7 @@
 .botones-inferiores {
     display: flex;
     flex-direction: row;
+    justify-content: flex-end;
 }
 
 .botones-inferiores .botones-seleccion-piso {
@@ -231,6 +263,7 @@
     flex-shrink: 0;
     border-radius: 16px;
     background: var(--azul-50, #98B1D9);
+    margin-bottom:5% ;
 }
 
 .floor-button span {

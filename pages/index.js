@@ -2,7 +2,7 @@ import axios from "axios";
 import Layout from "components/Layout";
 import Footer from "components/Footer";
 import BusquedaServicio from "components/BusquedaServicio/BusquedaServicio";
-import Ofertas from "components/Ofertas";
+import Ofertas from "components/Ofertas/Ofertas";
 import Head from "next/head";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
