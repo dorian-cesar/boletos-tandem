@@ -181,7 +181,7 @@ export default function Header({ openNav }: { openNav: any }) {
                       <ul className="dropdown-menu">
                         <li>
                           <Link href="/profile/home" legacyBehavior>
-                            <a className="dropdown-item" href="/mi-perfil">
+                            <a className="dropdown-item" href="/profile/home">
                               Mi perfil
                             </a>
                           </Link>

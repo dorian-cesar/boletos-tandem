@@ -19,8 +19,9 @@ import {
 } from "../../../dto/PasajesDTO";
 import Popup from "../../Popup/Popup";
 import ModalEntities from "../../../entities/ModalEntities";
+import LocalStorageEntities from 'entities/LocalStorageEntities';
 import { useLocalStorage } from "/hooks/useLocalStorage";
-import { encryptDataNoTime } from 'utils/encrypt-data.js'
+import { encryptDataNoTime, decryptData } from 'utils/encrypt-data.js'
 
 export const ResumenViaje = (props) => {
   const buttonRef = useRef();
@@ -41,10 +42,8 @@ export const ResumenViaje = (props) => {
   });
 
   useEffect(() => {
-    let checkUser = getItem("user");
-    if (checkUser != null) {
-      setUser(checkUser);
-    }
+    const localUser = decryptData(LocalStorageEntities.user_auth);
+    setUser(localUser);
   }, []);
 
   const clpFormat = new Intl.NumberFormat("es-CL", {
@@ -227,6 +226,7 @@ export const ResumenViaje = (props) => {
         tipoDocumento: informacionAgrupada[0]?.asientos[0]?.tipoDocumento,
         valorBoletoCambio: totalPagar
       };
+      
       if (!isPaymentValid()) return;
       let data;
       try {
