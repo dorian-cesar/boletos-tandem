@@ -317,7 +317,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                 <input
                   type="email"
                   className={"form-control form-control-modal"}
-                  name="correo"
+                  name="mail"
                   value={registro?.mail}
                   onChange={onInputChange}
                 />
@@ -327,7 +327,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                 <input
                   type="email"
                   className={"form-control form-control-modal"}
-                  name="correo2"
+                  name="mail2"
                   value={registro?.mail2}
                   onChange={onInputChange}
                 />
@@ -339,7 +339,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                 <input
                   type="password"
                   className={"form-control form-control-modal"}
-                  name="contraseña"
+                  name="password"
                   value={registro?.password}
                   onChange={onInputChange}
                 />
@@ -349,7 +349,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                 <input
                   type="password"
                   className={"form-control form-control-modal"}
-                  name="contraseña2"
+                  name="password2"
                   value={registro?.password2}
                   onChange={onInputChange}
                 />
