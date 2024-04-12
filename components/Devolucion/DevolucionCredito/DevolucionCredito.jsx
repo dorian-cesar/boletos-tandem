@@ -25,9 +25,9 @@ const DevolucionCredito = (props) => {
     props;
   const [boletos, setBoletos] = useState("");
   const [tipoCuentas, setTipoCuentas] = useState([]);
-  const [tipoCuenta, setTipoCuenta] = useState(null);
+  const [tipoCuenta, setTipoCuenta] = useState('CREDITO');
   const [bancos, setBancos] = useState([]);
-  const [banco, setBanco] = useState(null);
+  const [banco, setBanco] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const [mostrarPopup, setMostrarPopup] = useState(false);
@@ -122,9 +122,7 @@ const DevolucionCredito = (props) => {
 
   function validarForm() {
     return new Promise((resolve, reject) => {
-      const values = Object.values(carro);
-      const camposVacios = values.filter((v) => v == "");
-      if (camposVacios.length > 0) {
+      if( carro.usuario === '' || carro.rutSolicitante === '' || carro.email === '' || !tipoCuenta ) {
         toast.error("Debe ingresar todos los datos solicitados", {
           position: "top-right",
           autoClose: 5000,
@@ -132,40 +130,33 @@ const DevolucionCredito = (props) => {
         });
         cerrarPopup();
         resolve(false);
-      } else {
-        let rutSolicitante = new Rut(carro?.rutSolicitante);
-        let rutTitular = new Rut(carro?.rutTitular);
-        if (!rutSolicitante?.isValid) {
-          toast.error("Debe ingresar un rut válido para el solicitante", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-          });
-          cerrarPopup();
-          return resolve(false);
-        }
-        if (!rutTitular?.isValid) {
-          toast.error("Debe ingresar un rut válido para el titular ", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-          });
-          cerrarPopup();
-          return resolve(false);
-        }
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(carro?.email)) {
-          toast.error("Debe ingresar un correo válido", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-          });
-          cerrarPopup();
-          return resolve(false);
-        }
-
-        setError({ status: false, errorMsg: "" });
-        resolve(true);
+        return;
       }
+
+      let rutSolicitante = new Rut(carro?.rutSolicitante);
+
+      if (!rutSolicitante?.isValid) {
+        toast.error("Debe ingresar un rut válido para el solicitante", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        cerrarPopup();
+        return resolve(false);
+      }
+
+      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(carro?.email)) {
+        toast.error("Debe ingresar un correo válido", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        cerrarPopup();
+        return resolve(false);
+      }
+
+      setError({ status: false, errorMsg: "" });
+      resolve(true);
     });
   }
 
@@ -219,14 +210,12 @@ const DevolucionCredito = (props) => {
             <span className={styles["text-remarcado"]}>
               {codigoTransaccion}
             </span>{" "}
-            fueron adquiridos con tarjeta de debito por lo que debes tener
+            fueron adquiridos con tarjeta de credito por lo que debes tener
             presente lo siguiente:
           </div>
           <div className={styles["sub-title-details"]}>
-            &#8226; La devolución tarda 5 días hábiles para las compras con
-            tarjeta de crédito bancarias y de casas comerciales. Dicho cargo se
-            revertirá en el siguiente o subsiguiente estado de pago, según el
-            banco o casa comercial emisora de la tarjeta.
+            &#8226; La devolución tarda 5 días hábiles para las compras con tarjeta de crédito bancarias y de casas comerciales. 
+            Dicho cargo se revertirá en el siguiente o subsiguiente estado de pago, según el banco o casa comercial emisora de la tarjeta.
           </div>
           <div className={styles["sub-title-details"]}>
             &#8226; Revisa los datos que se encuentran a continuación, si están
@@ -287,40 +276,6 @@ const DevolucionCredito = (props) => {
                   </div>
                   <div className={"col-3"}>
                     <label className={styles["text-label"]}>
-                      Rut titular cuenta
-                    </label>
-                    <input
-                      type="text"
-                      name="rutTitular"
-                      placeholder="Rut del titular de la cuenta : 11111111-1"
-                      className={styles["input"]}
-                      value={carro?.rutTitular}
-                      onChange={(e) => setDataDevolucion(e.target)}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={"row"}>
-              <div className={"col-10"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-5"}>
-                    <label className={styles["text-label"]}>Banco</label>
-                    <select
-                      name="banco"
-                      id="cars"
-                      className={styles["input"]}
-                      value={banco}
-                      onChange={(e) => setBanco(e.target.value)}
-                    >
-                      <option value="">Seleccione banco</option>
-                      {bancos.map((banco) => (
-                        <option value={banco.codigo}>{banco.nombre}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className={"col-3"}>
-                    <label className={styles["text-label"]}>
                       Tipo de cuenta
                     </label>
                     <select
@@ -328,7 +283,7 @@ const DevolucionCredito = (props) => {
                       id="cars"
                       className={styles["input"]}
                       value={tipoCuenta}
-                      onChange={(e) => setTipoCuenta(e.target.value)}
+                      onChange={(e) => {setTipoCuenta(e.target.value)}}
                     >
                       <option value="">Seleccione tipo cuenta</option>
                       {tipoCuentas.map((tipoCuenta) => (
@@ -341,27 +296,7 @@ const DevolucionCredito = (props) => {
                 </div>
               </div>
             </div>
-            <div className={"row"}>
-              <div className={"col-10"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-5"}>
-                    <label className={styles["text-label"]}>N° de cuenta</label>
-                    <input
-                      type="text"
-                      name="numeroCuenta"
-                      placeholder="Número de cuenta"
-                      className={styles["input"]}
-                      value={carro?.numeroCuenta}
-                      onChange={(e) => setDataDevolucion(e.target)}
-                    />
-                  </div>
-
-                  <div className={"col-3"}></div>
-                </div>
-              </div>
-            </div>
           </div>
-
           <div className={"row"}>
             <div className={"col-12 col-md-6"}>
               <div

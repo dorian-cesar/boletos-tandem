@@ -93,15 +93,15 @@ const Devolucion = (props) => {
         )}
 
         {stage == 3 ? (
-          tipoCompra === "VD" || tipoCompra === 'WALLET' ? (
-            <DevolucionDebito
+          tipoCompra === "VN" ? (
+            <DevolucionCredito
               setStage={setStage}
               tipoCompra={tipoCompra}
               selectedBoletos={selectedBoletos}
               codigoTransaccion={codigoTransaccion}
             />
           ) : (
-            <DevolucionCredito 
+            <DevolucionDebito 
               setStage={setStage}
               tipoCompra={tipoCompra}
               selectedBoletos={selectedBoletos}
