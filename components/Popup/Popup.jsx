@@ -152,6 +152,20 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton }) => {
       buttonMessage: modalTitleButton,
       imageIcon: "/img/icon/popup/warning-outline.svg",
       onClick: modalMethods
+    },
+    [ModalEntities.user_ticket_not_equals_buy]: {
+      title: "¡Usuario(a)!",
+      body: "El correo electronico a la transacción ingresada no corresponde al correo electronico de la cuenta",
+      buttonMessage: "Aceptar",
+      imageIcon: "/img/icon/popup/warning-outline.svg",
+      onClick: modalMethods
+    },
+    [ModalEntities.return_to_wallet]: {
+      title: "¡Usuario(a)!",
+      body: "El monto total de los boletos seleccionados sera abonado a su billetera virtual, podra ver reflejado el monto en su perfil, presione en 'Aceptar' para completar el proceso.",
+      buttonMessage: "Aceptar",
+      imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
+      onClick: modalMethods
     }
   };
   

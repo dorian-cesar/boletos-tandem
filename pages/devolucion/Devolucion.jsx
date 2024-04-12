@@ -22,7 +22,7 @@ const Devolucion = (props) => {
   const [codigoTransaccion, setCodigoTransaccion] = useState(null);
   const [tipoCompra, setTipoCompra] = useState(null);
 
-  //tipo compra VN -> credito, VD debito
+  //tipo compra VN -> credito, VD debito, WALLET -> Wallet XD
 
   useEffect(() => {
     if (boletos.length > 0) {
@@ -82,6 +82,7 @@ const Devolucion = (props) => {
               setStage={setStage}
               medioDevolucion={medioDevolucion}
               setMedioDevolucion={setMedioDevolucion}
+              boletos={boletos}
             />
           ) : (
                 ""

@@ -1,4 +1,4 @@
-import styles from "./DevolucionDebito.module.css";
+import styles from "./DevolucionCredito.module.css";
 import React, { useState, useEffect } from "react";
 import Rut from "rutjs";
 import axios from "axios";
