@@ -83,6 +83,7 @@ const Devolucion = (props) => {
               medioDevolucion={medioDevolucion}
               setMedioDevolucion={setMedioDevolucion}
               boletos={boletos}
+              selectedBoletos={selectedBoletos}
             />
           ) : (
                 ""

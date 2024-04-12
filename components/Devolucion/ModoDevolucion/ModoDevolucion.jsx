@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
 const ModoDevolucion = (props) => {
-    const { medioDevolucion, setMedioDevolucion, setStage, boletos } = props;
+    const { medioDevolucion, setMedioDevolucion, setStage, boletos, selectedBoletos } = props;
 
     const [user, setUser] = useState(null);
     const [popUpBoletoUsuarioDistinto, setPopUpBoletoUsuarioDistinto] =
@@ -60,14 +60,12 @@ const ModoDevolucion = (props) => {
     }
 
     async function procesarDevolucionWallet() {
-        const boletosAnular = boletos.map((boleto) => boleto.boleto);
-
         const informacionDevolucion = {
             anulacionWallet: true,
             integrador: 1000,
             email: user.mail,
             rutTitular: user.rut,
-            boleto: boletosAnular,
+            boleto: selectedBoletos,
             codigoTransaccion: boletos[0].codigo,
             rutSolicitante: user.rut,
             usuario: user.nombres,
