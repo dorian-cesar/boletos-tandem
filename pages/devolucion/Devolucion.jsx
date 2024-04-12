@@ -11,6 +11,7 @@ import ModoDevolucion from "../../components/Devolucion/ModoDevolucion/ModoDevol
 import DevolucionDebito from "../../components/Devolucion/DevolucionDebito/DevolucionDebito";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
+import DevolucionCredito from "../../components/Devolucion/DevolucionCredito/DevolucionCredito";
 
 const Devolucion = (props) => {
   const [stage, setStage] = useState(0);
@@ -21,7 +22,7 @@ const Devolucion = (props) => {
   const [codigoTransaccion, setCodigoTransaccion] = useState(null);
   const [tipoCompra, setTipoCompra] = useState(null);
 
-  //tipo compra VN -> credito, VD debito
+  //tipo compra VN -> credito, VD debito, WALLET -> Wallet XD
 
   useEffect(() => {
     if (boletos.length > 0) {
@@ -81,6 +82,8 @@ const Devolucion = (props) => {
               setStage={setStage}
               medioDevolucion={medioDevolucion}
               setMedioDevolucion={setMedioDevolucion}
+              boletos={boletos}
+              selectedBoletos={selectedBoletos}
             />
           ) : (
                 ""
@@ -90,15 +93,20 @@ const Devolucion = (props) => {
         )}
 
         {stage == 3 ? (
-          tipoCompra === "VD" ? (
-            <DevolucionDebito
+          tipoCompra === "VN" ? (
+            <DevolucionCredito
               setStage={setStage}
               tipoCompra={tipoCompra}
               selectedBoletos={selectedBoletos}
               codigoTransaccion={codigoTransaccion}
             />
           ) : (
-            <></>
+            <DevolucionDebito 
+              setStage={setStage}
+              tipoCompra={tipoCompra}
+              selectedBoletos={selectedBoletos}
+              codigoTransaccion={codigoTransaccion}
+            />
           )
         ) : (
           <></>

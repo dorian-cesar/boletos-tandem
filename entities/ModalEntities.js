@@ -19,7 +19,9 @@ const ModalEntities = {
     request_bad_help: 'REQUEST_BAD_HELP',
     car_live_time_end: 'CAR_LIVE_TIME_END',
     exchange_return_information_no_login: 'EXCHANGE_RETURN_INFORMATION_NO_LOGIN',
-    exchange_return_information_login: 'EXCHANGE_RETURN_INFORMATION_LOGIN'
+    exchange_return_information_login: 'EXCHANGE_RETURN_INFORMATION_LOGIN',
+    user_ticket_not_equals_buy: 'USER_TICKET_NOT_EQUALS_BUY',
+    return_to_wallet: 'RETURN_TO_WALLET'
 }
 
 export default ModalEntities;
