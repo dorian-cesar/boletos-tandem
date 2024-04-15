@@ -1,0 +1,46 @@
+{
+  "apps": [
+      {
+          "name": "fenix_uwu",
+          "interpreter": "npx",
+          "script": "node_modules/next/dist/bin/next",
+          "args": "start",
+          "cwd": "./",
+          "instances": "1",
+          "exec_mode": "cluster",
+          "port": 3000
+      },
+      {
+      	"name": "fenix_uwu",
+          "interpreter": "npx",
+          "script": "node_modules/next/dist/bin/next",
+          "args": "start",
+          "cwd": "./",
+          "instances": "1",
+          "exec_mode": "cluster",
+          "port": 3001
+      },
+      {
+	  "name": "fenix_uwu",
+          "interpreter": "npx",
+          "script": "node_modules/next/dist/bin/next",
+          "args": "start",
+          "cwd": "./",
+          "instances": "1",
+          "exec_mode": "cluster",
+          "port": 3002
+      },
+      {
+	  "name": "fenix_uwu",
+          "interpreter": "npx",
+          "script": "node_modules/next/dist/bin/next",
+          "args": "start",
+          "cwd": "./",
+          "instances": "1",
+          "exec_mode": "cluster",
+          "port": 3003
+      }
+
+  ]
+}
+
