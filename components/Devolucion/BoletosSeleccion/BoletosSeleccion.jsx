@@ -6,7 +6,8 @@ const estadoBoleto = {
   'ACT': 'Activo',
   'NUL': 'Nulo',
   'VEN': 'Fuera de plazo',
-  'NOP': 'No se puede anular'
+  'NOP': 'No se puede anular',
+  'CAN': 'Cambiado'
 }
 
 const BoletosSeleccion = (props) => {
