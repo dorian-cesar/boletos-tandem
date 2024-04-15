@@ -1,19 +1,37 @@
 import Head from "next/head";
 import Header from "./Header/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+
+import { liberarAsientos } from "store/usuario/compra-slice";
+import { limpiarCambio } from "store/usuario/cambio-boleto-slice";
+
 
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);
+
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   const closeNav = () => {
     setOpen(false);
   };
   const openNav = () => {
     setOpen(true);
   };
+
+  useEffect(() => {
+    if( !router.pathname.includes('respuesta-transaccion') ) {
+      dispatch(liberarAsientos());
+      dispatch(limpiarCambio());
+    }
+  }, [router.pathname])
+
   return (
     <>
       <Head>
