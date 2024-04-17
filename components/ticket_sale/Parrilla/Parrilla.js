@@ -49,21 +49,30 @@ const Parrilla = (props) => {
   useEffect(() => {
     let dataIda = [];
     let dataVuelta = [];
+    
     Object.entries(carroCompras).map(([key, value]) => {
-      dataIda = value.ida || [];
-      dataVuelta = value.vuelta || [];
+      if (value.ida) dataIda.push(value.ida);
+      if (value.vuelta) dataVuelta.push(value.vuelta);
     });
 
     let cantidadAsientosIda = 0;
-    Object.entries(dataIda).map(([key, value]) => {
-      value.asientos.forEach((_) => cantidadAsientosIda += 1);
-    });
+    if( dataIda.length > 0 ) {
+      dataIda.forEach((servicioIda) => {
+        Object.entries(servicioIda).map(([key, value]) => {
+          value.asientos.forEach((_) => cantidadAsientosIda += 1);
+        });
+      })
+    }
     setCantidadIda(cantidadAsientosIda);
 
     let cantidadAsientosVuelta = 0;
-    Object.entries(dataVuelta).map(([key, value]) => {
-      value.asientos.forEach((_) => cantidadAsientosVuelta += 1);
-    });
+    if( dataVuelta.length > 0 ) {
+      dataVuelta.forEach((servicioVuelta) => {
+        Object.entries(servicioVuelta).map(([key, value]) => {
+          value.asientos.forEach((_) => cantidadAsientosVuelta += 1);
+        });
+      })
+    }
     setCantidadVuelta(cantidadAsientosVuelta);
 
   }, [carroCompras]);

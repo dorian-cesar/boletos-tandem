@@ -53,24 +53,36 @@ export const compraSlice = createSlice({
                 state.listaCarrito[key][payload.tipoServicio] = listaServicios;
                 encryptData(state, LocalStorageEntities.car, Date.now() + (15 * 60 * 1000))
             } else {
-                if( state.listaCarrito[key] ) {
-                    const listaServicios = state.listaCarrito[key][payload.tipoServicio] || [];
-                    let servicio = listaServicios.find((servicio) => servicio.idServicio === payload.servicio.idServicio);
-                    if( servicio ) {
-                        servicio.asientos.push(payload.asiento);
-                    } else {
-                        delete payload.servicio.logo;
-                        listaServicios.push({
-                            ...payload.servicio,
-                            asientos: [payload.asiento]
-                        });
-                    }
-                    state.listaCarrito[key][payload.tipoServicio] = listaServicios;
-                    if( state.live_time ) {
-                        encryptDataNoTime(state, LocalStorageEntities.car);
-                    } else {
-                        encryptData(state, LocalStorageEntities.car, Date.now() + (15 * 60 * 1000));
-                    }
+                debugger;
+                let listaServicios = [];
+                if (state.listaCarrito.hasOwnProperty(key) && state.listaCarrito[key].hasOwnProperty(payload.tipoServicio)) {
+                    listaServicios = state.listaCarrito[key][payload.tipoServicio];
+                }
+
+                let servicio = listaServicios.find((servicio) => servicio.idServicio === payload.servicio.idServicio);
+                if( servicio ) {
+                    servicio.asientos.push(payload.asiento);
+                } else {
+                    delete payload.servicio.logo;
+                    listaServicios.push({
+                        ...payload.servicio,
+                        asientos: [payload.asiento]
+                    });
+                }
+
+                // Verificar si la clave `key` existe en state.listaCarrito
+                if (!state.listaCarrito.hasOwnProperty(key)) {
+                    // Si no existe, crear un nuevo objeto vacío para esa clave
+                    state.listaCarrito[key] = {};
+                }
+
+                // Asignar el valor a la clave `payload.tipoServicio`
+                state.listaCarrito[key][payload.tipoServicio] = listaServicios;
+
+                if( state.live_time ) {
+                    encryptDataNoTime(state, LocalStorageEntities.car);
+                } else {
+                    encryptData(state, LocalStorageEntities.car, Date.now() + (15 * 60 * 1000));
                 }
             }
         },
