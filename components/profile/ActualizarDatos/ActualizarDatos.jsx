@@ -40,8 +40,8 @@ const actualizarFormFields = {
   rut: "",
   apellidoMaterno: "",
   apellidoPaterno: "",
-  correo: "",
-  correo2: "",
+  mail: "",
+  mail2: "",
   fechaNacimiento: "",
   nombres: "",
   tipoDocumento: "R",
@@ -74,16 +74,11 @@ const ActualizarDatos = () => {
     data.apellidoPaterno = user?.apellidoPaterno;
     data.apellidoMaterno = user?.apellidoMaterno;
     data.sexo = user?.sexo;
-    data.correo = user?.correo;
-    data.correo2 = user?.correo;
+    data.mail = user?.mail;
+    data.mail2 = user?.mail;
     data.rut = user?.rut;
     if (!!user?.fechaNacimiento) {
-      let fecha = new Date(
-        String(user?.fechaNacimiento).substring(
-          0,
-          String(user?.fechaNacimiento).length - 5
-        )
-      );
+      const fecha = new Date(user?.fechaNacimiento.toString().replace(/Z$/, ''));
       setFechaNacimiento(fecha);
     }
   }, [user]);
@@ -134,7 +129,7 @@ const ActualizarDatos = () => {
         });
         resolve(false);
       } else {
-        if (data?.correo != data?.correo2) {
+        if (data?.mail != data?.mail2) {
           setAlerta({
             visible: true,
             msg: "Los correos no coinciden. Por favor, verificar.",
@@ -278,7 +273,7 @@ const ActualizarDatos = () => {
                     </button>
                   </div>
                 )}
-                selected={fechaNacimiento}
+                selected={ fechaNacimiento }
                 onChange={(date) => setFechaNacimiento(date)}
                 dateFormat="dd/MM/yyyy"
                 locale={"es"}
@@ -293,8 +288,8 @@ const ActualizarDatos = () => {
               <input
                 type="email"
                 className={styles["input-data"]}
-                name="correo"
-                value={data?.correo}
+                name="mail"
+                value={data?.mail}
                 disabled
               />
             </div>
