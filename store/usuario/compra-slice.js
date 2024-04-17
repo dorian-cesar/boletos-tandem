@@ -53,7 +53,6 @@ export const compraSlice = createSlice({
                 state.listaCarrito[key][payload.tipoServicio] = listaServicios;
                 encryptData(state, LocalStorageEntities.car, Date.now() + (15 * 60 * 1000))
             } else {
-                debugger;
                 let listaServicios = [];
                 if (state.listaCarrito.hasOwnProperty(key) && state.listaCarrito[key].hasOwnProperty(payload.tipoServicio)) {
                     listaServicios = state.listaCarrito[key][payload.tipoServicio];
