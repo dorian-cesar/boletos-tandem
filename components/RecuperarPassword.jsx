@@ -83,8 +83,8 @@ const RecuperarPassword = ({ onChangeMode,  onChangeAlert }) => {
                   type="text"
                   placeholder="Ej: example@example.com"
                   className="form-control"
-                  name="correo"
-                  value={recuperar?.correo}
+                  name="mail"
+                  value={recuperar?.mail}
                   onChange={ onInputChange }
                 />
               </div>
