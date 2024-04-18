@@ -427,12 +427,9 @@ export const ResumenViaje = (props) => {
       modal.modalKey = ModalEntities.exchange_return_information_login;
       setPopup(modal);
     } else {
-      let modal = { ...popup };
-      modal.modalClose = cerrarPopup;
-      modal.modalTitleButton = "Iniciar sesión";
-      modal.modalMethods = iniciarSesion;
-      modal.modalKey = ModalEntities.exchange_return_information_no_login;
-      setPopup(modal);
+      setValorCobrar(0);
+      finalizarCambio();
+      return;
     }
     setMostrarPopup(true);
   };
