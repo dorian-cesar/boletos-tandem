@@ -5,16 +5,26 @@ const {serverRuntimeConfig, publicRuntimeConfig} = getConfig();
 const config = serverRuntimeConfig;
 import { WebpayPlus, Environment, Options } from 'transbank-sdk';
 
+import CryptoJS from "crypto-js";
+
 export default async (req, res) => {
 
     try {
         let token = await doLogin();
-        let { data } = await axios.post(config.service_url + `/cuponera/guardarTransaccionCuponeraFenix`,req.body,{
+
+        const { data } = req.body;
+
+        const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+        const decrypted = CryptoJS.AES.decrypt(data, secret);
+        const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+
+        const serviceResponse = await axios.post(config.service_url + `/cuponera/guardarTransaccionCuponeraFenix`, serviceRequest, {
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
         })
-        if(data.status){
+
+        if( serviceResponse.data.status ){
             let commerceCode = 597035840877;
             let apiKey = '4c69649914993ff286f7888fb7f4366c';
             let tx;
@@ -30,10 +40,10 @@ export default async (req, res) => {
             }
            
             tx.create(
-                data.object.codigo,
-                data.object.codigo,
-                req.body.montoTotal,
-                publicRuntimeConfig.site_url + "/respuesta-transaccion-cuponera/"+ data.object.codigo).then(async ({ url, token }) => {
+                serviceResponse.data.object.codigo,
+                serviceResponse.data.object.codigo,
+                serviceRequest.montoTotal,
+                publicRuntimeConfig.site_url + "/respuesta-transaccion-cuponera/" + serviceResponse.data.object.codigo).then(async ({ url, token }) => {
                 
              
                 console.log({url, token, inputName: "TBK_TOKEN"})
