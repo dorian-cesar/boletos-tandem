@@ -25,6 +25,7 @@ const StagePasajes = (props) => {
     const [asientosIda, setAsientosIda] = useState([]);
     const [asientosVuelta, setAsientosVuelta] = useState([]);
     const [servicios, setServicios] = useState(null);
+    const [cantidadIda, setCantidadIda] = useState(0);
 
     const toggleTipo = useCallback((tipo) => {
         let listaTipoTemporal = [...filter_tipo];

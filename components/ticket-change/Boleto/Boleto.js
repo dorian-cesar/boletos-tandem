@@ -17,6 +17,7 @@ import { format } from "@formkit/tempo";
 var customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 const Boleto = (props) => {
+  const { cantidadIda, setCantidadIda } = props;
   const [isOpened, setIsOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isShowItinerary, setIsShowItinerary] = useState(false);
@@ -145,6 +146,8 @@ const Boleto = (props) => {
               setPasaje={props.setPasaje}
               isLoading={ isLoading }
               setIsLoading={ setIsLoading }
+              cantidadIda ={cantidadIda} 
+              setCantidadIda={setCantidadIda}
               />
           </div>
         </LoadingOverlay>

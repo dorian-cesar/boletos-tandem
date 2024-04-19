@@ -9,7 +9,8 @@ import styles from "./Parrilla.module.css";
 import { AsientoDTO } from "dto/AsientoDTO";
 
 import { useSelector, useDispatch } from "react-redux";
-import { agregarServicio, eliminarServicio } from "store/usuario/compra-slice";
+import { agregarServicio, eliminarServicio, eliminarServicioCambio} from "store/usuario/compra-slice";
+import { guardarCantidadIda, limpiarCambio} from "store/usuario/cambio-boleto-slice";
 import { toast } from "react-toastify";
 
 const ASIENTO_LIBRE = "libre";
@@ -24,8 +25,9 @@ const MAXIMO_COMPRA_ASIENTO = 1;
 
 const Parrilla = (props) => {
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
+  const cantidadIdaRedux = useSelector((state) => state.cambioBoleto?.cantidadIda) || 0;
   const dispatch = useDispatch();
-
+  const {cantidadIda, setCantidadIda } = props;
   const {
     isShowParrilla = false,
     parrilla,
@@ -39,7 +41,7 @@ const Parrilla = (props) => {
   const [key, setKey] = useState(null);
   const [totalPagar, setTotalPagar] = useState(0);
   const [piso, setPiso] = useState(1);
-  const [cantidadIda, setCantidadIda] = useState(0);
+  
 
   const clpFormat = new Intl.NumberFormat("es-CL", {
     style: "currency",
@@ -54,10 +56,8 @@ const Parrilla = (props) => {
 
   useEffect(() => {
     let dataIda = [];
-    let dataVuelta = [];
     Object.entries(carroCompras).map(([key, value]) => {
       dataIda = value.ida || [];
-      dataVuelta = value.vuelta || [];
     });
     Object.entries(dataIda).map(([key, value]) => {
       let cantidadAsientos = 0;
@@ -65,13 +65,6 @@ const Parrilla = (props) => {
         cantidadAsientos = cantidadAsientos + 1;
       });
       setCantidadIda(cantidadAsientos);
-    });
-    Object.entries(dataVuelta).map(([key, value]) => {
-      let cantidadAsientos = 0;
-      value.asientos.forEach((element) => {
-        cantidadAsientos = cantidadAsientos + 1;
-      });
-      setCantidadVuelta(cantidadAsientos);
     });
   }, [stage === STAGE_BOLETO_VUELTA]);
 
@@ -290,30 +283,16 @@ const Parrilla = (props) => {
           return;
         }
 
+        if (!validarMaximoAsientos(asientosTemporal, asiento)) return;
         asientosTemporal = await servicioTomarAsiento(
           props.thisParrilla,
           asiento.asiento,
           piso,
           asientosTemporal
         );
-
-        if (
-          asiento.tipo == ASIENTO_TIPO_ASOCIADO ||
-          asiento.tipo == ASIENTO_TIPO_MASCOTA
-        ) {
-          asientosTemporal = await servicioTomarAsiento(
-            parrilla,
-            asiento.asientoAsociado,
-            piso,
-            asientosTemporal,
-            true
-          );
-        }
-
+  
         setCantidadIda(cantidadIda + 1);
-
         dispatch(agregarServicio(carrito));
-
         await reloadPane(indexParrilla);
         setIsLoading(false);
         return;
@@ -324,9 +303,9 @@ const Parrilla = (props) => {
         asiento.estado == ASIENTO_OCUPADO_MASCOTA
       ) {
         if (asientoSeleccionado) {
-          await servicioLiberarAsiento(carrito, asiento.asiento, 1, piso);
-          setCantidadIda(cantidadIda - 1);
-          dispatch(eliminarServicio(carrito));
+          await servicioLiberarAsiento(carrito, asiento.asiento, 1, piso);  
+          setCantidadIda(cantidadIda - 1);    
+          dispatch(eliminarServicioCambio());
           await reloadPane(indexParrilla);
           setIsLoading(false);
           return;
@@ -354,6 +333,59 @@ const Parrilla = (props) => {
     } catch ({ message }) {
       throw new Error(`Error al liberar asiento [${message}]`);
     }
+  }
+
+  function validarMaximoAsientos(asientos, asientoSeleccion) {
+    debugger;
+    const cantidadAsientos = asientos.length;
+
+    if (cantidadAsientos >= MAXIMO_COMPRA_ASIENTO) {
+      toast.warn(`Máximo ${MAXIMO_COMPRA_ASIENTO} pasajes`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+      });
+      setIsLoading(false);
+      return false;
+    }
+
+    if (
+      asientoSeleccion.asientoAsociado &&
+      cantidadAsientos + 1 >= MAXIMO_COMPRA_ASIENTO
+    ) {
+      toast.warn(
+        `Asiento seleccionado superara el máximo de compra permitido`,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        }
+      );
+      setIsLoading(false);
+      return false;
+    }
+
+    let cantidadServicios = 0;
+    Object.entries(carroCompras).forEach(([key, value]) => {
+      if( value.hasOwnProperty(stage === 0 ? "ida" : "vuelta") ) {
+        cantidadServicios += value[stage === 0 ? "ida" : "vuelta"].length;
+      }
+    });
+
+    if (
+      cantidadServicios >=
+        MAXIMO_COMPRA_ASIENTO
+    ) {
+      toast.warn(`Sólo puede elegir ${MAXIMO_COMPRA_ASIENTO} servicios`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+      });
+      setIsLoading(false);
+      return false;
+    }
+    
+    return true;
   }
 
   async function setOpenPaneRoot(indexParrilla) {

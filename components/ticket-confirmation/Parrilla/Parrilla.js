@@ -25,7 +25,7 @@ const MAXIMO_COMPRA_ASIENTO = 1;
 const Parrilla = (props) => {
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const dispatch = useDispatch();
-
+  const {cantidadIda, setCantidadIda } = props;
   const { isShowParrilla = false, parrilla, stage, setParrilla, setIsLoading, boletoValido } = props;
 
   const [modalMab, setModalMab] = useState(false);
@@ -33,7 +33,7 @@ const Parrilla = (props) => {
   const [key, setKey] = useState(null);
   const [totalPagar, setTotalPagar] = useState(0);
   const [piso, setPiso] = useState(1);
-  const [cantidadIda, setCantidadIda] = useState(0);
+
 
   const clpFormat = new Intl.NumberFormat("es-CL", {
     style: "currency",
