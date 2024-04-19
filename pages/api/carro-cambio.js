@@ -55,8 +55,7 @@ export default async (req, res) => {
         console.log(commit, data.data, dataCerrar.data)
         res.status(200).json({carro: data.data, cerrar:dataCerrar.data, commit: commit});
     } catch(e){
-        console.log(e)
-        res.status(400).json(e)
+        res.status(400).json(e.response.data)
     }
     
 }   

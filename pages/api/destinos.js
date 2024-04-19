@@ -17,8 +17,11 @@ export default async (req, res) => {
         })
         res.status(200).json(data.data);
     } catch(e){
-        console.log(e)
-        res.status(400).json(e)
+        let response = {
+            message: 'Error al obtener ciudades',
+            status: false
+        }
+        res.status(400).json(response)
     }
     
 }   
