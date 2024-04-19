@@ -17,6 +17,10 @@ import { useRouter } from "next/router";
 import LocalStorageEntities from "entities/LocalStorageEntities";
 import { decryptData, encryptData } from "utils/encrypt-data";
 
+import CryptoJS from "crypto-js";
+
+const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+
 export const ResumenViaje = (props) => {
   const { origen, destino } = useSelector((state) => state.compra);
   const { codigoCuponera, setCodigoCuponera } = props;
@@ -79,82 +83,85 @@ export const ResumenViaje = (props) => {
 
   const obtenerInformacion = () => {
     {
+      //TODO: revisar como se forma la informacion ya que no siempre se muestra de forma correcta
       Object.entries(carroCompras).map(([key, value]) => {
-        const fechaIdaFormateada = value.ida[0].fechaSalida.split("/");
-        const fechaIda = new Date(
-          `${fechaIdaFormateada[1]}/${fechaIdaFormateada[0]}/${fechaIdaFormateada[2]}`
-        );
-
-        const idaNombre = `Salida, ${format(fechaIda, "ddd D MMM")}`;
-        const keys = Object.keys(value);
-
-        let vueltaNombre = "";
-        if (keys.length >= 2) {
-          const fechaVueltaFormateada = value.vuelta[0].fechaSalida.split("/");
-          const fechaVuelta = new Date(
-            `${fechaVueltaFormateada[1]}/${fechaVueltaFormateada[0]}/${fechaVueltaFormateada[2]}`
+        if( value.ida.length > 0 ) {
+          const fechaIdaFormateada = value.ida[0].fechaSalida.split("/");
+          const fechaIda = new Date(
+            `${fechaIdaFormateada[1]}/${fechaIdaFormateada[0]}/${fechaIdaFormateada[2]}`
           );
-          vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM")}`;
+  
+          const idaNombre = `Salida, ${format(fechaIda, "ddd D MMM")}`;
+          const keys = Object.keys(value);
+  
+          let vueltaNombre = "";
+          if (keys.length >= 2) {
+            const fechaVueltaFormateada = value.vuelta[0].fechaSalida.split("/");
+            const fechaVuelta = new Date(
+              `${fechaVueltaFormateada[1]}/${fechaVueltaFormateada[0]}/${fechaVueltaFormateada[2]}`
+            );
+            vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM")}`;
+          }
+  
+          const idaList = value.ida || [];
+          const vueltaList = value.vuelta || [];
+  
+          let carro_temp = { ...resumen };
+          const datos = [];
+  
+          let carritoIda = {
+            titulo: idaNombre,
+            detalle: [],
+          };
+          let carritoVuelta = {
+            titulo: vueltaNombre,
+            detalle: [],
+          };
+  
+          Object.entries(idaList).map(([key, value]) => {
+            const datos = {
+              origen: `${origen?.nombre} (${value.terminalOrigen})`,
+              destino: `${destino?.nombre} (${value.terminalDestino})`,
+              hora: value.horaSalida,
+              horaLlegada: value.horaLlegada,
+              cantidadAsientos: 0,
+              total: 0,
+            };
+  
+            value.asientos.forEach((element) => {
+              datos.cantidadAsientos += 1;
+              datos.total += element.valorAsiento;
+            });
+  
+            datos.total = clpFormat.format(datos.total);
+  
+            carritoIda.detalle.push(datos);
+          });
+  
+          Object.entries(vueltaList).map(([key, value]) => {
+            const datos = {
+              origen: `${destino?.nombre} (${value.terminalOrigen})`,
+              destino: `${origen?.nombre} (${value.terminalDestino})`,
+              hora: value.horaSalida,
+              horaLlegada: value.horaLlegada,
+              cantidadAsientos: 0,
+              total: 0,
+            };
+  
+            value.asientos.forEach((element) => {
+              datos.cantidadAsientos += 1;
+              datos.total += element.valorAsiento;
+            });
+  
+            datos.total = clpFormat.format(datos.total);
+  
+            carritoVuelta.detalle.push(datos);
+          });
+          datos.push(carritoIda);
+          datos.push(carritoVuelta);
+          carro_temp.carro["lista"] = datos;
+          setResumen(carro_temp);
         }
-
-        const idaList = value.ida || [];
-        const vueltaList = value.vuelta || [];
-
-        let carro_temp = { ...resumen };
-        const datos = [];
-
-        let carritoIda = {
-          titulo: idaNombre,
-          detalle: [],
-        };
-        let carritoVuelta = {
-          titulo: vueltaNombre,
-          detalle: [],
-        };
-
-        Object.entries(idaList).map(([key, value]) => {
-          const datos = {
-            origen: `${origen?.nombre} (${value.terminalOrigen})`,
-            destino: `${destino?.nombre} (${value.terminalDestino})`,
-            hora: value.horaSalida,
-            horaLlegada: value.horaLlegada,
-            cantidadAsientos: 0,
-            total: 0,
-          };
-
-          value.asientos.forEach((element) => {
-            datos.cantidadAsientos += 1;
-            datos.total += element.valorAsiento;
-          });
-
-          datos.total = clpFormat.format(datos.total);
-
-          carritoIda.detalle.push(datos);
-        });
-
-        Object.entries(vueltaList).map(([key, value]) => {
-          const datos = {
-            origen: `${destino?.nombre} (${value.terminalOrigen})`,
-            destino: `${origen?.nombre} (${value.terminalDestino})`,
-            hora: value.horaSalida,
-            horaLlegada: value.horaLlegada,
-            cantidadAsientos: 0,
-            total: 0,
-          };
-
-          value.asientos.forEach((element) => {
-            datos.cantidadAsientos += 1;
-            datos.total += element.valorAsiento;
-          });
-
-          datos.total = clpFormat.format(datos.total);
-
-          carritoVuelta.detalle.push(datos);
-        });
-        datos.push(carritoIda);
-        datos.push(carritoVuelta);
-        carro_temp.carro["lista"] = datos;
-        setResumen(carro_temp);
       });
     }
   };
@@ -370,9 +377,12 @@ export const ResumenViaje = (props) => {
           return false;
         }
       } else {
+
+        const request = CryptoJS.AES.encrypt(JSON.stringify(resumenCompra), secret);
+
         const { data } = await axios.post(
           "/api/ticket_sale/guardar-multi-carro",
-          resumenCompra
+          { data: request.toString() }
         );
 
         if (Boolean(data.error)) {

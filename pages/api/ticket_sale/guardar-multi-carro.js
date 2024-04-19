@@ -5,21 +5,31 @@ const {serverRuntimeConfig, publicRuntimeConfig} = getConfig();
 const config = serverRuntimeConfig;
 import { WebpayPlus, Environment, Options } from 'transbank-sdk';
 
+import CryptoJS from "crypto-js";
+
 export default async (req, res) => {
 
     try {
         let token = await doLogin();
-        let { data } = await axios.post(config.service_url + `/integracion/guardarNuevaTransaccion`,req.body,{
+
+        const { data } = req.body;
+
+        const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+        const decrypted = CryptoJS.AES.decrypt(data, secret);
+        const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+
+        const serviceResponse = await axios.post(config.service_url + `/integracion/guardarNuevaTransaccion`, serviceRequest ,{
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
         })
-        if(data.status){
+        
+        if(serviceResponse.data.status){
 
-            const { montoTotal } = req.body;
+            const { montoTotal } = serviceRequest;
 
             if( montoTotal === 0 ) {
-                res.status(200).json({ url: "/respuesta-transaccion/" + data.object.codigo, token, inputName: "TBK_TOKEN" });
+                res.status(200).json({ url: "/respuesta-transaccion/" + serviceResponse.data.object.codigo, token, inputName: "TBK_TOKEN" });
             }
 
             let commerceCode = 597035840877;
@@ -37,10 +47,10 @@ export default async (req, res) => {
             }
            
             tx.create(
-                data.object.codigo,
-                data.object.codigo,
-                req.body.montoTotal,
-                publicRuntimeConfig.site_url + "/respuesta-transaccion/"+ data.object.codigo).then(async ({ url, token }) => {
+                serviceResponse.data.object.codigo,
+                serviceResponse.data.object.codigo,
+                montoTotal,
+                publicRuntimeConfig.site_url + "/respuesta-transaccion/"+ serviceResponse.data.object.codigo).then(async ({ url, token }) => {
                 
              
                 console.log({url, token, inputName: "TBK_TOKEN"})
@@ -55,7 +65,8 @@ export default async (req, res) => {
             res.status(200).json({error: {message:'Hubo un error'}});
         }
       
-    } catch({ response }){
+    } catch(e){
+        console.log(e.message)
         res.status(400).json(response.data);
     }
     
