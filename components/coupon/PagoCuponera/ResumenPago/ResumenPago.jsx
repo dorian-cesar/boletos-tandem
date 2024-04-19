@@ -6,6 +6,10 @@ import { isValidDatosComprador } from "utils/user-pasajero";
 import { toast } from "react-toastify";
 import { agregarMontoTotal } from "../../../../store/usuario/compra-cuponera-slice";
 
+import CryptoJS from "crypto-js";
+
+const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+
 const ResumenPago = (props) => {
   const [resumen, setResumen] = useState({
     carro: {},
@@ -31,14 +35,22 @@ const ResumenPago = (props) => {
   const [isChecked, setIsChecked] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [promotionsChecked, setPromotionsChecked] = useState(false);
+  const [cuerpoTransformado, setCuerpoTransformado] = useState({});
+
+  useEffect(() => {
+    setCuerpoTransformado({ ...cuerpo })
+  }, [cuerpo])
   
   async function pagar() {
     if (isPaymentValid()) {
       try {
+        const request = CryptoJS.AES.encrypt(JSON.stringify(cuerpoTransformado), secret);
+
         const { data } = await axios.post(
           "/api/coupon/guardar-cuponera",
-          cuerpo
+          { data: request.toString() }
         );
+
         setPayment({
           ...payment,
           url: data.url,
