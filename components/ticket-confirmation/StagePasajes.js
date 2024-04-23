@@ -156,7 +156,9 @@ const StagePasajes = (props) => {
                     setOpenPane={ setOpenPaneRoot }
                     parrilla={parrilla}
                     setParrilla={setParrilla}
-                    boletoValido={boletoValido}/>
+                    boletoValido={boletoValido}
+                    cantidadIda ={cantidadIda} 
+                    setCantidadIda={setCantidadIda}/>
             );
         });
 
