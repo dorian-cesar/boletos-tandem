@@ -117,7 +117,15 @@ const Login = (props) => {
                   <p className="d-flex justify-content-center fw-bold mb-5">
                     Inicia sesión con tu correo electrónico
                   </p>
-                  
+                  <div className="row">
+                    {alert.visible ? (
+                      <div className={"alert " + alert?.type} role="alert">
+                        {alert?.msg}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                   {isLoading ? (
                     <div className="d-flex justify-content-center">
                       <div

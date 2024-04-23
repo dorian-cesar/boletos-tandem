@@ -10,7 +10,10 @@ export default async (req, res) => {
         let data = await axios.post(config.service_url + `/usuarioPortal/validarLogin`, postData)
         res.status(200).json(data.data);
     } catch(error){
-        res.status(400).json(error.response.data);
+        if( error.response.data.status === false ) {
+            res.status(400).json({ status: false, message: 'Correo electrónico o contraseña incorrectos' })
+        } else {
+            res.status(500).json({ status: false, message: 'Error al obtener la información, intente mas tarde.'});
+        }
     }
-    
 }   
