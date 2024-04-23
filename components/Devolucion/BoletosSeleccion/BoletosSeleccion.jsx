@@ -67,7 +67,8 @@ const BoletosSeleccion = (props) => {
           Selecciona el o los boleto(s) que deseas anular:
         </div>
         {boletos.map((element) => (
-          <div key={element.boleto}>
+          <div key={element.boleto} className={"row mb-3"}>
+            <div className={"col-12"}>
             <div className="row">
               <div className={styles["body-pay"]}>
                 <div className={"row"}>
@@ -149,6 +150,7 @@ const BoletosSeleccion = (props) => {
                 </div>
               </div>
             </div>
+            </div>
           </div>
         ))}
         
@@ -161,7 +163,7 @@ const BoletosSeleccion = (props) => {
                 volverAtras();
               }}
             >
-              regresar
+              Regresar
             </div>
           </div>
           <div className={"col-12 col-md-6"}>

@@ -21,8 +21,7 @@ const DevolucionDebito = (props) => {
     email: "",
   });
 
-  const { selectedBoletos, codigoTransaccion, tipoCompra, setStage } =
-    props;
+  const { selectedBoletos, codigoTransaccion, tipoCompra, setStage } = props;
   const [boletos, setBoletos] = useState("");
   const [tipoCuentas, setTipoCuentas] = useState([]);
   const [tipoCuenta, setTipoCuenta] = useState(null);
@@ -153,7 +152,9 @@ const DevolucionDebito = (props) => {
           cerrarPopup();
           return resolve(false);
         }
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(carro?.email)) {
+        if (
+          !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(carro?.email)
+        ) {
           toast.error("Debe ingresar un correo válido", {
             position: "top-right",
             autoClose: 5000,
@@ -191,7 +192,7 @@ const DevolucionDebito = (props) => {
   }
 
   function volverAlInicio() {
-    router.push('/');
+    router.push("/");
   }
 
   function validarFormatoRut(value) {
@@ -205,7 +206,6 @@ const DevolucionDebito = (props) => {
       console.error(`Error al validar formato de rut [${message}]`);
     }
   }
-
 
   return (
     <>
@@ -233,131 +233,110 @@ const DevolucionDebito = (props) => {
             incorrecto toma captura de pantalla y envia la información a
             <span className={styles["text-remarcado"]}>
               {" "}
-              clientes@pullmanbus.cl
+              clientes@pullmanbus.cl.
             </span>
-            .
           </div>
           <br></br>
           <div className={"fila"}>
             <div className={"row"}>
-              <div className={"col-10"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-5"}>
-                    <label className={styles["text-label"]}>Nombre</label>
-                    <input
-                      type="text"
-                      name="usuario"
-                      placeholder="Nombre titular"
-                      className={styles["input"]}
-                      value={carro?.usuario}
-                      onChange={(e) => setDataDevolucion(e.target)}
-                    />
-                  </div>
+              <div className={"col-12 col-md-6 mb-3"}>
+                <label className={styles["text-label"]}>Nombre</label>
+                <input
+                  type="text"
+                  name="usuario"
+                  placeholder="Nombre titular"
+                  className={styles["input"]}
+                  value={carro?.usuario}
+                  onChange={(e) => setDataDevolucion(e.target)}
+                />
+              </div>
 
-                  <div className={"col-3"}>
-                    <label className={styles["text-label"]}>
-                      Rut solicitante
-                    </label>
-                    <input
-                      type="text"
-                      name="rutSolicitante"
-                      placeholder="Rut solicitante : 11111111-1"
-                      className={styles["input"]}
-                      value={carro?.rutSolicitante}
-                      onChange={(e) => setDataDevolucion(e.target)}
-                    />
-                  </div>
-                </div>
+              <div className={"col-12 col-md-6 mb-3"}>
+                <label className={styles["text-label"]}>Rut solicitante</label>
+                <input
+                  type="text"
+                  name="rutSolicitante"
+                  placeholder="Rut solicitante : 11111111-1"
+                  className={styles["input"]}
+                  value={carro?.rutSolicitante}
+                  onChange={(e) => setDataDevolucion(e.target)}
+                />
               </div>
             </div>
 
             <div className={"row"}>
-              <div className={"col-10"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-5"}>
-                    <label className={styles["text-label"]}>E-mail</label>
-                    <input
-                      type="text"
-                      name="email"
-                      placeholder="Email"
-                      className={styles["input"]}
-                      value={carro?.email}
-                      onChange={(e) => setDataDevolucion(e.target)}
-                    />
-                  </div>
-                  <div className={"col-3"}>
-                    <label className={styles["text-label"]}>
-                      Rut titular cuenta
-                    </label>
-                    <input
-                      type="text"
-                      name="rutTitular"
-                      placeholder="Rut del titular de la cuenta : 11111111-1"
-                      className={styles["input"]}
-                      value={carro?.rutTitular}
-                      onChange={(e) => setDataDevolucion(e.target)}
-                    />
-                  </div>
-                </div>
+              <div className={"col-12 col-md-6 mb-3"}>
+                <label className={styles["text-label"]}>E-mail</label>
+                <input
+                  type="text"
+                  name="email"
+                  placeholder="Email"
+                  className={styles["input"]}
+                  value={carro?.email}
+                  onChange={(e) => setDataDevolucion(e.target)}
+                />
+              </div>
+              <div className={"col-12 col-md-6 mb-3"}>
+                <label className={styles["text-label"]}>
+                  Rut titular cuenta
+                </label>
+                <input
+                  type="text"
+                  name="rutTitular"
+                  placeholder="Rut del titular de la cuenta : 11111111-1"
+                  className={styles["input"]}
+                  value={carro?.rutTitular}
+                  onChange={(e) => setDataDevolucion(e.target)}
+                />
               </div>
             </div>
             <div className={"row"}>
-              <div className={"col-10"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-5"}>
-                    <label className={styles["text-label"]}>Banco</label>
-                    <select
-                      name="banco"
-                      id="cars"
-                      className={styles["input"]}
-                      value={banco}
-                      onChange={(e) => setBanco(e.target.value)}
-                    >
-                      <option value="">Seleccione banco</option>
-                      {bancos.map((banco) => (
-                        <option value={banco.codigo}>{banco.nombre}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className={"col-3"}>
-                    <label className={styles["text-label"]}>
-                      Tipo de cuenta
-                    </label>
-                    <select
-                      name="tipoCuenta"
-                      id="cars"
-                      className={styles["input"]}
-                      value={tipoCuenta}
-                      onChange={(e) => setTipoCuenta(e.target.value)}
-                    >
-                      <option value="">Seleccione tipo cuenta</option>
-                      {tipoCuentas.map((tipoCuenta) => (
-                        <option value={tipoCuenta?.codigo}>
-                          {tipoCuenta?.nombre}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
+              <div className={"col-12 col-md-6 mb-3"}>
+                <label className={styles["text-label"]}>Banco</label>
+                <select
+                  name="banco"
+                  id="cars"
+                  className={styles["input"]}
+                  value={banco}
+                  onChange={(e) => setBanco(e.target.value)}
+                >
+                  <option value="">Seleccione banco</option>
+                  {bancos.map((banco) => (
+                    <option value={banco.codigo}>{banco.nombre}</option>
+                  ))}
+                </select>
+              </div>
+              <div className={"col-12 col-md-6 mb-3"}>
+                <label className={styles["text-label"]}>Tipo de cuenta</label>
+                <select
+                  name="tipoCuenta"
+                  id="cars"
+                  className={styles["input"]}
+                  value={tipoCuenta}
+                  onChange={(e) => setTipoCuenta(e.target.value)}
+                >
+                  <option value="">Seleccione tipo cuenta</option>
+                  {tipoCuentas.map((tipoCuenta) => (
+                    <option value={tipoCuenta?.codigo}>
+                      {tipoCuenta?.nombre}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className={"row"}>
-              <div className={"col-10"}>
-                <div className={"row justify-content-center"}>
-                  <div className={"col-5"}>
-                    <label className={styles["text-label"]}>N° de cuenta</label>
-                    <input
-                      type="text"
-                      name="numeroCuenta"
-                      placeholder="Número de cuenta"
-                      className={styles["input"]}
-                      value={carro?.numeroCuenta}
-                      onChange={(e) => setDataDevolucion(e.target)}
-                    />
-                  </div>
-                  <div className={"col-3"}></div>
-                </div>
+              <div className={"col-12 col-md-6 mb-3"}>
+                <label className={styles["text-label"]}>N° de cuenta</label>
+                <input
+                  type="text"
+                  name="numeroCuenta"
+                  placeholder="Número de cuenta"
+                  className={styles["input"]}
+                  value={carro?.numeroCuenta}
+                  onChange={(e) => setDataDevolucion(e.target)}
+                />
               </div>
+              <div className={"col-3"}></div>
             </div>
           </div>
           <div className={"row"}>
@@ -368,7 +347,7 @@ const DevolucionDebito = (props) => {
                   volverAtras();
                 }}
               >
-                regresar
+                Regresar
               </div>
             </div>
             <div className={"col-12 col-md-6"}>

@@ -305,7 +305,7 @@ const DevolucionCredito = (props) => {
                   volverAtras();
                 }}
               >
-                regresar
+                Regresar
               </div>
             </div>
             <div className={"col-12 col-md-6"}>
