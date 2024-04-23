@@ -10,6 +10,10 @@ import {
   ListaCarritoDTO,
   PasajeroListaCarritoDTO,
 } from "../../../dto/PasajesDTO";
+import {
+  agregarCambio,
+  agregarResponseCambio,
+} from "store/usuario/cambio-boleto-slice";
 
 export const ResumenViaje = (props) => {
   const { boletoValido } = props;
@@ -193,6 +197,7 @@ export const ResumenViaje = (props) => {
         data = error.response.data;
       }
       if (data.status) {
+        dispatch(agregarCambio(data.object));
         const url = `/respuesta-transaccion-confirmacion/${data.object.voucher.boleto}`;
         router.push(url);
       } else {
