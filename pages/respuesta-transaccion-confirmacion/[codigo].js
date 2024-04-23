@@ -9,12 +9,13 @@ import { withIronSessionSsr } from "iron-session/next";
 import styles from "./RespuestaTransaccionConfirmacion.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-
 import { limpiarListaCarrito } from "store/usuario/compra-slice";
+import { limpiarCambio } from "store/usuario/cambio-boleto-slice" 
 
 const { publicRuntimeConfig } = getConfig();
 
 export default function Home(props) {
+  const dispatch = useDispatch();
   const [respuestaConfirmacion, setRespuestaConfirmacion] = useState({
     voucher: {
       fechaSalida: "",
@@ -41,7 +42,7 @@ export default function Home(props) {
   }, []);
 
   const [informacionAgrupada, setInformacionAgrupada] = useState([]);
-  const dispatch = useDispatch();
+  
 
   const clpFormat = new Intl.NumberFormat("es-CL", {
     style: "currency",
@@ -138,7 +139,7 @@ export default function Home(props) {
                 <></>
               )}
               <div className={styles["contenedor-total-pagar"]}>
-                <strong>Total Pagado:</strong>
+                <strong>Valor del boleto confirmado:</strong>
                 <span>${respuestaConfirmacion?.voucher?.total}</span>
               </div>
             </section>
