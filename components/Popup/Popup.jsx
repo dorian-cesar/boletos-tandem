@@ -183,7 +183,7 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton }) => {
           <div className={"row justify-content-center"}>
             <div className={"col-12"}>
               <div className={"row justify-content-center"}>
-                <div className={"col-12 text-center"}>
+                <div className={"col-12 d-flex"}>
                   <span className={styles["close-icon"]} onClick={modalClose}>
                     &times;
                   </span>
@@ -216,14 +216,12 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton }) => {
               </div>
             </div>
             <div className={"col-12"}>
-              <div className={"row justify-content-center"}>
-                <div className={"col-9 text-center"}>
-                  <div className={styles["popup-button"]}
-                  onClick={ () =>{
-                    handleButtonClick()
-                  }}>
-                    {popInfo[modalKey]?.buttonMessage || ""}
-                  </div>
+              <div className={"row d-flex justify-content-center"}>
+                <div className={styles["popup-button"]}
+                onClick={ () =>{
+                  handleButtonClick()
+                }}>
+                  {popInfo[modalKey]?.buttonMessage || ""}
                 </div>
               </div>
             </div>
