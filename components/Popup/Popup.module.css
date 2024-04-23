@@ -19,10 +19,10 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);   
     z-index: 1000;
+    padding: 16px;
   }
   
   .popup-header {
-    margin-top: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,7 +50,8 @@
   }
   
   .close-icon {
-    margin-left: 340px;
+    margin-left: auto;
+    margin-right: 16px;
     cursor: pointer;
     font-size: 20px;
     color: #333;
@@ -75,9 +76,18 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    margin-inline: auto;
   }
 
-  .popup-button:active {
-    background: var(--naranjo-80, #f8ccaf); 
-  }
+.popup-button:hover {
+  background-color: var(--naranjo-80, #FF8A00);
+  color: white;
+  outline: none;
+}
+
+.popup-button:active {
+  background-color: var(--naranjo-80, #FF8A00);
+  color: white;
+  outline: none;
+}
   
