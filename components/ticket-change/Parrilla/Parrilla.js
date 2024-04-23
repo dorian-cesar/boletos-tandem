@@ -305,7 +305,7 @@ const Parrilla = (props) => {
         if (asientoSeleccionado) {
           await servicioLiberarAsiento(carrito, asiento.asiento, 1, piso);  
           setCantidadIda(cantidadIda - 1);    
-          dispatch(eliminarServicioCambio());
+          dispatch(eliminarServicio(carrito));
           await reloadPane(indexParrilla);
           setIsLoading(false);
           return;
