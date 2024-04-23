@@ -13,6 +13,7 @@
     gap: 16px; 
     border-radius: 16px;
     background: var(--Blanco, #FFF);
+  
 }
 
 .accordion-open {
@@ -44,9 +45,18 @@
     margin-inline-end: 0 !important;
 }
 
+.accordion-header h3{
+    color: var(--azul-100, #3365B4);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal; 
+    margin: 0;
+    
+}
 .accordion-header span{
     color: var(--azul-100, #3365B4);
-    font-size: 14px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 700;
     line-height: normal; 
@@ -88,3 +98,67 @@
     height: auto;
     transition: max-height 0.3s ease-in-out;
 }
+
+
+@media screen and (max-width:375px) {
+    .accordion-header .travel-info :nth-child(2) {
+        margin-inline: 0px;
+        
+    }
+    .accordion-header {
+        display: flex;
+        height: auto; 
+        padding: 0px;
+        
+    }
+    .accordion-header span{
+        
+        font-size: 15px;
+        
+        
+    }
+}
+
+@media screen and (max-width:399px) {
+    .accordion-header .travel-info :nth-child(2) {
+        margin-inline: 0px;
+    }
+    .accordion-header {
+        display: flex;
+        height: auto; 
+        padding: 10px;
+    }
+}
+
+@media screen and (min-width:400px) {
+    .accordion-header {
+        padding: 10px;
+        gap: 12px; 
+        
+    }
+    
+    .accordion-header .travel-info :nth-child(2) {
+        margin-inline: 12px;
+    }
+
+    .accordion-content {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        align-items: flex-start;
+        background: var(--Blanco, #FFF);
+        border-radius: 16px; 
+        padding-inline: 16px;
+        padding-block-start: 10px;
+        width: 100%;
+        height: auto;
+    
+    }
+
+}
+
+
+
+
+
+

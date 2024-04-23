@@ -250,6 +250,7 @@ export const ResumenViaje = (props) => {
         resumenCompra.listaCarrito.push(carrito);
       });
 
+
       if (medioPago === "CUP") {
         if (resumenCompra.listaCarrito.length > 1) {
           toast.error(

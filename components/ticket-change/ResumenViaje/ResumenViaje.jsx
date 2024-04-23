@@ -170,7 +170,7 @@ export const ResumenViaje = (props) => {
       if (valorCobrar > 0) {
         finalizarCambioTBK();
       }
-    } catch ({ response }) {}
+    } catch ({ response }) { }
   }
 
   async function finalizarCambio() {
@@ -255,7 +255,7 @@ export const ResumenViaje = (props) => {
           hideProgressBar: false,
         });
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   async function finalizarCambioTBK() {
@@ -335,7 +335,7 @@ export const ResumenViaje = (props) => {
     } catch (error) {}
   }
 
-  async function pagarWebPay(){
+  async function pagarWebPay() {
     debugger;
     let resumenCompra = {
       medioDePago: medioPago,
@@ -353,7 +353,7 @@ export const ResumenViaje = (props) => {
         "/api/ticket_sale/guardar-transaccion-cambio",
         { data: request.toString() }
       );
-      
+
       setPayment({
         ...payment,
         url: response?.data.url,

@@ -31,7 +31,7 @@ La confirmación debe ser al menos 4 horas antes de la partida del bus. Recuerda
             </div>
           </div>
           <div className="col-md-6 col-12 foto-header">
-            <img src="img/confirmaboleto.svg" className="img-fluid" alt=""/>
+            <img src="../public/img/boleto/Boleto.svg" className="img-fluid" alt=""/>
           </div>
         </div>
       </div>

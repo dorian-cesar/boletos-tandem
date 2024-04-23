@@ -1,4 +1,3 @@
-
 .grupo-campos {
     margin-bottom: 5px;
 }
@@ -8,7 +7,7 @@
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
-    line-height: 26px; 
+    line-height: 26px;
 }
 
 .title-mascota-abordo {
@@ -30,7 +29,7 @@
     line-height: normal;
 }
 
-.button-busqueda-servicio {  
+.button-busqueda-servicio {
     display: flex;
     width: 200px;
     height: 40px;
@@ -53,15 +52,13 @@
 }
 
 .button-busqueda-servicio:active {
-    background: var(--naranjo-80, #f8ccaf); 
+    background: var(--naranjo-80, #f8ccaf);
 }
 
 .loading-button {
-    background: var(--naranjo-80, #f8ccaf) !important; 
+    background: var(--naranjo-80, #f8ccaf) !important;
     cursor: not-allowed !important;
 }
-
-
 
 /* VERSION NUEVA  */
 
@@ -98,6 +95,24 @@
 }
 
 @media screen and (width < 550px) {
+
+    .input {
+        display: block !important;
+    }
+
+    .seleccion-servicio {
+        margin-top: -120px;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0px 3px 8px 0px #d4dbec;
+        border-radius: 16px;
+        padding: 30px 30px 30px 30px;
+        background-color: #fff;
+        margin-inline: auto;
+    }
+
     .input-container {
         flex-direction: column;
     }
@@ -110,6 +125,20 @@
     }
 }
 
+@media screen and (width < 550px) {
+    .input-container {
+        flex-direction: column;
+    }
+
+    .input-container img {
+        width: 35px !important;
+        height: 35px !important;
+        margin-block: 0 !important;
+        margin-inline: auto !important;
+    }
+}
+
+
 @media screen and (width < 768px) {
     .input-container img {
         width: 25px;
@@ -121,7 +150,7 @@
 
 @media (max-width: 991px) {
     .seleccion-servicio {
-      margin-top: -50px;
+        margin-top: -50px;
     }
 }
 
@@ -131,26 +160,26 @@
     }
 }
 
-@media only screen and (max-width: 600px) {  
+@media only screen and (max-width: 600px) {
     .seleccion-servicio {
-      margin-top: 25px;
+        margin-top: 25px;
     }
 }
 
 @media only screen and (min-width: 600px) {
     .seleccion-servicio {
-      margin-top: 25px;
+        margin-top: 25px;
     }
 }
 
 @media only screen and (min-width: 992px) {
     .seleccion-servicio {
-      margin-top: -80px;
+        margin-top: -80px;
     }
 }
 
 @media only screen and (min-width: 1200px) {
     .seleccion-servicio {
-      margin-top: -110px;
+        margin-top: -6%;
     }
 }

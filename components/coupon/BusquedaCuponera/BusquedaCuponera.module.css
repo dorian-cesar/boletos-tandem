@@ -10,7 +10,7 @@
     box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.20);
 }
 
-.container label{
+.container label {
     color: var(--Blanco, #FFF);
     font-size: 16px;
     font-style: normal;
@@ -18,7 +18,7 @@
     line-height: normal;
 }
 
-.button-search-coupon {
+.button-search-coupon, .button-search-coupon-disabled {
     display: flex;
     width: 200px;
     height: 40px;
@@ -29,17 +29,17 @@
     flex-shrink: 0;
     border-radius: 16px;
     background: var(--naranjo-100, #FF6500);
-  
+
     color: var(--Blanco, #FFF);
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-  
-  }
+
+}
 
 .button-search-coupon:active {
-    background: var(--naranjo-80, #f8ccaf); 
+    background: var(--naranjo-80, #f8ccaf);
 }
 
 .button-search-coupon-disabled {
@@ -54,10 +54,11 @@
     border-radius: 16px;
 
     background: var(--naranjo-80, #f8ccaf);
+}
 
-    color: var(--Blanco, #FFF);
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
+@media screen and (max-width: 380px) {
+    .button-search-coupon, .button-search-coupon-disabled {
+        margin: 10% 2px;
+        width: 20px;
+    }
 }

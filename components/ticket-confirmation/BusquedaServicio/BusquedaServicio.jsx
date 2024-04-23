@@ -89,15 +89,6 @@ const BusquedaServicio = (props) => {
     (async () => await getDestinos())();
   }, [origen]);
 
-  /*
-  useEffect(() => {
-    if (boletoValido && boletoValido.fechaEmbarcacion) {
-      const formattedDate = dayjs(boletoValido.fechaEmbarcacion, 'DD/MM/YYYY').toDate();
-      setStartDate(formattedDate);
-    }
-  }, [boletoValido]);
-*/
-  
 useEffect(() => {
   if (boletoValido) {
     setOrigen(boletoValido.idOrigenServicio);

@@ -19,3 +19,124 @@
 .info-list {
     width: 612px;
 }
+
+@media (max-width:409px) {
+    
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 10px;
+        padding-bottom: 24px;
+        width:340px ;
+        align-items: center;
+    }
+    .travel-summary {
+        display: flex;
+        width: 320px;
+        padding-block: 15px;
+        padding-inline: 27px;
+        border-radius: 16px;
+        background-color: var(--Blanco, #FFF);
+        height: fit-content;
+    }
+
+    .info-list {
+        display: flex;
+        width: 100%;
+        padding: 8px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+}
+
+@media (min-width:410px) and (max-width:500px){
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 10px;
+        padding-bottom: 24px;
+        width:340px ;
+        align-items: center;
+
+    }
+    .travel-summary {
+        display: flex;
+        width: 320px;
+        padding-block: 15px;
+        padding-inline: 27px;
+        border-radius: 16px;
+        background-color: var(--Blanco, #FFF);
+        height: fit-content;
+    }
+
+    .info-list {
+        display: flex;
+        width: 100%;
+        padding: 8px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+@media (min-width:500px) and (max-width:767px){
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 10px;
+        padding-bottom: 24px;
+        align-items: center;
+    }
+
+    .travel-summary {
+        display: flex;
+        width: 94%;
+        padding-block: 15px;
+        padding-inline: 27px;
+        border-radius: 16px;
+        background-color: var(--Blanco, #FFF);
+        height: fit-content;
+    }
+
+    .info-list {
+        display: flex;
+        width: 100%;
+        padding: 8px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+
+
+@media (min-width:768px) and (max-width:1024px) {
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 16px;
+        padding-bottom: 24px;
+        align-items: center;
+    }
+    
+    .travel-summary {
+        display: flex;
+        width: 380px;
+        padding-block: 15px;
+        padding-inline: 27px;
+        border-radius: 16px;
+        background-color: var(--Blanco, #FFF);
+        height: fit-content;
+    }
+    
+    .info-list {
+        width: 612px;
+    }
+}
+

@@ -39,7 +39,7 @@ const DevolucionDebito = (props) => {
   });
 
   const router = useRouter();
-  
+
   function setDataDevolucion({ name, value }) {
     try {
       let carro_temp = { ...carro };
@@ -355,13 +355,11 @@ const DevolucionDebito = (props) => {
                       onChange={(e) => setDataDevolucion(e.target)}
                     />
                   </div>
-
                   <div className={"col-3"}></div>
                 </div>
               </div>
             </div>
           </div>
-
           <div className={"row"}>
             <div className={"col-12 col-md-6"}>
               <div

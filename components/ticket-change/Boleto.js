@@ -140,12 +140,11 @@ const Boleto = (props) => {
                           props.setPasaje(props);
                         }
                       }}
-                      className={`btn ${
-                        Array.isArray(props.asientos_selected) &&
-                        props.asientos_selected.length === 0
+                      className={`btn ${Array.isArray(props.asientos_selected) &&
+                          props.asientos_selected.length === 0
                           ? "disabled"
                           : ""
-                      }`}
+                        }`}
                     >
                       Comprar
                     </a>
@@ -290,9 +289,9 @@ const Boleto = (props) => {
                                         >
                                           <span>
                                             {ii.asiento !== "B1" &&
-                                            ii.asiento !== "B2" &&
-                                            ii.estado !== "sinasiento" &&
-                                            ii.tipo !== "pet"
+                                              ii.asiento !== "B2" &&
+                                              ii.estado !== "sinasiento" &&
+                                              ii.tipo !== "pet"
                                               ? ii.asiento
                                               : ""}
                                           </span>
@@ -395,9 +394,9 @@ const Boleto = (props) => {
                                         >
                                           <span>
                                             {ii.asiento != "B1" &&
-                                            ii.asiento != "B2" &&
-                                            ii.estado != "sinasiento" &&
-                                            ii.tipo != "pet"
+                                              ii.asiento != "B2" &&
+                                              ii.estado != "sinasiento" &&
+                                              ii.tipo != "pet"
                                               ? ii.asiento
                                               : ""}
                                           </span>

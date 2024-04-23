@@ -89,7 +89,7 @@ const BusquedaServicio = (props) => {
     (async () => await getDestinos())();
   }, [origen]);
 
- 
+
   useEffect(() => {
     if (boletoValido) {
       setOrigen(boletoValido.idOrigenServicio);
@@ -99,7 +99,7 @@ const BusquedaServicio = (props) => {
 
   async function searchParrilla() {
     try {
-      if(carroCompras.length > 0) {
+      if (carroCompras.length > 0) {
         useDispatch(limpiarListaCarrito());
       }
       setLoadingParrilla(true);
@@ -113,19 +113,19 @@ const BusquedaServicio = (props) => {
       const parrilla = await axios.post("/api/parrilla", data
       );
       setParrilla(parrilla.data.map((parrillaMapped, index) => {
-          return {
-              ...parrillaMapped,
-              id: index + 1
-          }
+        return {
+          ...parrillaMapped,
+          id: index + 1
+        }
       }));
-      setLoadingParrilla(false);   
+      setLoadingParrilla(false);
     } catch ({ message }) {
-        console.error(`Error al obtener parrilla [${ message }]`)
+      console.error(`Error al obtener parrilla [${message}]`)
     }
   };
 
   useEffect(() => {
-    if ( buscaAlIniciar ) {
+    if (buscaAlIniciar) {
       searchParrilla();
     }
   }, [destino]);

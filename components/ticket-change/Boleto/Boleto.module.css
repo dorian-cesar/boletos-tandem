@@ -47,7 +47,7 @@
 }
 
 .ticket {
-    background-image: url(../../../public/img/Boleto.svg) !important;
+    background-image: url(../../../public/img/boleto/Boleto.svg) !important;
     height: 168px;
     width: 776px;
     fill: var(--Blanco, #FFF);
@@ -78,7 +78,7 @@
 
 .ticket-details .ticket-details__header {
     margin-block-start: 12px;
-    margin-inline-end: 12px; 
+    margin-inline-end: 12px;
     font-size: 16px;
     font-weight: 600;
     color: var(--gris-oscuro, #4F4F4F);
@@ -149,20 +149,20 @@
     top: 125px;
 }
 
-.container-ticket .checkbox-open-pane ~ .animated-logo {
+.container-ticket .checkbox-open-pane~.animated-logo {
     position: absolute;
     animation-name: final;
     animation-duration: 0.5s;
 }
 
-.container-ticket .checkbox-open-pane:checked ~ .animated-logo {
+.container-ticket .checkbox-open-pane:checked~.animated-logo {
     position: absolute;
     left: 500px;
     animation-name: inicio;
     animation-duration: 1s;
 }
 
-.container-ticket .checkbox-open-pane:checked ~ .grill-detail {
+.container-ticket .checkbox-open-pane:checked~.grill-detail {
     display: block;
     margin-top: -40px;
     animation-name: show;
@@ -172,7 +172,7 @@
     padding-bottom: 16px;
 }
 
-.container-ticket .checkbox-open-pane ~ .grill-detail {
+.container-ticket .checkbox-open-pane~.grill-detail {
     flex-direction: column;
     margin-block: 10px;
     background-color: #FFF;
@@ -200,11 +200,12 @@
     transform-style: preserve-3d;
 }
 
-.container-ticket .checkbox-show-itinerary:checked ~ .flip-box .flip-box-inner {
+.container-ticket .checkbox-show-itinerary:checked~.flip-box .flip-box-inner {
     transform: rotateX(-180deg);
 }
 
-.flip-box-front, .flip-box-back {
+.flip-box-front,
+.flip-box-back {
     position: absolute;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;

@@ -18,7 +18,7 @@ const InformacionPasajero = (props) => {
             carroTemporal[tipoCliente][indexCliente].open = true;
             setCarro(carroTemporal);
         } catch ({ message }) {
-            console.error(`Error al abrir detalle pasajero [${ message }]`);
+            console.error(`Error al abrir detalle pasajero [${message}]`);
         }
     };
 
@@ -28,9 +28,9 @@ const InformacionPasajero = (props) => {
             const tipoCliente = tipo == 'ida' ? 'clientes_ida' : 'clientes_vuelta';
             value = validarFormatoRut(name, value);
             carroTemporal[tipoCliente][indexCliente].pasajero[name] = value;
-            setCarro(carroTemporal);  
+            setCarro(carroTemporal);
         } catch ({ message }) {
-            console.error(`Error al agregar información al pasajero [${ message }]`);
+            console.error(`Error al agregar información al pasajero [${message}]`);
         }
     };
 
@@ -41,35 +41,35 @@ const InformacionPasajero = (props) => {
             let carroTemporal = { ...carro };
             let errorTemporal = [];
 
-            if ( !pasajero.nombre || pasajero.nombre == '' ) {
+            if (!pasajero.nombre || pasajero.nombre == '') {
                 isValid = false;
             }
 
-            if ( !pasajero.apellido || pasajero.apellido == '' ) {
+            if (!pasajero.apellido || pasajero.apellido == '') {
                 isValid = false;
             }
 
-            if ( !pasajero.email || pasajero.email == '' ) {
+            if (!pasajero.email || pasajero.email == '') {
                 isValid = false;
             } else {
-                if ( !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(pasajero.email) ) {
+                if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(pasajero.email)) {
                     errorTemporal.push('email');
                 }
             }
 
-            if ( !pasajero.email_2 || pasajero.email_2 == '' ) {
+            if (!pasajero.email_2 || pasajero.email_2 == '') {
                 isValid = false;
             } else {
-                if ( pasajero.email != pasajero.email_2 ) {
+                if (pasajero.email != pasajero.email_2) {
                     errorTemporal.push('email_2');
                 }
             }
-    
+
             if (!pasajero.rut || pasajero.rut == '') {
                 isValid = false;
             } else {
                 const rutValidacion = new Rut(pasajero.rut);
-                if ( !rutValidacion.isValid ) {
+                if (!rutValidacion.isValid) {
                     isValid = false;
                     errorTemporal.push('rut');
                 }
@@ -79,27 +79,27 @@ const InformacionPasajero = (props) => {
                 carroTemporal[`clientes_${direccionRecorrido}`][indexPasajero].pasajero.errors = errorTemporal;
                 setCarro(carroTemporal);
             }
-    
+
             return isValid;
         } catch ({ message }) {
-            console.error(`Error al validar pasajero [${ message }]`);
+            console.error(`Error al validar pasajero [${message}]`);
         }
     };
 
     return (
-        <div className={ `d-flex flex-col bloque-pasajero ${ cliente.open ? 'active' : '' }` }>
-            <div className={ 'header-pasajero' } onClick={ () => { !cliente.pet ? openPasajero(index, tipoViaje) : '' }}>
-                <h5>{ `Pasajero ${ index + 1 } - Asiento ${ cliente.asiento.asiento } - Piso ${ cliente.piso }` }</h5>
-                { 
-                    isValidPasajero(cliente.pasajero, index, tipoViaje) ? (<Check />) : ('') 
-                    
+        <div className={`d-flex flex-col bloque-pasajero ${cliente.open ? 'active' : ''}`}>
+            <div className={'header-pasajero'} onClick={() => { !cliente.pet ? openPasajero(index, tipoViaje) : '' }}>
+                <h5>{`Pasajero ${index + 1} - Asiento ${cliente.asiento.asiento} - Piso ${cliente.piso}`}</h5>
+                {
+                    isValidPasajero(cliente.pasajero, index, tipoViaje) ? (<Check />) : ('')
+
                 }
-                { 
+                {
                     cliente.pet ? (
-                        <img 
-                            style={{ width: '30px', marginLeft: 'auto' }} 
-                            src='/img/icon-patita.svg' 
-                            alt='Icono Patita'/>) : ('') 
+                        <img
+                            style={{ width: '30px', marginLeft: 'auto' }}
+                            src='/img/icon-patita.svg'
+                            alt='Icono Patita' />) : ('')
                 }
             </div>
             <div className='content-pasajero d-flex justify-content-center'>
@@ -113,10 +113,10 @@ const InformacionPasajero = (props) => {
                                 <input
                                     type='text'
                                     placeholder='Ej: Juan Andrés'
-                                    value={ cliente.pasajero['nombre'] }
+                                    value={cliente.pasajero['nombre']}
                                     className='form-control'
                                     name='nombre'
-                                    onChange={ (e) => setDataPasaje(e.target, index, tipoViaje) } />
+                                    onChange={(e) => setDataPasaje(e.target, index, tipoViaje)} />
                             </div>
                         </div>
                         <div className='col-12 col-md-6'>
@@ -127,10 +127,10 @@ const InformacionPasajero = (props) => {
                                 <input
                                     type='text'
                                     placeholder='Ej: Espinoza Arcos'
-                                    value={ cliente.pasajero['apellido'] }
+                                    value={cliente.pasajero['apellido']}
                                     className='form-control'
                                     name='apellido'
-                                    onChange={ (e) => setDataPasaje(e.target, index, tipoViaje) } />
+                                    onChange={(e) => setDataPasaje(e.target, index, tipoViaje)} />
                             </div>
                         </div>
                         <div className='col-12 col-md-6'>
@@ -140,10 +140,10 @@ const InformacionPasajero = (props) => {
                                         Rut
                                         <input
                                             type='checkbox'
-                                            checked={ cliente.pasajero['tipoRut'] == 'rut' ? 'true' : '' }
-                                            value={ 'rut' }
+                                            checked={cliente.pasajero['tipoRut'] == 'rut' ? 'true' : ''}
+                                            value={'rut'}
                                             name='tipoRut'
-                                            onChange={ (e) => { setDataPasaje(e.target, index, tipoViaje) }} />
+                                            onChange={(e) => { setDataPasaje(e.target, index, tipoViaje) }} />
                                         <span className='checkmark'></span>
                                     </label>
                                 </div>
@@ -152,10 +152,10 @@ const InformacionPasajero = (props) => {
                                         Pasaporte
                                         <input
                                             type='checkbox'
-                                            checked={ cliente.pasajero['tipoRut'] == 'pasaporte' ? 'true' : '' }
-                                            value={ 'pasaporte' }
+                                            checked={cliente.pasajero['tipoRut'] == 'pasaporte' ? 'true' : ''}
+                                            value={'pasaporte'}
                                             name='tipoRut'
-                                            onChange={(e) => setDataPasaje(e.target, index, tipoViaje) } />
+                                            onChange={(e) => setDataPasaje(e.target, index, tipoViaje)} />
                                         <span className='checkmark'></span>
                                     </label>
                                 </div>
@@ -164,10 +164,10 @@ const InformacionPasajero = (props) => {
                                 <input
                                     type='text'
                                     placeholder='Ej: 111111111'
-                                    value={ cliente.pasajero['rut'] }
-                                    className={ `form-control ${ cliente.pasajero.errors.includes('rut') ? 'is-invalid': '' }` }
+                                    value={cliente.pasajero['rut']}
+                                    className={`form-control ${cliente.pasajero.errors.includes('rut') ? 'is-invalid' : ''}`}
                                     name='rut'
-                                    onChange={ (e) => setDataPasaje(e.target, index, tipoViaje) } />
+                                    onChange={(e) => setDataPasaje(e.target, index, tipoViaje)} />
                             </div>
                         </div>
                         <div className='col-12 col-md-6'>
@@ -179,12 +179,12 @@ const InformacionPasajero = (props) => {
                                     name='nacionalidad'
                                     id='cars'
                                     className='form-control seleccion'
-                                    value={ cliente.pasajero['nacionalidad'] }
-                                    onChange={ (e) => setDataPasaje(e.target, index, tipoViaje)} >
-                                    { 
+                                    value={cliente.pasajero['nacionalidad']}
+                                    onChange={(e) => setDataPasaje(e.target, index, tipoViaje)} >
+                                    {
                                         nacionalidades.map((nacionalidadMapped) => (
-                                            <option value={ nacionalidadMapped.valor || '' }>
-                                                { nacionalidadMapped.descripcion }
+                                            <option value={nacionalidadMapped.valor || ''}>
+                                                {nacionalidadMapped.descripcion}
                                             </option>
                                         ))
                                     }
@@ -199,10 +199,10 @@ const InformacionPasajero = (props) => {
                                 <input
                                     type='email'
                                     name='email'
-                                    onChange={ (e) => setDataPasaje(e.target, index, tipoViaje) }
-                                    value={ cliente.pasajero['email'] }
+                                    onChange={(e) => setDataPasaje(e.target, index, tipoViaje)}
+                                    value={cliente.pasajero['email']}
                                     placeholder='Ingresa tu email de contacto'
-                                    className={ `form-control ${ cliente.pasajero.errors.includes('email') ? 'is-invalid' : '' }` } />
+                                    className={`form-control ${cliente.pasajero.errors.includes('email') ? 'is-invalid' : ''}`} />
                             </div>
                         </div>
                         <div className='col-12 col-md-6'>
@@ -213,10 +213,10 @@ const InformacionPasajero = (props) => {
                                 <input
                                     type='email'
                                     name='email_2'
-                                    onChange={ (e) => setDataPasaje(e.target, index, tipoViaje) }
-                                    value={ cliente.pasajero['email_2'] }
+                                    onChange={(e) => setDataPasaje(e.target, index, tipoViaje)}
+                                    value={cliente.pasajero['email_2']}
                                     placeholder='Confirma tu e-mail'
-                                    className={ `form-control ${ cliente.pasajero.errors.includes('email_2') ? 'is-invalid': '' }` } />
+                                    className={`form-control ${cliente.pasajero.errors.includes('email_2') ? 'is-invalid' : ''}`} />
                             </div>
                         </div>
                     </div>

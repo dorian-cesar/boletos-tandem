@@ -31,20 +31,6 @@ const BusquedaBoletos = (props) => {
       abrirPopup();
       setLoadingBoleto(false);
     }
-
-/*
-    let resp = await axios.post("/api/devolucion-boletos", { codigo });
-    console.log('datos respuesta', resp)
-    if (resp.data) {
-      
-    } else {
-      toast.error(resp.data.error, {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-      });
-      setLoadingBoleto(false);
-    }*/
   }
 
   const handleCodigoTransaccionChange = (e) => {

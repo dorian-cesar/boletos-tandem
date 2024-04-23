@@ -81,9 +81,9 @@ const InformacionComprador = (props) => {
   return (
     <>
     <div className={styles["container"]}>
-      <div className={"row"}>
+      <div className={`row ${styles["row-datos"]}`}>
         <div className={"col-12 col-md-6"}>
-          <div className={"grupo-campos"}>
+          <div className={styles["grupo-campos"]}>
             <label className={styles["label"]}>Nombres</label>
             <input
               type="text"
@@ -97,7 +97,7 @@ const InformacionComprador = (props) => {
           </div>
         </div>
         <div className={"col-12 col-md-6"}>
-          <div className={"grupo-campos"}>
+        <div className={styles["grupo-campos"]}>
             <label className={styles["label"]}>Apellidos</label>
             <input
               type="text"
@@ -141,7 +141,7 @@ const InformacionComprador = (props) => {
               </label>
             </div>
           </div>
-          <div className={"grupo-campos"}>
+          <div className={styles["grupo-campos"]}>
             <input
               type="text"
               value={carro.datos["rut"]}
@@ -167,7 +167,7 @@ const InformacionComprador = (props) => {
             </div>
             <div className={"col"}></div>
           </div>
-          <div className={"grupo-campos"}>
+          <div className={styles["grupo-campos"]}>
             <input
               type="email"
               value={carro.datos["email"]}

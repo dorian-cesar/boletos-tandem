@@ -11,7 +11,7 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
     onClick={onClick}
     ref={ref}
     value={value}
-    onChange={() => {}}
+    onChange={() => { }}
   />
 ));
 
@@ -45,21 +45,21 @@ const actualizarFormFields = {
 
 
 const RegistrarPasajero = (props) => {
-    const [fechaNacimiento, setFechaNacimiento] = useState("");
-    const { formState: data, onInputChange } = useForm(actualizarFormFields);
-    const listaYears = useMemo(() => {
-      let years = [];
-      for (let i = new Date().getFullYear(); i >= 1910; i--) {
-        years.push(i);
-      }
-      return years;
-    }, []);
-    return(
-        <>
-         <div className={styles["menu-central"]}>
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const { formState: data, onInputChange } = useForm(actualizarFormFields);
+  const listaYears = useMemo(() => {
+    let years = [];
+    for (let i = new Date().getFullYear(); i >= 1910; i--) {
+      years.push(i);
+    }
+    return years;
+  }, []);
+  return (
+    <>
+      <div className={styles["menu-central"]}>
         <div className={`${styles["bloque"]} "col-12 col-md-12"`}>
           <h1 className={styles["title-modify-data"]}>Registrar pasajero</h1>
-        
+
           <div className={"row"}>
             <div className={"col-6"}>
               <label className={styles["title-data"]}>Nombre(s)</label>
@@ -207,8 +207,8 @@ const RegistrarPasajero = (props) => {
           </div>
         </div>
       </div>
-        </>
-    )
+    </>
+  )
 }
 
 export default RegistrarPasajero;

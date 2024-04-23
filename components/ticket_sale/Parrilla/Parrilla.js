@@ -49,38 +49,29 @@ const Parrilla = (props) => {
   useEffect(() => {
     let dataIda = [];
     let dataVuelta = [];
-    
     Object.entries(carroCompras).map(([key, value]) => {
-      if (value.ida) dataIda.push(value.ida);
-      if (value.vuelta) dataVuelta.push(value.vuelta);
+      dataIda = value.ida || [];
+      dataVuelta = value.vuelta || [];
     });
 
     let cantidadAsientosIda = 0;
-    if( dataIda.length > 0 ) {
-      dataIda.forEach((servicioIda) => {
-        Object.entries(servicioIda).map(([key, value]) => {
-          value.asientos.forEach((_) => cantidadAsientosIda += 1);
-        });
-      })
-    }
+    Object.entries(dataIda).map(([key, value]) => {
+      value.asientos.forEach((_) => cantidadAsientosIda += 1);
+    });
     setCantidadIda(cantidadAsientosIda);
 
     let cantidadAsientosVuelta = 0;
-    if( dataVuelta.length > 0 ) {
-      dataVuelta.forEach((servicioVuelta) => {
-        Object.entries(servicioVuelta).map(([key, value]) => {
-          value.asientos.forEach((_) => cantidadAsientosVuelta += 1);
-        });
-      })
-    }
+    Object.entries(dataVuelta).map(([key, value]) => {
+      value.asientos.forEach((_) => cantidadAsientosVuelta += 1);
+    });
     setCantidadVuelta(cantidadAsientosVuelta);
 
   }, [carroCompras]);
 
   useEffect(() => {
-      setKey(
-        `${props?.thisParrilla?.idTerminalOrigen}-${props?.thisParrilla?.idTerminalDestino}`
-      );
+    setKey(
+      `${props?.thisParrilla?.idTerminalOrigen}-${props?.thisParrilla?.idTerminalDestino}`
+    );
   }, []);
 
   useEffect(() => actualizarTotalPagar(), [carroCompras]);
@@ -92,17 +83,17 @@ const Parrilla = (props) => {
     Object.keys(carroCompras).forEach((servicios) => {
       carroCompras[servicios]?.ida?.forEach(
         (servicioIda) =>
-          (total += servicioIda.asientos.reduce(
-            (acc, asiento) => acc + asiento.valorAsiento,
-            0
-          ))
+        (total += servicioIda.asientos.reduce(
+          (acc, asiento) => acc + asiento.valorAsiento,
+          0
+        ))
       );
       carroCompras[servicios]?.vuelta?.forEach(
         (servicioVuelta) =>
-          (total += servicioVuelta.asientos.reduce(
-            (acc, asiento) => acc + asiento.valorAsiento,
-            0
-          ))
+        (total += servicioVuelta.asientos.reduce(
+          (acc, asiento) => acc + asiento.valorAsiento,
+          0
+        ))
       );
     });
     setTotalPagar(total);
@@ -237,7 +228,7 @@ const Parrilla = (props) => {
       );
       const reserva = data;
 
-      if( !reserva.estadoReserva ) {
+      if (!reserva.estadoReserva) {
         toast.error('El asiento seleccionado ya se encuentra ocupado', {
           position: "top-right",
           autoClose: 5000,
@@ -287,7 +278,7 @@ const Parrilla = (props) => {
         asiento.estado == ASIENTO_LIBRE_MASCOTA
       ) {
 
-        if( asiento.tipo === ASIENTO_TIPO_MASCOTA ) {
+        if (asiento.tipo === ASIENTO_TIPO_MASCOTA) {
           setModalMab(true);
         }
 
@@ -298,12 +289,12 @@ const Parrilla = (props) => {
             dataVuelta = value.vuelta || [];
           });
           Object.entries(dataVuelta).map(([key, value]) => {
-          
+
             value.asientos.forEach((element) => {
               cantidadAsientos = cantidadAsientos + 1;
             });
           });
-          if(cantidadIda === cantidadAsientos){
+          if (cantidadIda === cantidadAsientos) {
             toast.warn(
               `El número de asientos de regreso no puede exceder la cantidad de asientos seleccionados para el viaje de ida.`,
               {
@@ -337,7 +328,7 @@ const Parrilla = (props) => {
             true
           );
         }
-        
+
         dispatch(agregarServicio(carrito));
 
         if (asiento.asientoAsociado) {
@@ -345,15 +336,15 @@ const Parrilla = (props) => {
             ...carrito,
             asiento: asignarAsientoAsociado(asiento),
           };
-          newCarrito.asiento = { 
+          newCarrito.asiento = {
             ...newCarrito.asiento,
-            piso, 
+            piso,
             claseBus: piso === 1 ? props.thisParrilla.idClaseBusPisoUno : props.thisParrilla.idClaseBusPisoDos,
-            tipoMascota: true 
+            tipoMascota: true
           }
 
           if (newCarrito.asiento) dispatch(agregarServicio(newCarrito));
-          
+
         }
         setIsLoading(false);
         await reloadPane(indexParrilla);
@@ -380,30 +371,30 @@ const Parrilla = (props) => {
           }
 
           dispatch(eliminarServicio(carrito));
-          if(stage === STAGE_BOLETO_VUELTA){
-            setCantidadVuelta(cantidadVuelta-1);
+          if (stage === STAGE_BOLETO_VUELTA) {
+            setCantidadVuelta(cantidadVuelta - 1);
           }
-          if(stage === STAGE_BOLETO_IDA){
+          if (stage === STAGE_BOLETO_IDA) {
             const valorNuevo = cantidadIda - 1;
-            if( valorNuevo <= 0 ) {
+            if (valorNuevo <= 0) {
               dispatch(limpiarListaCarrito());
             }
             setCantidadIda(valorNuevo);
           }
-          
+
           if (asiento.asientoAsociado) {
             const newCarrito = {
               ...carrito,
               asiento: asignarAsientoAsociado(asiento),
             };
             if (newCarrito.asiento) dispatch(eliminarServicio(newCarrito));
-            if(stage === STAGE_BOLETO_VUELTA){
+            if (stage === STAGE_BOLETO_VUELTA) {
               const valorNuevo = cantidadVuelta - 1;
               setCantidadVuelta(valorNuevo);
             }
-            if(stage === STAGE_BOLETO_IDA){
+            if (stage === STAGE_BOLETO_IDA) {
               const valorNuevo = cantidadIda - 1;
-              if( valorNuevo <= 0 ) {
+              if (valorNuevo <= 0) {
                 dispatch(limpiarListaCarrito());
               }
               setCantidadIda(valorNuevo);
@@ -431,7 +422,7 @@ const Parrilla = (props) => {
       array.map((asiento) => asientos.push(asiento))
     );
 
-    if( props.thisParrilla.asientos2 ) {
+    if (props.thisParrilla.asientos2) {
       props.thisParrilla.asientos2.map((array) =>
         array.map((asiento) => asientos.push(asiento))
       );
@@ -491,26 +482,30 @@ const Parrilla = (props) => {
       return false;
     }
 
-    let cantidadServicios = 0;
-    Object.entries(carroCompras).forEach(([key, value]) => {
-      if( value.hasOwnProperty(stage === 0 ? "ida" : "vuelta") ) {
-        cantidadServicios += value[stage === 0 ? "ida" : "vuelta"].length;
-      }
-    });
-
     if (
-      cantidadServicios >=
-        MAXIMO_COMPRA_ASIENTO
+      carroCompras[key] &&
+      carroCompras[key][stage === 0 ? "ida" : "vuelta"]
     ) {
-      toast.warn(`Sólo puede elegir ${MAXIMO_COMPRA_ASIENTO} servicios`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-      });
-      setIsLoading(false);
-      return false;
+      const exist = carroCompras[key][stage === 0 ? "ida" : "vuelta"].find(
+        (i) =>
+          i.idServicio === props.thisParrilla.idServicio &&
+          i.fechaServicio === props.thisParrilla.fechaServicio
+      );
+      if (
+        !exist &&
+        carroCompras[key][stage === 0 ? "ida" : "vuelta"].length >=
+        MAXIMO_COMPRA_ASIENTO
+      ) {
+        toast.warn(`Sólo puede elegir ${MAXIMO_COMPRA_ASIENTO} servicios`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+        setIsLoading(false);
+        return false;
+      }
     }
-    
+
     return true;
   }
 
@@ -621,7 +616,7 @@ const Parrilla = (props) => {
     }
     return true;
   }
-
+  
   return (
     isShowParrilla && (
       <section className={styles["grill-detail"]}>
@@ -661,128 +656,126 @@ const Parrilla = (props) => {
               </div>
               {props.asientos1
                 ? piso === 1 && (
-                    <>
-                      {function () {
-                        let max = 7 - props.asientos1.length;
-                        let n = 0;
-                        let liens = [];
-                        while (n < max) {
-                          liens.push(
-                            <div
-                              key={`fila-asiento-${n}`}
-                              className={styles["fila"]}
-                            ></div>
-                          );
-                          n++;
-                        }
-                        return liens;
-                      }.call(this)}
-                      {props.asientos1.map((i, k) => {
-                        return (
+                  <>
+                    {function () {
+                      let max = 7 - props.asientos1.length;
+                      let n = 0;
+                      let liens = [];
+                      while (n < max) {
+                        liens.push(
                           <div
-                            key={`fila-asiento-${k}`}
+                            key={`fila-asiento-${n}`}
                             className={styles["fila"]}
-                          >
-                            {i.map((ii, kk) => {
-                              return (
-                                <div
-                                  key={`columna-asiento-${kk}`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    tomarAsiento(ii, props, props.k, 1);
-                                  }}
-                                  className={`${
-                                    styles["columna"]
-                                  } ${asientoClass(ii, props.k)} `}
-                                >
-                                  {ii.asiento && (
-                                    <img src={getImage(ii, props.k)} />
-                                  )}
-                                  <span>
-                                    {ii.asiento != "B1" &&
-                                    ii.asiento != "B2" &&
-                                    ii.estado != "sinasiento"
-                                      ? ii.asiento
-                                      : ""}
-                                  </span>
-                                </div>
-                              );
-                            })}
-                          </div>
+                          ></div>
                         );
-                      })}
-                      {function () {
-                        let max = 7 - props.asientos1.length;
-                        let n = 0;
-                        let liens = [];
-                        while (n < max) {
-                          liens.push(
-                            <div
-                              key={`fila-asiento-${n}`}
-                              className={styles["fila"]}
-                            ></div>
-                          );
-                          n++;
-                        }
-                        return liens;
-                      }.call(this)}
-                    </>
-                  )
-                : ""}
-              {props.asientos2
-                ? piso === 2 && (
-                    <>
-                      {props.asientos2.map((i, k) => {
-                        return (
-                          <div
-                            key={`fila-asiento-${k}`}
-                            className={styles["fila"]}
-                          >
-                            {i.map((ii, kk) => {
-                              return (
-                                <div
-                                  key={`columna-asiento-${kk}`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    tomarAsiento(ii, props, props.k, 2);
-                                  }}
-                                  className={`${
-                                    styles["columna"]
+                        n++;
+                      }
+                      return liens;
+                    }.call(this)}
+                    {props.asientos1.map((i, k) => {
+                      return (
+                        <div
+                          key={`fila-asiento-${k}`}
+                          className={styles["fila"]}
+                        >
+                          {i.map((ii, kk) => {
+                            return (
+                              <div
+                                key={`columna-asiento-${kk}`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  tomarAsiento(ii, props, props.k, 1);
+                                }}
+                                className={`${styles["columna"]
                                   } ${asientoClass(ii, props.k)} `}
-                                >
-                                  {ii.asiento && (
-                                    <img src={getImage(ii, props.k)} />
-                                  )}
-                                  <span>
-                                    {ii.asiento != "B1" &&
+                              >
+                                {ii.asiento && (
+                                  <img src={getImage(ii, props.k)} />
+                                )}
+                                <span>
+                                  {ii.asiento != "B1" &&
                                     ii.asiento != "B2" &&
                                     ii.estado != "sinasiento"
                                     ? ii.asiento
                                     : ""}
-                                  </span>
-                                </div>
-                              );
-                            })}
-                          </div>
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
+                    {function () {
+                      let max = 7 - props.asientos1.length;
+                      let n = 0;
+                      let liens = [];
+                      while (n < max) {
+                        liens.push(
+                          <div
+                            key={`fila-asiento-${n}`}
+                            className={styles["fila"]}
+                          ></div>
                         );
-                      })}
-                      {function () {
-                        let max = 10 - props.asientos2.length;
-                        let n = 0;
-                        let liens = [];
-                        while (n < max) {
-                          liens.push(
-                            <div
-                              key={`fila-asiento-${n}`}
-                              className={styles["fila"]}
-                            ></div>
-                          );
-                          n++;
-                        }
-                        return liens;
-                      }.call(this)}
-                    </>
-                  )
+                        n++;
+                      }
+                      return liens;
+                    }.call(this)}
+                  </>
+                )
+                : ""}
+              {props.asientos2
+                ? piso === 2 && (
+                  <>
+                    {props.asientos2.map((i, k) => {
+                      return (
+                        <div
+                          key={`fila-asiento-${k}`}
+                          className={styles["fila"]}
+                        >
+                          {i.map((ii, kk) => {
+                            return (
+                              <div
+                                key={`columna-asiento-${kk}`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  tomarAsiento(ii, props, props.k, 2);
+                                }}
+                                className={`${styles["columna"]
+                                  } ${asientoClass(ii, props.k)} `}
+                              >
+                                {ii.asiento && (
+                                  <img src={getImage(ii, props.k)} />
+                                )}
+                                <span>
+                                  {ii.asiento != "B1" &&
+                                    ii.asiento != "B2" &&
+                                    ii.estado != "sinasiento"
+                                    ? ii.asiento
+                                    : ""}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
+                    {function () {
+                      let max = 10 - props.asientos2.length;
+                      let n = 0;
+                      let liens = [];
+                      while (n < max) {
+                        liens.push(
+                          <div
+                            key={`fila-asiento-${n}`}
+                            className={styles["fila"]}
+                          ></div>
+                        );
+                        n++;
+                      }
+                      return liens;
+                    }.call(this)}
+                  </>
+                )
                 : ""}
             </div>
           </div>
@@ -850,5 +843,6 @@ const Parrilla = (props) => {
     )
   );
 };
+
 
 export default Parrilla;

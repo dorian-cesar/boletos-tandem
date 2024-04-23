@@ -1,4 +1,3 @@
-
 .container {
   display: flex;
   width: 644px;
@@ -20,7 +19,7 @@
   align-self: stretch; 
   border-radius: 24px;
   background: var(--Blanco, #FFF);
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.20);
 }
 
 .text-coupon {
@@ -54,4 +53,59 @@
   border-radius: 16px;
   border: 1px solid var(--azul-100, #3365B4);
   background: var(--Blanco, #FFF);
+}
+
+
+@media (max-width:409px){
+  .container {
+    display: flex;
+    width: 280px;
+    padding: 8px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px; 
+    border-radius: 16px;
+    background: var(--Blanco, #FFF);
+    
+  }
+
+  .body-pay {
+    display: flex;
+    height: 87px;
+    width:248px;
+    padding: 24px;
+    gap: 32px;
+    flex-shrink: 0;
+    align-self: stretch; 
+    border-radius: 24px;
+    background: var(--Blanco, #FFF);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.20);
+    
+  }
+}
+
+@media (min-width:410px) and (max-width:500px){
+  .container {
+    display: flex;
+    width: 300px;
+    padding: 8px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px; 
+    border-radius: 16px;
+    background: var(--Blanco, #FFF);
+  }
+
+  .body-pay {
+    display: flex;
+    height: 87px;
+    width:270px;
+    padding: 24px;
+    gap: 32px;
+    flex-shrink: 0;
+    align-self: stretch; 
+    border-radius: 24px;
+    background: var(--Blanco, #FFF);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.20);
+  }
 }

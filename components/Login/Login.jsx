@@ -23,6 +23,10 @@ const Login = (props) => {
     visible: false,
     type: "",
   });
+  const [emptyFields, setEmptyFields] = useState({
+    mail: false,
+    password: false,
+  });
 
   const changeMode = (mode) => {
     if (mode != null) setMode(mode);
@@ -38,6 +42,10 @@ const Login = (props) => {
         msg: "Rellene los campos vacios",
         visible: true,
         type: "alert-danger",
+      });
+      setEmptyFields({
+        mail: login.mail === "",
+        password: login.password === "",
       });
       return;
     }
@@ -100,24 +108,16 @@ const Login = (props) => {
             <div className="modal-content">
               <div className="modal-body">
                 <div className={ `${styles["index-login"]} "container" `}>
-                  <div className="d-flex justify-content-center">
-                    <img src="img/icon-foto.svg" width={75}></img>
+                  <div className="d-flex justify-content-center ">
+                    <img  className= {styles["foto-login"]} src="img/icon-foto.svg" width={65}></img>
                   </div>
                   <div className="d-flex justify-content-center mt-2">
                     <h4 className="titulo-azul">¡Hola!</h4>
                   </div>
-                  <div className="d-flex justify-content-center">
-                    Inicia sesión en pocos pasos
-                  </div>
-                  <div className="row mt-2">
-                    {alert.visible ? (
-                      <div className={"alert " + alert?.type} role="alert">
-                        {alert?.msg}
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </div>
+                  <p className="d-flex justify-content-center fw-bold mb-5">
+                    Inicia sesión con tu correo electrónico
+                  </p>
+                  
                   {isLoading ? (
                     <div className="d-flex justify-content-center">
                       <div
@@ -130,32 +130,24 @@ const Login = (props) => {
                   ) : (
                     ""
                   )}
-                  <div className="row mt-2">
-                    <div className="col-12">
-                      <label className="label-input">Correo electrónico</label>
-                      <input
-                        type="text"
-                        placeholder="Ej: example@example.com"
-                        className="form-control"
-                        name="mail"
-                        value={login?.mail}
-                        onChange={onInputChange}
-                      />
+                  {Object.keys(loginFormFields).map((key) => (
+                    <div className="row mt-2" key={key}>
+                      <div className="col-12">
+                        <label className="label-input">{key === "correo" ? "Correo electrónico" : "Contraseña"}</label>
+                        <input
+                          type={key === "password" ? "password" : "text"}
+                          placeholder={key === "correo" ? "Ej: example@example.com" : "Ej: ******"}
+                          className={"form-control" + (emptyFields[key] ? " is-invalid" : "")}
+                          name={key}
+                          value={login[key]}
+                          onChange={onInputChange}
+                        />
+                        {emptyFields[key] && (
+                          <div className="invalid-feedback">Campo obligatorio</div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-12">
-                      <label className="label-input">Contraseña</label>
-                      <input
-                        type="password"
-                        placeholder="Ej: ******"
-                        className="form-control"
-                        name="password"
-                        value={login?.password}
-                        onChange={onInputChange}
-                      />
-                    </div>
-                  </div>
+                  ))}
                   <div className="d-flex justify-content-center">
                     <button
                       className="btn-link btn-modal-link"
@@ -174,17 +166,17 @@ const Login = (props) => {
                   </div>
                 </div>
               </div>
-              <div className="modal-footer">
+              <div className={styles["buttones"]}>
                 <button
                   type="button"
-                  className="btn btn-modal-primary"
+                  className={styles["button-inicio"]}
                   onClick={(e) => onLogin()}
                 >
                   Ingresar
                 </button>
                 <button
                   type="button"
-                  className="btn btn-modal-secondary"
+                  className={styles["button-invitado"]}
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 >
@@ -210,3 +202,6 @@ const Login = (props) => {
 };
 
 export default Login;
+
+
+

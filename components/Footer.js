@@ -5,7 +5,7 @@ const Footer = () => (
         <footer className="psjes">
             <div className="container">
                 <div className="row">
-                    <div className="col-3">
+                    <div className="col-md-3 col-sm-6">
                         <h3>
                             <img className="mr-2 img-contacto-footer" src="../img/icon/chat/location-outline.svg" alt=""/>
                             Contacto
@@ -16,13 +16,12 @@ const Footer = () => (
                             <a href="mailto:clientes@pullmanbus.cl">
                                 clientes@pullmanbus.cl
                             </a>
-                            <h4>
-                                Call Center <br />
-                                600 600 0018
-                            </h4>
+                            <p>
+                                <b>Call Center 600 600 0018</b>
+                            </p>
                         </div>
                     </div>
-                    <div className="col-3">
+                    <div className="col-md-3 col-sm-6">
                         <h3>
                             <img className="mr-2" src="../img/icon/chat/chatbox-ellipses-outline.svg" alt=""/>
                             Información
@@ -49,38 +48,44 @@ const Footer = () => (
                                 <li>
                                     <Link href="/terminos" legacyBehavior>
                                         <a href="/terminos">
-                                            Termino y condiciones de pasajes
+                                            Términos y condiciones de pasajes
                                         </a>
                                     </Link>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <div className="col-2 pt-4 d-flex justify-content-around">
-						<a target="_blank" href="https://www.facebook.com/Pullman.cl/">
-                        	<img src="../img/icon/chat/logo-facebook.svg" alt=""/>
-						</a>
-						<a target="_blank" href="https://www.instagram.com/pullmanbus/">
-                        	<img src="../img/icon/chat/logo-instagram.svg" alt=""/>
-						</a>
-						<a target="_blank" href="https://www.linkedin.com/company/pullman-bus/">
-                        	<img src="../img/icon/chat/logo-linkedin.svg" alt=""/>
-						</a>
-                    </div>
-                    <div className="col-3">
-                        <h3>
-                             <img src="../img/icon/chat/Group.svg" className="img-fluid" alt=""/>
-                        </h3>
-                        <div className="w-100">
-                            <br />
-                            <p>EMPRESAS PULLMAN <br />
-                            PULLMAN CARGO I TÁNDEM I LOGIK</p>
+                    <div className="col-md-3 col-sm-6 pt-4">
+                        <div className="d-flex justify-content-center justify-content-sm-center ">
+                            <a className="pe-4" target="_blank" href="https://www.facebook.com/Pullman.cl/">
+                                <img src="../img/icon/chat/logo-facebook.svg" alt=""/>
+                            </a>
+                            <a className="pe-4" target="_blank" href="https://www.instagram.com/pullmanbus/">
+                                <img src="../img/icon/chat/logo-instagram.svg" alt=""/>
+                            </a>
+                            <a className="pe-4" target="_blank" href="https://www.linkedin.com/company/pullman-bus/">
+                                <img src="../img/icon/chat/logo-linkedin.svg" alt=""/>
+                            </a>
                         </div>
                     </div>
-                    <div className="col-2 pt-4 d-flex justify-content-around">
+                    <div className="col-md-3 col-sm-6 ">
+                        <div className="d-flex flex-column  justify-content-start  justify-content-sm-start text-start">
+
+                            <h3>
+                                <img src="../img/icon/chat/Group.svg" className="img-fluid" alt="" />
+                            </h3>
+                            <div className="w-100 footer-letras">
+                               
+                                <p>GRUPO DE EMPRESAS PULLMAN </p>
+                                   <p><bold>
+                                    PULLMAN CARGO <span className="barra">|</span> TÁNDEM <span className="barra">|</span> LOGIK
+                                    </bold></p>
+                            </div>
+
+                        </div>
                         
                     </div>
-                </div>
+                    </div>
             </div>
         </footer>
     </>

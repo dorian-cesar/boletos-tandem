@@ -70,7 +70,6 @@ export default function Home(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // if( mascota_allowed ) setModalMab(true);
         const origenDestino = {
             origen: decryptedData?.origen,
             destino: decryptedData?.destino
@@ -84,7 +83,6 @@ export default function Home(props) {
             const stage_active = in_stage ?? stage;
             setLoadingParrilla(true);
             const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
-            // console.log('Planilla de asientos', parrilla )
             setParrilla(parrilla.data.map((parrillaMapped, index) => {
                 return {
                     ...parrillaMapped,

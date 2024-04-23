@@ -33,15 +33,15 @@ const BusquedaCuponera = (props) => {
   async function searchParrillaCuponera() {
     debugger;
     try {
-        setLoadingParrilla(true);
-        const parrillaCuponera = await axios.post("/api/coupon/parrilla-cuponera", new ObtenerParrillaCuponeraServicioDTO(origen, destino));
-        setParrilla(parrillaCuponera.data.object.map((parrillaMapped, index) => {
-            return {
-                ...parrillaMapped,
-                id: index + 1
-            }
-        }));
-        setLoadingParrilla(false);   
+      setLoadingParrilla(true);
+      const parrillaCuponera = await axios.post("/api/coupon/parrilla-cuponera", new ObtenerParrillaCuponeraServicioDTO(origen, destino));
+      setParrilla(parrillaCuponera.data.object.map((parrillaMapped, index) => {
+        return {
+          ...parrillaMapped,
+          id: index + 1
+        }
+      }));
+      setLoadingParrilla(false);
     } catch ({ message }) {
       console.error(`Error al obtener parrilla [${message}]`);
     }
@@ -82,11 +82,11 @@ const BusquedaCuponera = (props) => {
     <>
       <div className={styles["container"]}>
         <div className="search-row">
-          <div className="">
-            <div className={styles["grupo-campos"]}>
-              <label>Origen</label>
+          <div className={styles["grupo-campos"]}>
+            <label>Origen</label>
+            <div style={{ width: '100%' }}>
               <Input
-                className="sel-input origen"
+                className={` ${styles["sel-input"]} ${styles["origen"]}`}
                 placeholder="Seleccione origen"
                 items={retornaCiudadesSelect(origenes)}
                 selected={
@@ -99,43 +99,38 @@ const BusquedaCuponera = (props) => {
               />
             </div>
           </div>
-
-          <div className="">
-            <div className={styles["grupo-campos"]}>
-              <label>Destino</label>
-              <Input
-                className="sel-input destino"
-                placeholder="Seleccione destino"
-                items={retornaCiudadesSelect([
-                  ...destinos,
-                  {
-                    codigo: "NO_OPTIONS",
-                    nombre: "Por favor seleccione un origen",
-                  },
-                ])}
-                selected={
-                  destino &&
-                  destinos.length > 0 &&
-                  retornaCiudadesSelect([
-                    destinos.find((i) => i.codigo == destino),
-                  ])
-                }
-                setSelected={setDestino}
-              />
-            </div>
+          <div className={styles["grupo-campos"]}>
+            <label>Destino</label>
+            <Input
+              className={`${styles["sel-input"]} ${styles["destino"]}`}
+              placeholder="Seleccione destino"
+              items={retornaCiudadesSelect([
+                ...destinos,
+                {
+                  codigo: "NO_OPTIONS",
+                  nombre: "Por favor seleccione un origen",
+                },
+              ])}
+              selected={
+                destino &&
+                destinos.length > 0 &&
+                retornaCiudadesSelect([
+                  destinos.find((i) => i.codigo == destino),
+                ])
+              }
+              setSelected={setDestino}
+            />
           </div>
-          <div className="">
-            <div className={styles["grupo-campos"]}>
-              <div
-                className={
-                  origen && destino
-                    ? styles["button-search-coupon"]
-                    : styles["button-search-coupon-disabled"]
-                }
-                onClick={origen && destino && searchParrillaCuponera}
-              >
-                <img src="../img/icon/cuponera/search-outline.svg" /> Buscar
-              </div>
+          <div className={styles["grupo-campos"]}>
+            <div
+              className={
+                origen && destino
+                  ? styles["button-search-coupon"]
+                  : styles["button-search-coupon-disabled"]
+              }
+              onClick={origen && destino && searchParrillaCuponera}
+            >
+              <img src="../img/icon/cuponera/search-outline.svg" /> Buscar
             </div>
           </div>
         </div>

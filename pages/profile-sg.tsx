@@ -3,7 +3,6 @@ import Layout from 'components/Layout'
 import useUser from 'lib/useUser'
 import useEvents from 'lib/useEvents'
 import 'bootstrap/dist/css/bootstrap.css'
-// Make sure to check https://nextjs.org/docs/basic-features/layouts for more info on how to use layouts
 export default function SgProfile() {
   const { user } = useUser({
     redirectTo: '/login',
@@ -30,11 +29,9 @@ export default function SgProfile() {
             </a>
             , reduced to `login` and `avatar_url`.
           </p>
-
           <pre>{JSON.stringify(user, null, 2)}</pre>
         </>
       )}
-
       {events !== undefined && (
         <p>
           Number of GitHub events for user: <b>{events.length}</b>.{' '}

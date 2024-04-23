@@ -16,5 +16,33 @@
 }
 
 .info-list {
-    width: 612px;
+    width: 600px;
+}
+
+@media screen and (max-width: 1000px) {
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .info-list {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+
+    .info-list {
+        width: 100%;
+    }
+}
+
+@media  (min-width: 1001px) {
+    .info-list {
+        width: 600px;
+    }
 }

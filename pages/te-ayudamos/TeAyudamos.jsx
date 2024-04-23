@@ -22,7 +22,7 @@ const TeAyudamos = (props) => {
         <div className={styles["body"]}>
           <div className={styles["title"]}>Nuestro canales de atención</div>
           <div className="container">
-            <div className="row">
+            <div className="row justify-content-center">
               <div className="d-flex row justify-content-center">
                 <div className="col-12 col-md-5">
                   <div

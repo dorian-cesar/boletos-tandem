@@ -63,14 +63,11 @@ const ResumenServicio = (props) => {
             const fecha = servicioVuelta.fechaServicio;
             const hora = servicioVuelta.horaSalida;
             const asientos = [];
-  
             servicioVuelta.asientos.forEach(asiento => asientos.push(asiento));
-  
             const servicioFormateado = { ...servicioVuelta };
             delete servicioFormateado.asientos;
             delete servicioFormateado.asientos1;
             delete servicioFormateado.asientos2;
-  
             groupInfo.push({
               ...servicioFormateado,
               viaje,

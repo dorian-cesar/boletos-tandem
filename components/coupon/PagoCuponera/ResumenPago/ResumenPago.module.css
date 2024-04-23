@@ -292,15 +292,13 @@
 
 .utiliza-monedero-virtual .tooltip-text {
     visibility: hidden;
-    width: 200px;
+    width: auto;
     background-color: #fff;
     color: #000;
     text-align: center;
     border-radius: 6px;
     border: 1px solid #000;
     padding: 5px 0;
-
-    /* Position the tooltip */
     position: absolute;
     z-index: 1;
 }
@@ -308,3 +306,4 @@
 .utiliza-monedero-virtual img:hover + .tooltip-text {
     visibility: visible;
 }
+

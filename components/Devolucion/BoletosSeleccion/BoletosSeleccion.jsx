@@ -51,8 +51,6 @@ const BoletosSeleccion = (props) => {
     }
   };
   
-  
-
   function volverAtras() {
     setSelectedBoletos([]);
     setStage(0);
@@ -134,7 +132,6 @@ const BoletosSeleccion = (props) => {
                     <span className={styles["text-estado-valor"]}>
                       {" "}
                       { estadoBoleto[element.estado] }
-                      {/* {element.estado === "ACT" ? "Activa" : "Nula"} */}
                     </span>
                   </div>
                   <div className="col-3">

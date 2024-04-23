@@ -37,24 +37,36 @@ const Devolucion = (props) => {
         <title>PullmanBus | Devolución</title>
       </Head>
       <div className={styles["home"]}>
+      <div className= {`py-4 container ${styles["nav"]}`}>
+              <span>Inicio &gt;  Devolución de boleto </span>
+          </div>
         {stage == 0 ? (
           <>
-            <div className={styles["container"]}>
+            {/* <div className={styles["container"]}> */}
+            <div className={`mb-5 container ${styles["fondo-devolucion"]}`}>
               <div className={"fila"}>
-                <div className={styles["title"]}>Devolución de boleto</div>
-                <div className={styles["sub-title"]}>
-                  Puedes realizar cambios en tus boletos tanto en nuestro sitio
-                  web como en las boleterías autorizadas, siempre y cuando lo
-                  hagas hasta cuatro (4) horas antes de la hora de salida del
-                  bus.
+                <div className={styles["title"]}>
+                  <h2>
+                    Devolución de boleto
+                  </h2>
                 </div>
-                <BusquedaBoletos
-                  setStage={setStage}
-                  setBoletos={setBoletos}
-                  setLoadingBoleto={setLoadingBoleto}
-                  codigoTransaccion={codigoTransaccion}
-                  setCodigoTransaccion={setCodigoTransaccion}
-                />
+                <div className={styles["bloque"]}>
+                  <div className={styles["sub-title"]}>
+                    <p>
+                    Puedes realizar cambios en tus boletos tanto en nuestro sitio
+                    web como en las boleterías autorizadas, siempre y cuando lo
+                    hagas hasta cuatro (4) horas antes de la hora de salida del
+                    bus.
+                    </p>
+                  </div>
+                  <BusquedaBoletos
+                    setStage={setStage}
+                    setBoletos={setBoletos}
+                    setLoadingBoleto={setLoadingBoleto}
+                    codigoTransaccion={codigoTransaccion}
+                    setCodigoTransaccion={setCodigoTransaccion}
+                  />
+                </div>
               </div>
             </div>
           </>
@@ -73,7 +85,7 @@ const Devolucion = (props) => {
         ) : (
           <></>
         )}
-        
+
         {stage == 2 ? (
           loadingBoleto ? (
             <Loader />
@@ -86,7 +98,7 @@ const Devolucion = (props) => {
               selectedBoletos={selectedBoletos}
             />
           ) : (
-                ""
+            ""
           )
         ) : (
           <></>

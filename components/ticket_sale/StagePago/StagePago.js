@@ -181,7 +181,6 @@ const StagePago = (props) => {
       </>
     );
   }
-
   function obtenerCantidadAsientos(tipoClientes) {
     const listaServicios = carro[tipoClientes].reduce(
       (valorInicial, valorActual) => {
@@ -193,7 +192,6 @@ const StagePago = (props) => {
       },
       {}
     );
-
     return Object.keys(listaServicios).map((servicio) => (
       <>
         <div className="row">
@@ -264,7 +262,7 @@ const StagePago = (props) => {
           />
         </Acordeon>
       </section>
-      <section className={styles["travel-summary"]}>
+      <section className={styles["travel-summary"]} title="Resumen del viaje" >
         <ResumenViaje
           codigoCuponera={codigoCuponera}
           setCodigoCuponera={setCodigoCuponera}

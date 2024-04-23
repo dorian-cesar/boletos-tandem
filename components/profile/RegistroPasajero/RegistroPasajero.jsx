@@ -51,7 +51,7 @@ const RegistroPasajero = (props) => {
     obtenerPasajeros();
   }, []);
 
-  const registrarPasajero = () =>{
+  const registrarPasajero = () => {
     setVista("registrarPasajero");
   }
 
