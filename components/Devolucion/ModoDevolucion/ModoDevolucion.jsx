@@ -163,7 +163,7 @@ const ModoDevolucion = (props) => {
                                             onChange={
                                                 handleMedioDevolucionChange
                                             }
-                                            disabled={!user && isLoading}
+                                            disabled={!user || isLoading}
                                         />
                                         <label className={styles["label"]}>
                                             {" "}
