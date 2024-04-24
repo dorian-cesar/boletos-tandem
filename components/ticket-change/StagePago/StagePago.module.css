@@ -24,7 +24,7 @@
 
 @media (max-width:390px){
     .travel-summary {
-        width: 353px;
+        width: 100%;
     }
 }
 
@@ -36,7 +36,7 @@
         width: 100%;
     }
     .travel-summary {
-        width: 390px;
+        width: 100%;
     }
 }
 
