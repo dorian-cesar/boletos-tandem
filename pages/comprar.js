@@ -75,8 +75,9 @@ export default function Home(props) {
             destino: decryptedData?.destino
         }
         dispatch(agregarOrigenDestino(origenDestino));
+        setStage(0);
+        searchParrilla(0);
     }, [router.query.search])
-    
 
     async function searchParrilla(in_stage) {
         try {
@@ -100,10 +101,6 @@ export default function Home(props) {
     useEffect(() => {
         searchParrilla();
     }, []);
-
-    useEffect(() => {
-        searchParrilla();
-    }, [router.query.search]);
 
     return (
         <Layout>
