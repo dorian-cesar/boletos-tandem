@@ -219,5 +219,13 @@
 }
 
 .btn:hover {
+    background-color: var(--naranjo-80, #FF8A00);
     color: white;
+    outline: none;
+}
+
+.btn:active {
+    background-color: var(--naranjo-80, #FF8A00);
+    color: white;
+    outline: none;
 }
