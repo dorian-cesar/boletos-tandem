@@ -85,7 +85,7 @@ export const ResumenViaje = (props) => {
     {
       //TODO: revisar como se forma la informacion ya que no siempre se muestra de forma correcta
       Object.entries(carroCompras).map(([key, value]) => {
-        if( value.ida.length > 0 ) {
+        if( value.ida && value.ida.length > 0 ) {
           const fechaIdaFormateada = value.ida[0].fechaSalida.split("/");
           const fechaIda = new Date(
             `${fechaIdaFormateada[1]}/${fechaIdaFormateada[0]}/${fechaIdaFormateada[2]}`

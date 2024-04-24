@@ -87,7 +87,7 @@ const Parrilla = (props) => {
     setKey(
       `${props?.thisParrilla?.idTerminalOrigen}-${props?.thisParrilla?.idTerminalDestino}`
     );
-}, [stage]);
+}, [stage, parrilla]);
 
   useEffect(() => actualizarTotalPagar(), [carroCompras]);
 
@@ -116,9 +116,11 @@ const Parrilla = (props) => {
 
   function obtenerAsientosSeleccionados() {
     const returnedArray = [];
+    debugger;
     if (carroCompras[key]) {
       if (carroCompras[key][stage === 0 ? "ida" : "vuelta"]) {
         carroCompras[key][stage === 0 ? "ida" : "vuelta"].filter((carro) => {
+          debugger;
           if (
             carro.idServicio === props.thisParrilla.idServicio &&
             carro.fechaServicio === props.thisParrilla.fechaServicio
@@ -266,6 +268,7 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
+      debugger;
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
 
       asiento['piso'] = piso;

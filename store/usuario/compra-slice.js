@@ -31,11 +31,11 @@ export const compraSlice = createSlice({
             const { payload } = action;
             let key = '';
             
-            if( payload.tipoServicio === 'ida' ) { 
-                key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}`;
-            } else {
-                key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
-            }
+            key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}`;
+            // if( payload.tipoServicio === 'ida' ) { 
+            // } else {
+            //     key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
+            // }
 
             if( Object.keys(state.listaCarrito).length === 0 ) {
                 state.listaCarrito[key] = {};
@@ -89,11 +89,11 @@ export const compraSlice = createSlice({
             const { payload } = action;
             let key = '';
             
-            if( payload.tipoServicio === 'ida' ) { 
-                key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}`;
-            } else {
-                key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
-            }
+            key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}`;
+            // if( payload.tipoServicio === 'ida' ) { 
+            // } else {
+            //     key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
+            // }
 
             if( state.listaCarrito[key] ) {
                 if( state.listaCarrito[key][payload.tipoServicio] ) {
