@@ -134,7 +134,7 @@ const BusquedaServicio = (props) => {
     <div className="col-12 col-md-12">
       <div className={styles["bloque"]}>
         <div className="row">
-          <div className="col-12 col-md-3">
+          <div className="col-12 col-md-4 col-lg-3">
             <div className="grupo-campos">
               <label className="label-input">¿De dónde viajamos?</label>
               <Input
@@ -152,7 +152,7 @@ const BusquedaServicio = (props) => {
               />
             </div>
           </div>
-          <div className="col-12 col-md-3">
+          <div className="col-12 col-md-4 col-lg-3">
             <div className="grupo-campos">
               <label className="label-input">¿A dónde viajamos?</label>
               <Input
@@ -177,7 +177,7 @@ const BusquedaServicio = (props) => {
               />
             </div>
           </div>
-          <div className="col-12 col-md-3">
+          <div className="col-12 col-md-4 col-lg-3">
             <div className="grupo-campos mb-4">
               <label className="label-input">¿Cuándo viajamos?</label>
               <DatePicker
@@ -192,7 +192,7 @@ const BusquedaServicio = (props) => {
               />
             </div>
           </div>
-          <div className="col-12 col-md-3 g-3">
+          <div className="col-12 col-md-6 col-lg-3 g-3 mt-4">
             <div className="w-100">
               <label className="label-input"></label>
               <button onClick={searchParrilla} className="btn">
