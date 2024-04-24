@@ -100,41 +100,49 @@
 }
 
 
-@media screen and (max-width:375px) {
+@media (max-width:375px) {
     .accordion-header .travel-info :nth-child(2) {
         margin-inline: 0px;
-        
+    }
+    .accordion {
+        width: 102%;
     }
     .accordion-header {
         display: flex;
         height: auto; 
-        padding: 0px;
+        padding: 5px;
+        gap: 5px;
         
     }
     .accordion-header span{
-        
         font-size: 15px;
-        
-        
     }
 }
 
-@media screen and (max-width:399px) {
+@media (min-width:376px) and (max-width:399px) {
     .accordion-header .travel-info :nth-child(2) {
         margin-inline: 0px;
     }
     .accordion-header {
         display: flex;
-        height: auto; 
+        height: 100%; 
         padding: 10px;
+        gap: 9px;
+    }
+    .accordion-header span{
+        font-size: 15px;
     }
 }
 
-@media screen and (min-width:400px) {
+@media (min-width:400px) {
     .accordion-header {
         padding: 10px;
-        gap: 12px; 
+        gap: 9px;
+        height: 100%; 
         
+    }
+    .accordion-header span{
+        font-size: 15px;
     }
     
     .accordion-header .travel-info :nth-child(2) {
