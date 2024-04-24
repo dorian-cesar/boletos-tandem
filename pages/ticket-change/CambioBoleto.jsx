@@ -181,8 +181,9 @@ export default function Home(props) {
       )}
       {stage == 1 ? (
         <div className="ingreso-destino mb-5">
-          <div className="container">
-            <div className="row">
+          <div className="">
+            <div className="row me-0">
+            {/* <div className={` ${styles["row"]}`}> */}
               <BusquedaServicio
                 origenes={props.ciudades}
                 dias={props.dias}
@@ -195,7 +196,7 @@ export default function Home(props) {
               <div className="contenido-busqueda">
                 {loadingParrilla ? <Loader /> : parrilla.length > 0 ?
                   <div className="pasajes-compra py-5">
-                    <div className="container">
+                    <div className="">
                       {stages_active[stage].kind == "pasajes_1" ||
                         stages_active[stage].kind == "pasajes_2" ? (
                         <StagePasajes

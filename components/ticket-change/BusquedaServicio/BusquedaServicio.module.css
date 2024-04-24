@@ -8,3 +8,28 @@
     position: relative;
     z-index: 10;
   }
+  /* .row{
+    margin: 0;
+  } */
+@media (min-width: 320px) and (max-width: 395px) {
+    .bloque{
+      margin-left: 4%;
+      margin-top: 10px;
+      width: 91%;
+    }
+}
+
+@media screen and (min-width: 396px) and (max-width: 767px) {
+  .bloque{
+    margin-left: 4%;
+    margin-top: 10px;
+    width: 91%;
+  }
+    
+} 
+
+@media screen and (min-width: 768px) and (max-width: 930px) {
+
+  
+  
+}

@@ -139,7 +139,10 @@
 
 
 @media screen and (max-width: 390px) {
+    .nav{
+        margin-left: 3%;
     
+    }
     .fondo-cambio {
         display: flex;
         width: 315px;
@@ -174,7 +177,9 @@
 }
 
 @media screen and (min-width: 400px) and (max-width: 430px) {
-    
+    .nav{
+        margin-left: 3%;
+    }
     .fondo-cambio {
         display: flex;
         width: 362px;

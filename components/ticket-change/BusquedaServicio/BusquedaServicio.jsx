@@ -192,7 +192,7 @@ const BusquedaServicio = (props) => {
               />
             </div>
           </div>
-          <div className="col-12 col-md-3">
+          <div className="col-12 col-md-3 g-3">
             <div className="w-100">
               <label className="label-input"></label>
               <button onClick={searchParrilla} className="btn">
