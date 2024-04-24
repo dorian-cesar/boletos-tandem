@@ -159,12 +159,12 @@ export default function Home(props) {
                     <div className={styles["grupo-campos"]}>
                       <div className={styles["button"]}>
                         <button 
-                        onClick={(boleto) && 
-                          validarBoleto} className={
-                          origen && destino
+                        className={
+                          boleto
                             ? styles["button-search-coupon"]
                             : styles["button-search-coupon-disabled"]
-                        }>
+                        }
+                        onClick={(boleto) && validarBoleto} >
                           <img src="../img/icon/cuponera/search-outline.svg" />
                           Buscar
                         </button>
@@ -183,7 +183,6 @@ export default function Home(props) {
         <div className="ingreso-destino mb-5">
           <div className="">
             <div className="row me-0">
-            {/* <div className={` ${styles["row"]}`}> */}
               <BusquedaServicio
                 origenes={props.ciudades}
                 dias={props.dias}
