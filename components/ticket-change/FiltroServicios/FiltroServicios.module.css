@@ -55,10 +55,9 @@
 
 @media (min-width: 320px) and (max-width: 395px) {
     .container-filtro {
-        
-        width: 100%;
+        width: 107%;
         height: 100%;
-        margin-left: 3%;
+        margin-left: -3%;
         
     }
 }
@@ -68,9 +67,9 @@
 
     .container-filtro {
         
-        width: 100%;
+        width: 104%;
         height: 100%;
-        margin-left: 3%;
+        margin-left: -2%;
     }
 } 
 

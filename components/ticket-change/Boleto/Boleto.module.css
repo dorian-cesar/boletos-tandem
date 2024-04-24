@@ -338,6 +338,7 @@
         position: absolute;
         z-index: 2;
         justify-content: space-around;
+        margin-left: -8px;
 
     }
 
@@ -402,7 +403,7 @@
 
     .container-ticket .checkbox-open-pane:checked~.grill-detail {
         width: 127%;
-        margin-left: 3%;
+        margin-left: 0%;
 
     }
 
@@ -499,7 +500,7 @@
     .container-ticket .checkbox-open-pane:checked~.grill-detail {
         padding-top: 0px;
         width: 100%;
-        margin-left: 3%;
+        margin-left: 0%;
     }
 
     .ticket {
@@ -515,6 +516,7 @@
         position: absolute;
         z-index: 2;
         justify-content: space-around;
+        margin-left: -8px;
     }
 
     .flip-box-inner {
