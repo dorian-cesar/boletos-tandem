@@ -111,11 +111,20 @@ const Login = (props) => {
                   <div className="d-flex justify-content-center ">
                     <img  className= {styles["foto-login"]} src="img/icon-foto.svg" width={65}></img>
                   </div>
-                  <div className="d-flex justify-content-center mt-2">
+                  {/* <div className="d-flex justify-content-center mt-2">
                     <h4 className="titulo-azul">¡Hola!</h4>
-                  </div>
-                  <p className="d-flex justify-content-center fw-bold mb-5">
+                  </div> */}
+                  {/* <p className="d-flex justify-content-center fw-bold mb-5">
                     Inicia sesión con tu correo electrónico
+                  </p> */}
+                  <p className={ styles["viajemos-juntos"] }>
+                    ¡Viajemos juntos!
+                  </p>
+                  <p className={ styles["ingresa-sesion"] }>
+                    Ingresa a tu sesión
+                  </p>
+                  <p className={ styles["parrafo-registro"] }>
+                    Al registrarte o iniciar sesión, estás aceptando nuestros términos y condiciones de uso.
                   </p>
                   <div className="row">
                     {alert.visible ? (
@@ -141,10 +150,10 @@ const Login = (props) => {
                   {Object.keys(loginFormFields).map((key) => (
                     <div className="row mt-2" key={key}>
                       <div className="col-12">
-                        <label className="label-input">{key === "correo" ? "Correo electrónico" : "Contraseña"}</label>
+                        <label className="label-input">{key === "mail" ? "Correo electrónico" : "Contraseña"}</label>
                         <input
                           type={key === "password" ? "password" : "text"}
-                          placeholder={key === "correo" ? "Ej: example@example.com" : "Ej: ******"}
+                          placeholder={key === "mail" ? "Ej: example@example.com" : "Ej: ******"}
                           className={"form-control" + (emptyFields[key] ? " is-invalid" : "")}
                           name={key}
                           value={login[key]}

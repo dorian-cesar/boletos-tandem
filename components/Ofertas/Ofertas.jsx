@@ -117,8 +117,16 @@ const Ofertas = (props) => {
             spaceBetween: 30,
           },
           1440: {
-            slidesPerView: 5,
+            slidesPerView: 3,
             spaceBetween: 20,
+          },
+          1600: {
+            slidesPerView: 4,
+            spaceBetween: 20,
+          },
+          2560: {
+            slidesPerView: 5,
+            spaceBetween: 20
           }
         }}>
         {
