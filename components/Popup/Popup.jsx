@@ -166,6 +166,13 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton }) => {
       buttonMessage: "Aceptar",
       imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
       onClick: modalMethods
+    },
+    [ModalEntities.return_to_wallet_success]: {
+      title: "¡Usuario(a)!",
+      body: "Devolución realizada con exito, será redirigido a su perfil para ver el saldo nuevo reflejado",
+      buttonMessage: "Aceptar",
+      imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
+      onClick: modalMethods
     }
   };
   
