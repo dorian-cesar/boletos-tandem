@@ -67,12 +67,15 @@ export const ResumenViaje = (props) => {
 
   useEffect(() => {
     actualizarSaldoWallet().then();
-  }, [user])
+  }, [user]);
 
   async function actualizarSaldoWallet() {
-    if( !!user ) {
+    if (!!user) {
       try {
-        const response = await axios.post('/api/user/consulta-saldo-wallet', user);
+        const response = await axios.post(
+          "/api/user/consulta-saldo-wallet",
+          user
+        );
         const saldo = response.data.object.saldoContable || 0;
         setSaldoMonederoVirtual(saldo);
       } catch (error) {
@@ -83,42 +86,27 @@ export const ResumenViaje = (props) => {
 
   const obtenerInformacion = () => {
     {
-      //TODO: revisar como se forma la informacion ya que no siempre se muestra de forma correcta
-      Object.entries(carroCompras).map(([key, value]) => {
-        if( value.ida && value.ida.length > 0 ) {
-          const fechaIdaFormateada = value.ida[0].fechaSalida.split("/");
+      let carritoIda = {
+        titulo: "",
+        detalle: [],
+      };
+      let carritoVuelta = {
+        titulo: "",
+        detalle: [],
+      };
+      
+      let idaNombre;
+      let vueltaNombre;
+
+      Object.keys(carroCompras).forEach((key) => {
+        const compra = carroCompras[key];
+        if (compra.ida && compra.ida.length > 0) {
+          const fechaIdaFormateada = compra.ida[0].fechaSalida.split("/");
           const fechaIda = new Date(
             `${fechaIdaFormateada[1]}/${fechaIdaFormateada[0]}/${fechaIdaFormateada[2]}`
           );
-  
-          const idaNombre = `Salida, ${format(fechaIda, "ddd D MMM")}`;
-          const keys = Object.keys(value);
-  
-          let vueltaNombre = "";
-          if (keys.length >= 2) {
-            const fechaVueltaFormateada = value.vuelta[0].fechaSalida.split("/");
-            const fechaVuelta = new Date(
-              `${fechaVueltaFormateada[1]}/${fechaVueltaFormateada[0]}/${fechaVueltaFormateada[2]}`
-            );
-            vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM")}`;
-          }
-  
-          const idaList = value.ida || [];
-          const vueltaList = value.vuelta || [];
-  
-          let carro_temp = { ...resumen };
-          const datos = [];
-  
-          let carritoIda = {
-            titulo: idaNombre,
-            detalle: [],
-          };
-          let carritoVuelta = {
-            titulo: vueltaNombre,
-            detalle: [],
-          };
-  
-          Object.entries(idaList).map(([key, value]) => {
+          const idaList = compra.ida;
+          idaList.forEach((value) => {
             const datos = {
               origen: `${origen?.nombre} (${value.terminalOrigen})`,
               destino: `${destino?.nombre} (${value.terminalDestino})`,
@@ -127,18 +115,23 @@ export const ResumenViaje = (props) => {
               cantidadAsientos: 0,
               total: 0,
             };
-  
             value.asientos.forEach((element) => {
               datos.cantidadAsientos += 1;
               datos.total += element.valorAsiento;
             });
-  
+            idaNombre = `Salida, ${format(fechaIda, "ddd D MMM")}`;
             datos.total = clpFormat.format(datos.total);
-  
             carritoIda.detalle.push(datos);
           });
-  
-          Object.entries(vueltaList).map(([key, value]) => {
+        }
+
+        if (compra.vuelta && compra.vuelta.length > 0) {
+          const fechaVueltaFormateada = compra.vuelta[0].fechaSalida.split("/");
+          const fechaVuelta = new Date(
+            `${fechaVueltaFormateada[1]}/${fechaVueltaFormateada[0]}/${fechaVueltaFormateada[2]}`
+          );
+          const vueltaList = compra.vuelta;
+          vueltaList.forEach((value) => {
             const datos = {
               origen: `${destino?.nombre} (${value.terminalOrigen})`,
               destino: `${origen?.nombre} (${value.terminalDestino})`,
@@ -147,22 +140,25 @@ export const ResumenViaje = (props) => {
               cantidadAsientos: 0,
               total: 0,
             };
-  
             value.asientos.forEach((element) => {
               datos.cantidadAsientos += 1;
               datos.total += element.valorAsiento;
             });
-  
             datos.total = clpFormat.format(datos.total);
-  
             carritoVuelta.detalle.push(datos);
+            vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM")}`;
           });
-          datos.push(carritoIda);
-          datos.push(carritoVuelta);
-          carro_temp.carro["lista"] = datos;
-          setResumen(carro_temp);
         }
       });
+
+      const datos = [];
+      carritoIda.titulo = idaNombre;
+      carritoVuelta.titulo = vueltaNombre;
+      datos.push(carritoIda);
+      datos.push(carritoVuelta);
+      const carro_temp = { ...resumen };
+      carro_temp.carro["lista"] = datos;
+      setResumen(carro_temp);
     }
   };
 
@@ -210,7 +206,7 @@ export const ResumenViaje = (props) => {
 
       let montoUsoWallet = 0;
 
-      if( medioPago !== 'CUP' && usaWallet ) {
+      if (medioPago !== "CUP" && usaWallet) {
         await actualizarSaldoWallet();
         const valorNuevo = totalPagar - saldoMonederoVirtual;
         montoUsoWallet = valorNuevo < 0 ? totalPagar : saldoMonederoVirtual;
@@ -233,12 +229,12 @@ export const ResumenViaje = (props) => {
         servicio.asientos.forEach((asiento) => {
           const nuevoAsiento = {
             ...asiento,
-            precio: asiento.tarifa
-          }
+            precio: asiento.tarifa,
+          };
 
           debugger;
 
-          if( medioPago !== 'CUP' && usaWallet && restoUsoWallet > 0 ) {
+          if (medioPago !== "CUP" && usaWallet && restoUsoWallet > 0) {
             debugger;
             const montoUsar = Math.min(restoUsoWallet, nuevoAsiento.tarifa);
             nuevoAsiento.precio = Math.max(nuevoAsiento.tarifa - montoUsar, 0);
@@ -249,7 +245,6 @@ export const ResumenViaje = (props) => {
         });
         resumenCompra.listaCarrito.push(carrito);
       });
-
 
       if (medioPago === "CUP") {
         if (resumenCompra.listaCarrito.length > 1) {
@@ -378,8 +373,10 @@ export const ResumenViaje = (props) => {
           return false;
         }
       } else {
-
-        const request = CryptoJS.AES.encrypt(JSON.stringify(resumenCompra), secret);
+        const request = CryptoJS.AES.encrypt(
+          JSON.stringify(resumenCompra),
+          secret
+        );
 
         const { data } = await axios.post(
           "/api/ticket_sale/guardar-multi-carro",
@@ -515,19 +512,19 @@ export const ResumenViaje = (props) => {
                 type="checkbox"
                 role="switch"
                 id="flexSwitchCheckDefault"
-                disabled={ !user }
-                value={ usaWallet }
-                onClick={ () => {
-                    actualizarSaldoWallet().then();
-                    setUsaWallet(!usaWallet) 
-                  }
-                }
+                disabled={!user}
+                value={usaWallet}
+                onClick={() => {
+                  actualizarSaldoWallet().then();
+                  setUsaWallet(!usaWallet);
+                }}
               />
               <label
                 className="form-check-label"
                 htmlFor="flexSwitchCheckDefault"
               >
-                Utilizar monedero virtual ({ clpFormat.format(saldoMonederoVirtual) })
+                Utilizar monedero virtual (
+                {clpFormat.format(saldoMonederoVirtual)})
               </label>
               <img src="/img/icon/general/information-circle-outline.svg" />
               <span className={styles["tooltip-text"]}>
