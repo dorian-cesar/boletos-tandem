@@ -127,7 +127,7 @@ export default function Home(props) {
       {stage == 0 ? (
 
         <div className={`mb-5 container ${styles["fondo-cambio"]}`}>
-          <div className="">
+          <div className="container">
             <div className={styles["cambio-title"]}>
               <h2>
                 Cambio de boleto
@@ -231,7 +231,9 @@ export default function Home(props) {
                     </div>
                   </div>
                   :
-                  <h5 className="p-2">
+                  // <h5 className="p-2">
+                  <h5 className={`p-2 ${styles["lo-sentimos"]}`}>
+
                     Lo sentimos, no existen
                     resultados para su búsqueda
                   </h5>
