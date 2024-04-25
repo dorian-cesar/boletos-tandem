@@ -67,47 +67,45 @@ const BoletosSeleccion = (props) => {
           Selecciona el o los boleto(s) que deseas anular:
         </div>
         {boletos.map((element) => (
-          <div key={element.boleto} className={"row mb-3"}>
+          <div key={element.boleto} className={"row"}>
             <div className={"col-12"}>
-            <div className="row">
+            <div className="row d-flex justify-content-center">
               <div className={styles["body-pay"]}>
-                <div className={"row"}>
-                  <div className="col-5"></div>
-                  <div className="col-5"></div>
-                  <div className="col-1">{
-                    element.asientoAsociado > 0 ? <img
-                    src="img/icon/buttons/paw-outline-orange.svg"
-                  /> : ""
-                  }</div>
-                  <div className="col-1">
-                    {element.estado === "ACT" ? (
+                <div className={"row d-flex"}>
+                  <div className="d-flex justify-content-end">
+                    <div className="d-flex">{
+                      element.asientoAsociado > 0 ? <img
+                      src="img/icon/buttons/paw-outline-orange.svg"
+                    /> : ""
+                    }</div>
+                    <div className="d-flex">
                       <input
-                      type="checkbox"
-                      id={element.boleto}
-                      name="boleto"
-                      value={element.boleto}
-                      checked={selectedBoletos.includes(element.boleto)}
-                      onChange={() => handleCheckboxChange(element)}
-                    />
-                    ) : (
-                      <br></br>
-                    )}
+                        type="checkbox"
+                        id={element.boleto}
+                        name="boleto"
+                        value={element.boleto}
+                        checked={selectedBoletos.includes(element.boleto)}
+                        onChange={() => handleCheckboxChange(element)}
+                        disabled={ element.estado !== 'ACT'}
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className={"row"}>
-                  <div className="col-5">
+                <div className={ `row ${ styles["contenedor-ciudades"]}`}>
+                  <div className="col-5 mb-2">
                     <span className={styles["text-origen"]}>
-                      {" "}
                       {element.imprimeVoucher.nombreCiudadOrigen}
                     </span>
                   </div>
                   <div className="col-3"></div>
-                  <div className="col-4">
+                  <div className="col-4 mb-2">
                     <span className={styles["text-destino"]}>
-                      {" "}
                       {element.imprimeVoucher.nombreCiudadDestino}
                     </span>
                   </div>
+                </div>
+                <div className={ styles["logo"] }>
+                  <img src="img/icon-barra.svg" />
                 </div>
                 <br></br>
                 <div className={"row"}>
