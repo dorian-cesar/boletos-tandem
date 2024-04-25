@@ -15,6 +15,7 @@ const ModoDevolucion = (props) => {
     const [popUpBoletoUsuarioDistinto, setPopUpBoletoUsuarioDistinto] =
         useState(false);
     const [popUpDevolucionWallet, setPopUpDevolucionWallet] = useState(false);
+    const [popUpDevolucionExitosa, setPopUpDevolucionExitosa] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
 
@@ -84,7 +85,7 @@ const ModoDevolucion = (props) => {
             if (response.data.status) {
                 setIsLoading(false);
                 setPopUpDevolucionWallet(false);
-                router.push('/profile/home');
+                setPopUpDevolucionExitosa(true);
             }
         } catch (e) {
 			setPopUpDevolucionWallet(false);
@@ -99,6 +100,11 @@ const ModoDevolucion = (props) => {
             }
             setIsLoading(false);
         }
+    }
+
+    function redireccionarPerfil() {
+        setPopUpDevolucionExitosa(false);
+        router.push('/profile/home');
     }
 
     return (
@@ -230,6 +236,13 @@ const ModoDevolucion = (props) => {
                         modalKey={ModalEntities.return_to_wallet}
                         modalClose={() => setPopUpDevolucionWallet(false)}
                         modalMethods={() => procesarDevolucionWallet()}
+                    />
+                )}
+                {popUpDevolucionExitosa && (
+                    <Popup 
+                        modalKey={ModalEntities.return_to_wallet_success}
+                        modalClose={ redireccionarPerfil }
+                        modalMethods={ redireccionarPerfil }
                     />
                 )}
             </div>
