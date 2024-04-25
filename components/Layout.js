@@ -47,7 +47,7 @@ export default function Layout({ children }) {
         direction="left"
         className="overlay"
         zIndex={ 9999 }
-        size="50vh"
+        size="43vh"
       >
         <a className="closebtn" onClick={closeNav}>
           ×

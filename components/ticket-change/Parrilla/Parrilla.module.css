@@ -92,6 +92,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-evenly;
 }
 
 .disponibilidad-bus .estados-disponibilidad {
@@ -134,7 +135,7 @@
 
 .botones-inferiores {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .botones-inferiores .botones-seleccion-piso {
@@ -159,6 +160,7 @@
     display: flex;
     flex-direction: column;
     margin-block-start: 20px;
+    align-items: end;
 }
 
 .botones-inferiores .botones-pago div {
@@ -249,6 +251,11 @@
     align-items: center;
     border-radius: 16px;
     background: var(--naranjo-100, #FF6500);
+    cursor: default;
+}
+
+.button_continue:hover {
+    background: var(--naranjo-80, #FF8A00);
 }
 
 .button_continue span{
@@ -285,3 +292,80 @@
     font-weight: 700;
     line-height: normal;
 }
+
+@media (max-width:435px ){
+    .botones-inferiores {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+}
+
+@media (max-width: 767px) {
+    .bus .fila .columna span {
+        transform: rotate(0deg);
+        
+    }
+    .grill-detail {
+        align-items: center;
+        height: 100%;
+        padding-top: 14px;
+    }
+    .disponibilidad-bus {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 144px;
+        width: auto;
+        height: 500px;
+        flex-direction: column-reverse;
+        align-content: space-between;
+    }
+  
+    .bus {
+        height: auto;
+        align-items: center;
+        transform: rotate(90deg);
+        margin: 10px;
+    }
+    .cross-container {
+        margin-left: 30px;
+        margin-top: 7%;
+    }
+
+    .botones-inferiores .botones-pago {
+        
+        align-items: center;
+    }
+  
+    .botones-inferiores .botones-seleccion-piso {
+        display: flex;
+        flex-direction: row;
+        width: 465px;
+        justify-content: center;
+        margin-block-start: 24px;
+    }
+
+    .botones-inferiores .botones-seleccion-piso {
+        display: flex;
+        width: 184px;
+        height: 28px;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .cross-container .cross {
+        display: flex;
+        justify-content: flex-end;
+        padding: 0;
+    
+    }
+
+    .botones-inferiores {
+        margin-top: 10%;
+    }
+
+  }

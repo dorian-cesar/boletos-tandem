@@ -127,7 +127,7 @@ export default function Home(props) {
       {stage == 0 ? (
 
         <div className={`mb-5 container ${styles["fondo-cambio"]}`}>
-          <div className="">
+          <div className="container">
             <div className={styles["cambio-title"]}>
               <h2>
                 Cambio de boleto
@@ -159,12 +159,12 @@ export default function Home(props) {
                     <div className={styles["grupo-campos"]}>
                       <div className={styles["button"]}>
                         <button 
-                        onClick={(boleto) && 
-                          validarBoleto} className={
-                          origen && destino
+                        className={
+                          boleto
                             ? styles["button-search-coupon"]
                             : styles["button-search-coupon-disabled"]
-                        }>
+                        }
+                        onClick={(boleto) && validarBoleto} >
                           <img src="../img/icon/cuponera/search-outline.svg" />
                           Buscar
                         </button>
@@ -181,8 +181,8 @@ export default function Home(props) {
       )}
       {stage == 1 ? (
         <div className="ingreso-destino mb-5">
-          <div className="container">
-            <div className="row">
+          <div className="">
+            <div className="row me-0">
               <BusquedaServicio
                 origenes={props.ciudades}
                 dias={props.dias}
@@ -195,7 +195,7 @@ export default function Home(props) {
               <div className="contenido-busqueda">
                 {loadingParrilla ? <Loader /> : parrilla.length > 0 ?
                   <div className="pasajes-compra py-5">
-                    <div className="container">
+                    <div className="">
                       {stages_active[stage].kind == "pasajes_1" ||
                         stages_active[stage].kind == "pasajes_2" ? (
                         <StagePasajes
@@ -231,7 +231,9 @@ export default function Home(props) {
                     </div>
                   </div>
                   :
-                  <h5 className="p-2">
+                  // <h5 className="p-2">
+                  <h5 className={`p-2 ${styles["lo-sentimos"]}`}>
+
                     Lo sentimos, no existen
                     resultados para su búsqueda
                   </h5>

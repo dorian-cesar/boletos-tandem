@@ -8,6 +8,7 @@ import { BuscarPlanillaVerticalDTO } from "dto/MapaAsientosDTO";
 import { PasajeDTO } from "dto/PasajesDTO";
 import { FiltroServicios } from "./FiltroServicios/FiltroServicios";
 import moment from "moment";
+import styles from './StagePasajes/StagePasajes.module.css';
 
 
 const STAGE_BOLETO_IDA = 0;
@@ -180,7 +181,8 @@ const StagePasajes = (props) => {
 
     return (
         
-        <div className="d-flex justify-content-center">
+        // <div className="d-flex justify-content-center">
+        <div className={ `container ${ styles['stage-pasajes'] }`}>
             <FiltroServicios 
                 tipos_servicio={ tipos_servicio }
                 filter_tipo={ filter_tipo }
