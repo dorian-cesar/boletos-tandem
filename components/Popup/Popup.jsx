@@ -3,7 +3,7 @@ import styles from "./Popup.module.css";
 import ModalEntities from "../../entities/ModalEntities";
 
 
-const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton }) => {
+const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton, modalBody = "" }) => {
 
   const popInfo = {
     [ModalEntities.email_success]: {
@@ -170,6 +170,13 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton }) => {
     [ModalEntities.return_to_wallet_success]: {
       title: "¡Usuario(a)!",
       body: "Devolución realizada con exito, será redirigido a su perfil para ver el saldo nuevo reflejado",
+      buttonMessage: "Aceptar",
+      imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
+      onClick: modalMethods
+    },
+    [ModalEntities.detail_ticket]: {
+      title: "Detalle boletos",
+      body: modalBody,
       buttonMessage: "Aceptar",
       imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
       onClick: modalMethods
