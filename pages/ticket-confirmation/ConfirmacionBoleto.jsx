@@ -19,6 +19,8 @@ import StagePago from "../../components/ticket-confirmation/StagePago/StagePago"
 import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 
+import styles from './ConfirmacionBoleto.module.css'
+
 registerLocale("es", es);
 
 const stages = [
@@ -85,27 +87,27 @@ export default function Home(props) {
 
   async function searchParrilla(in_stage) {
     try {
-        const stage_active = in_stage ?? stage;
-        setLoadingParrilla(true);
-        const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
-        console.log('Planilla de asientos', parrilla )
-        setParrilla(parrilla.data.map((parrillaMapped, index) => {
-            return {
-                ...parrillaMapped,
-                id: index + 1
-            }
-        }));
-        setLoadingParrilla(false);   
+      const stage_active = in_stage ?? stage;
+      setLoadingParrilla(true);
+      const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
+      console.log('Planilla de asientos', parrilla)
+      setParrilla(parrilla.data.map((parrillaMapped, index) => {
+        return {
+          ...parrillaMapped,
+          id: index + 1
+        }
+      }));
+      setLoadingParrilla(false);
     } catch ({ message }) {
-        console.error(`Error al obtener parrilla [${ message }]`)
+      console.error(`Error al obtener parrilla [${message}]`)
     }
-};
+  };
 
-const stages_active = endDate ? stages : stages.filter((i) => i.kind != "pasajes_2");
+  const stages_active = endDate ? stages : stages.filter((i) => i.kind != "pasajes_2");
 
-useEffect(() => {
+  useEffect(() => {
     searchParrilla();
-}, []);
+  }, []);
 
 
   return (
@@ -117,10 +119,10 @@ useEffect(() => {
         <div className="container">
           <div className="row py-4">
             <div className="col-12">
-              <span>Home &gt; Te ayudamos &gt; Confirmación de boleto </span>
+              <span>Inicio  &gt; Confirmación de boleto </span>
             </div>
           </div>
-          <div className="row">
+          {/* <div className="row">
             <div className="col-md-6 col-12 d-flex align-items-center">
               <div>
                 <img src="img/icon-estrella-mas.svg" alt="" />
@@ -133,9 +135,9 @@ useEffect(() => {
             <div className="col-md-6 col-12 foto-header">
               <img src="img/cambioboleto2.svg" className="img-fluid" alt="" />
             </div>
-          </div>
+          </div> */}
         </div>
-        <div className="pasajes-compra bg-transparent">
+        {/* <div className="pasajes-compra bg-transparent">
           <div className="container">
             <ul className="d-flex flex-row justify-content-around py-4">
               {
@@ -154,42 +156,63 @@ useEffect(() => {
               }
             </ul>
           </div>
-        </div>
+        </div> */}
       </div>
       {stage == 0 ? (
-        <div className="codigo-boleto mb-5">
+        <div className={`mb-5 container ${styles["fondo-cambio"]}`}>
           <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-12 col-md-6">
-                <div className="bloque">
-                  <h2>
-                    Ingresa el código de tu boleto para{" "}
-                    <strong>visualizar el boleto que quieres confirmar</strong>
-                  </h2>
-                  <div className="grupo-campos">
-                    <label className="label-input">Código de boleto</label>
-                    <input
-                      type="text"
-                      name=""
-                      value={boleto}
-                      onChange={(e) => setBoleto(e.target.value.toUpperCase())}
-                      className="form-control"
-                    />
+            <div className={styles["cambio-title"]}>
+              <h2>
+                Confirmacío de boleto
+              </h2>
+            </div>
+            <div className={styles["bloque"]}>
+              <div className={styles["bloque-texto"]}>
+                <h2>
+                  Ingresa el código de tu boleto para{" "}
+                  <strong>visualizar el boleto que quieres confirmar</strong>
+                </h2>
+              </div>
+              <div className={styles["container"]}>
+                <div className={`row search-row ${styles["search-row"]}`}>
+                  <div className="col-12 col-md-6 col-lg-2">
+                    <div className={styles["grupo-campos"]}>
+                      <label>Código de boleto</label>
+                      <input
+                        type="text"
+                        name=""
+                        value={boleto}
+                        onChange={(e) => setBoleto(e.target.value.toUpperCase())}
+                        className={styles["input"]}
+                      />
+                    </div>
                   </div>
-                  <div className="w-100">
-                    <button onClick={ (boleto) && validarBoleto} className="btn">
-                      Buscar
-                    </button>
+                  <div className="col-12 col-md-12 col-lg-2">
+                    <div className={styles["grupo-campos"]}>
+                      <div className={styles["button"]}>
+                        <button
+                          className={
+                            boleto
+                              ? styles["button-search-coupon"]
+                              : styles["button-search-coupon-disabled"]
+                          }
+                          onClick={(boleto) && validarBoleto} >
+                          <img src="../img/icon/cuponera/search-outline.svg" />
+                          Buscar
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       ) : (
         ""
       )}
-    {stage == 1 ? (
+      {stage == 1 ? (
         <div className="ingreso-destino mb-5">
           <div className="container">
             <div className="row">
@@ -205,51 +228,51 @@ useEffect(() => {
               />
 
               <div className="contenido-busqueda">
-                {loadingParrilla ? <Loader /> : parrilla.length > 0 ? 
-                
-                <div className="pasajes-compra py-5">
-                <div className="container">
-                  {stages_active[stage].kind == "pasajes_1" ||
-                  stages_active[stage].kind == "pasajes_2" ? (
-                    <StagePasajes
-                      key={`stage-pasajes-${stages_active[stage].kind}`}
-                      stage={stage}
-                      parrilla={parrilla}
-                      loadingParrilla={loadingParrilla}
-                      setParrilla={setParrilla}
-                      startDate={startDate}
-                      endDate={endDate}
-                      carro={carro}
-                      setCarro={setCarro}
-                      setStage={setStage}
-                      searchParrilla={searchParrilla}
-                      boletoValido={boletoValido}
-                    />
-                  ) : (
-                    ""
-                  )}
-                  {stages_active[stage].kind == "pago" ? (
-                    <StagePago
-                      key={"stage-pago"}
-                      carro={carro}
-                      nacionalidades={props.nacionalidades}
-                      convenios={props.convenios}
-                      mediosDePago={props.mediosDePago}
-                      setCarro={setCarro}
-                      boletoValido={boletoValido}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </div>
-                
-                
-                : 
+                {loadingParrilla ? <Loader /> : parrilla.length > 0 ?
+
+                  <div className="pasajes-compra py-5">
+                    <div className="container">
+                      {stages_active[stage].kind == "pasajes_1" ||
+                        stages_active[stage].kind == "pasajes_2" ? (
+                        <StagePasajes
+                          key={`stage-pasajes-${stages_active[stage].kind}`}
+                          stage={stage}
+                          parrilla={parrilla}
+                          loadingParrilla={loadingParrilla}
+                          setParrilla={setParrilla}
+                          startDate={startDate}
+                          endDate={endDate}
+                          carro={carro}
+                          setCarro={setCarro}
+                          setStage={setStage}
+                          searchParrilla={searchParrilla}
+                          boletoValido={boletoValido}
+                        />
+                      ) : (
+                        ""
+                      )}
+                      {stages_active[stage].kind == "pago" ? (
+                        <StagePago
+                          key={"stage-pago"}
+                          carro={carro}
+                          nacionalidades={props.nacionalidades}
+                          convenios={props.convenios}
+                          mediosDePago={props.mediosDePago}
+                          setCarro={setCarro}
+                          boletoValido={boletoValido}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
+
+
+                  :
                   <h5 className="p-2">
-                      Lo sentimos, no existen
-                      resultados para su búsqueda
-                   </h5>
+                    Lo sentimos, no existen
+                    resultados para su búsqueda
+                  </h5>
                 }
               </div>
             </div>
@@ -260,13 +283,13 @@ useEffect(() => {
       )}
       {stage == 2 ? (
         <StagePago
-            key={"stage-pago"}
-            carro={carro}
-            nacionalidades={props.nacionalidades}
-            convenios={props.convenios}
-            mediosDePago={props.mediosDePago}
-            setCarro={setCarro}
-            boletoValido={boletoValido}
+          key={"stage-pago"}
+          carro={carro}
+          nacionalidades={props.nacionalidades}
+          convenios={props.convenios}
+          mediosDePago={props.mediosDePago}
+          setCarro={setCarro}
+          boletoValido={boletoValido}
         />
       ) : (
         ""
@@ -317,4 +340,4 @@ export const getServerSideProps = withIronSessionSsr(async function ({
     },
   };
 },
-sessionOptions);
+  sessionOptions);

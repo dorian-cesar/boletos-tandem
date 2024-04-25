@@ -231,7 +231,6 @@ export default function Home(props) {
                     </div>
                   </div>
                   :
-                  // <h5 className="p-2">
                   <h5 className={`p-2 ${styles["lo-sentimos"]}`}>
 
                     Lo sentimos, no existen
