@@ -90,12 +90,12 @@
 .input-container img {
     width: 25px;
     height: 25px;
-    margin-top: auto;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
-@media screen and (width < 550px) {
 
+@media (max-width: 550px) {
     .input {
         display: block !important;
     }
@@ -108,7 +108,7 @@
         flex-direction: column;
         box-shadow: 0px 3px 8px 0px #d4dbec;
         border-radius: 16px;
-        padding: 30px 30px 30px 30px;
+        padding: 30px;
         background-color: #fff;
         margin-inline: auto;
     }
@@ -118,51 +118,29 @@
     }
 
     .input-container img {
-        width: 35px !important;
-        height: 35px !important;
+        width: 30px !important;
+        height: 27px !important;
         margin-block: 0 !important;
         margin-inline: auto !important;
     }
 }
 
-@media screen and (width < 550px) {
-    .input-container {
-        flex-direction: column;
-    }
-
-    .input-container img {
-        width: 35px !important;
-        height: 35px !important;
-        margin-block: 0 !important;
-        margin-inline: auto !important;
-    }
-}
-
-
-@media screen and (width < 768px) {
+@media (min-width: 551px) and (max-width: 767px) {
     .input-container img {
         width: 25px;
         height: 25px;
         margin-top: auto;
         margin-bottom: 10px;
     }
-}
 
-@media (max-width: 991px) {
     .seleccion-servicio {
         margin-top: -50px;
     }
 }
 
-@media (max-width: 767px) {
+@media (min-width: 768px) and (max-width: 991px) {
     .seleccion-servicio {
         margin-top: -50px;
-    }
-}
-
-@media only screen and (max-width: 600px) {
-    .seleccion-servicio {
-        margin-top: 25px;
     }
 }
 

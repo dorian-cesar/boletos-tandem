@@ -52,14 +52,30 @@
     border: 5px double #fff;
 }
 
-@media screen and (min-width: 320px) and (max-width: 767px) {
-    
+
+@media (min-width: 320px) and (max-width: 395px) {
+    .container-filtro {
+        width: 107%;
+        height: 100%;
+        margin-left: -3%;
+        
+    }
+}
+
+
+@media screen and (min-width: 396px) and (max-width: 767px) {
+
     .container-filtro {
         
-        width: 100%;
+        width: 104%;
         height: 100%;
-        background-color: red;
+        margin-left: -2%;
     }
+} 
+
+@media screen and (min-width: 768px) and (max-width: 930px) {
+
     
-    }
+    
+}
     

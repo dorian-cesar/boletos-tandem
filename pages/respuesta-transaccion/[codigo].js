@@ -69,81 +69,79 @@ export default function Home(props) {
   
   const obtenerInformacion = () => {
     {
-      const carro = carroCompras || copiaCarro;
-      Object.entries(carro).map(([key, value]) => {
-        const fechaIdaFormateada = value.ida[0].fechaSalida.split('/');
-        const fechaIda = new Date(`${ fechaIdaFormateada[1] }/${ fechaIdaFormateada[0] }/${ fechaIdaFormateada[2]}`);
+      let carritoIda = {
+        titulo: "",
+        detalle: [],
+      };
+      let carritoVuelta = {
+        titulo: "",
+        detalle: [],
+      };
+      
+      let idaNombre;
+      let vueltaNombre;
 
-
-        const idaNombre = `Salida, ${ format(fechaIda, "ddd D MMM") }`;
-        const keys = Object.keys(value);
-
-        let vueltaNombre = '';
-        if( keys.length >= 2 ) {
-          const fechaVueltaFormateada = value.vuelta[0].fechaSalida.split('/');
-          const fechaVuelta = new Date(`${ fechaVueltaFormateada[1] }/${ fechaVueltaFormateada[0] }/${ fechaVueltaFormateada[2]}`);
-          vueltaNombre = `Vuelta, ${ format(fechaVuelta, "ddd D MMM") }`;
-        }
-
-        const idaList = value.ida || [];
-        const vueltaList = value.vuelta || [];
-
-        let carro_temp = { ...resumen };
-        const datos = [];
-
-        let carritoIda = {
-          titulo: idaNombre,
-          detalle: [],
-        };
-        let carritoVuelta = {
-          titulo: vueltaNombre,
-          detalle: [],
-        };
-
-        Object.entries(idaList).map(([key, value]) => {
-          const datos = {
-            origen: value.terminalOrigen,
-            destino: value.terminalDestino,
-            hora: value.horaSalida,
-            horaLlegada: value.horaLlegada,
-            cantidadAsientos: 0,
-            total: 0
-          };
-
-          value.asientos.forEach((element) => {
-            datos.cantidadAsientos += 1;
-            datos.total += element.valorAsiento;
-          });
-
-          datos.total = clpFormat.format(datos.total);
-
-          carritoIda.detalle.push(datos);
-        });
-
-        Object.entries(vueltaList).map(([key, value]) => {
+      Object.keys(carroCompras).forEach((key) => {
+        const compra = carroCompras[key];
+        if (compra.ida && compra.ida.length > 0) {
+          const fechaIdaFormateada = compra.ida[0].fechaSalida.split("/");
+          const fechaIda = new Date(
+            `${fechaIdaFormateada[1]}/${fechaIdaFormateada[0]}/${fechaIdaFormateada[2]}`
+          );
+          const idaList = compra.ida;
+          idaList.forEach((value) => {
             const datos = {
-              origen: value.terminalOrigen,
-              destino: value.terminalDestino,
+              origen: `${value.terminalOrigen}`,
+              destino: `${value.terminalDestino}`,
               hora: value.horaSalida,
               horaLlegada: value.horaLlegada,
               cantidadAsientos: 0,
-              total: 0
+              total: 0,
             };
-
             value.asientos.forEach((element) => {
               datos.cantidadAsientos += 1;
               datos.total += element.valorAsiento;
             });
-
+            idaNombre = `Salida, ${format(fechaIda, "ddd D MMM")}`;
             datos.total = clpFormat.format(datos.total);
-
-            carritoVuelta.detalle.push(datos);
+            carritoIda.detalle.push(datos);
           });
-        datos.push(carritoIda);
-        datos.push(carritoVuelta);
-        carro_temp.carro["lista"] = datos;
-        setResumen(carro_temp);
+        }
+
+        if (compra.vuelta && compra.vuelta.length > 0) {
+          const fechaVueltaFormateada = compra.vuelta[0].fechaSalida.split("/");
+          const fechaVuelta = new Date(
+            `${fechaVueltaFormateada[1]}/${fechaVueltaFormateada[0]}/${fechaVueltaFormateada[2]}`
+          );
+          const vueltaList = compra.vuelta;
+          vueltaList.forEach((value) => {
+            const datos = {
+              origen: `${value.terminalOrigen}`,
+              destino: `${value.terminalDestino}`,
+              hora: value.horaSalida,
+              horaLlegada: value.horaLlegada,
+              cantidadAsientos: 0,
+              total: 0,
+            };
+            value.asientos.forEach((element) => {
+              datos.cantidadAsientos += 1;
+              datos.total += element.valorAsiento;
+            });
+            datos.total = clpFormat.format(datos.total);
+            carritoVuelta.detalle.push(datos);
+            vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM")}`;
+          });
+        }
       });
+
+      const datos = [];
+      carritoIda.titulo = idaNombre;
+      carritoVuelta.titulo = vueltaNombre;
+      datos.push(carritoIda);
+      datos.push(carritoVuelta);
+      const carro_temp = { ...resumen };
+      carro_temp.carro["lista"] = datos;
+      setResumen(carro_temp);
     }
   };
 
