@@ -1,10 +1,33 @@
 .bloque {
-    box-shadow: 0px 3px 8px 0px #d4dbec;
-    border-radius: 16px;
-    padding: 30px 30px 30px 30px;
-    background-color: #fff;
-    margin-top: 25px;
-    margin-inline: auto;
-    position: relative;
-    z-index: 10;
+  box-shadow: 0px 3px 8px 0px #d4dbec;
+  border-radius: 16px;
+  padding: 30px 30px 30px 30px;
+  background-color: #fff;
+  margin-top: 25px;
+  margin-inline: auto;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+@media (min-width: 320px) and (max-width: 395px) {
+  .bloque{
+    margin-left: 4%;
+    margin-top: 10px;
+    width: 91%;
   }
+}
+
+@media screen and (min-width: 396px) and (max-width: 767px) {
+.bloque{
+  margin-left: 4%;
+  margin-top: 10px;
+  width: 91%;
+}
+  
+} 
+
+@media screen and (min-width: 768px) and (max-width: 930px) {
+
+
+
+}
