@@ -118,10 +118,10 @@ export default function Home(props) {
       <div className={styles["home"]}>
         <div className="pullman-mas">
           <div className="container">
-            <div className="row py-4">
-              <div className="col-12">
+          <div className= {`row py-4 ${styles["nav"]}`}>
+  
                 <span>Inicio  &gt; Confirmación de boleto </span>
-              </div>
+              
             </div>
           </div>
 
@@ -199,7 +199,7 @@ export default function Home(props) {
                   {loadingParrilla ? <Loader /> : parrilla.length > 0 ?
 
                     <div className="pasajes-compra py-5">
-                      <div className="container">
+                      <div className="">
                         {stages_active[stage].kind == "pasajes_1" ||
                           stages_active[stage].kind == "pasajes_2" ? (
                           <StagePasajes
