@@ -41,7 +41,7 @@ const BusquedaBoletos = (props) => {
   return (
     <>
       <div className={styles["container"]}>
-        <div className="row search-row">
+      <div className={`row search-row ${styles["search-row"]}`}>
           <div className="col-12 col-md-6 col-lg-2">
             <div className={styles["grupo-campos"]}>
               <label>Código de transacción:</label>
