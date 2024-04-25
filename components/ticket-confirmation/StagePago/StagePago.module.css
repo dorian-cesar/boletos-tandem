@@ -19,3 +19,44 @@
 .info-list {
     width: 612px;
 }
+
+@media (max-width:390px){
+    .travel-summary {
+        width: 100%;
+    }
+}
+
+
+
+/* Para pantallas de 320px a 767px de ancho */
+@media screen and (min-width: 391px) and (max-width: 767px) {
+    .info-list {
+        width: 100%;
+    }
+    .travel-summary {
+        width: 100%;
+    }
+}
+
+
+/* Para pantallas de hasta 1000px de ancho */
+@media screen and (max-width: 1000px) {
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 20px;
+    }
+
+    .info-list {
+        width: 100%;
+    }
+}
+
+/* Para pantallas de 1001px o más de ancho */
+@media (min-width: 1001px) {
+    .info-list {
+        width: 600px;
+    }
+}
