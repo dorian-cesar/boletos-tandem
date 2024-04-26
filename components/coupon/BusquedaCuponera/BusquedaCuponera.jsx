@@ -84,9 +84,9 @@ const BusquedaCuponera = (props) => {
         <div className="search-row">
           <div className={styles["grupo-campos"]}>
             <label>Origen</label>
-            <div style={{ width: '100%' }}>
+            <div style={{ width: '100%' }} className={styles["sel-input"]}>
               <Input
-                className={` ${styles["sel-input"]} ${styles["origen"]}`}
+                className={`${styles["sel-input"]} ${styles["origen"]}`}
                 placeholder="Seleccione origen"
                 items={retornaCiudadesSelect(origenes)}
                 selected={
