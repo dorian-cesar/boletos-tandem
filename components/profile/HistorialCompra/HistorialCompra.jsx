@@ -278,11 +278,7 @@ const HistorialCompra = () => {
       if (boleto.length === 0) {
         return <h3>No hay registros</h3>;
       } else {
-        const startIndex = (currentPage - 1) * itemsPerPageBoleto;
-        const endIndex = startIndex + itemsPerPageBoleto;
-        const currentItems = boleto.slice(startIndex, endIndex);
-
-        return currentItems.map((itemBoleto, index) => (
+        return boleto.map((itemBoleto, index) => (
           <tr key={index}>
             <td>{itemBoleto.boleto}</td>
             <td>{itemBoleto.origen}</td>
@@ -297,7 +293,7 @@ const HistorialCompra = () => {
         ));
       }
     },
-    [boleto, currentPageBoleto]
+    [boleto, currentPageBoleto, mostrarPopup]
   );
 
   const tablaArmada = (
@@ -331,7 +327,6 @@ const HistorialCompra = () => {
         .then(({ data }) => {
           setBoleto(data.object);
           abrirPopup();
-          console.log("BOLETOS:::", data.object)
         })
         .catch((error) => console.log("ERROR:::", error));
     }
