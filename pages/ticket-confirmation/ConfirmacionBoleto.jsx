@@ -136,10 +136,10 @@ export default function Home(props) {
               </div>
               <div className={styles["bloque"]}>
                 <div className={styles["bloque-texto"]}>
-                  <h2>
+                  <p>
                     Ingresa el código de tu boleto para{" "}
                     <strong>visualizar el boleto que quieres confirmar</strong>
-                  </h2>
+                  </p>
                 </div>
                 <div className={styles["container"]}>
                   <div className={`row search-row ${styles["search-row"]}`}>
