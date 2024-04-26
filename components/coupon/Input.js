@@ -1,15 +1,17 @@
 import Select from "react-select";
+import styles from './input.module.css'
 
 const customStyles = {
   control: (provided) => ({
     ...provided,
     display: 'flex', 
-    width: '100%',
-    height: '100%',
+    // width: '320px',
+    height: '60px',
     padding: '8px', 
     borderRadius: '16px',
     gap: '10px', 
     background: 'var(--Blanco, #FFF)', 
+    flex: '1 0 100%',
   }),
   placeholder: (provided) => ({
     ...provided,
@@ -33,6 +35,7 @@ const Input = ({ items, selected, setSelected, className, placeholder, isDisable
           setSelected(e.value);
         }}
         isDisabled={isDisabled} 
+        className={styles["sel-input"]}
       />
     </>
   );
