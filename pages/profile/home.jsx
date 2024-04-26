@@ -7,6 +7,7 @@ import RegistroPasajero from "../../components/profile/RegistroPasajero/Registro
 import CambiarPassword from "../../components/profile/CambiarPassword/CambiarPassword";
 import HistorialCompra from "../../components/profile/HistorialCompra/HistorialCompra";
 import RegistrarPasajero from "../../components/profile/RegistrarPasajero/RegistrarPasajero";
+import HistorialCompraCuponera from "../../components/profile/HistorialCompraCuponera/HistorialCompraCuponera";
 import { useLocalStorage } from "/hooks/useLocalStorage";
 import Footer from "../../components/Footer";
 import { useRouter } from "next/router";
@@ -111,6 +112,7 @@ const Home = () => {
             {vista === "cambioBoleto" && <MenuLateral />}
             {vista === "devolucionBoleto" && <MenuLateral />}
             {vista === "registrarPasajero" && <RegistrarPasajero />}
+            {vista === "historialCompraCuponera" && <HistorialCompraCuponera />}
           </div>
         </section>
 

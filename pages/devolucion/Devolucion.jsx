@@ -37,12 +37,11 @@ const Devolucion = (props) => {
         <title>PullmanBus | Devolución</title>
       </Head>
       <div className={styles["home"]}>
-      <div className= {`py-4 container ${styles["nav"]}`}>
-              <span>Inicio &gt;  Devolución de boleto </span>
-          </div>
+        <div className={`py-4 container ${styles["nav"]}`}>
+          <span>Inicio &gt;  Devolución de boleto </span>
+        </div>
         {stage == 0 ? (
           <>
-            {/* <div className={styles["container"]}> */}
             <div className={`mb-5 container ${styles["fondo-devolucion"]}`}>
               <div className={"fila"}>
                 <div className={styles["title"]}>
@@ -53,10 +52,10 @@ const Devolucion = (props) => {
                 <div className={styles["bloque"]}>
                   <div className={styles["sub-title"]}>
                     <p>
-                    Puedes realizar cambios en tus boletos tanto en nuestro sitio
-                    web como en las boleterías autorizadas, siempre y cuando lo
-                    hagas hasta cuatro (4) horas antes de la hora de salida del
-                    bus.
+                      Puedes realizar cambios en tus boletos tanto en nuestro sitio
+                      web como en las boleterías autorizadas, siempre y cuando lo
+                      hagas hasta cuatro (4) horas antes de la hora de salida del
+                      bus.
                     </p>
                   </div>
                   <BusquedaBoletos
@@ -113,7 +112,7 @@ const Devolucion = (props) => {
               codigoTransaccion={codigoTransaccion}
             />
           ) : (
-            <DevolucionDebito 
+            <DevolucionDebito
               setStage={setStage}
               tipoCompra={tipoCompra}
               selectedBoletos={selectedBoletos}

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocalStorage } from "/hooks/useLocalStorage";
 import { useRouter } from "next/router";
 import { useForm } from "/hooks/useForm";
-import styles from "./HistorialCompra.module.css";
+import styles from "./HistorialCompraCuponera.module.css";
 import axios from "axios";
 import { useId } from "react";
 import { decryptData } from "utils/encrypt-data.js";
@@ -35,7 +35,7 @@ const clpFormat = new Intl.NumberFormat("es-CL", {
 const itemsPerPage = 9;
 const itemsPerPageBoleto = 5;
 
-const HistorialCompra = () => {
+const HistorialCompraCuponera = () => {
   const { formState: data, onInputChange } = useForm(actualizarFormFields);
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const router = useRouter();
@@ -43,11 +43,9 @@ const HistorialCompra = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [historial, setHistorial] = useState([]);
-  const [boleto, setBoleto] = useState([]);
+  const [cuponera, setCuponera] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentPageBoleto, setCurrentPageBoleto] = useState(1);
   const [mostrarPopup, setMostrarPopup] = useState(false);
-  const [transaccion, setTransaccion] = useState("");
 
   const abrirPopup = () => {
     setMostrarPopup(true);
@@ -91,7 +89,7 @@ const HistorialCompra = () => {
   useEffect(() => {
     if (user) {
       axios
-        .post("/api/user/historial-compra", {
+        .post("/api/user/historial-compra-cuponera", {
           email: user.mail,
         })
         .then(({ data }) => {
@@ -114,14 +112,21 @@ const HistorialCompra = () => {
           <tr key={index}>
             <td>{itemHistorial.codigo}</td>
             <td>{itemHistorial.fechaCompraFormato}</td>
-            <td>{itemHistorial.cantidadBoletos}</td>
+            <td>
+              {itemHistorial.origen} - {itemHistorial.destino}
+            </td>
+            <td>{itemHistorial.vigenciaCuponera ? "Activa" : "Vencidad"}</td>
             <td>{clpFormat.format(itemHistorial.monto)}</td>
             <td className={styles["boton-descargar"]}>
-              <img
-                width={24}
-                src="/img/icon/general/search-outline.svg"
-                onClick={()=> abrirPopTransaccion(itemHistorial.codigo)}
-              />
+              {itemHistorial.vigenciaCuponera ? (
+                <img
+                  width={24}
+                  src="/img/icon/general/search-outline.svg"
+                  onClick={() => abrirPopTransaccion(itemHistorial)}
+                />
+              ) : (
+                ""
+              )}
             </td>
           </tr>
         ));
@@ -200,173 +205,53 @@ const HistorialCompra = () => {
     return pages;
   };
 
-  const totalPagesBoletos = Math.ceil(boleto.length / itemsPerPage);
-
-  const handlePageChangeBoleto = (pageNumber) => {
-    if (pageNumber >= 1 && pageNumber <= totalPagesBoletos) {
-      setCurrentPageBoleto(pageNumber);
-    }
-  };
-
-  const handleNextPageBoleto = () => {
-    if (currentPageBoleto < totalPagesBoletos) {
-      setCurrentPageBoleto(currentPageBoleto + 1);
-    }
-  };
-
-  const handlePreviousPageBoleto = () => {
-    if (currentPageBoleto > 1) {
-      setCurrentPageBoleto(currentPageBoleto - 1);
-    }
-  };
-
-  const renderPaginationBoleto = () => {
-    const pages = [];
-    const maxVisiblePages = 3;
-    const startPage = Math.max(
-      1,
-      currentPageBoleto - Math.floor(maxVisiblePages / 2)
-    );
-    const endPage = Math.min(startPage + maxVisiblePages - 1, totalPagesBoletos);
-
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(
-        <li
-          key={i}
-          className={`page-item ${currentPageBoleto === i ? "active" : ""}`}
-        >
-          <a className="page-link" onClick={() => handlePageChangeBoleto(i)}>
-            {i}
-          </a>
-        </li>
-      );
-    }
-
-    if (currentPageBoleto > 1) {
-      pages.unshift(
-        <li key="previous" className="page-item">
-          <a
-            className="page-link"
-            aria-label="Previous"
-            onClick={handlePreviousPageBoleto}
-          >
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-      );
-    }
-
-    if (currentPageBoleto < totalPagesBoletos) {
-      pages.push(
-        <li key="next" className="page-item">
-          <a
-            className="page-link"
-            aria-label="Next"
-            onClick={handleNextPageBoleto}
-          >
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      );
-    }
-
-    return pages;
-  };
-
-  const boletoDetalle = useMemo(
-    function renderHistorial() {
-      if (boleto.length === 0) {
-        return <h3>No hay registros</h3>;
-      } else {
-        return boleto.map((itemBoleto, index) => (
-          <tr key={index}>
-            <td>{itemBoleto.boleto}</td>
-            <td>{itemBoleto.origen}</td>
-            <td>{itemBoleto.fechaEmbarcacion}</td>
-            <td className={styles["boton-descargar"]}>
-              {itemBoleto.puedeImprimir ? <img
-                src="/img/icon/general/download-outline.svg"
-                onClick={ ()=> descargarBoleto(itemBoleto.boleto)}
-              /> : ""}
-            </td>
-          </tr>
-        ));
-      }
-    },
-    [boleto, currentPageBoleto, mostrarPopup]
-  );
-
   const tablaArmada = (
     <div className={styles["menu-central"]}>
-      <table className={`table ${styles["tabla-informacion"]}`}>
-        <thead>
-          <tr>
-            <th scope="col">Boleto</th>
-            <th scope="col">Origen</th>
-            <th scope="col">Fecha embarque</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>{!isLoading ? boletoDetalle : ""}</tbody>
-      </table>
-      <nav aria-label="Page navigation example">
-        <ul className={`pagination ${styles["pagination-css"]}`}>
-          {renderPaginationBoleto()}
-        </ul>
-      </nav>
+      <div className={"col-12 text-center"}>
+        <img
+          src={`https://barcode.tec-it.com/barcode.ashx?data=${cuponera?.codigoSeguridad}&code=MobileQRCode&eclevel=L`}
+          className="my-4"
+          width="162"
+          height="162"
+        />
+        <p className={styles["codigo-seguridad"]}>
+          Código cuponera: {cuponera?.codigoSeguridad}
+        </p>
+      </div>
+      <div className={"col-12"}>
+        <span>Cantidad Cupones: </span>
+        <b> {cuponera?.cantidadViajes + cuponera?.cantidadViajesExtras}</b>
+      </div>
+      <div className={"col-12"}>
+        <span>Cantidad Cupones disponibles: </span>
+        <b>{cuponera?.cantidadViajesRestantes}</b>
+      </div>
     </div>
   );
 
-  const abrirPopTransaccion = (transaccion) => {
+  const abrirPopTransaccion = (cuponera) => {
     {
-      setTransaccion(transaccion)
-      axios
-        .post("/api/user/historial-compra-boletos", {
-          codigo: transaccion,
-        })
-        .then(({ data }) => {
-          setBoleto(data.object);
-          abrirPopup();
-        })
-        .catch((error) => console.log("ERROR:::", error));
+      setCuponera(cuponera);
+      abrirPopup();
     }
   };
-
-  const descargarBoleto = async (boletoBuscar) =>{
-    let boleto = {
-      codigo: transaccion,
-      boleto: boletoBuscar
-    }
-        try {
-        const res = await axios.post("/api/voucher", boleto);
-        if (res.request.status) {
-           const linkSource = `data:application/pdf;base64,${res.data?.archivo}`;
-           const downloadLink = document.createElement("a");
-           const fileName = res.data.nombre;
-           downloadLink.href = linkSource;
-           downloadLink.download = fileName;
-           downloadLink.click();
-        }
-      } catch (e) {}
-
-  }
 
   return (
     <>
       <div className={styles["menu-central"]}>
-        <h1 className="title-historial">Historial de compras</h1>
+        <h1 className="title-historial">Historial de compras cuponera</h1>
         <span>
-          Mantén un registro de todos los viajes realizados. Recuerda que solo
-          podrás descargar tu pasaje mientras esté activo.
+          Mantén un registro de todos los viajes realizados con tu cuponera.
         </span>
         <table className={`table ${styles["tabla-informacion"]}`}>
           <thead>
             <tr>
               <th scope="col">Código Transacción</th>
               <th scope="col">Fecha Compra</th>
-              <th scope="col">Cantidad Boletos</th>
+              <th scope="col">Origen - Destino</th>
+              <th scope="col">Vigencia</th>
               <th scope="col">Monto</th>
-              <th scope="col">Ver boletos</th>
+              <th scope="col">Ver detalle</th>
             </tr>
           </thead>
           <tbody>{!isLoading ? MemoizedComponent : ""}</tbody>
@@ -378,7 +263,7 @@ const HistorialCompra = () => {
         </nav>
         {mostrarPopup && (
           <Popup
-            modalKey={ModalEntities.detail_ticket}
+            modalKey={ModalEntities.detail_coupon}
             modalClose={cerrarPopup}
             modalBody={tablaArmada}
             modalMethods={cerrarPopup}
@@ -389,4 +274,4 @@ const HistorialCompra = () => {
   );
 };
 
-export default HistorialCompra;
+export default HistorialCompraCuponera;
