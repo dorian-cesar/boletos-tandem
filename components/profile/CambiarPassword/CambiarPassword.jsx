@@ -105,7 +105,7 @@ const CambiarPassword = (props) => {
   }
   return (
     <div className={styles["menu-central"]}>
-      <div className={`${styles["bloque"]} "col-12 col-md-12"`}>
+   
         <div className={"row "}>
           <div className={"col-6"}>
             <a className={styles["title-change-password"]}>Cambio contraseña</a>
@@ -163,7 +163,7 @@ const CambiarPassword = (props) => {
               Cambiar contraseña
             </div>
           </div>
-        </div>
+
       </div>
       {mostrarPopup && (
           <Popup
