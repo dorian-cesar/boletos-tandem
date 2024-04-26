@@ -23,7 +23,8 @@ const ModalEntities = {
     user_ticket_not_equals_buy: 'USER_TICKET_NOT_EQUALS_BUY',
     return_to_wallet: 'RETURN_TO_WALLET',
     return_to_wallet_success: 'RETURN_TO_WALLET_SUCCESS',
-    detail_ticket: 'DETAIL_TICKET'
+    detail_ticket: 'DETAIL_TICKET',
+    detail_coupon: 'DETAIL_COUPON'
 }
 
 export default ModalEntities;

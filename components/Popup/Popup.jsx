@@ -180,6 +180,13 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton, modalBod
       buttonMessage: "Aceptar",
       imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
       onClick: modalMethods
+    },
+    [ModalEntities.detail_coupon]: {
+      title: "Detalle cuponera",
+      body: modalBody,
+      buttonMessage: "Aceptar",
+      imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
+      onClick: modalMethods
     }
   };
   
