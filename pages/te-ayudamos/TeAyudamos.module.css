@@ -1,6 +1,7 @@
 .body {
     padding-block-end: 26px;
     background: var(--Azul-fondo, #E6ECF6);
+    padding-block: 24px;
 }
 
 .title {
