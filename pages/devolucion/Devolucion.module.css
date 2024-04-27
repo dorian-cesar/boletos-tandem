@@ -11,7 +11,7 @@
 }
 
 .fondo-devolucion{
-    width: 1039px;
+    max-width: 1039px;
     height: 524px;
     flex-shrink: 0; 
     border-radius: 16px;
@@ -42,8 +42,7 @@
 
 @media (max-width:399px) {
     .fondo-devolucion{
-        width: 315px;
-        height: 524px;
+        max-width: 315px;
         flex-shrink: 0; 
         border-radius: 16px;
         background: var(--Blanco, #FFF);
@@ -58,7 +57,7 @@
 
 @media screen and (min-width: 400px) and (max-width: 430px){
     .fondo-devolucion{
-        width: 372px;
+        max-width: 372px;
         height: 524px;
     }
 

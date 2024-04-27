@@ -41,31 +41,27 @@ const BusquedaBoletos = (props) => {
   return (
     <>
       <div className={styles["container"]}>
-      <div className={`row search-row ${styles["search-row"]}`}>
-          <div className="col-12 col-md-6 col-lg-2">
-            <div className={styles["grupo-campos"]}>
-              <label>Código de transacción:</label>
-              <input
-                type="text"
-                placeholder="Ej: HRJAS12FDA"
-                className={styles["input"]}
-                value={codigoTransaccion}
-                onChange={handleCodigoTransaccionChange}
-              />
-            </div>
+      <div className={`search-row ${styles["search-row"]}`}>
+          <div className={styles["grupo-campos"]}>
+            <label>Código de transacción:</label>
+            <input
+              type="text"
+              placeholder="Ej: HRJAS12FDA"
+              className={styles["input"]}
+              value={codigoTransaccion}
+              onChange={handleCodigoTransaccionChange}
+            />
           </div>
-          <div className="col-12 col-md-12 col-lg-2">
-            <div className={styles["grupo-campos"]}>
-              <div
-                className={
-                  codigoTransaccion
-                    ? styles["button-search-coupon"]
-                    : styles["button-search-coupon-disabled"]
-                }
-                onClick={codigoTransaccion ? validarTransaccion : null}
-              >
-                <img src="../img/icon/cuponera/search-outline.svg" /> Buscar
-              </div>
+          <div className={styles["grupo-campos"]}>
+            <div
+              className={
+                codigoTransaccion
+                  ? styles["button-search-coupon"]
+                  : styles["button-search-coupon-disabled"]
+              }
+              onClick={codigoTransaccion ? validarTransaccion : null}
+            >
+              <img src="../img/icon/cuponera/search-outline.svg" /> Buscar
             </div>
           </div>
         </div>

@@ -89,13 +89,13 @@ export default function Layout({ children }) {
                 </a>
               </Link>
             </div>
-            <div className="w-100">
+            {/* <div className="w-100">
               <Link href="" legacyBehavior>
                 <a href="/comprar" className="viajes-especiales">
                   Viajes especiales
                 </a>
               </Link>
-            </div>
+            </div> */}
             <div className="w-100">
               <a
                 href="https://pullmanempresas.cl/#/sessions/signin?return=%2Fempresa%2Fhome"

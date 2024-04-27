@@ -6,6 +6,10 @@
     /* border: 1px solid var(--gris-50, #7F7F7F); */
 }
 
+.header {
+    box-shadow: 0 0 3px rgba(51, 101, 180, 0.2);
+}
+
 @media print {
     .header {
         display: none;
