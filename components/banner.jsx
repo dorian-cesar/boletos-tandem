@@ -6,8 +6,7 @@ import 'swiper/css/navigation';
 
 const Banner = ( props ) => {
     const images = [
-        'https://pullman.cl/imagenes/fenix/banner/banner-1.png',
-        'https://pullman.cl/imagenes/fenix/banner/banner-2.png'
+        'https://pullman.cl/imagenes/fenix/banner/banner-1.jpg'
     ]
 
     return (
