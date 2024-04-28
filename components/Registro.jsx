@@ -53,6 +53,9 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
     status: false
   });
 
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isShowPassword2, setIsShowPassword2] = useState(false);
+
   const listaYears = useMemo(() => {
     let years = [];
     for(let i = new Date().getFullYear(); i >= 1910; i--) {
@@ -336,23 +339,45 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
             <div className="row">
               <div className="col-6">
                 <label className="label-input-modal">Contraseña</label>
-                <input
-                  type="password"
-                  className={"form-control form-control-modal"}
-                  name="password"
-                  value={registro?.password}
-                  onChange={onInputChange}
-                />
+                <div className="input-group">
+                  <input
+                    type={ !isShowPassword ? "password" : "text" }
+                    className={"form-control form-control-modal w-75"}
+                    name="password"
+                    value={registro?.password}
+                    onChange={onInputChange}
+                  />
+                  <span className="input-group-text form-control p-0 d-flex" onClick={ () => setIsShowPassword(!isShowPassword) }>
+                    {
+                      !isShowPassword ? (
+                        <img src="img/icon/form/eye-outline.svg" className="d-flex m-auto" width={25} height={25} alt="eye outline" />
+                      ) : (
+                        <img src="img/icon/form/eye-off-outline.svg" className="d-flex m-auto" width={25} height={25} alt="eye outline" />
+                      )
+                    }
+                  </span>
+                </div>
               </div>
               <div className="col-6">
                 <label className="label-input-modal">Confirme contraseña</label>
-                <input
-                  type="password"
-                  className={"form-control form-control-modal"}
-                  name="password2"
-                  value={registro?.password2}
-                  onChange={onInputChange}
-                />
+                <div className="input-group">
+                  <input
+                    type={ !isShowPassword2 ? "password" : "text" }
+                    className={"form-control form-control-modal w-75"}
+                    name="password2"
+                    value={registro?.password2}
+                    onChange={onInputChange}
+                  />
+                  <span className="input-group-text form-control p-0 d-flex" onClick={ () => setIsShowPassword2(!isShowPassword2) }>
+                    {
+                      !isShowPassword2 ? (
+                        <img src="img/icon/form/eye-outline.svg" className="d-flex m-auto" width={25} height={25} alt="eye outline" />
+                      ) : (
+                        <img src="img/icon/form/eye-off-outline.svg" className="d-flex m-auto" width={25} height={25} alt="eye outline" />
+                      )
+                    }
+                  </span>
+                </div>
               </div>
             </div>
           </div>
