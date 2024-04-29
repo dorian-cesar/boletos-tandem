@@ -29,6 +29,20 @@ export default async (req, res) => {
             const { montoTotal } = serviceRequest;
 
             if( montoTotal === 0 ) {
+                let dataSentCerrar = {
+                    "codigo": serviceResponse.data.object.codigo,
+                    "codigotransbank": '0000',
+                    "numerocuota": '0',
+                    "numerotarjeta": 'WALLET',
+                    "tipocuota": 'WALLET'
+                }
+
+                const dataCerrar = await axios.post(config.service_url + `/integracion/terminarTransaccion`, dataSentCerrar, {
+                    headers: {
+                        'Authorization': `Bearer ${token.token}`
+                    }
+                })
+
                 res.status(200).json({ url: "/respuesta-transaccion/" + serviceResponse.data.object.codigo, token, inputName: "TBK_TOKEN" });
             }
 
@@ -52,7 +66,7 @@ export default async (req, res) => {
                 montoTotal,
                 publicRuntimeConfig.site_url + "/respuesta-transaccion/"+ serviceResponse.data.object.codigo).then(async ({ url, token }) => {
                 
-             
+                console.log('CODIGO:::', serviceResponse.data.object.codigo)
                 console.log({url, token, inputName: "TBK_TOKEN"})
                 res.status(200).json({ url, token, inputName: "TBK_TOKEN" });
               
