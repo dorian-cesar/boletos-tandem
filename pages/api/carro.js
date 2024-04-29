@@ -30,8 +30,8 @@ export default async (req, res) => {
 
         let commit;
 
-        if( req.body.token_ws ) {
-            commit = await tx.commit(req.body.token_ws || '');
+        if( req.body.TBK_TOKEN || req.body.token_ws ) {
+            commit = await tx.commit(req.body.token_ws || req.body.TBK_TOKEN || '');
             console.log('COMMIT::::', commit);
     
             if(commit.status == 'AUTHORIZED'){
