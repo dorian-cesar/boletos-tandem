@@ -26,12 +26,13 @@ export default async (req, res) => {
             
         }
 
-        let dataCerrar;
-
         let commit;
 
-        if( req.body.TBK_TOKEN || req.body.token_ws ) {
-            commit = await tx.commit(req.body.token_ws || req.body.TBK_TOKEN || '');
+        let dataCerrar;
+
+        try {
+            commit = await tx.commit(req.body.token_ws  || '');
+    
             console.log('COMMIT::::', commit);
     
             if(commit.status == 'AUTHORIZED'){
@@ -49,23 +50,9 @@ export default async (req, res) => {
                     }
                 })
             }
-        } else {
-
-            let dataSentCerrar = {
-                    "codigo":req.body.codigo,
-                    "codigotransbank": '0000',
-                    "numerocuota": '0',
-                    "numerotarjeta": 'WALLET',
-                    "tipocuota": 'WALLET'
-                }
-
-            dataCerrar = await axios.post(config.service_url + `/integracion/terminarTransaccion`,dataSentCerrar,{
-                headers: {
-                    'Authorization': `Bearer ${token.token}`
-                }
-            })
-        } 
-
+        } catch (error) {
+            console.log('Transbank no encontro token');
+        }
 
         let data = await axios.post(config.service_url + `/integracion/obtenerTransaccion`,{
             "codigo": req.body.codigo
@@ -73,11 +60,19 @@ export default async (req, res) => {
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
-        })
+        });
 
+        if( data.data.estado !== 'ACTI' ) {
+            throw new Error();
+        }
        
-        res.status(200).json({ carro: data.data, cerrar:dataCerrar.data, commit: commit });
+        if( dataCerrar && dataCerrar.data ) {
+            res.status(200).json({ carro: data.data, cerrar: dataCerrar.data || null, commit: commit });
+        } else {
+            res.status(200).json({ carro: data.data, commit: commit });
+        }
     } catch(e){
+        console.log('ERROR TRANSACCION:::', e);
         res.status(400).json(e.response.data)
     }
     
