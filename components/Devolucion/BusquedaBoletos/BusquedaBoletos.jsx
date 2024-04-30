@@ -42,6 +42,7 @@ const BusquedaBoletos = (props) => {
     <>
       <div className={styles["container"]}>
       <div className={`search-row ${styles["search-row"]}`}>
+        <div className={ styles['search-row-container'] }>
           <div className={styles["grupo-campos"]}>
             <label>Código de transacción:</label>
             <input
@@ -64,6 +65,7 @@ const BusquedaBoletos = (props) => {
               <img src="../img/icon/cuponera/search-outline.svg" /> Buscar
             </div>
           </div>
+        </div>
         </div>
         {mostrarPopup && (
           <Popup
