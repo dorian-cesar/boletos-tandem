@@ -117,6 +117,13 @@
     border-radius: 16px;
 }
 
+.search-row-container {
+    display: flex;
+    align-items: flex-end;
+    margin-block-end: 16px;
+    flex-wrap: wrap;
+}
+
 
 
 @media screen and (max-width: 390px) {

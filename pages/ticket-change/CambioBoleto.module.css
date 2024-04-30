@@ -15,7 +15,7 @@
     margin-top: 20px;
     margin-bottom: 20px;
     width:85%;
-    height: 150px;
+    /* height: 150px; */
     flex-shrink: 0;
     border-radius: 16px;
     background: var(--azul-100, #3365B4);
@@ -34,16 +34,14 @@
 }
 
 .fondo-cambio{
-    width: 1039px;
-    height: 644px;
+    max-width: 1039px;
+    /* height: 644px; */
     flex-shrink: 0; 
     border-radius: 16px;
     background: var(--Blanco, #FFF);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.20);
     display: flex;
     justify-content: center;
-    margin-top: 5%;
-    margin-bottom: 10%;
     padding: 0px 24px 16px 24px
 }
 
@@ -72,9 +70,10 @@
 }
 
 .search-row{
-    width: 111%;
-    height: 125px;
     flex-shrink: 0;
+    display: flex;
+    align-content: center;
+    max-width: 968px;
 }
 
 .button-search-coupon {
@@ -141,6 +140,13 @@
     margin-inline-start: 13%;
 }
 
+.search-row-container {
+    display: flex;
+    align-items: flex-end;
+    margin-block-end: 16px;
+    flex-wrap: wrap;
+    padding-block: 16px;
+}
 
 @media screen and (max-width: 390px) {
     .nav{
@@ -149,8 +155,8 @@
     }
     .fondo-cambio {
         display: flex;
-        width: 315px;
-        height: 580px;
+        max-width: 315px;
+        /* height: 580px; */
         padding: 16px 8px;
         flex-direction: column;
         justify-content: flex-start;
@@ -194,8 +200,8 @@
     }
     .fondo-cambio {
         display: flex;
-        width: 362px;
-        height: 550px;
+        max-width: 362px;
+        /* height: 550px; */
         padding: 16px 8px;
         flex-direction: column;
         justify-content: flex-start;
@@ -235,8 +241,8 @@
 @media screen and (min-width: 768px) and (max-width: 908px){
     
     .fondo-cambio{
-        width: 1039px;
-        height: 644px;
+        max-width: 1039px;
+        /* height: 644px; */
         flex-shrink: 0; 
         border-radius: 16px;
         background: var(--Blanco, #FFF);
