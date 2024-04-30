@@ -142,8 +142,8 @@ export default function Home(props) {
                 </p>
               </div>
               <div className={styles["container"]}>
-                <div className={`row search-row ${styles["search-row"]}`}>
-                  <div className="col-12 col-md-6 col-lg-2">
+                <div className={`search-row ${styles["search-row"]}`}>
+                  <div className={ styles["search-row-container"] }>
                     <div className={styles["grupo-campos"]}>
                       <label>Código de boleto</label>
                       <input
@@ -154,8 +154,6 @@ export default function Home(props) {
                         className={styles["input"]}
                       />
                     </div>
-                  </div>
-                  <div className="col-12 col-md-12 col-lg-2">
                     <div className={styles["grupo-campos"]}>
                       <div className={styles["button"]}>
                         <button 
