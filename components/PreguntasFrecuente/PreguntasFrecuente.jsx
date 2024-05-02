@@ -115,7 +115,7 @@ const PreguntasFrecuente = (props) => {
                       <Acordeon
                         key={item.id.idDetalle}
                         title={item.pregunta}
-                        children={item.respuesta}
+                        textoPreguntasFrecuentes={item.respuesta}
                       />
                     ))
                   : 
@@ -123,7 +123,7 @@ const PreguntasFrecuente = (props) => {
                       <Acordeon
                         key={item.id.idDetalle}
                         title={item.pregunta}
-                        children={item.respuesta}
+                        textoPreguntasFrecuentes={item.respuesta}
                       />
                     ))}
               </div>
