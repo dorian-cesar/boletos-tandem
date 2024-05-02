@@ -5,13 +5,27 @@ import styles from "./TeAyudamos.module.css";
 import React, { useState, useEffect } from "react";
 import PreguntasFrecuente from "../../components/PreguntasFrecuente/PreguntasFrecuente";
 import NecesitasAyuda from "../../components/NecesitasAyuda/NecesitasAyuda";
+import { useRouter } from "next/router";
+
+const mappedStages = {
+  preguntas: 1,
+  ayuda: 2
+}
 
 const TeAyudamos = (props) => {
   const [stage, setStage] = useState(0);
+  const router = useRouter();
 
   function cambiarVista(id) {
     setStage(id);
   }
+
+  useEffect(() => {
+    const queryParams = router.query;
+    if( queryParams ) {
+      setStage(mappedStages[queryParams.page]);
+    }
+  }, [])
 
   return (
     <Layout>

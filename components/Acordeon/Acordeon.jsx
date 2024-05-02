@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './Acordeon.module.css';
 
 const Acordeon = (props) => {
 
-  const { title, viaje, fecha, hora, children, open = false } = props; 
+  const { title, viaje, fecha, hora, children, open = false, textoPreguntasFrecuentes = '' } = props; 
   const [isOpen, setIsOpen] = useState(open);
 
   const toggleAccordion = () => {
@@ -39,9 +39,15 @@ const Acordeon = (props) => {
         </div>
       </div>
       {isOpen && 
-        <div className={ `${ styles['accordion-content'] } ${ isOpen && styles['accordion-content-open'] }`}>
-          { children }
-        </div>
+        children ? (
+          <div className={ `${ styles['accordion-content'] } ${ isOpen && styles['accordion-content-open'] }`} hidden={!isOpen}>
+            { children }
+          </div>
+        ) : (
+          <div className={ `${ styles['accordion-content'] } ${ isOpen && styles['accordion-content-open'] }`} hidden={!isOpen}>
+            <div dangerouslySetInnerHTML={{ __html: textoPreguntasFrecuentes }} className={ `${ isOpen ? 'd-block' : 'd-none'}`}></div>
+          </div>
+        )
       }
     </div>
   );  

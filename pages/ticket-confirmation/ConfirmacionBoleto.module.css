@@ -3,9 +3,9 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    width: 100vw;
+    /* width: 100vw; */
     /* height: 100vh; */
-    
+    min-height: 70vh;
 }
 .nav{
     display: flex;
@@ -14,13 +14,13 @@
 .container {
     margin-top: 20px;
     margin-bottom: 20px;
-    width:85%;
-    height: 150px;
+    /* width:85%; */
     flex-shrink: 0;
     border-radius: 16px;
     background: var(--azul-100, #3365B4);
     box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.20);
     margin: 8%;
+    padding-block: 16px;
 }
 
 
@@ -34,16 +34,14 @@
 }
 
 .fondo-cambio{
-    width: 1039px;
-    height: 644px;
-    flex-shrink: 0; 
+    max-width: 1039px;
+    flex-shrink: 0;
     border-radius: 16px;
     background: var(--Blanco, #FFF);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.20);
     display: flex;
     justify-content: center;
-    margin-top: 5%;
-    margin-bottom: 10%;
+    margin-block: 15px;
     padding: 0px 24px 16px 24px
 }
 
@@ -71,15 +69,15 @@
     margin-top: 24px;
 }
 
-.search-row{
-    width: 111%;
-    height: 125px;
+.search-row {
     flex-shrink: 0;
+    display: flex;
+    align-content: center;
+    max-width: 968px;
 }
 
 .button-search-coupon {
     display: flex;
-    width:70%;
     height: 40px;
     padding: 0px 52px;
     justify-content: center;
@@ -108,7 +106,6 @@
 
 .button-search-coupon-disabled {
     display: flex;
-    width:70%;
     height: 40px;
     padding: 0px 52px;
     justify-content: center;
@@ -136,9 +133,20 @@
     border-radius: 16px;
 }
 
+.input :focus {
+    outline: none !important;
+}
 
 .lo-sentimos{
     margin-inline-start: 13%;
+}
+
+.search-row-container {
+    display: flex;
+    align-items: flex-end;
+    margin-block-end: 16px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 
@@ -149,8 +157,7 @@
     }
     .fondo-cambio {
         display: flex;
-        width: 315px;
-        height: 490px;
+        max-width: 315px;
         padding: 16px 8px;
         flex-direction: column;
         justify-content: flex-start;
@@ -161,18 +168,15 @@
 
         border-radius: 16px;
         background: var(--Blanco, #FFF);
-        }
+    }
 
     .container {
- 
         width: 100%;
-        height: 220px;
         margin: 0%;
     }
     
     .button-search-coupon, .button-search-coupon-disabled {
         margin: 0% 0%;
-        width: 115%;
     }
 
     .input{
@@ -192,8 +196,7 @@
     }
     .fondo-cambio {
         display: flex;
-        width: 362px;
-        height: 457px;
+        max-width: 362px;
         padding: 16px 8px;
         flex-direction: column;
         justify-content: flex-start;
@@ -204,19 +207,17 @@
 
         border-radius: 16px;
         background: var(--Blanco, #FFF);
-        }
+    }
 
     .container {
         margin-top: 20px;
         margin-bottom: 20px;
         width: 100%;
-        height: 220px;
         margin: 0%;
     }
     
     .button-search-coupon, .button-search-coupon-disabled {
         margin: 0% 0%;
-        width: 115%;
     }
 
     .input{
@@ -237,26 +238,20 @@
     }
     
     .fondo-cambio{
-        width: 1039px;
-        height: 515px;
+        max-width: 1039px;
         flex-shrink: 0; 
         border-radius: 16px;
         background: var(--Blanco, #FFF);
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.20);
         display: flex;
         justify-content: center;
-        margin-top: 5%;
-        margin-bottom: 10%;
-        padding: 0px 24px 16px 24px
+        padding: 0px 24px 16px 24px;
     }
 
     .container {
-        margin-top: 12%;
-        margin-bottom: 0;
         width: 100%;
-        height: 224px;
         margin-left: 0;
-}
+    }
     
     .button-search-coupon, .button-search-coupon-disabled {
         margin: 0% 0%;
@@ -266,9 +261,11 @@
     .input{
         width: 100%;
     }
+    
     .lo-sentimos{
         margin-inline-start: 6%;
     }
+
     .search-row{
         width: 100%;
     }
