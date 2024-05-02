@@ -23,7 +23,7 @@ const TeAyudamos = (props) => {
   useEffect(() => {
     const queryParams = router.query;
     if( queryParams ) {
-      setStage(mappedStages[queryParams.page]);
+      setStage(mappedStages[queryParams.page] || 0);
     }
   }, [])
 
