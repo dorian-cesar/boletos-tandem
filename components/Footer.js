@@ -29,7 +29,9 @@ const Footer = () => (
                         <div className="w-100" style={{ paddingLeft: "25px", borderLeft: "1px solid" }}>
                             <ul>
                                 <li>
-                                    <a href="">Preguntas Frecuentes</a>
+                                    <Link href="/teAyudamos?page=preguntas" legacyBehavior>
+                                        <a href="">Preguntas Frecuentes</a>
+                                    </Link>
                                 </li>
                                 <li>
                                     <Link href="/conoce-tus-derechos" legacyBehavior>
