@@ -3,6 +3,7 @@ import Layout from 'components/Layout'
 import { useState } from 'react'
 
 import Head from 'next/head'
+import Footer from '../components/Footer';
 
 
 
@@ -93,7 +94,7 @@ export default function Terminos(props) {
           </div>
         </div>
       </div>
-
+      <Footer />
     </Layout>
   )
 }
