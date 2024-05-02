@@ -966,6 +966,7 @@ select.form-control.seleccion {
 
 .home {
   background: var(--Azul-fondo, #E6ECF6);
+  padding-block-end: 150px;
 }
 
 .home .img-principal img {
