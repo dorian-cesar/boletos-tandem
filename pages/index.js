@@ -42,7 +42,7 @@ export default function Home(props) {
           isShowMascota={true}
         />
 
-        <Ofertas />
+        {/* <Ofertas /> */}
       </div>
       <Footer />
     </Layout>
