@@ -84,7 +84,7 @@
     align-items: flex-start;
     border-radius: 16px; 
     padding-inline: 16px;
-    padding-block-start: 10px;
+    padding-block: 16px;
 }
 
 .accordion-content-open {
