@@ -27,16 +27,18 @@ export default async (req, res) => {
         })
 
         if( serviceResponse.data.status ){
-            let commerceCode = 597035840877;
-            let apiKey = '4c69649914993ff286f7888fb7f4366c';
+            const commerceCode = process.env.TBK_API_KEY_ID;
+            const apiKey = process.env.TBK_API_KEY_SECRET;
+
             let tx;
 
             if(process.env.NODE_ENV_TBK !== "production"){
-                WebpayPlus.configureForIntegration("597055555532",'579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C')
-                tx = new WebpayPlus.Transaction(new Options("597055555532", '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C', Environment.Integration))
+                WebpayPlus.configureForIntegration(commerceCode, apiKey)
+                tx = new WebpayPlus.Transaction(new Options(commerceCode, apiKey, Environment.Integration))
             } else {
                 WebpayPlus.configureForProduction(commerceCode, apiKey);
-                WebpayPlus.environment = Environment.Production;     
+                WebpayPlus.environment = Environment.Production;
+                tx = new WebpayPlus.Transaction(new Options(commerceCode, apiKey, Environment.Production))     
                 
             }
            
