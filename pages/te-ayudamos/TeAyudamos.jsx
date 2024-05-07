@@ -38,7 +38,7 @@ const TeAyudamos = (props) => {
           <div className="container">
             <div className="row justify-content-center">
               <div className="d-flex row justify-content-center">
-                <div className="col-12 col-md-5">
+                <div className="col-12 col-md-12 col-sm-12 col-lg-5 col-xl-5 col-xxl-5">
                   <div
                     className={`${styles["question-body"]} "d-flex justify-content-center" `}
                   >
@@ -53,19 +53,17 @@ const TeAyudamos = (props) => {
                       gente suele hacer. Échale un vistazo y hagamos que todo sea
                       más fácil para ti!
                     </div>
-                    <div className={""}>
-                      <div
-                        className={styles["button"]}
-                        onClick={() => {
-                          cambiarVista(1);
-                        }}
-                      >
-                        Encuentra respuestas aquí
-                      </div>
+                    <div
+                      className={styles["button"]}
+                      onClick={() => {
+                        cambiarVista(1);
+                      }}
+                    >
+                      Encuentra respuestas aquí
                     </div>
                   </div>
                 </div>
-                <div className="col-12 col-md-5">
+                <div className="col-12 col-md-12 col-sm-12 col-lg-5 col-xl-5 col-xxl-5">
                   <div
                     className={`${styles["question-body"]} "d-flex justify-content-center" `}
                   >
@@ -78,21 +76,19 @@ const TeAyudamos = (props) => {
                       preguntas frecuentes? Mándanos un mensaje y nos pondremos en
                       acción para responderte lo más pronto posible.
                     </div>
-                    <div className={""}>
-                      <div
-                        className={styles["button"]}
-                        onClick={() => {
-                          cambiarVista(2);
-                        }}
-                      >
-                        Habla con Nosotros
-                      </div>
+                    <div
+                      className={styles["button"]}
+                      onClick={() => {
+                        cambiarVista(2);
+                      }}
+                    >
+                      Habla con Nosotros
                     </div>
                   </div>
                 </div>
               </div>
               <div className="d-flex row justify-content-center">
-                <div className="col-12 col-md-5">
+                <div className="col-12 col-md-12 col-sm-12 col-lg-5 col-xl-5 col-xxl-5">
                   <div className={`${styles["other-body"]}  `}>
                     <div className={styles["title-contact"]}>
                       Tambien puedes contactarnos a:
@@ -121,7 +117,7 @@ const TeAyudamos = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="col-12 col-md-5">
+                <div className="col-12 col-md-12 col-sm-12 col-lg-5 col-xl-5 col-xxl-5">
                   <div className={`${styles["other-body"]}  `}>
                     <div className={styles["title-contact"]}>
                       Horario de atención:
