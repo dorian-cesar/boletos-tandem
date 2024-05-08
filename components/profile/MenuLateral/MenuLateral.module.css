@@ -38,9 +38,3 @@
   line-height: normal;
   text-decoration-line: underline;
 }
-
-@media screen and (min-width:991px) {
-  .menu-lateral {
-    margin: 3%;
-  }
-}
