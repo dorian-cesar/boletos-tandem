@@ -91,12 +91,14 @@ const Home = () => {
           </div>
         </section>
         <section className={ `container ${ styles['profile-body-container']}` }>
-          <MenuLateral
-            vista={vista}
-            setVista={setVista}
-            setNombreVista={setNombreVista}
-          />
-          <div className={ styles['view-container']}>
+          <div className="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3">
+            <MenuLateral
+              vista={vista}
+              setVista={setVista}
+              setNombreVista={setNombreVista}
+            />
+          </div>
+          <div className={ `${styles['view-container']} col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8`}>
             <div className={styles["titulo-menu"]}>
               Mi cuenta {">"} {nombreVista}
             </div>

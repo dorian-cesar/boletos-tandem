@@ -115,7 +115,7 @@ const HistorialCompraCuponera = () => {
             <td>
               {itemHistorial.origen} - {itemHistorial.destino}
             </td>
-            <td>{itemHistorial.vigenciaCuponera ? "Activa" : "Vencidad"}</td>
+            <td>{itemHistorial.vigenciaCuponera ? "Activa" : "Vencida"}</td>
             <td>{clpFormat.format(itemHistorial.monto)}</td>
             <td className={styles["boton-descargar"]}>
               {itemHistorial.vigenciaCuponera ? (
@@ -243,20 +243,22 @@ const HistorialCompraCuponera = () => {
         <span>
           Mantén un registro de todos los viajes realizados con tu cuponera.
         </span>
-        <table className={`table ${styles["tabla-informacion"]}`}>
-          <thead>
-            <tr>
-              <th scope="col">Código Transacción</th>
-              <th scope="col">Fecha Compra</th>
-              <th scope="col">Origen - Destino</th>
-              <th scope="col">Vigencia</th>
-              <th scope="col">Monto</th>
-              <th scope="col">Ver detalle</th>
-            </tr>
-          </thead>
-          <tbody>{!isLoading ? MemoizedComponent : ""}</tbody>
-        </table>
-        <nav aria-label="Page navigation example">
+        <div className={ styles["table-responsive-custom"] }>
+          <table className={`table ${styles["tabla-informacion"]}`}>
+            <thead>
+              <tr>
+                <th scope="col">Código Transacción</th>
+                <th scope="col">Fecha Compra</th>
+                <th scope="col">Origen - Destino</th>
+                <th scope="col">Vigencia</th>
+                <th scope="col">Monto</th>
+                <th scope="col">Ver detalle</th>
+              </tr>
+            </thead>
+            <tbody>{!isLoading ? MemoizedComponent : ""}</tbody>
+          </table>
+        </div>
+        <nav className={ styles["navigation"] } aria-label="Page navigation example">
           <ul className={`pagination ${styles["pagination-css"]}`}>
             {renderPagination()}
           </ul>
