@@ -220,7 +220,13 @@
 }
 
 .empty-grill {
-  width: 100%;
+  width: 776px;
+}
+
+@media (width <= 768px) {
+  .empty-grill {
+    width: 100%;
+  }
 }
 
 .custom-error-page {
