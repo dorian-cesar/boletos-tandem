@@ -1,6 +1,7 @@
   .perfil-body {
     background: var(--Azul-fondo, #E6ECF6);
     padding-top: 16px;
+    padding-inline: 16px;
   }
   
   .container-perfil {
@@ -52,7 +53,6 @@
   }
 
   .titulo-menu {
-    width: 500px;
     height: 1px;
     margin-top: 20px;
     color: #000;

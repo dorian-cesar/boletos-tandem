@@ -16,8 +16,8 @@
 
 .question-body {
     margin-top: 20px;
-    width: 512px;
-    height: 328px;
+    width: 100%;
+    min-height: 328px;
     display: inline-flex;
     padding: 47px 44px;
     flex-direction: column;
@@ -34,7 +34,8 @@
 
 .other-body {
     margin-top: 20px;
-    width: 512px;
+    width: 100%;
+    min-height: 125px;
     display: inline-flex;
     padding: 47px 44px;
     flex-direction: column;
@@ -47,7 +48,7 @@
 }
 
 .button {
-    width: 300px;
+    width: 90%;
     height: 40px;
     place-items: center;
     flex: 1 0 0;

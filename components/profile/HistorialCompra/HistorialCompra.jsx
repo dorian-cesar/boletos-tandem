@@ -359,19 +359,21 @@ const HistorialCompra = () => {
           Mantén un registro de todos los viajes realizados. Recuerda que solo
           podrás descargar tu pasaje mientras esté activo.
         </span>
-        <table className={`table ${styles["tabla-informacion"]}`}>
-          <thead>
-            <tr>
-              <th scope="col">Código Transacción</th>
-              <th scope="col">Fecha Compra</th>
-              <th scope="col">Cantidad Boletos</th>
-              <th scope="col">Monto</th>
-              <th scope="col">Ver boletos</th>
-            </tr>
-          </thead>
-          <tbody>{!isLoading ? MemoizedComponent : ""}</tbody>
-        </table>
-        <nav aria-label="Page navigation example">
+        <div className={ styles["table-responsive-custom"] }>
+          <table className={`table ${styles["tabla-informacion"]}`}>
+            <thead>
+              <tr>
+                <th scope="col">Código Transacción</th>
+                <th scope="col">Fecha Compra</th>
+                <th scope="col">Cantidad Boletos</th>
+                <th scope="col">Monto</th>
+                <th scope="col">Ver boletos</th>
+              </tr>
+            </thead>
+            <tbody>{!isLoading ? MemoizedComponent : ""}</tbody>
+          </table>
+        </div>
+        <nav className={ styles["navigation"] } aria-label="Page navigation example">
           <ul className={`pagination ${styles["pagination-css"]}`}>
             {renderPagination()}
           </ul>

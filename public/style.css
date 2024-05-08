@@ -1991,6 +1991,7 @@ line-height: normal;
   }
 
   .text-login {
+    display: none;
     color: #fff !important;
   }
 }

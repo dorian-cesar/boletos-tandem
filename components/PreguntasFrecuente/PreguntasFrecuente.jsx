@@ -65,10 +65,10 @@ const PreguntasFrecuente = (props) => {
   return (
     <>
       <div className={styles["body"]}>
-        <div className="row">
+        <div className="row w-100">
           <div className="container">
-            <div className="d-flex justify-content-center">
-              <div className="col-8 col-md-3">
+            <div className="d-flex justify-content-evenly flex-wrap">
+              <div className="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-4 col-xxl-3">
                 <div className={styles["menu-lateral"]}>
                   <div className={styles["menu-text-title"]}>
                     Encuentra tus respuestas aquí:
@@ -89,17 +89,15 @@ const PreguntasFrecuente = (props) => {
                             alt=""
                           />
                         </div>
-                        <div className="col-12">
-                          <a className={styles["item-texto-lateral"]}>
-                            {opcion.nombreEncabezado}
-                          </a>
-                        </div>
+                        <a className={styles["item-texto-lateral"]}>
+                          {opcion.nombreEncabezado}
+                        </a>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
-              <div className="col-8 col-md-4">
+              <div className="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-6 col-xxl-7 mt-3 mb-5">
                 <div className={styles["search"]}>
                   <input
                     type="text"

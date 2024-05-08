@@ -12,24 +12,6 @@
     flex-direction: column;
 }
 
-.boleto {
-    background-image: url(../../../public/img/Boleto_Interno.png) !important;
-    background-repeat: no-repeat;
-    height: 168px;
-    width: 609px;
-    fill: var(--Blanco, #FFF);
-    stroke-width: 1px;
-    stroke: var(--gris-15, #D9D9D9);
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    margin-block: 16px;
-    padding-inline: 32px;
-    position: relative;
-    z-index: 2;
-    margin-inline: auto;
-    background-size: contain;
-    background-position: center;
-}
-
 .origen-destino {
     width: 100%;
     display: flex;
@@ -75,31 +57,19 @@
     color: black !important;
 }
 
-@media (width <=750px) {
-    .boleto {
-        width: 400px;
-        /* height: 200px; */
-        /* background-size: cover;
-        resize: both; */
-    }
+.table-responsive-custom {
+    overflow-x: auto;
+}
+
+.navigation {
+    margin-top: 15px;
 }
 
 @media screen and (max-width: 430px) {
-    .tabla-informacion {
-        margin-top: 24px;
-        font-size: 10px;
-        width: 92%;
-    }
 
     .menu-central {
         padding: 33px 22px;
         width: 100%;
-    }
-
-    .tabla-informacion thead tr th {
-        color: black !important;
-        width: 92%;
-        font-size: 10px;
     }
 
 }
