@@ -85,7 +85,16 @@ const Boleto = (props) => {
                 </div>
               </div>
               <div className={ styles['ticket-price'] }>
+                <div></div>
                 <div className={ styles['ticket-price__detail'] }>
+                  <div className={styles['ticket-price__price-detail']}>
+                    { props.tarifaPrimerPisoInternet && (
+                      <span><b>Piso 1:</b> ${props.tarifaPrimerPisoInternet}</span>
+                    ) }
+                    { props.tarifaSegundoPisoInternet && (
+                      <span><b>Piso 2:</b> ${props.tarifaSegundoPisoInternet}</span>
+                    ) }
+                  </div>
                 </div>
                 <button onClick={() => setIsOpened(!isOpened)}>
                   Comprar

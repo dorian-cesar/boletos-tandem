@@ -127,6 +127,33 @@
     padding-inline-start: 13px;
 }
 
+.ticket .ticket-price .ticket-price__detail .ticket-price__price-detail {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    gap: 16px;
+    height: 100%;
+}
+
+.ticket .ticket-price .ticket-price__detail .ticket-price__price-detail span {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    color: var(--naranjo-100, #FF6500);
+}
+
+.ticket .ticket-price .ticket-price__detail .ticket-price__price-detail span b {
+    color: #000;
+    font-size: 16px;
+}
+
+@media (width < 770px) {
+    .ticket .ticket-price .ticket-price__detail .ticket-price__price-detail {
+        display: none;
+    }
+}
+
 .ticket .ticket-price button {
     display: flex;
     width: 204px;
