@@ -34,6 +34,7 @@ const Boleto = (props) => {
   duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
 
   async function showItinerary() {
+    console.log('PROPS:::', props);
     if (itinerario.length === 0) {
       try {
         const { data } = await axios.post("/api/itinerario", { servicio: props.idServicio });
@@ -82,7 +83,16 @@ const Boleto = (props) => {
                 </div>
               </div>
               <div className={styles['ticket-price']}>
+                <div></div>
                 <div className={styles['ticket-price__detail']}>
+                  <div className={styles['ticket-price__price-detail']}>
+                    { props.tarifaPrimerPisoInternet && (
+                      <span><b>Piso 1:</b> ${props.tarifaPrimerPisoInternet}</span>
+                    ) }
+                    { props.tarifaSegundoPisoInternet && (
+                      <span><b>Piso 2:</b> ${props.tarifaSegundoPisoInternet}</span>
+                    ) }
+                  </div>
                 </div>
                 <button onClick={() => setIsOpened(!isOpened)}>
                   Comprar
