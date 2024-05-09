@@ -140,7 +140,7 @@ export class GuardarCarroDTO {
         this.rut = rut.replace(".", "").replace(".", "") || '';
         this.medioDePago = 'WBPAY';
         this.montoTotal = total;
-        this.idSistema = 7;
+        this.idSistema = 1;
         this.listaCarrito = carrito;
     }
 } 
@@ -151,7 +151,7 @@ export class GuardarCarroCuponeraDTO {
         this.rut = rut.replace(".", "").replace(".", "") || '';
         this.medioDePago = 'WBPAY';
         this.montoTotal = total;
-        this.idSistema = 7;
+        this.idSistema = 1;
         this.integrador = 1000;
         this.carroCuponera = carrito;
        
@@ -174,7 +174,7 @@ export class CanjearCuponeraDTO {
         this.rut = rut.replace(".", "").replace(".", "") || '';
         this.medioDePago = 'WBPAY';
         this.montoTotal = total;
-        this.idSistema = 7;
+        this.idSistema = 1;
         this.listaCarrito = carrito;
         this.codigoCuponera = codigoCuponera;
     }
