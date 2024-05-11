@@ -42,7 +42,7 @@ const ParrillaCuponera = (props) => {
                 </div>
                 <div className={styles["condition"]}>Condiciones: </div>
                 <div className={styles["sub-title-origen"] }>
-                  Total Cupones {cuponera.cantidadCupones} <b>+ { `${ cuponera.cuponesExtras } extras` }</b>
+                  Total Cupones {cuponera.cantidadCupones} { cuponera.cuponesExtras && (<b>+ { `${ cuponera.cuponesExtras } extras` }</b>) }
                 </div>
                 {/* <div className={styles["dotted-line"]}></div> */}
                 <div className={styles["button"]}
