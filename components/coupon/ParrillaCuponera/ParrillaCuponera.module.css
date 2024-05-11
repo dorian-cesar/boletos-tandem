@@ -59,6 +59,10 @@
     text-align: center;
 }
 
+.container .sub-title-origen b {
+    color: var(--naranjo-100, #FF6500);
+}
+
 .container .price{
     color: var(--azul-100, #3365B4);
     font-size: 24px;
