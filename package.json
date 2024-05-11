@@ -8,6 +8,7 @@
   "dependencies": {
     "@floating-ui/react": "^0.26.9",
     "@formkit/tempo": "^0.0.10",
+    "@next/third-parties": "^14.2.3",
     "@reduxjs/toolkit": "^2.1.0",
     "axios": "^0.26.1",
     "bootstrap": "^5.1.3",

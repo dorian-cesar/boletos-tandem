@@ -11,6 +11,9 @@ import { useDispatch } from "react-redux";
 import { liberarAsientos } from "store/usuario/compra-slice";
 import { limpiarCambio } from "store/usuario/cambio-boleto-slice";
 
+import { GoogleTagManager } from '@next/third-parties/google'
+
+const googleTagManager = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER;
 
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);
@@ -41,6 +44,7 @@ export default function Layout({ children }) {
 
       <Header openNav={openNav} />
 
+      <GoogleTagManager gtmId={ googleTagManager }/>
       <main>{children}</main>
       <Drawer
         open={ open }
