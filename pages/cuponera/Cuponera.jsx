@@ -32,15 +32,10 @@ const stages = [
 export default function cuponera(props) {
   const origenes = props.ciudades;
   const [stage, setStage] = useState(0);
-  const [parrilla, setParrilla] = useState([]);
+  const [parrilla, setParrilla] = useState(props.cuponeras.object);
   const [parrillaSeleccionada, setParrillaSeleccionada] = useState({});
-  const [loadingParrilla, setLoadingParrilla] = useState(true);
+  const [loadingParrilla, setLoadingParrilla] = useState(false);
   const stages_active = stages.filter((i) => i.kind != "cuponera_1");
-
-  useEffect(() => {
-    setParrilla(props.cuponeras.object);
-    setLoadingParrilla(false);
-  }, []);
 
   return (
     <Layout>
@@ -111,7 +106,7 @@ export default function cuponera(props) {
                     setParrillaSeleccionada={setParrillaSeleccionada}
                   />
                 ) : (
-                  <h5 className="p-2">
+                  <h5 className="p-2 text-center">
                     Lo sentimos, no existen resultados para su búsqueda
                   </h5>
                 )}
@@ -171,9 +166,19 @@ export const getServerSideProps = withIronSessionSsr(async function ({
 
   let dias = await axios.get(publicRuntimeConfig.site_url + "/api/dias");
 
-  let cuponeras = await axios.get(
-    publicRuntimeConfig.site_url + "/api/coupon/obtener-cuponera-activas"
-  );
+  let cuponeras = {
+    data: {
+      object: []
+    }
+  };
+
+  try {
+    cuponeras = await axios.get(
+      publicRuntimeConfig.site_url + "/api/coupon/obtener-cuponera-activas"
+    );
+  } catch(error) { 
+
+  }
 
   return {
     props: {
