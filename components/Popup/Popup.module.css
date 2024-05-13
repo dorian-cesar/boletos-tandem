@@ -22,9 +22,13 @@
     padding: 16px;
   }
 
-  @media (width <= 320px) {
+  @media (width <= 425px) {
     .popup-container {
       width: 320px;
+    }
+
+    .popup-button {
+      width: 100% !important;
     }
   }
 
