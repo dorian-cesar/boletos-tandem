@@ -8,12 +8,16 @@ import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import getConfig from "next/config";
 import { registerLocale } from "react-datepicker";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { liberarAsientos } from "store/usuario/compra-slice";
 import { limpiarCambio } from "store/usuario/cambio-boleto-slice";
 
 import Banner from "components/banner";
+
+import Popup from "components/Popup/Popup";
+
+import ModalEntities from "entities/ModalEntities";
 
 const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
@@ -24,10 +28,20 @@ export default function Home(props) {
   const origenes = props.ciudades;
   const dispatch = useDispatch();
 
+  const [isShowModalMobile, setIsShowModalMobile] = useState(false);
+
   useEffect(() =>{ 
     dispatch(liberarAsientos()) 
     dispatch(limpiarCambio())
   }, []);
+
+  useEffect(() => {
+    const width = window.innerWidth;
+    const fechaLimite = new Date(2024, 4, 21);
+    if( width < 770  && new Date() < fechaLimite ) {
+      setIsShowModalMobile(true);
+    }
+  }, [])
 
   return (
     <Layout>
@@ -45,6 +59,13 @@ export default function Home(props) {
         {/* <Ofertas /> */}
       </div>
       <Footer />
+      { isShowModalMobile && (
+        <Popup 
+          modalKey={ ModalEntities.mobile_purchase_info }
+          modalClose={ () => setIsShowModalMobile(false) }
+          modalMethods={ () => window.location.href = "https://www.pullmanbus.cl"}
+        />) 
+      }
     </Layout>
   );
 }
