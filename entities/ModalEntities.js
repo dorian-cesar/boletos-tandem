@@ -24,7 +24,8 @@ const ModalEntities = {
     return_to_wallet: 'RETURN_TO_WALLET',
     return_to_wallet_success: 'RETURN_TO_WALLET_SUCCESS',
     detail_ticket: 'DETAIL_TICKET',
-    detail_coupon: 'DETAIL_COUPON'
+    detail_coupon: 'DETAIL_COUPON',
+    mobile_purchase_info: 'MOBILE_PURCHASE_INFO'
 }
 
 export default ModalEntities;

@@ -21,6 +21,11 @@
     z-index: 1000;
     padding: 16px;
   }
+
+  .popup-important {
+    background-color: var(--azul-100, #3365B4) !important;
+    color: #FFF !important;
+  }
   
   .popup-header {
     display: flex;

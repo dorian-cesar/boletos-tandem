@@ -187,9 +187,15 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton, modalBod
       buttonMessage: "Aceptar",
       imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
       onClick: modalMethods
+    },
+    [ModalEntities.mobile_purchase_info]: {
+      title: "¡ESTAS EN EL NUEVO SITIO WEB!",
+      body: "¿Deseas adquirir tus pasajes antes del 21 de mayo? Entra al sitio web antiguo:",
+      buttonMessage: "WWW.PULLMANBUS.CL",
+      imageIcon: "/img/icon/popup/warning-outline.svg",
+      onClick: modalMethods
     }
   };
-  
 
   const handleButtonClick = () => {
     if (popInfo[modalKey]?.onClick) {
@@ -199,7 +205,7 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton, modalBod
 
   return (
     <div className={styles["popup-overlay"]}>
-      <div className={styles["popup-container"]}>
+      <div className={ `${ styles["popup-container"] } ${ modalKey === ModalEntities.mobile_purchase_info && styles["popup-important"]}` }>
         <div className={styles["popup-header"]}>
           <div className={"row justify-content-center"}>
             <div className={"col-12"}>
@@ -221,7 +227,7 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton, modalBod
             <div className={"col-12"}>
               <div className={"row justify-content-center"}>
                 <div className={"col-12 text-center"}>
-                  <div className={styles["popup-title"]}>
+                  <div className={ `${ styles["popup-title"] } ${ modalKey === ModalEntities.mobile_purchase_info && styles["popup-important"]}` }>
                     {popInfo[modalKey]?.title || ""}
                   </div>
                 </div>
@@ -230,7 +236,7 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton, modalBod
             <div className={"col-12"}>
               <div className={"row justify-content-center"}>
                 <div className={"col-12 text-center"}>
-                  <div className={styles["popup-body-text"]}>
+                  <div className={ `${ styles["popup-body-text"] } ${ modalKey === ModalEntities.mobile_purchase_info && styles["popup-important"]}` }>
                     {popInfo[modalKey]?.body || ""}
                   </div>
                 </div>
