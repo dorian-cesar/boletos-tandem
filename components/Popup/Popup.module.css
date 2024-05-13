@@ -22,6 +22,12 @@
     padding: 16px;
   }
 
+  @media (width <= 320px) {
+    .popup-container {
+      width: 320px;
+    }
+  }
+
   .popup-important {
     background-color: var(--azul-100, #3365B4) !important;
     color: #FFF !important;
