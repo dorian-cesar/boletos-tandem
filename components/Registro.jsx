@@ -160,7 +160,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
             </div>:''
             }
             <div className="row mt-2">
-              <div className="col-6">
+              <div className="col-12 col-md-6">
                 <div className="row">
                   <div className="col-4">
                     <label className="contenedor">
@@ -206,7 +206,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                   onChange={ onInputChange }
                 />
               </div>
-              <div className="col-6">
+              <div className="col-12 col-md-6">
                   <label className="label-input-modal">Nombres</label>
                   <input
                     type="text"
@@ -218,7 +218,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
               </div>
             </div>
             <div className="row">
-              <div className="col-6">
+              <div className="col-12 col-md-6">
                 <label className="label-input-modal">Apellido Paterno</label>
                 <input
                   type="text"
@@ -228,7 +228,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                   onChange={ onInputChange }
                 />
               </div>
-              <div className="col-6">
+              <div className="col-12 col-md-6">
                 <label className="label-input-modal">Apellido Materno</label>
                 <input
                   type="text"
@@ -240,7 +240,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
               </div>
             </div>
             <div className="row">
-              <div className="col-6">
+              <div className="col-12 col-md-7 col-lg-6">
                 <label className="label-input-modal">Género</label>
                 <select
                   name="sexo"
@@ -255,7 +255,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                   <option value={"OTRO"}>Prefiero no especificar</option>
                 </select>
               </div>
-              <div className="col-6">
+              <div className="col-12 col-md-5 col-lg-6">
                 <label className="label-input-modal">Fecha nacimiento</label>
                 <DatePicker
                   renderCustomHeader={({
@@ -315,7 +315,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
               </div>
             </div>
             <div className="row">
-              <div className="col-6">
+              <div className="col-12 col-md-6">
                 <label className="label-input-modal">Correo</label>
                 <input
                   type="email"
@@ -325,7 +325,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                   onChange={onInputChange}
                 />
               </div>
-              <div className="col-6">
+              <div className="col-12 col-md-6">
                 <label className="label-input-modal">Confirme correo</label>
                 <input
                   type="email"
@@ -337,7 +337,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
               </div>
             </div>
             <div className="row">
-              <div className="col-6">
+              <div className="col-12 col-md-6">
                 <label className="label-input-modal">Contraseña</label>
                 <div className="input-group">
                   <input
@@ -358,7 +358,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
                   </span>
                 </div>
               </div>
-              <div className="col-6">
+              <div className="col-12 col-md-6">
                 <label className="label-input-modal">Confirme contraseña</label>
                 <div className="input-group">
                   <input
