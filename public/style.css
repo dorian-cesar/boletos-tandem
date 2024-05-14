@@ -1126,7 +1126,7 @@ select.form-control.seleccion {
 }
 
 @media (max-width: 470px) {
-  .seleccion{
+  .select-num{
     display: none;
   }
   .pasajes{

@@ -122,7 +122,7 @@ export default function Home(props) {
                         {
                             stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
                                 return(
-                                    <div key={ `stage-${ indexStage }` } className={ "seleccion text-center " + (indexStage == stage ? "active" : "")}>
+                                    <div key={ `stage-${ indexStage }` } className={ "seleccion text-center select-num " + (indexStage == stage ? "active" : "")}>
                                         <div className="numeros">
                                             <div className="numero">
                                                 { indexStage + 1 }
