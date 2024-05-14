@@ -152,6 +152,7 @@ export default function Home(props) {
                         value={boleto}
                         onChange={(e) => setBoleto(e.target.value.toUpperCase())}
                         className={styles["input"]}
+                        placeholder="PBB111111111111"
                       />
                     </div>
                     <div className={styles["grupo-campos"]}>
