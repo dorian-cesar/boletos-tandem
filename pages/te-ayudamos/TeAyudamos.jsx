@@ -95,13 +95,13 @@ const TeAyudamos = (props) => {
                     </div>
                     <div className={"row"}>
                       <div className={"col-12"}>
-                        <a className={ styles['link-contacto'] } href="tel:26006000018">
+                        {/* <a className={ styles['link-contacto'] } href="tel:26006000018">
                           <img
                             className={styles["image-icon"]}
                             src="/img/icon/help/call-outline.svg"
                           ></img>
                           600 600 0018
-                        </a>
+                        </a> */}
                       </div>
                     </div>
                     <div className={"row"}>
@@ -111,7 +111,7 @@ const TeAyudamos = (props) => {
                             className={styles["image-icon"]}
                             src="/img/icon/help/what-up.svg"
                           ></img>
-                          +56233048912
+                          +569 96194091
                         </a>
                       </div>
                     </div>

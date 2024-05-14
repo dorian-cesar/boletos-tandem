@@ -15,10 +15,11 @@ const Footer = () => (
                             Santiago</p>
                             <a href="mailto:clientes@pullmanbus.cl">
                                 clientes@pullmanbus.cl
+                                
                             </a>
-                            <p>
+                            {/* <p>
                                 <b>Call Center 600 600 0018</b>
-                            </p>
+                            </p> */}
                         </div>
                     </div>
                     <div className="col-md-3 col-sm-6">
