@@ -177,17 +177,16 @@
     
     .button-search-coupon, .button-search-coupon-disabled {
         margin: 0% 0%;
+        width: 105%;
     }
 
     .input{
-        width: 115%;
+        width: 105%;
     }
     .lo-sentimos{
         margin-inline-start: 3%;
     }
-    .search-row{
-        width: 100%;
-    }
+
 }
 
 @media screen and (min-width: 400px) and (max-width: 430px) {
@@ -215,20 +214,22 @@
         width: 100%;
         margin: 0%;
     }
+    .grupo-campos{
+        width: 65%;
+    }
     
     .button-search-coupon, .button-search-coupon-disabled {
         margin: 0% 0%;
+        width: 105%;
     }
 
     .input{
-        width: 115%;
+        width: 105%;
     }
     .lo-sentimos{
         margin-inline-start: 4%;
     }
-    .search-row{
-        width: 100%;
-    }
+ 
 }
 
 @media screen and (min-width: 768px) and (max-width: 908px){
