@@ -350,23 +350,26 @@
 }
 
 
-
-
-@media (min-width: 320px) and (max-width: 395px) {
+@media(max-width:320px){
     .ticket {
-        background-image: url(../../../public/img/boleto/Boleto-mobile-375.svg) !important;
+        background-image: url(../../../public/img/boleto/Boleto-mobile-360.svg) !important;
         background-repeat: no-repeat;
         background-size: auto;
-        height: 229px;
-        width: 337px;
+        height: 230px;
+        width: 287px;
         margin-block-end: 0px;
         padding-inline: 20px;
         display: flex;
         flex-direction: column;
         position: absolute;
         z-index: 2;
-        justify-content: space-around;
-
+        justify-content: flex-start;
+        gap: 15px;
+    }
+    .ticket .animated-logo {
+        position: absolute;
+        top: 78px;
+        
     }
 
     .container-ticket {
@@ -380,7 +383,7 @@
         flex-direction: column;
         align-items: start;
         border-right: none;
-        margin-block: 10px;
+        margin-block: -8px;
         width: 100%;
     }
 
@@ -400,7 +403,7 @@
         flex-direction: row;
         justify-content: space-around;
         width: 100%;
-        padding-bottom: 20px;
+        padding-bottom: 0px;
     }
 
 
@@ -408,8 +411,126 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 80px;
-        width: 82px;
+        height: 60px;
+        width: -1px;
+        padding-right: 8px;
+        padding-bottom: 20px;
+        justify-content: center;
+    }
+
+    .ticket .ticket-price {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin: 10px;
+        padding: 0;
+    }
+
+    .flip-box {
+        height: 250px;
+        width: 100%;
+    }
+
+    .container-ticket .checkbox-open-pane:checked~.grill-detail {
+        width: 128%;
+
+    }
+
+    .flip-box-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+    }
+
+    .ticket .itinerario .contenedor-itinerario {
+        display: flex;
+        justify-content: center;
+        padding-inline: 10px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+    }
+
+    .ticket .itinerario .cabecera-itinerario {
+        justify-content: space-around;
+        align-items: flex-start;
+        padding-top: 0px;
+        overflow-x: hidden;
+        gap: 100px;
+    }
+}
+
+
+
+@media (min-width: 321px) and (max-width: 395px) {
+    .ticket {
+        background-image: url(../../../public/img/boleto/Boleto-mobile-375.svg) !important;
+        background-repeat: no-repeat;
+        background-size: auto;
+        height: 229px;
+        width: 337px;
+        margin-block-end: 0px;
+        padding-inline: 20px;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        z-index: 2;
+        justify-content: space-around;
+
+    }
+
+    .ticket .animated-logo {
+        position: absolute;
+        top: 106px;
+        
+    }
+
+    .container-ticket {
+        width: 80%;
+        max-width: 80%;
+
+    }
+
+    .ticket-details {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        border-right: none;
+        /* margin-block: 10px; */
+        margin-top: -1px;
+        width: 100%;
+    }
+
+    .ticket .ticket-price button {
+        display: flex;
+        background: var(--naranjo-100, #FF6500);
+        justify-content: center;
+        width: 50%;
+        padding-block: 8px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ticket-details .ticket-details__travel {
+        margin-block-start: 4px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        padding-bottom: 0px;
+    }
+
+
+    .ticket-details .ticket-details__travel .ticket-details__travel-detail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 69px;
+        width: 70px;
         padding-right: 8px;
         padding-bottom: 20px;
         justify-content: center;
@@ -469,7 +590,8 @@
         flex-direction: column;
         align-items: start;
         border-right: none;
-        margin-block: 10px;
+        /* margin-block: 10px; */
+        margin-top: -3px;
         width: 100%;
     }
 
@@ -487,13 +609,19 @@
         line-height: normal;
     }
 
+    .ticket .animated-logo {
+        position: absolute;
+        top: 115px;
+        
+    }
+
     .ticket-details .ticket-details__travel {
         margin-block-start: 4px;
         display: flex;
         flex-direction: row;
         justify-content: space-around;
         width: 100%;
-        padding-bottom: 20px;
+        padding-bottom: 0px;
     }
     
     
@@ -502,10 +630,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 80px;
-        width: 82px;
+        height: 78px;
+        width: 80px;
         padding-right: 8px;
-        padding-bottom: 20px;
+        padding-bottom: 12px;
         justify-content: flex-end;
     }
 
