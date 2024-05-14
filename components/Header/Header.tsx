@@ -142,6 +142,22 @@ export default function Header({ openNav }: { openNav: any }) {
     setCountdown();
   }, [data]);
 
+ //cambiar icon de mobile a destokp 
+ const [isMobile, setIsMobile] = useState(false);
+  
+ useEffect(() => {
+   const handleResize = () => {
+     setIsMobile(window.innerWidth < 470);
+   };
+   // Listener para detectar cambios en el tamaño de la ventana
+   window.addEventListener('resize', handleResize);
+   // Llamar a handleResize una vez para establecer el estado inicial
+   handleResize();
+   // Limpiar el event listener en la limpieza del efecto
+   return () => window.removeEventListener('resize', handleResize);
+ }, []);
+
+
   return (
     <>
       <header className={`sticky-top bg-white ${styles["header"]}`}>
@@ -178,11 +194,11 @@ export default function Header({ openNav }: { openNav: any }) {
             <div className="col-4 col-sm-2 d-flex justify-content-end">
               {user == null ? (
                 <img
-                  src="../img/icon/logos/cuenta.svg"
-                  className="img-fluid"
-                  data-bs-toggle="modal"
-                  data-bs-target="#loginModal"
-                />
+                src={isMobile ? "../img/icon-foto-mobile.svg" : "../img/icon/logos/cuenta.svg"}
+                className="img-fluid"
+                data-bs-toggle="modal"
+                data-bs-target="#loginModal"
+              />
               ) : (
                 <ul className="nav nav-pills">
                   <li className="nav-item dropdown">
