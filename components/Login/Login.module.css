@@ -13,6 +13,7 @@
     margin-bottom: 5%;
 }
 
+
 .button-inicio {
     display: flex;
     width: 200px;
@@ -50,17 +51,7 @@
     line-height: normal;
 }
 
-@media (max-width: 430px) {
-    .buttones {
-        display: flex;
-        width: 272px;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 8px;
-        margin-left: 6%;
-        margin-bottom: 5%;
-    }
-}
+
 
 .viajemos-juntos {
     text-align: center;
@@ -95,4 +86,33 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+}
+
+@media (max-width: 390px) {
+    .buttones {
+        width: 86%;
+        margin-left: 6%;
+        align-items: center;
+    }
+    .button-inicio {
+        display: flex;
+        width: 180px;
+
+    }
+    
+    .button-invitado {
+        display: flex;
+        width: 180px;
+    }
+
+}
+
+@media (min-width: 391px) and (max-width:430px) {
+    .buttones {
+        display: flex;
+        width: 88%;
+        align-items: center;
+        margin-left: 6%;
+ 
+    }
 }
