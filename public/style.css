@@ -1125,6 +1125,16 @@ select.form-control.seleccion {
   background: var(--Azul-fondo, #E6ECF6);
 }
 
+@media (max-width: 470px) {
+  .seleccion{
+    display: none;
+  }
+  .pasajes{
+    display: none;
+  }
+
+}
+
 .pasajes-compra .numeros {
   display: flex;
   justify-content: center;
