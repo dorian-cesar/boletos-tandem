@@ -68,17 +68,25 @@ const Boleto = (props) => {
                   <div className={styles['ticket-details__travel-detail']}>
                     <span className={styles['bold']}>{props.horaSalida}</span>
                     <span className={styles['bold']}>{props.stage === 0 ? origen?.nombre : destino?.nombre}</span>
+                    <div className={styles['fechaMobile']}>
                     <span>{props.fechaSalida}</span>
+                    </div>
                   </div>
                   <div className={styles['ticket-details__travel-detail']}>
-                    <span>Duración</span>
+                    <div className={styles['duracion']}>
+                    <h6>Duración</h6>
                     <span className={styles['bold']}>{duracion}</span>
+                    </div>
+                    <div className={styles['itinera']}>
                     <a className={styles['link']} onClick={() => showItinerary()}>Itinerario</a>
+                    </div>
                   </div>
                   <div className={styles['ticket-details__travel-detail']}>
                     <span className={styles['bold']}>{props.horaLlegada}</span>
                     <span className={styles['bold']}>{props.stage === 0 ? destino?.nombre : origen?.nombre}</span>
+                    <div className={styles['fechaMobile']} >
                     <span>{props.fechaLlegada}</span>
+                    </div>
                   </div>
                 </div>
               </div>
