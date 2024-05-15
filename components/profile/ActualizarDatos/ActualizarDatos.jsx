@@ -148,7 +148,7 @@ const ActualizarDatos = () => {
     <>
       <div className={styles["menu-central"]}>
         <div className={`${styles["bloque"]} "col-12 col-md-12"`}>
-          <h1 className={styles["title-modify-data"]}>Modificar mis datos</h1>
+          <h1 className={styles["title-modify-data"]}>Modificar Mi Perfil</h1>
           {alerta?.visible ? (
             <div className={"alert " + alerta?.type} role="alert">
               {alerta?.msg}
