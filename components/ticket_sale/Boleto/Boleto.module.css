@@ -355,7 +355,7 @@
         background-image: url(../../../public/img/boleto/Boleto-mobile-360.svg) !important;
         background-repeat: no-repeat;
         background-size: auto;
-        height: 230px;
+        height: 243px;
         width: 287px;
         margin-block-end: 0px;
         padding-inline: 20px;
@@ -375,6 +375,8 @@
     .container-ticket {
         width: 80%;
         max-width: 80%;
+        height: 225px;
+        margin-top: 20px;
 
     }
 
@@ -471,7 +473,7 @@
         background-image: url(../../../public/img/boleto/Boleto-mobile-375.svg) !important;
         background-repeat: no-repeat;
         background-size: auto;
-        height: 229px;
+        height: 241px;
         width: 337px;
         margin-block-end: 0px;
         padding-inline: 20px;
@@ -530,7 +532,7 @@
         flex-direction: column;
         align-items: center;
         height: 69px;
-        width: 70px;
+        width: 93px;
         padding-right: 8px;
         padding-bottom: 20px;
         justify-content: center;
@@ -631,10 +633,10 @@
         flex-direction: column;
         align-items: center;
         height: 78px;
-        width: 80px;
+        width: 93px;
         padding-right: 8px;
         padding-bottom: 12px;
-        justify-content: flex-end;
+        justify-content: center;
     }
 
     .ticket .ticket-price {
@@ -708,7 +710,7 @@
         background-image: url(../../../public/img/boleto/Boleto-tablet.svg) !important;
         background-repeat: no-repeat;
         width: 672px;
-        height: 163px;
+        height: 170px;
 
     }
 
@@ -733,6 +735,7 @@
 
     .container-ticket {
         width: 100%;
+        margin-top: 20px;
     }
 
     .container-ticket .checkbox-open-pane:checked~.grill-detail {
