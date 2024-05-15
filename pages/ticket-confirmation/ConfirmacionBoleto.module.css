@@ -161,7 +161,6 @@
         gap: 5px;
         margin-left: 10px;
         margin-right: 38px;
-
         border-radius: 16px;
         background: var(--Blanco, #FFF);
     }
@@ -170,15 +169,21 @@
         width: 100%;
         margin: 0%;
     }
-    
-    .button-search-coupon, .button-search-coupon-disabled {
-        margin: 0% 0%;
-        width: 105%;
-    }
 
     .input{
         width: 105%;
     }
+
+    .button-search-coupon, .button-search-coupon-disabled {
+        margin: 0% 0%;
+        width: 114%;
+    }
+
+    .search-row-container {
+        display: flex;
+        justify-content: flex-start;
+    }
+
     .lo-sentimos{
         margin-inline-start: 3%;
     }
@@ -212,14 +217,22 @@
         margin: 0%;
     }
     
-    .button-search-coupon, .button-search-coupon-disabled {
-        margin: 0% 0%;
-        width: 105%;
-    }
-
     .input{
         width: 105%;
     }
+    .button-search-coupon, .button-search-coupon-disabled {
+        margin: 0% 0%;
+        width: 120%;
+    }
+
+    .search-row-container {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+
+
+
     .lo-sentimos{
         margin-inline-start: 3%;
     }
