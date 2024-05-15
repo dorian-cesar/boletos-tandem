@@ -144,16 +144,12 @@ export default function Header({ openNav }: { openNav: any }) {
 
  //cambiar icon de mobile a destokp 
  const [isMobile, setIsMobile] = useState(false);
-  
  useEffect(() => {
    const handleResize = () => {
      setIsMobile(window.innerWidth < 470);
    };
-   // Listener para detectar cambios en el tamaño de la ventana
    window.addEventListener('resize', handleResize);
-   // Llamar a handleResize una vez para establecer el estado inicial
    handleResize();
-   // Limpiar el event listener en la limpieza del efecto
    return () => window.removeEventListener('resize', handleResize);
  }, []);
 

@@ -109,7 +109,7 @@ const Login = (props) => {
               <div className="modal-body">
                 <div className={ `${styles["index-login"]} "container" `}>
                   <div className="d-flex justify-content-center ">
-                    <img  className= {styles["foto-login"]} src="img/icon-foto.svg" width={65}></img>
+                    <img  className= {styles["foto-login"]} src="../../img/icon-foto.svg" width={65}></img>
                   </div>
                   {/* <div className="d-flex justify-content-center mt-2">
                     <h4 className="titulo-azul">¡Hola!</h4>
