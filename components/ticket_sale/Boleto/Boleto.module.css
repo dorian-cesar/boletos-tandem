@@ -375,7 +375,6 @@
     .container-ticket {
         width: 80%;
         max-width: 80%;
-        height: 225px;
         margin-top: 20px;
 
     }
@@ -464,6 +463,7 @@
         overflow-x: hidden;
         gap: 100px;
     }
+    
 }
 
 
@@ -554,7 +554,6 @@
 
     .container-ticket .checkbox-open-pane:checked~.grill-detail {
         width: 128%;
-
     }
 
     .flip-box-inner {
