@@ -5,13 +5,15 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import Link from 'next/link';
 
+const imagenDeRespaldo = {
+    key: 'banner_01',
+    url: '/',
+    image: 'https://pullman.cl/imagenes/fenix/banner/banner-1.jpg'
+}
+
 const Banner = ( props ) => {
 
-    const [images, setImages] = useState([{
-        key: 'banner_01',
-        url: '/',
-        image: 'https://pullman.cl/imagenes/fenix/banner/banner-1.jpg'
-    }]);
+    const [images, setImages] = useState([]);
 
     async function getBannerImages() {
         try {
@@ -31,6 +33,10 @@ const Banner = ( props ) => {
             url: link ? link : '/',
             image: imagen
         }));
+        if (images.length < 1 ){
+            bannerImages.push(imagenDeRespaldo)
+        }
+
         return bannerImages;
     }
 
@@ -52,6 +58,7 @@ const Banner = ( props ) => {
             modules={[ Autoplay, Pagination, Navigation ]}
             className='img-principal'>
             {
+                images.length < 1 ? (<div style={{ height: '500px' }}></div>) : 
                 images.map(({ url, image }, index) => (
                     <SwiperSlide className="swiper-slide" key={index}>
                         <Link href={ url } legacyBehavior>
