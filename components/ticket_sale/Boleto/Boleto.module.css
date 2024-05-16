@@ -407,7 +407,6 @@
         padding-bottom: 0px;
     }
 
-
     .ticket-details .ticket-details__travel .ticket-details__travel-detail {
         display: flex;
         flex-direction: column;
@@ -462,6 +461,13 @@
         padding-top: 0px;
         overflow-x: hidden;
         gap: 100px;
+    }
+
+    .container-ticket .checkbox-open-pane:checked~.grill-detail {
+       
+        margin-top: -75px;
+        
+    
     }
     
 }
