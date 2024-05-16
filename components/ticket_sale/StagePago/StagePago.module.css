@@ -20,8 +20,13 @@
 }
 
 
+@media (max-width:320px) {
+    .travel-summary {
+        width: 300px;
+    }
+}
 
-@media (max-width:390px){
+@media (min-width: 321px )and (max-width:390px){
     .travel-summary {
         width: 353px;
     }
@@ -30,7 +35,7 @@
 
 
 /* Para pantallas de 320px a 767px de ancho */
-@media screen and (min-width: 391px) and (max-width: 767px) {
+@media  (min-width: 391px) and (max-width: 767px) {
     .info-list {
         width: 100%;
     }
@@ -41,7 +46,7 @@
 
 
 /* Para pantallas de hasta 1000px de ancho */
-@media screen and (max-width: 1000px) {
+@media  (max-width: 1000px) {
     .main-content {
         display: flex;
         flex-direction: column;
