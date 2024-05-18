@@ -3,6 +3,12 @@
     padding-inline: 68px;
 }
 
+@media (width < 425px) {
+    .index-login {
+        padding-inline: 10px;
+    }
+}
+
 .buttones {
     display: flex;
     width: 272px;
