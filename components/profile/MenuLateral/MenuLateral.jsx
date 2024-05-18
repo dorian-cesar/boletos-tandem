@@ -8,6 +8,8 @@ import styles from "./MenuLateral.module.css";
 const MenuLateral = (props) => {
   const { vista , setVista , setNombreVista } = props;
   const [menu, setMenu] = useState([]);
+  const { getItem, clear } = useLocalStorage();
+  const router = useRouter();
 
   useEffect(() => {
     async function buscarMenu() {
@@ -23,6 +25,12 @@ const MenuLateral = (props) => {
 
     buscarMenu();
   }, []);
+
+  const cerrarSesion = () => {
+    router.push('/').then(() => {
+      clear();
+    })
+  }
 
   const cambiarVista = (nuevaVista, nombreMenu) => {
     setVista(nuevaVista);
@@ -45,6 +53,17 @@ const MenuLateral = (props) => {
           </div>
         </div>
       ))}
+        <div key="cerrar-sesion" className={ `${styles["item-menu-lateral"]}`} onClick={cerrarSesion}>
+          <div className="">
+            <a className={styles["item-texto-lateral-cerrar"]}>Cerrar sesión</a>
+          </div>
+          <div>
+            <img
+              src="../img/icon/profile/chevron-forward-circle-outline.svg"
+              alt=""
+            />
+          </div>
+        </div>
       </div>
     </>
   );
