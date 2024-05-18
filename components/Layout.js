@@ -48,6 +48,7 @@ export default function Layout({ children }) {
       <main>{children}</main>
       <Drawer
         open={ open }
+        onClose={ () => setOpen(!open) }
         direction="left"
         className="overlay"
         zIndex={ 9999 }
