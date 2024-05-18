@@ -110,6 +110,9 @@ export default function Home(props) {
     searchParrilla();
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({top: 0});
+  }, [stage])
 
   return (
     <Layout>
