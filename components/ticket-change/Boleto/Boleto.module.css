@@ -608,7 +608,7 @@
     .ticket .ticket-price button {
         display: flex;
         width: 160px;
-
+        flex-direction: column !important;
     }
 
     .ticket .ticket-price {
