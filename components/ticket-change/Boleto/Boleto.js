@@ -94,8 +94,8 @@ const Boleto = (props) => {
                       (<span><b>Piso 1 desde: </b> ${ props.tarifaPrimerPisoInternet }</span>)
                     ) }
                     { props.tarifaSegundoPisoInternet && (
-                      props.tarifaValor && props.tarifaValor.primerSegundoInternet ? 
-                      (<span><b>Piso 2 desde: </b> { clpFormat.format(props.tarifaValor.primerSegundoInternet) }</span>) :
+                      props.tarifaValor && props.tarifaValor.segundoPisoInternet ? 
+                      (<span><b>Piso 2 desde: </b> { clpFormat.format(props.tarifaValor.segundoPisoInternet) }</span>) :
                       (<span><b>Piso 2 desde: </b> ${ props.tarifaSegundoPisoInternet }</span>)
                     ) }
                   </div>
