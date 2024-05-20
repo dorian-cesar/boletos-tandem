@@ -728,7 +728,7 @@
     .ticket .ticket-price {
         display: flex;
         height: 162px;
-
+        flex-direction: column !important;
     }
 
     .flip-box {
