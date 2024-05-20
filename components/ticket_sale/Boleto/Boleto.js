@@ -83,7 +83,7 @@ const Boleto = (props) => {
                     <span className={styles['bold']}>{duracion}</span>
                     </div>
                     <div className={styles['itinera']}>
-                    <a className={styles['link']} onClick={() => showItinerary()}>Itinerario</a>
+                    {/* <a className={styles['link']} onClick={() => showItinerary()}>Itinerario</a> */}
                     </div>
                   </div>
                   <div className={styles['ticket-details__travel-detail']}>
