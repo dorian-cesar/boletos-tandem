@@ -51,7 +51,10 @@ export default function Layout({ children }) {
         onClose={ () => setOpen(!open) }
         direction="left"
         className="overlay"
+        overlayColor="#3365B4"
+        overlayOpacity={ 0.25 }
         zIndex={ 9999 }
+        lockBackgroundScroll={ true }
         size="43vh"
       >
         <a className="closebtn" onClick={closeNav}>
