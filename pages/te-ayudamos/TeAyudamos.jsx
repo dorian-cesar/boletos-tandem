@@ -129,11 +129,11 @@ const TeAyudamos = (props) => {
                       </div>
                     </div>
                     <div className={"row"}>
-                      <div className={"col-12"}>
+                      {/* <div className={"col-12"}>
                         <span className={styles["text-bold"]}>Call Center</span> |
                         Lunes a viernes: 09:00AM - 18:00PM <br />
                         Sábado, domingos y festivos: 09:00AM - 19:00PM
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
