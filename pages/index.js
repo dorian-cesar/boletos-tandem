@@ -74,15 +74,31 @@ export const getServerSideProps = withIronSessionSsr(async function ({
   req,
   res,
 }) {
-  let ciudades = await axios.get(
-    publicRuntimeConfig.site_url + "/api/ciudades"
-  );
+  let ciudades = { data: [] }
+  let promociones = { data: [] }
+  let dias = { data: [] };
 
-  let promociones = await axios.get(
-    publicRuntimeConfig.site_url + "/api/promociones"
-  );
+  try {
+    ciudades = await axios.get(
+      publicRuntimeConfig.site_url + "/api/ciudades"
+    );
+  } catch (error) {
+    console.error('ERROR AL OBTENER CIUDADES:::', error)
+  }
 
-  let dias = await axios.get(publicRuntimeConfig.site_url + "/api/dias");
+  try {
+    promociones = await axios.get(
+      publicRuntimeConfig.site_url + "/api/promociones"
+    );
+  } catch (error) {
+    console.error('ERROR AL OBTENER PROMOCIONES:::', error)
+  }
+
+  try {
+    dias = await axios.get(publicRuntimeConfig.site_url + "/api/dias");
+  } catch (error) {
+    console.error('ERROR AL OBTENER DIAS:::', error)
+  }
 
   return {
     props: {
