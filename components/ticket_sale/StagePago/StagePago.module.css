@@ -16,7 +16,7 @@
     height: fit-content;
     position: -webkit-sticky; /* Para compatibilidad con Safari */
     position: sticky;
-    top: 16px;
+    top: calc(60px + 1rem);
     right: 0; 
 }
 
