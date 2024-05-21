@@ -90,7 +90,6 @@ export default function Home(props) {
       const stage_active = in_stage ?? stage;
       setLoadingParrilla(true);
       const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
-      console.log('Planilla de asientos', parrilla)
       setParrilla(parrilla.data.map((parrillaMapped, index) => {
         return {
           ...parrillaMapped,
@@ -123,7 +122,7 @@ export default function Home(props) {
           <div className="container">
           <div className= {`row py-4 ${styles["nav"]}`}>
   
-                <span>Inicio  &gt; Confirmación de boleto </span>
+                <span>Inicio  &gt; Confirmación de boleto en blanco</span>
               
             </div>
           </div>
@@ -134,13 +133,13 @@ export default function Home(props) {
             <div className="container">
               <div className={styles["cambio-title"]}>
                 <h2>
-                  Confirmacío de boleto
+                  Confirmación de boleto en blanco
                 </h2>
               </div>
               <div className={styles["bloque"]}>
                 <div className={styles["bloque-texto"]}>
                   <p>
-                    Ingresa el código de tu boleto para{" "}
+                    Ingresa el código de tu boleto en blanco para{" "}
                     <strong>visualizar el boleto que quieres confirmar</strong>
                   </p>
                 </div>
@@ -148,7 +147,7 @@ export default function Home(props) {
                   <div className={`row search-row ${styles["search-row"]}`}>
                     <div className={ styles["search-row-container"]}>
                       <div className={styles["grupo-campos"]}>
-                        <label>Código de boleto</label>
+                        <label>Código de boleto en blanco</label>
                         <input
                           type="text"
                           name=""
