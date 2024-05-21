@@ -46,7 +46,7 @@ export default async (req, res) => {
                         "tipocuota":commit.payment_type_code
                     }
                 console.log(dataSentCerrar)
-                dataCerrar = await axios.post(config.service_url + `/integracion/terminarTransaccion`,dataSentCerrar,{
+                dataCerrar = await axios.post(config.service_url + `/integracion/terminarNuevaTransaccion`,dataSentCerrar,{
                     headers: {
                         'Authorization': `Bearer ${token.token}`
                     }

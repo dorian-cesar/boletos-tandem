@@ -99,19 +99,23 @@ const ActualizarDatos = () => {
     const formStatus = await validarForm();
     if (formStatus) {
       setIsLoading2(true);
-      const res = await axios.post("../api/user/actualizar-datos-perfil", {
-        ...data,
-      });
-      if (res.data.status) {
-        setIsLoading2(false);
-        setAlerta({
-          visible: true,
-          msg: res.data.message,
-          type: "alert-success",
+      try {
+        const res = await axios.post("../api/user/actualizar-datos-perfil", {
+          ...data,
         });
-        setTimeout(() => {
-          setAlerta({ visible: false, msg: "", type: "" });
-        }, 5000);
+        if (res.data.status) {
+          setIsLoading2(false);
+          setAlerta({
+            visible: true,
+            msg: res.data.message,
+            type: "alert-success",
+          });
+          setTimeout(() => {
+            setAlerta({ visible: false, msg: "", type: "" });
+          }, 5000);
+        }
+      } catch (error) {
+        setAlerta({ visible: true, msg: "Ocurrio un error al intentar actualizar la información", type: "alert-danger" })
       }
       setIsLoading2(false);
     }
@@ -148,7 +152,7 @@ const ActualizarDatos = () => {
     <>
       <div className={styles["menu-central"]}>
         <div className={`${styles["bloque"]} "col-12 col-md-12"`}>
-          <h1 className={styles["title-modify-data"]}>Modificar mis datos</h1>
+          <h1 className={styles["title-modify-data"]}>Mi Perfil</h1>
           {alerta?.visible ? (
             <div className={"alert " + alerta?.type} role="alert">
               {alerta?.msg}

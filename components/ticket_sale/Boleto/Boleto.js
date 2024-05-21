@@ -31,6 +31,11 @@ const Boleto = (props) => {
     "minute"
   );
 
+  const clpFormat = new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  });
+
   duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
 
   async function showItinerary() {
@@ -68,17 +73,25 @@ const Boleto = (props) => {
                   <div className={styles['ticket-details__travel-detail']}>
                     <span className={styles['bold']}>{props.horaSalida}</span>
                     <span className={styles['bold']}>{props.stage === 0 ? origen?.nombre : destino?.nombre}</span>
+                    <div className={styles['fechaMobile']}>
                     <span>{props.fechaSalida}</span>
+                    </div>
                   </div>
                   <div className={styles['ticket-details__travel-detail']}>
-                    <span>Duración</span>
+                    <div className={styles['duracion']}>
+                    <h6>Duración</h6>
                     <span className={styles['bold']}>{duracion}</span>
-                    <a className={styles['link']} onClick={() => showItinerary()}>Itinerario</a>
+                    </div>
+                    <div className={styles['itinera']}>
+                    {/* <a className={styles['link']} onClick={() => showItinerary()}>Itinerario</a> */}
+                    </div>
                   </div>
                   <div className={styles['ticket-details__travel-detail']}>
                     <span className={styles['bold']}>{props.horaLlegada}</span>
                     <span className={styles['bold']}>{props.stage === 0 ? destino?.nombre : origen?.nombre}</span>
+                    <div className={styles['fechaMobile']} >
                     <span>{props.fechaLlegada}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -87,10 +100,14 @@ const Boleto = (props) => {
                 <div className={styles['ticket-price__detail']}>
                   <div className={styles['ticket-price__price-detail']}>
                     { props.tarifaPrimerPisoInternet && (
-                      <span><b>Piso 1:</b> ${props.tarifaPrimerPisoInternet}</span>
+                      props.tarifaValor && props.tarifaValor.primerPisoInternet ? 
+                      (<span><b>Piso 1 desde: </b> { clpFormat.format(props.tarifaValor.primerPisoInternet) }</span>) :
+                      (<span><b>Piso 1 desde: </b> ${ props.tarifaPrimerPisoInternet }</span>)
                     ) }
                     { props.tarifaSegundoPisoInternet && (
-                      <span><b>Piso 2:</b> ${props.tarifaSegundoPisoInternet}</span>
+                      props.tarifaValor && props.tarifaValor.segundoPisoInternet ? 
+                      (<span><b>Piso 2 desde: </b> { clpFormat.format(props.tarifaValor.segundoPisoInternet) }</span>) :
+                      (<span><b>Piso 2 desde: </b> ${ props.tarifaSegundoPisoInternet }</span>)
                     ) }
                   </div>
                 </div>

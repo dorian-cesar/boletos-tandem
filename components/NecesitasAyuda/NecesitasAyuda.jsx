@@ -100,7 +100,7 @@ const NecesitasAyuda = (props) => {
                                     </div>
                                 </div>
                                 <div className={"row"}>
-                                    <div className={"col-6"}>
+                                    <div className={"col-12 col-md-6"}>
                                         <label className={styles["title-data"]}>
                                             N° de contacto
                                         </label>
@@ -115,7 +115,7 @@ const NecesitasAyuda = (props) => {
                                             }
                                         />
                                     </div>
-                                    <div className={"col-6"}>
+                                    <div className={"col-12 col-md-6"}>
                                         <label className={styles["title-data"]}>
                                             Correo electrónico
                                         </label>

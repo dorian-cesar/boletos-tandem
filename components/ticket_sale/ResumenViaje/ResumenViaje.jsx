@@ -215,8 +215,8 @@ export const ResumenViaje = (props) => {
       let resumenCompra = {
         medioDePago: medioPago,
         montoTotal: totalPagar - montoUsoWallet,
-        idSistema: 7,
-        integrador: 1000,
+        idSistema: 1,
+        idIntegrador: 1000,
         datosComprador: datosComprador,
         montoUsoWallet,
         listaCarrito: [],
@@ -304,7 +304,7 @@ export const ResumenViaje = (props) => {
             .replace(".", "")
             .replace(".", ""),
           idSistema: resumenCompra.idSistema,
-          idIntegrador: resumenCompra.integrador,
+          idIntegrador: resumenCompra.idIntegrador,
         };
 
         try {
@@ -323,7 +323,7 @@ export const ResumenViaje = (props) => {
 
             let canjearCuponera = {
               idSistema: resumenCompra.idSistema,
-              idIntegrador: resumenCompra.integrador,
+              idIntegrador: resumenCompra.idIntegrador,
               codigoCuponera: codigoCuponera,
               boleto: {
                 asiento: resumenCompra.listaCarrito[0].pasajeros[0].asiento,

@@ -58,6 +58,21 @@ const Home = () => {
       }
     }
   }
+  
+  //cambiar icon de mobile a destokp 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 470);
+    };
+    // Listener para detectar cambios en el tamaño de la ventana
+    window.addEventListener('resize', handleResize);
+    // Llamar a handleResize una vez para establecer el estado inicial
+    handleResize();
+    // Limpiar el event listener en la limpieza del efecto
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <Layout>
@@ -67,7 +82,8 @@ const Home = () => {
       <section className={ styles['perfil-body'] }>
         <section className={ `container ${ styles['header-profile'] }` }>
           <div className={ styles['user-info'] }>
-            <img src="../img/icon/profile/Perfil.svg" alt=""></img>
+            <img 
+            src={isMobile ? "../img/icon/profile/Perfil-mobile.svg": "../img/icon/profile/Perfil.svg"} alt=""></img>
             <div className={ styles['user-name'] }>
               <h2>¡Hola,</h2>
               <h2>{user?.nombres} {user?.apellidoPaterno}!</h2>
@@ -117,78 +133,7 @@ const Home = () => {
             {vista === "historialCompraCuponera" && <HistorialCompraCuponera />}
           </div>
         </section>
-
-
-        {/* <div className={`${styles["perfil-body"]} "row"`}>
-          <div className={"d-flex justify-content-center"}>
-            <div
-              className={`${styles["container-perfil"]} "col-12 col-md-8 bloque mb-5"`}
-            >
-              <div className={"row"}>
-                <div className={"col-12 col-md-2 text-center top"}>
-                  <img src="../img/icon/profile/Perfil.svg" alt=""></img>
-                </div>
-                <div className={"col-12 col-md-6"}>
-                  <img src="" alt="" />
-                  <h2>
-                    <strong className={styles["titulo-nombre"]}>¡Hola,</strong>
-                  </h2>
-                  <h2>
-                    <strong className={styles["titulo-nombre-sub"]}>
-                      {user?.nombres} {user?.apellidoPaterno}
-                    </strong>
-                  </h2>
-                </div>
-                <div className="col-12 col-md-2">
-                  <img
-                    className={styles["imagen-monedero"]}
-                    src="../img/icon/profile/wallet-outline.svg"
-                    alt=""
-                  ></img>
-                  <strong className={styles["titulo-wallet"]}>Monedero</strong>
-                  <br />
-                  <strong className={styles["titulo-wallet-sub"]}>
-                    Virtual
-                  </strong>
-                  <br />
-                  <strong className={styles["titulo-wallet-sub"]}>
-                    ${user?.saldo}
-                  </strong>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={"d-flex justify-content-center"}>
-            <div className={"col-12 col-md-2"}>
-              <MenuLateral
-                vista={vista}
-                setVista={setVista}
-                setNombreVista={setNombreVista}
-              />
-            </div>
-            <div className={"col-12 col-md-5"}>
-              <div className={styles["titulo-menu"]}>
-                {" "}
-                Mi cuenta {">"} {nombreVista}
-              </div>
-              {vista === "miPerfil" && <ActualizarDatos />}
-              {vista === "registroPasajero" && (
-                <RegistroPasajero user={user} setVista={setVista} />
-              )}
-              {vista === "cambioContraseña" && (
-                <CambiarPassword setVista={setVista} />
-              )}
-              {vista === "historialCompra" && <HistorialCompra />}
-              {vista === "confirmacion" && <MenuLateral />}
-              {vista === "cambioBoleto" && <MenuLateral />}
-              {vista === "devolucionBoleto" && <MenuLateral />}
-              {vista === "registrarPasajero" && <RegistrarPasajero />}
-            </div>
-          </div>
-        </div> */}
       </section>
-
       <Footer />
     </Layout>
   );

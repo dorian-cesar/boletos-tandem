@@ -9,7 +9,7 @@ export default async (req, res) => {
     try {
        
         let token = await doLogin();
-        let data = await axios.post(config.service_url + `/integracion/terminarTransaccion`,{
+        let data = await axios.post(config.service_url + `/integracion/terminarNuevaTransaccion`,{
                 "codigo":"AIC64699678",
                 "codigotransbank":"12345678",
                 "numerocuota":"0",
