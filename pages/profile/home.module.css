@@ -131,3 +131,64 @@
 .profile-body-container .view-container {
   flex-grow: 3;
 }
+
+@media (max-width: 320px) {
+  .header-profile {
+    justify-content: center;
+  }
+
+  .user-name{
+    margin:15px;
+  }
+
+  .wallet-info .wallet-title {
+    display: flex;
+    gap: 21px;
+   
+    margin-left: 23px;
+  }
+}
+
+@media (min-width: 321px) and (max-width:400px) {
+  .header-profile {
+    justify-content: center;
+  
+  }
+  
+  .user-name{
+    margin:15px;
+
+
+  }
+
+  .user-info{
+    padding-right: 0px;
+  }
+  .wallet-info .wallet-title {
+    gap: 23px;
+    margin-left: 23px;
+
+  }
+}
+
+@media (min-width: 401px) and (max-width:450px) {
+  .header-profile {
+    justify-content: center;
+  
+  }
+  
+  .user-name{
+    margin:15px;
+    margin-left: 20px;
+
+  }
+  .user-info{
+    padding-right: 30px;
+  }
+
+  .wallet-info .wallet-title {
+    gap: 23px;
+    margin-left: 5px;
+
+  }
+}

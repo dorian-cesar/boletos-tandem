@@ -150,8 +150,29 @@
 }
 
 @media (width < 770px) {
-    .ticket .ticket-price .ticket-price__detail .ticket-price__price-detail {
-        display: none;
+    .ticket .ticket-price {
+        flex-direction: row;
+    }
+
+    .ticket-details .ticket-details__travel .ticket-details__travel-detail :nth-child(2) {
+        font-weight: 200;
+        text-wrap: nowrap;
+    }
+
+    .ticket .ticket-price .ticket-price__detail {
+        display: flex;
+        margin-block: auto;
+    }
+
+    .ticket .ticket-price .ticket-price__detail span {
+        display: flex;
+        font-size: 12px !important;
+        
+    }
+
+    .ticket .ticket-price .ticket-price__detail span b {
+        font-size: 12px !important;
+        font-weight: 200 !important; 
     }
 }
 
@@ -587,7 +608,7 @@
     .ticket .ticket-price button {
         display: flex;
         width: 160px;
-
+        flex-direction: column !important;
     }
 
     .ticket .ticket-price {

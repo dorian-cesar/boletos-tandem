@@ -150,7 +150,49 @@
 }
 
 
-@media screen and (max-width: 390px) {
+@media (max-width: 320px) {
+    .fondo-cambio {
+        display: flex;
+        max-width: 300px;
+        padding: 16px 8px;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 5px;
+        margin-left: 10px;
+        margin-right: 38px;
+        border-radius: 16px;
+        background: var(--Blanco, #FFF);
+    }
+
+    .container {
+        width: 100%;
+        margin: 0%;
+    }
+
+    .input{
+        width: 105%;
+    }
+
+    .button-search-coupon, .button-search-coupon-disabled {
+        margin: 0% 0%;
+        width: 114%;
+    }
+
+    .search-row-container {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .lo-sentimos{
+        margin-inline-start: 3%;
+    }
+
+
+}
+
+
+@media  (min-width: 321px) and (max-width:399px) {
     .nav{
         margin-left: 3%;
     
@@ -175,22 +217,29 @@
         margin: 0%;
     }
     
+    .input{
+        width: 105%;
+    }
     .button-search-coupon, .button-search-coupon-disabled {
         margin: 0% 0%;
+        width: 120%;
     }
 
-    .input{
-        width: 115%;
+    .search-row-container {
+        display: flex;
+        justify-content: flex-start;
     }
+
+
+
+
     .lo-sentimos{
         margin-inline-start: 3%;
     }
-    .search-row{
-        width: 100%;
-    }
+
 }
 
-@media screen and (min-width: 400px) and (max-width: 430px) {
+@media (min-width: 400px) and (max-width: 430px) {
     .nav{
         margin-left: 3%;
     }
@@ -215,20 +264,22 @@
         width: 100%;
         margin: 0%;
     }
+    .grupo-campos{
+        width: 65%;
+    }
     
     .button-search-coupon, .button-search-coupon-disabled {
         margin: 0% 0%;
+        width: 105%;
     }
 
     .input{
-        width: 115%;
+        width: 105%;
     }
     .lo-sentimos{
         margin-inline-start: 4%;
     }
-    .search-row{
-        width: 100%;
-    }
+ 
 }
 
 @media screen and (min-width: 768px) and (max-width: 908px){

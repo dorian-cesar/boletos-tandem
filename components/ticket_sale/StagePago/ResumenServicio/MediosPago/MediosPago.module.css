@@ -55,11 +55,39 @@
   background: var(--Blanco, #FFF);
 }
 
+@media (max-width:320px) {
+  .container {
+    display: flex;
+    width: 110%;
+    padding: 8px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    border-radius: 16px;
+    background: var(--Blanco, #FFF);
+  }
+
+  .body-pay {
+    display: flex;
+    height: 87px;
+    width: 100%;
+    padding: 24px;
+    gap: 32px;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 24px;
+    background: var(--Blanco, #FFF);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.20);
+  }
+  .input-body {
+    width: 100%;
+  }
+
+}
 
 
 
-
-@media (max-width:409px) {
+@media (min-width:321px) and (max-width:409px) {
   .container {
     display: flex;
     width: 100%;

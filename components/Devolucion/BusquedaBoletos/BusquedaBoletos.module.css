@@ -124,38 +124,58 @@
     flex-wrap: wrap;
 }
 
-
-
-@media screen and (max-width: 390px) {
-
+@media (max-width:320px) {
     .fondo-cambio {
-        display: flex;
-        padding: 16px 8px;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 5px;
-        margin-left: 35px;
-        margin-right: 38px;
-        border-radius: 16px;
-        background: var(--Blanco, #FFF);
-    }
-
-    .container {
         margin-top: 20px;
         margin-bottom: 20px;
         width: 85%;
         height: 220px;
     }
 
+    .container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        height: 250px;
+    }
+
     .button-search-coupon,
     .button-search-coupon-disabled {
         margin: 0% 0%;
-        width: 100%;
+        width: 105%;
     }
 
     .input {
         width: 100%;
+    }
+}
+
+
+
+@media (min-width:321px) and (max-width: 390px) {
+
+    .fondo-cambio {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 85%;
+        height: 220px;
+    }
+
+    .container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        height: 260px;
+    }
+
+    .button-search-coupon,
+    .button-search-coupon-disabled {
+        margin: 0% 0%;
+        width: 112%;
+    }
+
+    .input {
+        width:100%;
     }
 }
 
@@ -169,7 +189,7 @@
     .button-search-coupon,
     .button-search-coupon-disabled {
         margin: 0% 0%;
-        width: 100%;
+        width: 114%;
     }
 
     .input {

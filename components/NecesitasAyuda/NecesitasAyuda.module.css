@@ -56,6 +56,12 @@
     background: var(--Blanco, #FFF);
 }
 
+@media (width < 768px) {
+    .body-form {
+        margin-inline: 10px;
+    }
+}
+
 .title-data{
     margin-top: 30px;
     color: var(--gris-50, #7F7F7F);

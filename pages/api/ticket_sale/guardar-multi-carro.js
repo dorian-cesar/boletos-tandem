@@ -37,7 +37,7 @@ export default async (req, res) => {
                     "tipocuota": 'WALLET'
                 }
 
-                const dataCerrar = await axios.post(config.service_url + `/integracion/terminarTransaccion`, dataSentCerrar, {
+                const dataCerrar = await axios.post(config.service_url + `/integracion/terminarNuevaTransaccion`, dataSentCerrar, {
                     headers: {
                         'Authorization': `Bearer ${token.token}`
                     }

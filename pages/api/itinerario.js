@@ -5,6 +5,7 @@ const config = serverRuntimeConfig;
 
 export default async (req, res) => {
     try {
+        throw new Error('Información no disponible');
         const { servicio } = req.body;
         let data = await axios.post(config.service_url + `/integracion/obtenerItinerario`, {
             servicio,

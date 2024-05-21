@@ -14,6 +14,10 @@
     border-radius: 16px;
     background-color: var(--Blanco, #FFF);
     height: fit-content;
+    position: -webkit-sticky; /* Para compatibilidad con Safari */
+    position: sticky;
+    top: calc(60px + 1rem);
+    right: 0; 
 }
 
 .info-list {

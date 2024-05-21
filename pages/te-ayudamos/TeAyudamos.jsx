@@ -95,23 +95,23 @@ const TeAyudamos = (props) => {
                     </div>
                     <div className={"row"}>
                       <div className={"col-12"}>
-                        <a className={ styles['link-contacto'] } href="tel:26006000018">
+                        {/* <a className={ styles['link-contacto'] } href="tel:26006000018">
                           <img
                             className={styles["image-icon"]}
                             src="/img/icon/help/call-outline.svg"
                           ></img>
                           600 600 0018
-                        </a>
+                        </a> */}
                       </div>
                     </div>
                     <div className={"row"}>
                       <div className={"col-12"}>
-                        <a className={ styles['link-contacto'] } href="https://wa.me/56233048912" target="_blank">
+                        <a className={ styles['link-contacto'] } href="https://wa.me/56996194091" target="_blank">
                           <img
                             className={styles["image-icon"]}
                             src="/img/icon/help/what-up.svg"
                           ></img>
-                          +56233048912
+                          +569 96194091
                         </a>
                       </div>
                     </div>
@@ -129,11 +129,11 @@ const TeAyudamos = (props) => {
                       </div>
                     </div>
                     <div className={"row"}>
-                      <div className={"col-12"}>
+                      {/* <div className={"col-12"}>
                         <span className={styles["text-bold"]}>Call Center</span> |
                         Lunes a viernes: 09:00AM - 18:00PM <br />
                         Sábado, domingos y festivos: 09:00AM - 19:00PM
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
