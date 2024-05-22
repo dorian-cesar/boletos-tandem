@@ -69,15 +69,15 @@ export default function CambioCuponeraAntigua() {
                                     <section className={ `${styles["contenedor-inputs"]} row` }>
                                         <div className="col-12 col-sm-12 col-md-12 col-lg-4 col-xxl-4 px-2">
                                             <label htmlFor="codigoCuponera" className="form-label fw-normal">Código de Cuponera antigua</label>
-                                            <input type="email" className="form-control" id="codigoCuponera" name="codigoCuponera" value={form.codigoCuponera} onChange={() => handleSetValues(event)}/>
+                                            <input type="email" className="form-control" id="codigoCuponera" name="codigoCuponera" value={form.codigoCuponera} onChange={handleSetValues}/>
                                         </div>
                                         <div className="col-12 col-sm-12 col-md-12 col-lg-4 col-xxl-4 px-2">
                                             <label htmlFor="correoElectronico" className="form-label fw-normal">Correo electrónico</label>
-                                            <input type="email" className="form-control" id="correoElectronico" name="correoElectronico" placeholder="correo@ejemplo.com" value={form.correoElectronico} onChange={() => handleSetValues(event)}/>
+                                            <input type="email" className="form-control" id="correoElectronico" name="correoElectronico" placeholder="correo@ejemplo.com" value={form.correoElectronico} onChange={handleSetValues}/>
                                         </div>
                                         <div className="col-12 col-sm-12 col-md-12 col-lg-4 col-xxl-4 px-2">
                                             <label htmlFor="confirmacionCorreoElectronico" className="form-label fw-normal">Confirmación de correo electrónico</label>
-                                            <input type="email" className="form-control" id="confirmacionCorreoElectronico" name="confirmacionCorreoElectronico" placeholder="correo@ejemplo.com" value={form.confirmacionCorreoElectronico} onChange={() => handleSetValues(event)}/>
+                                            <input type="email" className="form-control" id="confirmacionCorreoElectronico" name="confirmacionCorreoElectronico" placeholder="correo@ejemplo.com" value={form.confirmacionCorreoElectronico} onChange={handleSetValues}/>
                                         </div>
                                         <div className={ `col-12 ${ styles["contenedor-boton"] }`}>
                                             <button type='submit'>Continuar</button>
