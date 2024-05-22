@@ -41,6 +41,8 @@ export default function CambioCuponeraAntigua() {
             });
             return;
         }
+
+        setIsSended(true);
     }
 
     function handleSetValues(event: any) {
