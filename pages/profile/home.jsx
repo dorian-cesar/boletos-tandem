@@ -15,6 +15,7 @@ import styles from "./home.module.css";
 import { decryptData } from "utils/encrypt-data.js";
 import LocalStorageEntities from "entities/LocalStorageEntities";
 import axios from "axios";
+import HistorialCompraCuponeraAntigua from "../../components/profile/HistorialCompraCuponeraAntigua/HistorialCompraCuponeraAntigua";
 
 const Home = () => {
   const { getItem } = useLocalStorage();
@@ -131,6 +132,7 @@ const Home = () => {
             {vista === "devolucionBoleto" && <MenuLateral />}
             {vista === "registrarPasajero" && <RegistrarPasajero />}
             {vista === "historialCompraCuponera" && <HistorialCompraCuponera />}
+            {vista === "historialCompraCuponeraAntigua" && <HistorialCompraCuponeraAntigua />}
           </div>
         </section>
       </section>

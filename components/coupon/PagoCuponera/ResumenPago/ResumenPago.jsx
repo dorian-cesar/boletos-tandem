@@ -10,6 +10,16 @@ import CryptoJS from "crypto-js";
 
 const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
+const diasUso = [
+  'Lu',
+  'Ma',
+  'Mi',
+  'Ju',
+  'Vi',
+  'Sa',
+  'Do'
+]
+
 const ResumenPago = (props) => {
   const [resumen, setResumen] = useState({
     carro: {},
@@ -104,10 +114,39 @@ const ResumenPago = (props) => {
                   </li>
                 </ul>
                 <div className={styles["resumen-servicio"]}>
-                  <span>
-                    Cantidad de cupones: {carroCuponera.cantidadCupones} {(carroCuponera.cuponesExtras > 0) ? " + "+ carroCuponera.cuponesExtras+" cupon extra":""}
-                  </span>
-                  <b>{ clpFormat.format(carroCuponera.valorTotalCuponera) }</b>
+                  <div className={styles["tipo-cuponera"]}>
+                    { carroCuponera.estadoNominativa ? 'Nominativa' : 'Al portador' }
+                  </div>
+                  <div className={ styles["cantidad-cupones"] }>
+                    <span onClick={ () => console.log(carroCuponera)}>
+                      Cantidad de cupones: {carroCuponera.cantidadCupones} {(carroCuponera.cuponesExtras > 0) ? " + "+ carroCuponera.cuponesExtras+" cupon extra ":" "}
+                    </span>
+                    <b>{ clpFormat.format(carroCuponera.valorTotalCuponera) }</b>
+                  </div>
+                  <div className={styles["duracion"]}>
+                    <span>
+                      { `${ carroCuponera.diasDuracion } días de duración` }
+                    </span>
+                  </div>
+                  <div className={styles["dias-uso"]}>
+                    { carroCuponera.dias.split('').map((dia, index) => {
+                      return (
+                        <div key={ `dia-uso-${ index }` }>
+                          <span>{ dia.trim() == '1' ? '🟢' : '🔴' }</span>
+                          <span>{ diasUso[index] }</span>
+                        </div>)
+                    })}
+                  </div>
+                  <div className={styles["medio-uso"]}>
+                    <div>
+                      <span>{ carroCuponera.estadoVentanilla ? '🟢' : '🔴' }</span>
+                      <span>Ventanilla</span>
+                    </div>
+                    <div>
+                      <span>{ carroCuponera.estadoWeb ? '🟢' : '🔴' }</span>
+                      <span>Web</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

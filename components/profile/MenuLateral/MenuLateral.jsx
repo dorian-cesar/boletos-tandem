@@ -15,7 +15,7 @@ const MenuLateral = (props) => {
     async function buscarMenu() {
       try {
         const data = await axios.post("/api/user/obtener-menu", "");
-        if (data.data.status) {  
+        if (data.data.status) {
           setMenu(data.data.object);
         }
       } catch ({ message }) {

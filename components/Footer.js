@@ -80,9 +80,9 @@ const Footer = () => (
                             <div className="w-100 footer-letras">
                                
                                 <p>GRUPO DE EMPRESAS PULLMAN </p>
-                                   <p><bold>
+                                   <p><b>
                                     <a href="https://www.pullmango.cl/" target="_blank">PULLMAN CARGO</a> <span className="barra">|</span> <a href="https://tandemindustrial.cl/" target="_blank">TÁNDEM</a> <span className="barra">|</span> <a href="http://www.logik.cl/" target="_blank">LOGIK</a>
-                                    </bold></p>
+                                    </b></p>
                             </div>
 
                         </div>

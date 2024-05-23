@@ -184,7 +184,7 @@ export default function Header({ openNav }: { openNav: any }) {
             </div>
             <div className="col-6 col-sm-9 d-flex align-items-center ">
               <a href="/">
-                <img src="../img/icon/logos/Logo.svg" className="img-fluid" />
+                <img src="../img/icon/logos/Logo.svg" width={ 300 } height={100 } className="img-fluid" />
               </a>
             </div>
             <div className="col-4 col-sm-2 d-flex justify-content-end">
