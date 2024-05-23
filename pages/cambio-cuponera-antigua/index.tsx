@@ -8,8 +8,8 @@ import { ToastContainer, toast } from "react-toastify";
 
 type Form = {
     codigoCuponera: string;
-    correoElectronico: string;
-    confirmacionCorreoElectronico: string;
+    email: string;
+    confirmacionEmail: string;
 }
 
 export default function CambioCuponeraAntigua() {
@@ -17,14 +17,14 @@ export default function CambioCuponeraAntigua() {
 
     const [form, setForm] = useState<Form>({
         codigoCuponera: '',
-        correoElectronico: '',
-        confirmacionCorreoElectronico: ''
+        email: '',
+        confirmacionEmail: ''
     });
     
-    function handleSubmit(event: any) {
+    async function handleSubmit(event: any) {
         event.preventDefault();
 
-        if( form.codigoCuponera === '' || form.correoElectronico === '' || form.confirmacionCorreoElectronico === '' ) {
+        if( form.codigoCuponera === '' || form.email === '' || form.confirmacionEmail === '' ) {
             toast.error('Debe ingresar todos los datos para solicitar sus boletos', {
                 position: "bottom-center",
                 autoClose: 5000,
@@ -33,7 +33,7 @@ export default function CambioCuponeraAntigua() {
             return;
         }
 
-        if( form.correoElectronico !== form.confirmacionCorreoElectronico ) {
+        if( form.email !== form.confirmacionEmail ) {
             toast.error('Los correos electronicos ingresados deben ser iguales', {
                 position: "bottom-center",
                 autoClose: 5000,
@@ -42,12 +42,37 @@ export default function CambioCuponeraAntigua() {
             return;
         }
 
-        setIsSended(true);
+        try {
+            const response = await fetch('/api/coupon/recuperar-cuponera', {
+                method: 'POST',
+                body: JSON.stringify(form)
+            });
+
+            const { message, status } = await response.json();
+
+            if( !status ) {
+                toast.error(message, {
+                    position: "bottom-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                });
+            } else {
+                setIsSended(true);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('Ocurrio un error al intentar validar tu cuponera', {
+                position: "bottom-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+            });
+            return;
+        }
     }
 
     function handleSetValues(event: any) {
         let formValues:any = { ...form }
-        formValues[event.target.name] = event.target.value;
+        formValues[event.target.name] = event.target.name === 'codigoCuponera' ? event.target.value.toUpperCase() : event.target.value;
         setForm(formValues);
     }
 
@@ -69,15 +94,15 @@ export default function CambioCuponeraAntigua() {
                                     <section className={ `${styles["contenedor-inputs"]} row` }>
                                         <div className="col-12 col-sm-12 col-md-12 col-lg-4 col-xxl-4 px-2">
                                             <label htmlFor="codigoCuponera" className="form-label fw-normal">Código de Cuponera antigua</label>
-                                            <input type="email" className="form-control" id="codigoCuponera" name="codigoCuponera" value={form.codigoCuponera} onChange={handleSetValues}/>
+                                            <input type="text" className="form-control" id="codigoCuponera" name="codigoCuponera" value={form.codigoCuponera} onChange={handleSetValues}/>
                                         </div>
                                         <div className="col-12 col-sm-12 col-md-12 col-lg-4 col-xxl-4 px-2">
-                                            <label htmlFor="correoElectronico" className="form-label fw-normal">Correo electrónico</label>
-                                            <input type="email" className="form-control" id="correoElectronico" name="correoElectronico" placeholder="correo@ejemplo.com" value={form.correoElectronico} onChange={handleSetValues}/>
+                                            <label htmlFor="email" className="form-label fw-normal">Correo electrónico</label>
+                                            <input type="email" className="form-control" id="email" name="email" placeholder="correo@ejemplo.com" value={form.email} onChange={handleSetValues}/>
                                         </div>
                                         <div className="col-12 col-sm-12 col-md-12 col-lg-4 col-xxl-4 px-2">
-                                            <label htmlFor="confirmacionCorreoElectronico" className="form-label fw-normal">Confirmación de correo electrónico</label>
-                                            <input type="email" className="form-control" id="confirmacionCorreoElectronico" name="confirmacionCorreoElectronico" placeholder="correo@ejemplo.com" value={form.confirmacionCorreoElectronico} onChange={handleSetValues}/>
+                                            <label htmlFor="confirmacionEmail" className="form-label fw-normal">Confirmación de correo electrónico</label>
+                                            <input type="email" className="form-control" id="confirmacionEmail" name="confirmacionEmail" placeholder="correo@ejemplo.com" value={form.confirmacionEmail} onChange={handleSetValues}/>
                                         </div>
                                         <div className={ `col-12 ${ styles["contenedor-boton"] }`}>
                                             <button type='submit'>Continuar</button>
