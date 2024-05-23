@@ -16,14 +16,6 @@ const MenuLateral = (props) => {
       try {
         const data = await axios.post("/api/user/obtener-menu", "");
         if (data.data.status) {
-          data.data.object.push({
-            "classname": "item-texto-lateral",
-            "estado": "ACT",
-            "idMenu": 510,
-            "nombreMenu": "Historial Compra Cuponera Antigua",
-            "opcionMenu": "historialCompraCuponeraAntigua",
-            "orden": 1
-          })
           setMenu(data.data.object);
         }
       } catch ({ message }) {
