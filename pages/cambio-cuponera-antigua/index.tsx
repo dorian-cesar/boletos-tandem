@@ -26,58 +26,54 @@ export default function CambioCuponeraAntigua() {
         event.preventDefault();
 
         setLoader(true);
+        
+        if( form.codigoCuponera === '' || form.email === '' || form.confirmacionEmail === '' ) {
+            toast.error('Debe ingresar todos los datos para solicitar sus boletos', {
+                position: "bottom-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+            });
+            return;
+        }
 
-        setTimeout(async () => {
+        if( form.email !== form.confirmacionEmail ) {
+            toast.error('Los correos electronicos ingresados deben ser iguales', {
+                position: "bottom-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+            });
+            return;
+        }
 
-            if( form.codigoCuponera === '' || form.email === '' || form.confirmacionEmail === '' ) {
-                toast.error('Debe ingresar todos los datos para solicitar sus boletos', {
+        try {
+            const response = await fetch('/api/coupon/recuperar-cuponera', {
+                method: 'POST',
+                body: JSON.stringify(form)
+            });
+
+            const { message, status } = await response.json();
+
+            setLoader(false);
+
+            if( !status ) {
+                toast.error(message, {
                     position: "bottom-center",
                     autoClose: 5000,
                     hideProgressBar: false,
                 });
-                return;
+            } else {
+                setIsSended(true);
             }
-    
-            if( form.email !== form.confirmacionEmail ) {
-                toast.error('Los correos electronicos ingresados deben ser iguales', {
-                    position: "bottom-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                });
-                return;
-            }
-    
-            try {
-                const response = await fetch('/api/coupon/recuperar-cuponera', {
-                    method: 'POST',
-                    body: JSON.stringify(form)
-                });
-    
-                const { message, status } = await response.json();
-    
-                setLoader(false);
-    
-                if( !status ) {
-                    toast.error(message, {
-                        position: "bottom-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                    });
-                } else {
-                    setIsSended(true);
-                }
-            } catch (error) {
-                setLoader(false);
-    
-                toast.error('Ocurrio un error al intentar validar tu cuponera', {
-                    position: "bottom-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                });
-                return;
-            }
-        }, 3000)
+        } catch (error) {
+            setLoader(false);
 
+            toast.error('Ocurrio un error al intentar validar tu cuponera', {
+                position: "bottom-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+            });
+            return;
+        }
     }
 
     function handleSetValues(event: any) {
