@@ -184,9 +184,11 @@ const Parrilla = (props) => {
         classes += styles["vacio"] + " ";
       }
 
-      if( asiento.estado === 'libre' && boletoValido.clase !== asiento.clase ) {
-        classes += styles["reservado"] + " ";
-      }
+      if( boletoValido.boleto.length < 11 && !boletoValido.boleto.includes('INT') ) {
+        if( asiento.estado === 'libre' && boletoValido.clase !== asiento.clase ) {
+          classes += styles["reservado"] + " ";
+        }
+      }  
 
       return classes.trim();
     } catch (error) {
@@ -258,18 +260,19 @@ const Parrilla = (props) => {
       debugger;
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
 
-      
-      if ( asiento.clase !== boletoValido.clase ) {
-        toast.warn(
-          `No puede seleccionar un asiento con clase distinta a la del boleto en blanco`,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-          }
-        );
-        setIsLoading(false);
-        return;
+      if( boletoValido.boleto.length < 11 && !boletoValido.boleto.includes('INT') ) {
+        if ( asiento.clase !== boletoValido.clase ) {
+          toast.warn(
+            `No puede seleccionar un asiento con clase distinta a la del boleto en blanco`,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+            }
+          );
+          setIsLoading(false);
+          return;
+        }
       }
 
       asiento['piso'] = piso;
@@ -404,8 +407,10 @@ const Parrilla = (props) => {
     if (sit.clase && sit.estado === "seleccion") {
       return "img/asiento_seleccionado.svg";
     }
-    if( sit.estado === 'libre' && boletoValido.clase !== sit.clase ) {
-      return "img/asiento_ocupado.svg";
+    if( boletoValido.boleto.length < 11 && !boletoValido.boleto.includes('INT') ) {
+      if( sit.estado === 'libre' && boletoValido.clase !== sit.clase ) {
+        return "img/asiento_ocupado.svg";
+      }
     }
     if (sit.estado === "libre" && sit.valorAsiento > 0) {
       return "img/asiento_disponible.svg";
