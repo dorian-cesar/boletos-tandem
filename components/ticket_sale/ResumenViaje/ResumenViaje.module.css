@@ -149,3 +149,22 @@
 .utiliza-monedero-virtual img:hover+.tooltip-text {
     visibility: visible;
 }
+
+.loader {
+    display: inline-grid;
+    margin: auto;
+    font-size: 50px;
+}
+
+.loader:before, .loader:after {
+    content: url("../../../public/img/icon/logos/Logo.svg");
+    grid-area: 1/1;
+}
+
+.loader:after {
+    animation: l10 1s infinite;
+}
+
+@keyframes l10 {
+    to {transform:scale(1.2);opacity:0}
+}
