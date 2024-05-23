@@ -14,6 +14,7 @@ type Form = {
 
 export default function CambioCuponeraAntigua() {
     const [isSended, setIsSended] = useState<boolean>(false);
+    const [loader, setLoader] = useState<boolean>(false);
 
     const [form, setForm] = useState<Form>({
         codigoCuponera: '',
@@ -24,50 +25,59 @@ export default function CambioCuponeraAntigua() {
     async function handleSubmit(event: any) {
         event.preventDefault();
 
-        if( form.codigoCuponera === '' || form.email === '' || form.confirmacionEmail === '' ) {
-            toast.error('Debe ingresar todos los datos para solicitar sus boletos', {
-                position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-            });
-            return;
-        }
+        setLoader(true);
 
-        if( form.email !== form.confirmacionEmail ) {
-            toast.error('Los correos electronicos ingresados deben ser iguales', {
-                position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-            });
-            return;
-        }
+        setTimeout(async () => {
 
-        try {
-            const response = await fetch('/api/coupon/recuperar-cuponera', {
-                method: 'POST',
-                body: JSON.stringify(form)
-            });
-
-            const { message, status } = await response.json();
-
-            if( !status ) {
-                toast.error(message, {
+            if( form.codigoCuponera === '' || form.email === '' || form.confirmacionEmail === '' ) {
+                toast.error('Debe ingresar todos los datos para solicitar sus boletos', {
                     position: "bottom-center",
                     autoClose: 5000,
                     hideProgressBar: false,
                 });
-            } else {
-                setIsSended(true);
+                return;
             }
-        } catch (error) {
-            console.error(error);
-            toast.error('Ocurrio un error al intentar validar tu cuponera', {
-                position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-            });
-            return;
-        }
+    
+            if( form.email !== form.confirmacionEmail ) {
+                toast.error('Los correos electronicos ingresados deben ser iguales', {
+                    position: "bottom-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                });
+                return;
+            }
+    
+            try {
+                const response = await fetch('/api/coupon/recuperar-cuponera', {
+                    method: 'POST',
+                    body: JSON.stringify(form)
+                });
+    
+                const { message, status } = await response.json();
+    
+                setLoader(false);
+    
+                if( !status ) {
+                    toast.error(message, {
+                        position: "bottom-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                    });
+                } else {
+                    setIsSended(true);
+                }
+            } catch (error) {
+                setLoader(false);
+    
+                toast.error('Ocurrio un error al intentar validar tu cuponera', {
+                    position: "bottom-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                });
+                return;
+            }
+        }, 3000)
+
     }
 
     function handleSetValues(event: any) {
@@ -105,7 +115,9 @@ export default function CambioCuponeraAntigua() {
                                             <input type="email" className="form-control" id="confirmacionEmail" name="confirmacionEmail" placeholder="correo@ejemplo.com" value={form.confirmacionEmail} onChange={handleSetValues}/>
                                         </div>
                                         <div className={ `col-12 ${ styles["contenedor-boton"] }`}>
-                                            <button type='submit'>Continuar</button>
+                                            <button type='submit' disabled={ loader } className={ loader ? styles['cursor-block'] : '' }>
+                                                Continuar
+                                            </button>
                                         </div>
                                     </section>
                                 </form>

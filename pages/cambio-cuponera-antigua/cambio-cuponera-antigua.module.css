@@ -50,6 +50,11 @@
     font-size: 5rem;
 }
 
+.cursor-block {
+    cursor: wait !important;
+    background: var(--naranjo-80, #FF8A00) !important;
+}
+
 @media (width <= 425px) {
     .contenedor-formulario {
         padding: 16px;
