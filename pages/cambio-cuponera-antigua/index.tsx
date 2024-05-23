@@ -28,6 +28,7 @@ export default function CambioCuponeraAntigua() {
         setLoader(true);
         
         if( form.codigoCuponera === '' || form.email === '' || form.confirmacionEmail === '' ) {
+            setLoader(false);
             toast.error('Debe ingresar todos los datos para solicitar sus boletos', {
                 position: "bottom-center",
                 autoClose: 5000,
@@ -37,6 +38,7 @@ export default function CambioCuponeraAntigua() {
         }
 
         if( form.email !== form.confirmacionEmail ) {
+            setLoader(false);
             toast.error('Los correos electronicos ingresados deben ser iguales', {
                 position: "bottom-center",
                 autoClose: 5000,
