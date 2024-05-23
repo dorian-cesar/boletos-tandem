@@ -63,6 +63,40 @@
     color: var(--naranjo-100, #FF6500);
 }
 
+.container .condition-desc {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    align-items: center;
+    text-align: center;
+}
+
+.container .condition-desc span {
+    white-space: normal;
+    text-align: center;
+}
+
+.container .condition-desc b {
+    color: var(--naranjo-100, #FF6500);
+}
+
+.container .condition-desc .condition-type {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.container .condition-desc .condition-type div{
+    display: flex;
+    gap: 5px;
+}
+
 .container .price{
     color: var(--azul-100, #3365B4);
     font-size: 24px;

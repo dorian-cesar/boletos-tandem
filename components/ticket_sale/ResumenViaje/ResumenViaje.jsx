@@ -44,6 +44,7 @@ export const ResumenViaje = (props) => {
   const [sendNews, setSendNews] = useState(false);
   const [user, setUser] = useState({});
   const [usaWallet, setUsaWallet] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const informacionAgrupada =
@@ -167,6 +168,7 @@ export const ResumenViaje = (props) => {
       let validator = isPaymentValid();
 
       if (!validator.valid) {
+        setIsLoading(false);
         toast.error(validator.error, {
           position: "top-right",
           autoClose: 5000,
@@ -178,6 +180,7 @@ export const ResumenViaje = (props) => {
       validator = newIsValidComprador(datosComprador);
 
       if (!validator.valid) {
+        setIsLoading(false);
         toast.error(validator.error, {
           position: "top-right",
           autoClose: 5000,
@@ -187,6 +190,7 @@ export const ResumenViaje = (props) => {
       }
 
       if (!medioPago) {
+        setIsLoading(false);
         toast.error("Debe seleccionar un medio de pago", {
           position: "top-right",
           autoClose: 5000,
@@ -196,6 +200,7 @@ export const ResumenViaje = (props) => {
       }
 
       if (!terminos) {
+        setIsLoading(false);
         toast.error("Debe aceptar los términos y condiciones", {
           position: "top-right",
           autoClose: 5000,
@@ -365,6 +370,7 @@ export const ResumenViaje = (props) => {
             }
           }
         } catch (error) {
+          setIsLoading(false)
           toast.error(error.response.data.message, {
             position: "top-right",
             autoClose: 5000,
@@ -395,6 +401,8 @@ export const ResumenViaje = (props) => {
           return;
         }
 
+        setIsLoading(false);
+
         setPayment({
           ...payment,
           url: data.url,
@@ -402,6 +410,7 @@ export const ResumenViaje = (props) => {
         });
       }
     } catch (error) {
+      setIsLoading(false);
       console.error(`Error al completar la transacción [${error.message}]`);
       toast.error(error.message || "Error al completar la transacción", {
         position: "bottom-center",
@@ -431,6 +440,7 @@ export const ResumenViaje = (props) => {
       });
       return validator;
     } catch ({ message }) {
+      setIsLoading(false)
       console.error(`Error al validar el pago [${message}]`);
     }
   }
@@ -566,22 +576,27 @@ export const ResumenViaje = (props) => {
           )}
         </div>
         {!soloLectura && (
-          <div className={styles["contenedor-boton-pagar"]}>
-            <button
-              className={styles["boton-pagar"]}
-              onClick={() => sendToPayment()}
-            >
-              Pagar
-            </button>
-            <form
-              ref={payment_form}
-              style={{ display: "none" }}
-              method="POST"
-              action={payment.url}
-            >
-              <input name="TBK_TOKEN" value={payment.token} />
-            </form>
-          </div>
+          !isLoading ? (
+            <div className={styles["contenedor-boton-pagar"]}>
+              <button
+                className={styles["boton-pagar"]}
+                onClick={() => { setIsLoading(true); sendToPayment(); }}
+              >
+                Pagar
+              </button>
+              <form
+                ref={payment_form}
+                style={{ display: "none" }}
+                method="POST"
+                action={payment.url}
+              >
+                <input name="TBK_TOKEN" value={payment.token} />
+              </form>
+            </div>
+          ) : (
+            <img src="/img/loading.gif" width={150} height={150} alt="Perro caminando" style={{ display: 'flex', margin: 'auto' }}/>
+            // <div className={styles["loader"]}></div>
+          )
         )}
       </div>
     </div>
