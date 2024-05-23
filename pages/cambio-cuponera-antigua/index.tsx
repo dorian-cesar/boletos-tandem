@@ -125,7 +125,7 @@ export default function CambioCuponeraAntigua() {
                                 <span className={ `mx-auto ${ styles["check"] }` }>👍</span>
                                 <section className="mx-auto p-3">
                                     <p className='fs-2 fw-normal text-center'>
-                                        Su(s) boleto(s) en blanco ya fueron enviados al correo XXXX@XXXX.XX. <br/>
+                                        Su(s) boleto(s) en blanco ya fueron enviados al correo { form.email }. <br/>
                                         Recuerde confirmar su(s) boleto(s) en blanco en la sección "Confirmación" del menú.
                                     </p>
                                 </section>
