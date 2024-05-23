@@ -211,11 +211,43 @@
 
 .resumen-servicio {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    padding-block: 16px;
-    margin-bottom: 16px;
+    padding-top: 16px;
     border-top: 1px dotted #000;
-    border-bottom: 1px dotted #000;
+    gap: 12px;
+}
+
+.resumen-servicio .cantidad-cupones {
+    text-align: start;
+}
+
+.resumen-servicio .medio-uso {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 16px;
+}
+
+.resumen-servicio .medio-uso div{
+    display: flex;
+    gap: 5px;
+}
+
+.resumen-servicio .tipo-cuponera {
+    font-weight: 700;
+    color: #FF6500;
+}
+
+.resumen-servicio .dias-uso {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.resumen-servicio .dias-uso div{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 
 .total-container {

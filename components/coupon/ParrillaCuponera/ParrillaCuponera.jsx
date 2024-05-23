@@ -41,8 +41,26 @@ const ParrillaCuponera = (props) => {
                   { clpFormat.format(cuponera.valorTotalCuponera) }
                 </div>
                 <div className={styles["condition"]}>Condiciones: </div>
-                <div className={styles["sub-title-origen"] }>
-                  Total Cupones {cuponera.cantidadCupones} { cuponera.cuponesExtras && (<b>+ { `${ cuponera.cuponesExtras } extras` }</b>) }
+                <div className={styles["condition-desc"] }>
+                  <span>
+                    <b>{ cuponera.estadoNominativa ? 'Nominativa' : 'Al portador' }</b>
+                  </span>
+                  <span>
+                    Total Cupones {cuponera.cantidadCupones} { cuponera.cuponesExtras && (<b>+ { `${ cuponera.cuponesExtras } extras` }</b>) }
+                  </span>
+                  <div className={styles["condition-type"]}>
+                    <div>
+                      <span>{ cuponera.estadoVentanilla ? '🟢' : '🔴' }</span>
+                      <span>Ventanilla</span>
+                    </div>
+                    <div>
+                      <span>{ cuponera.estadoWeb ? '🟢' : '🔴' }</span>
+                      <span>Web</span>
+                    </div>
+                  </div>
+                  <span>
+                    { `${ cuponera.diasDuracion } días de duración` }
+                  </span>
                 </div>
                 {/* <div className={styles["dotted-line"]}></div> */}
                 <div className={styles["button"]}
