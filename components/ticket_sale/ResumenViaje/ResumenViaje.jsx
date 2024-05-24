@@ -331,6 +331,10 @@ export const ResumenViaje = (props) => {
               idIntegrador: resumenCompra.idIntegrador,
               codigoCuponera: codigoCuponera,
               boleto: {
+                fechaLlegada: resumenCompra.listaCarrito[0].fechaLlegada,
+                horaLlegada: resumenCompra.listaCarrito[0].horaLlegada,
+                nombre: resumenCompra.datosComprador?.nombre,
+                apellido: resumenCompra.datosComprador?.apellido,
                 asiento: resumenCompra.listaCarrito[0].pasajeros[0].asiento,
                 clase: resumenCompra.listaCarrito[0].pasajeros[0].clase,
                 idServicio: resumenCompra.listaCarrito[0].servicio,

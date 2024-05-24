@@ -68,7 +68,7 @@ const Boleto = (props) => {
               <input type="checkbox" checked={isOpened} readOnly/>
               <div className={ styles['ticket-details'] }>
                 <div className={ styles['ticket-details__header'] }>
-                  <img src="img/logo-pullmanbus.svg" />
+                  <img src="img/logo-pullmanbus.svg" width={ 150 } height={ 25 } alt="Logo Pullman Bus"/>
                   { props.mascota == '1' && <img src="img/icon/logos/paw-outline.svg" />}
                 </div>
                 <div className={ styles['ticket-details__travel'] }>
