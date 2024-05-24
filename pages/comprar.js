@@ -76,7 +76,8 @@ export default function Home(props) {
         }
         dispatch(agregarOrigenDestino(origenDestino));
         setStage(0);
-        searchParrilla(0);
+        // TODO: Descomentar si falla en produccion
+        // searchParrilla(0);
     }, [router.query.search])
 
     async function searchParrilla(in_stage) {
@@ -98,9 +99,14 @@ export default function Home(props) {
 
     const stages_active = endDate ? stages : stages.filter((i) => i.kind != "pasajes_2");
 
+    // TODO: Descomentar si falla en produccion
+    // useEffect(() => {
+    //     searchParrilla();
+    // }, [stage]);
+
     useEffect(() => {
         searchParrilla();
-    }, []);
+    }, [stage]);
 
     useEffect(() => {
         window.scrollTo({top: 0});
