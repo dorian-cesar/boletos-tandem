@@ -77,7 +77,7 @@ export default function Home(props) {
         dispatch(agregarOrigenDestino(origenDestino));
         setStage(0);
         // TODO: Descomentar si falla en produccion
-        // searchParrilla(0);
+        searchParrilla(0);
     }, [router.query.search])
 
     async function searchParrilla(in_stage) {
