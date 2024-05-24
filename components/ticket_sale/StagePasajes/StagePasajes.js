@@ -99,7 +99,8 @@ const StagePasajes = (props) => {
                 setStage(1);
                 setCarro(carroTemporal);
                 setOpenPane(null);
-                searchParrilla(1);
+                // TODO: Descomentar si falla en produccion
+                // searchParrilla(1);
             }
             if (stage == STAGE_BOLETO_VUELTA) {
                 carroTemporal.clientes_vuelta = asientosVuelta.map((asientoVueltaMapped, asientoVueltaIndex) => new PasajeDTO(pasaje, asientoVueltaMapped, asientoVueltaIndex == 0 ? true : false));
