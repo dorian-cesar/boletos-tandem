@@ -62,7 +62,7 @@ export function newIsValidPasajero(pasajero) {
             error: ''
         };
 
-        if ( !pasajero.nombre || pasajero.nombre == '' ) {
+        if ( !pasajero.nombre || pasajero.nombre == '') {
             validator.valid = false;
             validator.error = `Debe ingresar un nombre para pasajero del asiento ${ pasajero.asiento }`;
             return validator;
@@ -74,19 +74,21 @@ export function newIsValidPasajero(pasajero) {
             return validator;
         }
 
-        if (!pasajero.rut || pasajero.rut == '') {
-            validator.valid = false;
-            validator.error = `Debe ingresar un rut para pasajero del asiento ${ pasajero.asiento }`;
-            return validator;
-        } else {
-            const rutValidacion = new Rut(pasajero.rut);
-            if ( !rutValidacion.isValid ) {
+        if(pasajero.tipoDocumento == 'R'){
+            if (!pasajero.rut || pasajero.rut == '') {
                 validator.valid = false;
-                validator.error = `Debe ingresar un rut válido para pasajero del asiento ${ pasajero.asiento }`;
+                validator.error = `Debe ingresar un rut para pasajero del asiento ${ pasajero.asiento }`;
                 return validator;
+            } else {
+                const rutValidacion = new Rut(pasajero.rut);
+                if ( !rutValidacion.isValid ) {
+                    validator.valid = false;
+                    validator.error = `Debe ingresar un rut válido para pasajero del asiento ${ pasajero.asiento }`;
+                    return validator;
+                }
             }
         }
-
+        
         if ( !pasajero.email || pasajero.email == '' ) {
             validator.valid = false;
             validator.error = `Debe ingresar un email para pasajero del asiento ${ pasajero.asiento }`;
@@ -124,17 +126,19 @@ export function newIsValidComprador(pasajero) {
             return validator;
         }
 
-        if (!pasajero.rut || pasajero.rut == '') {
-            validator.valid = false;
-            validator.error = `Debe ingresar un rut para datos del comprador`;
-            return validator;
-        } else {
-            const rutValidacion = new Rut(pasajero.rut);
-            if ( !rutValidacion.isValid ) {
+        if(pasajero.tipoDocumento == 'R'){
+            if (!pasajero.rut || pasajero.rut == '') {
                 validator.valid = false;
-                validator.error = `Debe ingresar un rut válido para datos del comprador`;
+                validator.error = `Debe ingresar un rut para datos del comprador`;
                 return validator;
-            }
+            } else {
+                const rutValidacion = new Rut(pasajero.rut);
+                if ( !rutValidacion.isValid ) {
+                    validator.valid = false;
+                    validator.error = `Debe ingresar un rut válido para datos del comprador`;
+                    return validator;
+                }
+            }     
         }
 
         if ( !pasajero.email || pasajero.email == '' ) {

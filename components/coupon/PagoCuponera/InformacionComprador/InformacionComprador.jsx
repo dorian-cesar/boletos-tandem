@@ -51,8 +51,11 @@ const InformacionComprador = (props) => {
   function setDataComprador({ name, value }) {
     try {
       let carro_temp = { ...carro };
-      value = validarFormatoRut(name, value);
-
+     
+      if( carro.datos["tipoDocumento"] == "R" && name === 'rut' && value !== '' ) {
+        value = validarFormatoRut(name, value);
+      }
+    
       if( carro.datos["tipoDocumento"] == "R" && name === 'rut' && value !== '' ) {
         value = value.replace(/[^\dkK0-9.-]/g,'');
         if( value.length > 12 ) return;
