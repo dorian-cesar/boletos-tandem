@@ -1,28 +1,39 @@
 import doLogin from '../../../utils/oauth-token';
 import getConfig from 'next/config'
 import axios from "axios"
+
+import CryptoJS from "crypto-js";
+
 const {serverRuntimeConfig} = getConfig();
 const config = serverRuntimeConfig;
 
 export default async (req, res) => {
 
     try {
+        const { data } = req.body;
+
+        const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+        const decrypted = CryptoJS.AES.decrypt(data, secret);
+        const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
        
         let token = await doLogin();
-        let postData = {"servicio":req.body.servicio,
-        "fecha":req.body.fecha,
-        "origen":req.body.origen,
-        "destino":req.body.destino,
-        "integrador":req.body.integrador,
-        "asiento":req.body.asiento,
-        "tarifa":req.body.tarifa}
-        let data = await axios.post(config.service_url + `/integracion/tomarAsiento`,
+        let postData = {
+            "servicio": serviceRequest.servicio,
+            "fecha": serviceRequest.fecha,
+            "origen": serviceRequest.origen,
+            "destino": serviceRequest.destino,
+            "integrador": serviceRequest.integrador,
+            "asiento": serviceRequest.asiento,
+            "tarifa": serviceRequest.tarifa
+        }
+
+        const serviceResponse = await axios.post(config.service_url + `/integracion/tomarAsiento`,
             postData,{
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
         })
-        res.status(200).json(data.data);
+        res.status(200).json(serviceResponse.data);
     } catch(e){
         res.status(400).json(e.response.data)
     }
