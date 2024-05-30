@@ -9,7 +9,13 @@ import { limpiarListaCarrito } from "store/usuario/compra-slice"
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./BusquedaServicio.module.css"
 
+import CryptoJS from "crypto-js";
+
+import { generateToken } from 'utils/jwt-auth';
+
 registerLocale("es", es);
+
+const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
   <input
@@ -111,10 +117,26 @@ useEffect(() => {
         startDate: dayjs(startDate).format("YYYYMMDD"),
       };
 
-      const parrilla = await axios.post("/api/parrilla", data
+      const token = generateToken();
+            
+      const request = CryptoJS.AES.encrypt(
+          JSON.stringify(data),
+          secret
       );
-      console.log('Planilla de asientos', parrilla )
-      setParrilla(parrilla.data.map((parrillaMapped, index) => {
+
+      const response = await fetch("/api/parrilla", {
+          method: "POST",
+          body: JSON.stringify({ data: request.toString() }),
+          headers: {
+              Authorization: `Bearer ${ token }`
+          }
+      });
+      
+      const parrilla = await response.json();
+
+      // const parrilla = await axios.post("/api/parrilla", data);
+
+      setParrilla(parrilla.map((parrillaMapped, index) => {
           return {
               ...parrillaMapped,
               id: index + 1

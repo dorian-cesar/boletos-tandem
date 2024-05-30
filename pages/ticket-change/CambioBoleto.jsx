@@ -21,7 +21,13 @@ import { toast } from "react-toastify";
 
 import styles from "./CambioBoleto.module.css"
 
+import CryptoJS from "crypto-js";
+
+import { generateToken } from 'utils/jwt-auth';
+
 registerLocale("es", es);
+
+const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 const stages = [
   {
@@ -90,9 +96,25 @@ export default function Home(props) {
     try {
       const stage_active = in_stage ?? stage;
       setLoadingParrilla(true);
-      const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
-      console.log('Planilla de asientos', parrilla)
-      setParrilla(parrilla.data.map((parrillaMapped, index) => {
+
+      const token = generateToken();
+            
+      const request = CryptoJS.AES.encrypt(
+          JSON.stringify(new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate)),
+          secret
+      );
+
+      const response = await fetch("/api/parrilla", {
+          method: "POST",
+          body: JSON.stringify({ data: request.toString() }),
+          headers: {
+              Authorization: `Bearer ${ token }`
+          }
+      });
+      
+      const parrilla = await response.json();
+
+      setParrilla(parrilla.map((parrillaMapped, index) => {
         return {
           ...parrillaMapped,
           id: index + 1
