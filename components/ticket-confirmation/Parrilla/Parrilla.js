@@ -24,6 +24,8 @@ const ASIENTO_OCUPADO = "ocupado";
 const ASIENTO_OCUPADO_MASCOTA = "pet-busy";
 const MAXIMO_COMPRA_ASIENTO = 1;
 
+const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+
 const Parrilla = (props) => {
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const dispatch = useDispatch();
