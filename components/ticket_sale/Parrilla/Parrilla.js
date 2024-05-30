@@ -259,10 +259,16 @@ const Parrilla = (props) => {
     isMascota = false
   ) {
     try {
+      const request = CryptoJS.AES.encrypt(
+        JSON.stringify(new TomaAsientoDTO(parrillaServicio, "", "", asiento, piso, stage)),
+        secret
+      );
+
       const { data } = await axios.post(
         "/api/ticket_sale/tomar-asiento",
-        new TomaAsientoDTO(parrillaServicio, "", "", asiento, piso, stage)
+        { data: request.toString() }
       );
+
       const reserva = data;
 
       if( !reserva.estadoReserva ) {
