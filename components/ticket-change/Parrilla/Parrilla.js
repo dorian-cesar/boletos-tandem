@@ -13,6 +13,8 @@ import { agregarServicio, eliminarServicio, eliminarServicioCambio} from "store/
 import { guardarCantidadIda, limpiarCambio} from "store/usuario/cambio-boleto-slice";
 import { toast } from "react-toastify";
 
+import CryptoJS from "crypto-js";
+
 const ASIENTO_LIBRE = "libre";
 const ASIENTO_LIBRE_MASCOTA = "pet-free";
 const STAGE_BOLETO_IDA = 0;
@@ -221,10 +223,16 @@ const Parrilla = (props) => {
     isMascota = false
   ) {
     try {
+      const request = CryptoJS.AES.encrypt(
+        JSON.stringify(new TomaAsientoDTO(parrillaServicio, "", "", asiento, piso, stage)),
+        secret
+      );
+
       const { data } = await axios.post(
         "/api/ticket_sale/tomar-asiento",
-        new TomaAsientoDTO(parrillaServicio, "", "", asiento, piso, stage)
+        { data: request.toString() }
       );
+      
       const reserva = data;
 
       if (!reserva.estadoReserva) {
