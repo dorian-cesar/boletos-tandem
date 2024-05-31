@@ -28,8 +28,6 @@ const ASIENTO_OCUPADO = "ocupado";
 const ASIENTO_OCUPADO_MASCOTA = "pet-busy";
 const MAXIMO_COMPRA_ASIENTO = 1;
 
-const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
-
 const Parrilla = (props) => {
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const dispatch = useDispatch();
@@ -248,15 +246,22 @@ const Parrilla = (props) => {
     isMascota = false
   ) {
     try {
+      const token = generateToken();
+      
       const request = CryptoJS.AES.encrypt(
         JSON.stringify(new TomaAsientoDTO(parrillaServicio, "", "", asiento, piso, stage)),
         secret
       );
 
-      const { data } = await axios.post(
-        "/api/ticket_sale/tomar-asiento",
-        { data: request.toString() }
-      );
+      const response = await fetch("/api/ticket_sale/tomar-asiento", {
+        method: "POST",
+        body: JSON.stringify({ data: request.toString() }),
+        headers: {
+          Authorization: `Bearer ${ token }`
+        }
+      });
+
+      const data = await response.json();
 
       const reserva = data;
 

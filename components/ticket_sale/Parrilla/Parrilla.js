@@ -259,15 +259,22 @@ const Parrilla = (props) => {
     isMascota = false
   ) {
     try {
+      const token = generateToken();
+      
       const request = CryptoJS.AES.encrypt(
         JSON.stringify(new TomaAsientoDTO(parrillaServicio, "", "", asiento, piso, stage)),
         secret
       );
 
-      const { data } = await axios.post(
-        "/api/ticket_sale/tomar-asiento",
-        { data: request.toString() }
-      );
+      const response = await fetch("/api/ticket_sale/tomar-asiento", {
+        method: "POST",
+        body: JSON.stringify({ data: request.toString() }),
+        headers: {
+          Authorization: `Bearer ${ token }`
+        }
+      });
+
+      const data = await response.json();
 
       const reserva = data;
 
