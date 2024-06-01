@@ -216,7 +216,7 @@ const Parrilla = (props) => {
           secret
       );
 
-      const response = await fetch("/api/ticket_sale/mapa-asientos", {
+      const response = await fetch(`/api/ticket_sale/mapa-asientos?token=${ token }`, {
           method: "POST",
           body: JSON.stringify({ data: request.toString() }),
           headers: {
@@ -253,7 +253,7 @@ const Parrilla = (props) => {
         secret
       );
 
-      const response = await fetch("/api/ticket_sale/tomar-asiento", {
+      const response = await fetch(`/api/ticket_sale/tomar-asiento?token=${ token }`, {
         method: "POST",
         body: JSON.stringify({ data: request.toString() }),
         headers: {
@@ -412,7 +412,7 @@ const Parrilla = (props) => {
           secret
       );
 
-      const response = await fetch("/api/ticket_sale/mapa-asientos", {
+      const response = await fetch(`/api/ticket_sale/mapa-asientos?token=${ token }`, {
           method: "POST",
           body: JSON.stringify({ data: request.toString() }),
           headers: {

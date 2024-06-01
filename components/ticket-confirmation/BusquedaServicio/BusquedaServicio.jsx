@@ -124,7 +124,7 @@ useEffect(() => {
           secret
       );
 
-      const response = await fetch("/api/parrilla", {
+      const response = await fetch(`/api/parrilla?token=${ token }`, {
           method: "POST",
           body: JSON.stringify({ data: request.toString() }),
           headers: {

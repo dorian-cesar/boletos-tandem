@@ -8,7 +8,7 @@ export function generateToken() {
     try {
         const token = JWT.sign({ user: user, password: password }, secret, {
             algorithm: 'HS256',
-            expiresIn: '5m'
+            expiresIn: '1m'
         });
     
         return token;
