@@ -10,6 +10,12 @@ import { BuscarPlanillaVerticalDTO } from "dto/MapaAsientosDTO";
 import { AsientoDTO } from "dto/AsientoDTO";
 import { PasajeDTO } from "dto/PasajesDTO";
 
+import CryptoJS from "crypto-js";
+
+import { generateToken } from 'utils/jwt-auth';
+
+const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+
 const ASIENTO_LIBRE = "libre";
 const ASIENTO_LIBRE_MASCOTA = "pet-free";
 const STAGE_BOLETO_IDA = 1;
@@ -69,16 +75,30 @@ const StagePasajes = (props) => {
     try {
       const parrillaTemporal = [...parrilla];
       const parrillaModificada = [...parrilla];
-      const { data } = await axios.post(
-        "/api/ticket_sale/mapa-asientos",
-        new BuscarPlanillaVerticalDTO(
-          parrillaTemporal[indexParrilla],
-          stage,
-          startDate,
-          endDate,
-          parrilla[indexParrilla]
-        )
+
+      const token = generateToken();
+            
+      const request = CryptoJS.AES.encrypt(
+          JSON.stringify(new BuscarPlanillaVerticalDTO(
+            parrillaTemporal[indexParrilla],
+            stage,
+            startDate,
+            endDate,
+            parrilla[indexParrilla]
+          )),
+          secret
       );
+
+      const response = await fetch("/api/ticket_sale/mapa-asientos", {
+          method: "POST",
+          body: JSON.stringify({ data: request.toString() }),
+          headers: {
+              Authorization: `Bearer ${ token }`
+          }
+      });
+      
+      const data = await response.json();
+
       parrillaModificada[indexParrilla].loadingAsientos = false;
       parrillaModificada[indexParrilla].asientos1 = data[1];
       if (!!parrillaTemporal[indexParrilla].busPiso2) {
@@ -304,16 +324,30 @@ const StagePasajes = (props) => {
         return;
       }
       setOpenPane(parrilla[indexParrilla].id);
-      const { data } = await axios.post(
-        "/api/ticket_sale/mapa-asientos",
-        new BuscarPlanillaVerticalDTO(
-          parrillaTemporal[indexParrilla],
-          stage,
-          startDate,
-          endDate,
-          parrilla[indexParrilla]
-        )
+
+      const token = generateToken();
+            
+      const request = CryptoJS.AES.encrypt(
+          JSON.stringify(new BuscarPlanillaVerticalDTO(
+            parrillaTemporal[indexParrilla],
+            stage,
+            startDate,
+            endDate,
+            parrilla[indexParrilla]
+          )),
+          secret
       );
+
+      const response = await fetch("/api/ticket_sale/mapa-asientos", {
+          method: "POST",
+          body: JSON.stringify({ data: request.toString() }),
+          headers: {
+              Authorization: `Bearer ${ token }`
+          }
+      });
+
+      const data = await response.json();
+
       parrillaModificada[indexParrilla].loadingAsientos = false;
       parrillaModificada[indexParrilla].asientos1 = data[1];
       parrillaModificada[indexParrilla].boletoValido = boletoValido;

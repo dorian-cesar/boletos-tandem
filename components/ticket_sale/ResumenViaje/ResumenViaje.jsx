@@ -19,6 +19,8 @@ import { decryptData, encryptData } from "utils/encrypt-data";
 
 import CryptoJS from "crypto-js";
 
+import { generateToken } from 'utils/jwt-auth';
+
 const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 export const ResumenViaje = (props) => {
@@ -383,15 +385,22 @@ export const ResumenViaje = (props) => {
           return false;
         }
       } else {
+        const token = generateToken();
+
         const request = CryptoJS.AES.encrypt(
           JSON.stringify(resumenCompra),
           secret
         );
 
-        const { data } = await axios.post(
-          "/api/ticket_sale/guardar-multi-carro",
-          { data: request.toString() }
-        );
+        const response = await fetch("/api/ticket_sale/guardar-multi-carro", {
+          method: "POST",
+          body: JSON.stringify({ data: request.toString() }),
+          headers: {
+              Authorization: `Bearer ${ token }`
+          }
+        });
+
+        const data = await response.json();
 
         if (Boolean(data.error)) {
           toast.error(
