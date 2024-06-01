@@ -4,31 +4,42 @@ import axios from "axios"
 const {serverRuntimeConfig} = getConfig();
 const config = serverRuntimeConfig;
 
-export default async (req, res) => {
+import { authMiddleware } from '../auth-middleware';
 
+import CryptoJS from "crypto-js";
+
+async function handleMapaAsientos(req, res) {
     try {
-       
         let token = await doLogin();
-        let data = await axios.post(config.service_url + `/integracion/buscarPlantillaVertical`,{
-                "idServicio": req.body.idServicio,
-                "tipoBusPiso1":req.body.tipoBusPiso1,
-                "tipoBusPiso2":req.body.tipoBusPiso2,
-                "fechaServicio": req.body.fechaServicio,
-                "idOrigen":req.body.idOrigen,
-                "idDestino":req.body.idDestino,
-                "integrador": req.body.integrador,
-                "horaServicio": req.body.horaServicio,
-                "clasePiso1": req.body.clasePiso1,
-                "clasePiso2": req.body.clasePiso2,
-                "empresa": req.body.empresa,
-            },{
+
+        const { data } = JSON.parse(req.body);
+
+        const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+        const decrypted = CryptoJS.AES.decrypt(data, secret);
+        const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+
+        const serviceResponse = await axios.post(config.service_url + `/integracion/buscarPlantillaVertical`,{
+            "idServicio": serviceRequest.idServicio,
+            "tipoBusPiso1": serviceRequest.tipoBusPiso1,
+            "tipoBusPiso2": serviceRequest.tipoBusPiso2,
+            "fechaServicio": serviceRequest.fechaServicio,
+            "idOrigen": serviceRequest.idOrigen,
+            "idDestino": serviceRequest.idDestino,
+            "integrador": serviceRequest.integrador,
+            "horaServicio": serviceRequest.horaServicio,
+            "clasePiso1": serviceRequest.clasePiso1,
+            "clasePiso2": serviceRequest.clasePiso2,
+            "empresa": serviceRequest.empresa,
+        },{
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
         });
-        res.status(200).json(data.data);
+
+        res.status(200).json(serviceResponse.data);
     } catch(e){
         res.status(400).json(e.response.data)
     }
-    
 }   
+
+export default authMiddleware(handleMapaAsientos);

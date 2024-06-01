@@ -14,6 +14,10 @@ import { toast } from "react-toastify";
 
 import CryptoJS from "crypto-js";
 
+import { generateToken } from 'utils/jwt-auth';
+
+const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+
 const ASIENTO_LIBRE = "libre";
 const ASIENTO_LIBRE_MASCOTA = "pet-free";
 const STAGE_BOLETO_IDA = 1;
@@ -23,8 +27,6 @@ const ASIENTO_TIPO_ASOCIADO = "asociado";
 const ASIENTO_OCUPADO = "ocupado";
 const ASIENTO_OCUPADO_MASCOTA = "pet-busy";
 const MAXIMO_COMPRA_ASIENTO = 1;
-
-const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 const Parrilla = (props) => {
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
@@ -207,10 +209,22 @@ const Parrilla = (props) => {
   async function reloadPane(indexParrilla) {
     try {
       const parrillaTemporal = [...parrilla.parrilla];
-      const { data } = await axios.post(
-        "/api/ticket_sale/mapa-asientos",
-        new BuscarPlanillaVerticalOpenPaneDTO(parrilla)
+      const token = generateToken();
+            
+      const request = CryptoJS.AES.encrypt(
+          JSON.stringify(new BuscarPlanillaVerticalOpenPaneDTO(parrilla)),
+          secret
       );
+
+      const response = await fetch("/api/ticket_sale/mapa-asientos", {
+          method: "POST",
+          body: JSON.stringify({ data: request.toString() }),
+          headers: {
+              Authorization: `Bearer ${ token }`
+          }
+      });
+
+      const data = await response.json();
       let nuevaParrilla = { ...parrillaTemporal[indexParrilla] };
       nuevaParrilla.loadingAsientos = false;
       nuevaParrilla.asientos1 = data[1];
@@ -232,15 +246,22 @@ const Parrilla = (props) => {
     isMascota = false
   ) {
     try {
+      const token = generateToken();
+      
       const request = CryptoJS.AES.encrypt(
         JSON.stringify(new TomaAsientoDTO(parrillaServicio, "", "", asiento, piso, stage)),
         secret
       );
 
-      const { data } = await axios.post(
-        "/api/ticket_sale/tomar-asiento",
-        { data: request.toString() }
-      );
+      const response = await fetch("/api/ticket_sale/tomar-asiento", {
+        method: "POST",
+        body: JSON.stringify({ data: request.toString() }),
+        headers: {
+          Authorization: `Bearer ${ token }`
+        }
+      });
+
+      const data = await response.json();
 
       const reserva = data;
 
@@ -383,10 +404,24 @@ const Parrilla = (props) => {
       if (parrilla.parrilla[indexParrilla].id == openPane) {
         return;
       }
-      const { data } = await axios.post(
-        "/api/ticket_sale/mapa-asientos",
-        new BuscarPlanillaVerticalOpenPaneDTO(parrilla)
+
+      const token = generateToken();
+            
+      const request = CryptoJS.AES.encrypt(
+          JSON.stringify(new BuscarPlanillaVerticalOpenPaneDTO(parrilla)),
+          secret
       );
+
+      const response = await fetch("/api/ticket_sale/mapa-asientos", {
+          method: "POST",
+          body: JSON.stringify({ data: request.toString() }),
+          headers: {
+              Authorization: `Bearer ${ token }`
+          }
+      });
+
+      const data = await response.json();
+      
       parrillaModificada[indexParrilla].loadingAsientos = false;
       parrillaModificada[indexParrilla].asientos1 = data[1];
       if (!!parrillaTemporal[indexParrilla].busPiso2) {

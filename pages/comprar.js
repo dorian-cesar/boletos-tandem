@@ -21,7 +21,13 @@ import { decryptDataNoSaved } from "utils/encrypt-data";
 import { useDispatch, useSelector } from "react-redux";
 import { agregarOrigenDestino } from "store/usuario/compra-slice";
 
+import CryptoJS from "crypto-js";
+
+import { generateToken } from 'utils/jwt-auth';
+
 registerLocale("es", es);
+
+const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 const stages = [
     {
@@ -84,16 +90,35 @@ export default function Home(props) {
         try {
             const stage_active = in_stage ?? stage;
             setLoadingParrilla(true);
-            const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
-            setParrilla(parrilla.data.map((parrillaMapped, index) => {
+
+            const token = generateToken();
+            
+            const request = CryptoJS.AES.encrypt(
+                JSON.stringify(new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate)),
+                secret
+            );
+
+            const response = await fetch("/api/parrilla", {
+                method: "POST",
+                body: JSON.stringify({ data: request.toString() }),
+                headers: {
+                    Authorization: `Bearer ${ token }`
+                }
+            });
+            
+            const parrilla = await response.json();
+
+            // const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
+            setParrilla(parrilla.map((parrillaMapped, index) => {
                 return {
                     ...parrillaMapped,
                     id: index + 1
                 }
             }));
             setLoadingParrilla(false);   
-        } catch ({ message }) {
-            console.error(`Error al obtener parrilla [${ message }]`)
+        } catch (e) {
+            console.error(e)
+            console.error(`Error al obtener parrilla [${ e.message }]`)
         }
     };
 

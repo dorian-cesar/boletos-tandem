@@ -5,14 +5,16 @@ const {serverRuntimeConfig, publicRuntimeConfig} = getConfig();
 const config = serverRuntimeConfig;
 import { WebpayPlus, Environment, Options } from 'transbank-sdk';
 
+import { authMiddleware } from '../auth-middleware';
+
 import CryptoJS from "crypto-js";
 
-export default async (req, res) => {
+async function handleGuardarMultiCarro(req, res) {
 
     try {
         let token = await doLogin();
 
-        const { data } = req.body;
+        const { data } = JSON.parse(req.body);
 
         const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
         const decrypted = CryptoJS.AES.decrypt(data, secret);
@@ -22,7 +24,7 @@ export default async (req, res) => {
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
-        })
+        });
         
         if(serviceResponse.data.status){
 
@@ -86,3 +88,5 @@ export default async (req, res) => {
     }
     
 }   
+
+export default authMiddleware(handleGuardarMultiCarro);

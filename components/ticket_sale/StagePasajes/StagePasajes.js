@@ -10,6 +10,11 @@ import { FiltroServicios } from "../FiltroServicios/FiltroServicios";
 import styles from './StagePasajes.module.css';
 import moment from "moment";
 
+import CryptoJS from "crypto-js";
+
+import { generateToken } from 'utils/jwt-auth';
+
+const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 const STAGE_BOLETO_IDA = 0;
 const STAGE_BOLETO_VUELTA = 1;
@@ -76,9 +81,30 @@ const StagePasajes = (props) => {
                 return;
             }
             setOpenPane(parrilla[indexParrilla].id);
-            const { data } = await axios.post('/api/ticket_sale/mapa-asientos', 
-            new BuscarPlanillaVerticalDTO(parrillaTemporal[indexParrilla], stage, startDate, endDate, parrilla[indexParrilla]));
-            console.log('mapa asiento', data)
+            
+            const token = generateToken();
+            
+            const request = CryptoJS.AES.encrypt(
+                JSON.stringify(new BuscarPlanillaVerticalDTO(
+                    parrillaTemporal[indexParrilla],
+                    stage,
+                    startDate,
+                    endDate,
+                    parrilla[indexParrilla]
+                )),
+                secret
+            );
+
+            const response = await fetch("/api/ticket_sale/mapa-asientos", {
+                method: "POST",
+                body: JSON.stringify({ data: request.toString() }),
+                headers: {
+                    Authorization: `Bearer ${ token }`
+                }
+            });
+
+            const data = await response.json();
+
             parrillaModificada[indexParrilla].loadingAsientos = false;
             parrillaModificada[indexParrilla].asientos1 = data[1];
             if( !!parrillaTemporal[indexParrilla].busPiso2 ) {
