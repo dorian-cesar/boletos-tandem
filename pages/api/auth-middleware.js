@@ -1,6 +1,6 @@
 import { verifyToken } from 'utils/jwt-auth';
 
-const allowedOrigins = ['http://localhost:3000', 'https://www.pullman.cl', 'http://128.1.0.190', 'http://128.1.0.191'];
+const allowedOrigins = ['https://www.pullmanbus.cl', 'https://www.pullman.cl', 'http://128.1.0.190', 'http://128.1.0.191'];
 
 export const authMiddleware = handler => async (req, res) => {
     try {
