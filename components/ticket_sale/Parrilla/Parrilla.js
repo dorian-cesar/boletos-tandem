@@ -41,6 +41,8 @@ const Parrilla = (props) => {
   const [cantidadIda, setCantidadIda] = useState(0);
   const [cantidadVuelta, setCantidadVuelta] = useState(0);
 
+  const [validationCheckInfo, setValidationCheckInfo] = useState(false);
+
   const clpFormat = new Intl.NumberFormat("es-CL", {
     style: "currency",
     currency: "CLP",
@@ -228,7 +230,7 @@ const Parrilla = (props) => {
           secret
       );
 
-      const response = await fetch(`/api/ticket_sale/mapa-asientos?token=${ token }`, {
+      const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
           method: "POST",
           body: JSON.stringify({ data: request.toString() }),
           headers: {
@@ -266,7 +268,7 @@ const Parrilla = (props) => {
         secret
       );
 
-      const response = await fetch(`/api/ticket_sale/tomar-asiento?token=${ token }`, {
+      const response = await fetch(`/api/ticket_sale/tomar-asiento`, {
         method: "POST",
         body: JSON.stringify({ data: request.toString() }),
         headers: {
@@ -301,7 +303,11 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
-      debugger;
+      
+      if( validationCheckInfo ) {
+        return;
+      }
+
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
 
       asiento['piso'] = piso;
@@ -572,7 +578,7 @@ const Parrilla = (props) => {
           secret
       );
 
-      const response = await fetch(`/api/ticket_sale/mapa-asientos?token=${ token }`, {
+      const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
           method: "POST",
           body: JSON.stringify({ data: request.toString() }),
           headers: {
@@ -682,6 +688,9 @@ const Parrilla = (props) => {
   return (
     isShowParrilla && (
       <section className={styles["grill-detail"]}>
+        <div className="d-none">
+          <input type="checkbox" name="honeypot" checked={validationCheckInfo} onChange={() => setValidationCheckInfo(!validationCheckInfo)} />
+        </div>
         <div className={styles["cross-container"]}>
           <img
             src="img/close.svg"

@@ -89,7 +89,7 @@ const StagePasajes = (props) => {
           secret
       );
 
-      const response = await fetch(`/api/ticket_sale/mapa-asientos?token=${ token }`, {
+      const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
           method: "POST",
           body: JSON.stringify({ data: request.toString() }),
           headers: {
@@ -338,7 +338,7 @@ const StagePasajes = (props) => {
           secret
       );
 
-      const response = await fetch(`/api/ticket_sale/mapa-asientos?token=${ token }`, {
+      const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
           method: "POST",
           body: JSON.stringify({ data: request.toString() }),
           headers: {

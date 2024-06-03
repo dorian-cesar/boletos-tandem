@@ -392,7 +392,7 @@ export const ResumenViaje = (props) => {
           secret
         );
 
-        const response = await fetch(`/api/ticket_sale/guardar-multi-carro?token=${ token }`, {
+        const response = await fetch(`/api/ticket_sale/guardar-multi-carro`, {
           method: "POST",
           body: JSON.stringify({ data: request.toString() }),
           headers: {

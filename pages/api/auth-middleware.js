@@ -1,11 +1,10 @@
 import { verifyToken } from 'utils/jwt-auth';
 
-const allowedOrigins = ['https://www.pullmanbus.cl', 'https://www.pullman.cl', 'http://128.1.0.190', 'http://128.1.0.191'];
+const allowedOrigins = ['http://localhost:3000' ,'https://www.pullmanbus.cl', 'https://www.pullman.cl', 'http://128.1.0.190', 'http://128.1.0.191'];
 
 export const authMiddleware = handler => async (req, res) => {
     try {
         const header = req.headers.authorization || req.headers.Authorization;
-        const token = req.query.token;
 
         const referer = req.headers.referer;
 
@@ -17,12 +16,8 @@ export const authMiddleware = handler => async (req, res) => {
             return res.status(401).json({ message: 'Authorization header missing' });
         }
 
-        if (!token) {
-            return res.status(401).json({ message: 'Authorization missing' });
-        }
-
         const jwt = header.split(" ")[1];
-        if (!verifyToken(jwt) || !verifyToken(token)) {
+        if ( !verifyToken(jwt) ) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
