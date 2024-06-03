@@ -8,6 +8,10 @@ export const authMiddleware = handler => async (req, res) => {
 
         const referer = req.headers.referer;
 
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+        console.log('IP:::', ip);
+
         if( !referer || !allowedOrigins.some(d => referer.startsWith(d)) ) {
             return res.status(401).json({ message: 'Not Allowed' });
         }
