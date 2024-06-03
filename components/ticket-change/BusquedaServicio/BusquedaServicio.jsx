@@ -123,7 +123,7 @@ const BusquedaServicio = (props) => {
           secret
       );
 
-      const response = await fetch("/api/parrilla", {
+      const response = await fetch(`/api/parrilla`, {
           method: "POST",
           body: JSON.stringify({ data: request.toString() }),
           headers: {
