@@ -6,13 +6,9 @@ export const authMiddleware = handler => async (req, res) => {
     try {
         const header = req.headers.authorization || req.headers.Authorization;
 
-        const referer = req.headers.referer;
+        const referer = req.headers.origin;
 
-        const forwarded = req.headers['x-forwarded-for'];
-        const realIp = req.headers['x-real-ip'];
-        const remoteAddress = req.connection.remoteAddress;
-
-        console.log('IP:::', forwarded, realIp, remoteAddress);
+        console.log('IP:::', referer);
 
         if( !referer || !allowedOrigins.some(d => referer.startsWith(d)) ) {
             return res.status(401).json({ message: 'Not Allowed' });
