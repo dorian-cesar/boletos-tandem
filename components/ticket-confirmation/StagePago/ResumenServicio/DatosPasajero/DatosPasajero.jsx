@@ -50,6 +50,10 @@ const DatosPasajero = (props) => {
       let carro_temp = { ...asiento };
       value = validarFormatoRut(name, value);
 
+      if (asiento["tipoDocumento"] == "R" && name === "rut" && value !== "") {
+        value = validarFormatoRut(name, value);
+      }
+
       if( asiento["tipoDocumento"] == "R" && name === 'rut' && value !== '' ) {
         value = value.replace(/[^\dkK0-9.-]/g,'');
         if( value.length > 12 ) return;
