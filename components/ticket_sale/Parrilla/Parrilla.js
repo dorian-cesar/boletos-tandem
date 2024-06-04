@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   BuscarPlanillaVerticalDTO,
   BuscarPlanillaVerticalOpenPaneDTO,
@@ -16,6 +16,9 @@ import CryptoJS from "crypto-js";
 
 import { generateToken } from 'utils/jwt-auth';
 
+import { decryptData } from "utils/encrypt-data";
+import LocalStorageEntities from "entities/LocalStorageEntities";
+
 const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 const ASIENTO_LIBRE = "libre";
@@ -29,6 +32,8 @@ const ASIENTO_OCUPADO_MASCOTA = "pet-busy";
 const MAXIMO_COMPRA_ASIENTO = 4;
 
 const Parrilla = (props) => {
+  const buttonRef = useRef();
+
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
   const dispatch = useDispatch();
 
@@ -42,6 +47,12 @@ const Parrilla = (props) => {
   const [cantidadVuelta, setCantidadVuelta] = useState(0);
 
   const [validationCheckInfo, setValidationCheckInfo] = useState(false);
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const user = decryptData(LocalStorageEntities.user_auth);
+    setUser(user);
+  }, []);
 
   const clpFormat = new Intl.NumberFormat("es-CL", {
     style: "currency",
@@ -268,7 +279,7 @@ const Parrilla = (props) => {
         secret
       );
 
-      const response = await fetch(`/api/ticket_sale/tomar-asiento`, {
+      const response = await fetch(`/api/ticket_sale/tomar-asiento-v2`, {
         method: "POST",
         body: JSON.stringify({ data: request.toString() }),
         headers: {
@@ -305,6 +316,11 @@ const Parrilla = (props) => {
     try {
       
       if( validationCheckInfo ) {
+        return;
+      }
+
+      if( !user ) {
+        buttonRef.current.click();
         return;
       }
 
@@ -908,6 +924,11 @@ const Parrilla = (props) => {
                 Cantidad de asientos seleccionados: {asientosPorServicio.length}
               </span>
             </div>
+            <div 
+              className="d-none"
+              ref={buttonRef}
+              data-bs-toggle="modal"
+              data-bs-target="#loginModal"></div>
           </div>
         </div>
       </section>

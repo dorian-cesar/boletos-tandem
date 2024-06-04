@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import DatePicker, { registerLocale } from "react-datepicker";
 import Link from "next/link";
 import Input from "../Input";
-import { useEffect, useState, forwardRef } from "react";
+import { useEffect, useState, forwardRef, useRef } from "react";
 import es from "date-fns/locale/es";
 import { useRouter } from "next/router";
 import styles from "./BusquedaServicio.module.css";
@@ -12,7 +12,8 @@ import { useSelector, useDispatch } from "react-redux";
 import Popup from "../Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
 import { liberarAsientos } from "store/usuario/compra-slice"
-import { decryptDataNoSaved, encryptDataNoSave, encryptDataNoTime } from "utils/encrypt-data";
+import { decryptDataNoSaved, encryptDataNoSave, decryptData } from "utils/encrypt-data";
+import LocalStorageEntities from "entities/LocalStorageEntities";
 
 registerLocale("es", es);
 
@@ -28,6 +29,8 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
 ));
 
 const BusquedaServicio = (props) => {
+
+  const buttonRef = useRef();
 
   const router = useRouter();
 
@@ -55,6 +58,13 @@ const BusquedaServicio = (props) => {
 
   const [mostrarPopup, setMostrarPopup] = useState(false);
 
+  const [user, setUser] = useState();
+  
+  useEffect(() => {
+    const user = decryptData(LocalStorageEntities.user_auth);
+    setUser(user);
+  }, []);
+
   const abrirPopup = () => {
     setMostrarPopup(true);
   };
@@ -78,26 +88,14 @@ const BusquedaServicio = (props) => {
     setDatePickerKey((prevKey) => prevKey + 1);
   }, [startDate]);
 
-  function validarServicioTomado() {
-    debugger;
-    const tieneElementos = Object.keys(listaCarrito).length > 0;
-    let fechaComponente = dayjs(startDate).format("YYYY-MM-DD");
-    if (tieneElementos) {
-      const { origen, destino, startDate, endDate } = router.query;
-      if (
-        dayjs(fechaComponente).isBefore(startDate) ||
-        dayjs(fechaComponente).isAfter(startDate)
-      ) {
-        abrirPopup();
-      } else {
-      }
-      return true;
-    }
-    return false;
-  }
-
   async function redireccionarBuscarServicio() {
     if( isLoading ) return;
+
+    if( !user ) {
+      setIsLoading(false);
+      buttonRef.current.click();
+      return;
+    }
 
     setIsLoading(true);
     dispatch(liberarAsientos());
@@ -340,6 +338,11 @@ const BusquedaServicio = (props) => {
                 <img src="img/icon-buscar-blanco.svg" /> Buscar
               </button>
             </div>
+            <div 
+              className="d-none"
+              ref={buttonRef}
+              data-bs-toggle="modal"
+              data-bs-target="#loginModal"></div>
           </div>
         </div>
       </section>

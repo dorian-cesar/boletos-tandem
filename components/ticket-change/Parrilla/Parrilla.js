@@ -249,7 +249,7 @@ const Parrilla = (props) => {
         secret
       );
 
-      const response = await fetch(`/api/ticket_sale/tomar-asiento`, {
+      const response = await fetch(`/api/ticket_sale/tomar-asiento-v2`, {
         method: "POST",
         body: JSON.stringify({ data: request.toString() }),
         headers: {

@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./Boleto.module.css";
 import Parrilla from "../Parrilla/Parrilla";
 
@@ -13,15 +13,33 @@ import { toast } from "react-toastify";
 import { format } from "@formkit/tempo";
 import { useSelector } from "react-redux";
 
+import { decryptData } from "utils/encrypt-data";
+import LocalStorageEntities from "entities/LocalStorageEntities";
 
 var customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 const Boleto = (props) => {
+  const buttonRef = useRef();
+
   const [isOpened, setIsOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isShowItinerary, setIsShowItinerary] = useState(false);
   const [itinerario, setItinerario] = useState([]);
   const { origen, destino } = useSelector((state) => state.compra);
+  const [user, setUser] = useState();
+
+  const handleOpenPane = () => {
+    if( !user ) {
+      buttonRef.current.click();
+      return;
+    }
+    setIsOpened(!isOpened);
+  }
+  
+  useEffect(() => {
+    const user = decryptData(LocalStorageEntities.user_auth);
+    setUser(user);
+  }, []);
 
   let duracion = dayjs(
     props.fechaLlegada + " " + props.horaLlegada,
@@ -111,9 +129,14 @@ const Boleto = (props) => {
                     ) }
                   </div>
                 </div>
-                <button onClick={() => setIsOpened(!isOpened)}>
+                <button onClick={handleOpenPane}>
                   Comprar
                 </button>
+                <div 
+                  className="d-none"
+                  ref={buttonRef}
+                  data-bs-toggle="modal"
+                  data-bs-target="#loginModal"></div>
               </div>
               <div className={styles['animated-logo']}>
                 <img src="img/icon-barra.svg" />
