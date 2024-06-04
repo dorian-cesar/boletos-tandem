@@ -35,7 +35,7 @@ export const authMiddleware = handler => async (req, res) => {
         }
         
         if (ipData.count >= limit) {
-            return res.status(429).send("Too Many Requests");
+            return res.status(429).json({ message: "Too Many Requests"});
         }
         
         ipData.count += 1;
