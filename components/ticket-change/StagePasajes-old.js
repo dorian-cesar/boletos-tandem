@@ -130,7 +130,7 @@ const StagePasajes = (props) => {
   ) {
     try {
       const { data } = await axios.post(
-        "/api/ticket_sale/tomar-asiento",
+        "/api/ticket_sale/tomar-asiento-v2",
         new TomaAsientoDTO(
           parrillaServicio,
           startDate,
