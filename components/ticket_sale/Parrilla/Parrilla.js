@@ -320,8 +320,8 @@ const Parrilla = (props) => {
       }
 
       if( !user ) {
-        buttonRef.current.click();
-        return;
+        // buttonRef.current.click();
+        // return;
       }
 
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
