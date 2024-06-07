@@ -75,7 +75,7 @@ export default function Home(props) {
 
   return (
     <Layout>
-      {respuestaCambio ? (
+      {respuestaCambio && props.codigo ? (
         <>
           <section className={styles["main-section"]}>
             <div className={styles["images-container"]}>
