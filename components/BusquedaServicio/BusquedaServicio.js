@@ -64,6 +64,8 @@ const BusquedaServicio = (props) => {
   const [disabledButton, setDisabledButton] = useState(true);
   const [origenes, setOrigenes] = useState([]);
 
+  const captchaRef = useRef();
+
   useEffect(() => {
     getOrigins();
   }, []);
@@ -349,22 +351,20 @@ const BusquedaServicio = (props) => {
               ></label>
               <button
                 className={`${styles["button-busqueda-servicio"]} ${ isLoading ? styles['loading-button'] : '' }`}
-                onClick={redireccionarBuscarServicio}
-                disabled={disabledButton}
+                onClick={() => captchaRef.current.execute()}
+                disabled={!origen || !destino}
               >
                 <img src="img/icon-buscar-blanco.svg" /> Buscar
               </button>
             </div>
-            
-            {origen && destino ? (
-              <div className="w-100 mt-2 d-flex justify-content-end">
-                <ReCAPTCHA
-                  sitekey={captchaSiteKey}
-                  onChange={() => setDisabledButton(false)}
-                />
-              </div>
-              ) : ''
-            }
+            <div className="w-100 d-flex justify-content-end">
+              <ReCAPTCHA
+                sitekey={captchaSiteKey}
+                size='invisible'
+                ref={captchaRef}
+                onChange={() => redireccionarBuscarServicio()}
+              />
+            </div>
             <div 
               className="d-none"
               ref={buttonRef}
