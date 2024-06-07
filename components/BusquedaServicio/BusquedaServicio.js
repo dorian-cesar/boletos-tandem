@@ -40,7 +40,6 @@ const BusquedaServicio = (props) => {
   const dispatch = useDispatch();
   const listaCarrito = useSelector((state) => state.compra.listaCarrito);
   const {
-    origenes,
     dias,
     isShowMascota = false,
     isHomeComponent = true
@@ -63,6 +62,11 @@ const BusquedaServicio = (props) => {
 
   const [user, setUser] = useState();
   const [disabledButton, setDisabledButton] = useState(true);
+  const [origenes, setOrigenes] = useState([]);
+
+  useEffect(() => {
+    getOrigins();
+  }, []);
   
   useEffect(() => {
     const user = decryptData(LocalStorageEntities.user_auth);
@@ -121,6 +125,16 @@ const BusquedaServicio = (props) => {
     // );
 
     setIsLoading(false);
+  }
+
+  async function getOrigins() {
+    try {
+      const res = await fetch('/api/ciudades');
+      const ciudades = await res.json()
+      setOrigenes(ciudades);
+    } catch(error) {
+      console.log(`Error al obtener ciudades [${ error?.message }]`);
+    }
   }
 
   async function getDestinos() {
