@@ -1,9 +1,7 @@
 import Head from "next/head";
-import Header from "./Header/Header";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
@@ -12,8 +10,17 @@ import { liberarAsientos } from "store/usuario/compra-slice";
 import { limpiarCambio } from "store/usuario/cambio-boleto-slice";
 
 import { GoogleTagManager } from '@next/third-parties/google'
+import dynamic from "next/dynamic";
 
 const googleTagManager = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER;
+
+const DynamicDrawerComponent = dynamic(() => import('react-modern-drawer'), {
+  ssr: false
+})
+
+const DynamicHeaderComponent = dynamic(() => import('./Header/Header'), {
+  ssr: false
+})
 
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);
@@ -40,13 +47,15 @@ export default function Layout({ children }) {
       <Head>
         <meta charSet="UTF-8" />
         <title>Pullman Bus</title>
+        <meta name="description" content="Empresa de Transporte Pullman Bus S.A San Francisco de Borja 235, Estación Central, Santiago de Chile.  Transporte de Viajes Interurbanos, Viajes Especiales" />
+        <meta name="keywords" content="Pasajes en bus, Transporte Urbano, buses pullman, Pullman, Pulman, PullmanBus, Pullman Bus, bus, viajes, viaje, viajes interurbanos, viaje en bus" />
       </Head>
 
-      <Header openNav={openNav} />
+      <DynamicHeaderComponent openNav={openNav} />
 
       <GoogleTagManager gtmId={ googleTagManager }/>
       <main>{children}</main>
-      <Drawer
+      <DynamicDrawerComponent
         open={ open }
         onClose={ () => setOpen(!open) }
         direction="left"
@@ -146,7 +155,7 @@ export default function Layout({ children }) {
             </div>
           </div>
         </div>
-      </Drawer>
+      </DynamicDrawerComponent>
     </>
   );
 }

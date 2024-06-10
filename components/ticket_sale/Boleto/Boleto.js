@@ -30,8 +30,8 @@ const Boleto = (props) => {
 
   const handleOpenPane = () => {
     if( !user ) {
-      buttonRef.current.click();
-      return;
+      // buttonRef.current.click();
+      // return;
     }
     setIsOpened(!isOpened);
   }

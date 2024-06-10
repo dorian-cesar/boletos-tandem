@@ -14,8 +14,11 @@ import ModalEntities from "entities/ModalEntities";
 import { liberarAsientos } from "store/usuario/compra-slice"
 import { decryptDataNoSaved, encryptDataNoSave, decryptData } from "utils/encrypt-data";
 import LocalStorageEntities from "entities/LocalStorageEntities";
+import ReCAPTCHA from "react-google-recaptcha";
 
 registerLocale("es", es);
+
+const captchaSiteKey = process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA;
 
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
   <input
@@ -37,10 +40,9 @@ const BusquedaServicio = (props) => {
   const dispatch = useDispatch();
   const listaCarrito = useSelector((state) => state.compra.listaCarrito);
   const {
-    origenes,
     dias,
     isShowMascota = false,
-    isHomeComponent = true,
+    isHomeComponent = true
   } = props;
 
   const [decryptedData, setDecryptedData] = useState(null);
@@ -59,6 +61,14 @@ const BusquedaServicio = (props) => {
   const [mostrarPopup, setMostrarPopup] = useState(false);
 
   const [user, setUser] = useState();
+  const [disabledButton, setDisabledButton] = useState(true);
+  const [origenes, setOrigenes] = useState([]);
+
+  const captchaRef = useRef();
+
+  useEffect(() => {
+    getOrigins();
+  }, []);
   
   useEffect(() => {
     const user = decryptData(LocalStorageEntities.user_auth);
@@ -88,13 +98,13 @@ const BusquedaServicio = (props) => {
     setDatePickerKey((prevKey) => prevKey + 1);
   }, [startDate]);
 
-  async function redireccionarBuscarServicio() {
+  function redireccionarBuscarServicio() {
     if( isLoading ) return;
 
     if( !user ) {
-      setIsLoading(false);
-      buttonRef.current.click();
-      return;
+      // setIsLoading(false);
+      // buttonRef.current.click();
+      // return;
     }
 
     setIsLoading(true);
@@ -110,11 +120,23 @@ const BusquedaServicio = (props) => {
 
     const encriptedData = encryptDataNoSave(data, 'search');
 
-    await router.push(
-      `/comprar?search=${ encriptedData }`
-    );
+    router.replace(`/comprar?search=${ encriptedData }`).then(() => window.location.reload());
+
+    // await router.push(
+    //   `/comprar?search=${ encriptedData }`
+    // );
 
     setIsLoading(false);
+  }
+
+  async function getOrigins() {
+    try {
+      const res = await fetch('/api/ciudades');
+      const ciudades = await res.json()
+      setOrigenes(ciudades);
+    } catch(error) {
+      console.log(`Error al obtener ciudades [${ error?.message }]`);
+    }
   }
 
   async function getDestinos() {
@@ -206,7 +228,7 @@ const BusquedaServicio = (props) => {
   return (
     <>
       <section className={ isHomeComponent ? 'container pb-5' : 'container py-1' }>
-        <div className={ isHomeComponent && styles['seleccion-servicio'] }>
+        <div className={ isHomeComponent ? styles['seleccion-servicio'] : '' }>
           <div>
             {isHomeComponent && (
               <h1 className={styles["titulo-azul"]}>
@@ -329,14 +351,19 @@ const BusquedaServicio = (props) => {
               ></label>
               <button
                 className={`${styles["button-busqueda-servicio"]} ${ isLoading ? styles['loading-button'] : '' }`}
-                onClick={() => {
-                  origen &&
-                      destino &&
-                      redireccionarBuscarServicio();
-                }}
+                onClick={() => captchaRef.current.execute()}
+                disabled={!origen || !destino}
               >
                 <img src="img/icon-buscar-blanco.svg" /> Buscar
               </button>
+            </div>
+            <div className="w-100 d-flex justify-content-end">
+              <ReCAPTCHA
+                sitekey={captchaSiteKey}
+                size='invisible'
+                ref={captchaRef}
+                onChange={() => redireccionarBuscarServicio()}
+              />
             </div>
             <div 
               className="d-none"
