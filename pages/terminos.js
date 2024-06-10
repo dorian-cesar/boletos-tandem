@@ -13,7 +13,7 @@ export default function Terminos(props) {
   return (
     <Layout>
       <Head>
-        <title>PullmanBus | Terminos de Uso</title>
+        <title>Pullman Bus | Terminos de Uso</title>
       </Head>
       <div className="pullman-mas mb-5">
         <div className="container">

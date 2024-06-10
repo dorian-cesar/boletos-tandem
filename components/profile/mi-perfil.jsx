@@ -135,7 +135,7 @@ const ActualizarDatos = () => {
   return (
     <Layout>
       <Head>
-        <title>PullmanBus | Actualizar mis datos</title>
+        <title>Pullman Bus | Actualizar mis datos</title>
       </Head>
       {isLoading ? (
         <div className="d-flex justify-content-center mt-2">

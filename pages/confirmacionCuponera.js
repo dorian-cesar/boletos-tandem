@@ -105,7 +105,7 @@ export default function Home(props) {
     return (
         <Layout>
             <Head>
-                <title>PullmanBus | Compra Boleto</title>
+                <title>Pullman Bus | Compra Boleto</title>
             </Head>
             <div className="pasajes">
                 <div className="container">

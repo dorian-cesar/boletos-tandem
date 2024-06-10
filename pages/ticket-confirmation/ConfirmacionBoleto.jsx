@@ -139,7 +139,7 @@ export default function Home(props) {
   return (
     <Layout>
       <Head>
-        <title>PullmanBus | Confirmación Boleto</title>
+        <title>Pullman Bus | Confirmación Boleto</title>
       </Head>
       <div className={styles["home"]}>
         <div className="pullman-mas">

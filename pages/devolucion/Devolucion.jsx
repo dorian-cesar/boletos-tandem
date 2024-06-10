@@ -34,7 +34,7 @@ const Devolucion = (props) => {
   return (
     <Layout>
       <Head>
-        <title>PullmanBus | Devolución</title>
+        <title>Pullman Bus | Devolución</title>
       </Head>
       <div className={styles["home"]}>
         <div className={`py-4 container ${styles["nav"]}`}>

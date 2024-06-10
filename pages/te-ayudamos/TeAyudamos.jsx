@@ -30,7 +30,7 @@ const TeAyudamos = (props) => {
   return (
     <Layout>
       <Head>
-        <title>PullmanBus | Te Ayudamos</title>
+        <title>Pullman Bus | Te Ayudamos</title>
       </Head>
       {stage == 0 ? (
         <div className={styles["body"]}>

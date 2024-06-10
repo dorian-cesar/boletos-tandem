@@ -83,7 +83,7 @@ const MisCompras = () => {
     <>
       <Layout>
         <Head>
-          <title>PullmanBus | Mis compras</title>
+          <title>Pullman Bus | Mis compras</title>
         </Head>
         {isLoading ? (
           <div className="d-flex justify-content-center mt-2">

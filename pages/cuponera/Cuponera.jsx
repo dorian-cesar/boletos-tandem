@@ -40,7 +40,7 @@ export default function cuponera(props) {
   return (
     <Layout>
       <Head>
-        <title>PullmanBus | Compra tu cuponera</title>
+        <title>Pullman Bus | Compra tu cuponera</title>
       </Head>
       <div className={styles["home"]}>
         {stage == 0 ? (

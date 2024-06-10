@@ -78,7 +78,7 @@ const Home = () => {
   return (
     <Layout>
       <Head>
-        <title>PullmanBus | Mi Perfil</title>
+        <title>Pullman Bus | Mi Perfil</title>
       </Head>
       <section className={ styles['perfil-body'] }>
         <section className={ `container ${ styles['header-profile'] }` }>
