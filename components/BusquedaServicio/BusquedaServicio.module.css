@@ -47,8 +47,11 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+}
 
-
+.button-busqueda-servicio:disabled {
+    background: var(--naranjo-80, #f8ccaf);
+    cursor: not-allowed;
 }
 
 .button-busqueda-servicio:active {

@@ -55,9 +55,9 @@ export default function Home(props) {
 
     const startDate = dayjs(decryptedData?.startDate).isValid() ? dayjs(decryptedData?.startDate).toDate(): null;
     const endDate = dayjs(decryptedData?.endDate).isValid() ? dayjs(decryptedData?.endDate).toDate() : null;
-    const origen = decryptedData?.origen.codigo;
-    const destino = decryptedData?.destino != "null" ? decryptedData?.destino.codigo : null;
-    const mascota_allowed = decryptedData?.mascota_allowed;
+    const origen = decryptedData?.origen?.codigo || '';
+    const destino = decryptedData?.destino != "null" ? decryptedData?.destino?.codigo : null;
+    const mascota_allowed = decryptedData?.mascota_allowed || false;
 
     const stateCompra = useSelector((state) => state.compra);
 
@@ -74,7 +74,7 @@ export default function Home(props) {
     const [stage, setStage] = useState(0);
 
     const dispatch = useDispatch();
-
+    
     useEffect(() => {
         const origenDestino = {
             origen: decryptedData?.origen,
@@ -83,11 +83,12 @@ export default function Home(props) {
         dispatch(agregarOrigenDestino(origenDestino));
         setStage(0);
         // TODO: Descomentar si falla en produccion
-        searchParrilla(0);
+        // searchParrilla(0);
     }, [router.query.search])
 
     async function searchParrilla(in_stage) {
         try {
+            debugger;
             const stage_active = in_stage ?? stage;
             setLoadingParrilla(true);
 
@@ -130,7 +131,9 @@ export default function Home(props) {
     // }, [stage]);
 
     useEffect(() => {
-        searchParrilla();
+        if( stage === 0 || stage === 1 ) {
+            searchParrilla();
+        }
     }, [stage]);
 
     useEffect(() => {
@@ -263,6 +266,16 @@ export default function Home(props) {
 }
 
 export const getServerSideProps = withIronSessionSsr(async function ({ req, res, query }) {
+    const decryptedData = query.search ? decryptDataNoSaved(query.search, 'search') : null;
+    if( !decryptedData || !decryptedData?.origen || !decryptedData?.destino || !decryptedData?.startDate ) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: '/'
+            }
+        }
+    }
+
     let ciudades = await axios.get(
         publicRuntimeConfig.site_url + "/api/ciudades"
     );

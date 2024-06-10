@@ -1,12 +1,5 @@
-import axios from "axios";
 import Layout from "components/Layout";
-import Footer from "components/Footer";
-import BusquedaServicio from "components/BusquedaServicio/BusquedaServicio";
-import Ofertas from "components/Ofertas/Ofertas";
 import Head from "next/head";
-import { withIronSessionSsr } from "iron-session/next";
-import { sessionOptions } from "lib/session";
-import getConfig from "next/config";
 import { registerLocale } from "react-datepicker";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -19,10 +12,18 @@ import Popup from "components/Popup/Popup";
 
 import ModalEntities from "entities/ModalEntities";
 
-const { publicRuntimeConfig } = getConfig();
 import es from "date-fns/locale/es";
+import dynamic from "next/dynamic";
 
 registerLocale("es", es);
+
+const DynamicBusquedaServicioComponent = dynamic(() => import('components/BusquedaServicio/BusquedaServicio'), {
+  ssr: false
+})
+
+const DynamicFooterComponent = dynamic(() => import('components/Footer'), {
+  ssr: false
+})
 
 export default function Home(props) {
   const origenes = props.ciudades;
@@ -50,7 +51,7 @@ export default function Home(props) {
       </Head>
       <div className="home">
         <Banner />
-        <BusquedaServicio
+        <DynamicBusquedaServicioComponent
           origenes={origenes}
           dias={props.dias}
           isShowMascota={true}
@@ -58,7 +59,7 @@ export default function Home(props) {
 
         {/* <Ofertas /> */}
       </div>
-      <Footer />
+      <DynamicFooterComponent />
       { isShowModalMobile && (
         <Popup 
           modalKey={ ModalEntities.mobile_purchase_info }
@@ -69,43 +70,3 @@ export default function Home(props) {
     </Layout>
   );
 }
-
-export const getServerSideProps = withIronSessionSsr(async function ({
-  req,
-  res,
-}) {
-  let ciudades = { data: [] }
-  let promociones = { data: [] }
-  let dias = { data: [] };
-
-  try {
-    ciudades = await axios.get(
-      publicRuntimeConfig.site_url + "/api/ciudades"
-    );
-  } catch (error) {
-    console.error('ERROR AL OBTENER CIUDADES:::', error)
-  }
-
-  try {
-    promociones = await axios.get(
-      publicRuntimeConfig.site_url + "/api/promociones"
-    );
-  } catch (error) {
-    console.error('ERROR AL OBTENER PROMOCIONES:::', error)
-  }
-
-  try {
-    dias = await axios.get(publicRuntimeConfig.site_url + "/api/dias");
-  } catch (error) {
-    console.error('ERROR AL OBTENER DIAS:::', error)
-  }
-
-  return {
-    props: {
-      ciudades: ciudades.data,
-      dias: dias.data,
-      promociones: promociones.data,
-    },
-  };
-},
-sessionOptions);

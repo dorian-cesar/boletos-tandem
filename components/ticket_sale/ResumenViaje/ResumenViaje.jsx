@@ -368,7 +368,7 @@ export const ResumenViaje = (props) => {
               const url = `/respuesta-transaccion-canje/${data?.voucher?.boleto}`;
               router.push(url);
             } else {
-              toast.warn(data?.resultado?.mensaje, {
+              toast.warn("Ocurrio un error al canjear la cuponera", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -377,7 +377,7 @@ export const ResumenViaje = (props) => {
           }
         } catch (error) {
           setIsLoading(false)
-          toast.error(error.response.data.message, {
+          toast.error("Ocurrio un error al canjear la cuponera", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -404,7 +404,7 @@ export const ResumenViaje = (props) => {
 
         if (Boolean(data.error)) {
           toast.error(
-            data.error.message || "Error al completar la transacción",
+            "Error al completar la transacción",
             {
               position: "bottom-center",
               autoClose: 5000,
@@ -425,7 +425,7 @@ export const ResumenViaje = (props) => {
     } catch (error) {
       setIsLoading(false);
       console.error(`Error al completar la transacción [${error.message}]`);
-      toast.error(error.message || "Error al completar la transacción", {
+      toast.error("Error al completar la transacción", {
         position: "bottom-center",
         autoClose: 5000,
         hideProgressBar: false,
