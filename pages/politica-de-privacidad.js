@@ -10,7 +10,7 @@ export default function Politica(props) {
   return (
     <Layout>
       <Head>
-        <title>PullmanBus | Bases Legales</title>
+        <title>Pullman Bus | Bases Legales</title>
       </Head>
       <div className="pullman-mas mb-5">
         <div className="container">

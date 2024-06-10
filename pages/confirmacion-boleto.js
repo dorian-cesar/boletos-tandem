@@ -12,7 +12,7 @@ export default function confirmacionBoleto(props) {
   return (
     <Layout>
        <Head>
-        <title>PullmanBus | Confirmación Boleto</title>
+        <title>Pullman Bus | Confirmación Boleto</title>
       </Head>
       <div className="pullman-mas mb-5">
       <div className="container">
