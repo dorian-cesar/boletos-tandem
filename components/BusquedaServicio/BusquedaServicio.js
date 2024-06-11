@@ -98,35 +98,41 @@ const BusquedaServicio = (props) => {
     setDatePickerKey((prevKey) => prevKey + 1);
   }, [startDate]);
 
-  function redireccionarBuscarServicio() {
+  async function redireccionarBuscarServicio() {
     if( isLoading ) return;
 
-    if( !user ) {
-      // setIsLoading(false);
-      // buttonRef.current.click();
-      // return;
-    }
-
     setIsLoading(true);
-    dispatch(liberarAsientos());
-    
-    const data = {
-       origen,
-       destino,
-       startDate: startDate ? dayjs(startDate).format("YYYY-MM-DD") : null,
-       endDate: endDate ? dayjs(endDate).format("YYYY-MM-DD") : null,
-       mascota_allowed
+
+    try {
+      const token = await captchaRef.current.executeAsync();
+
+      const tokenVerify = await fetch('/api/token-verify', {
+        method: 'POST',
+        body: JSON.stringify({ token })
+      });
+
+      const tokenVerifyResponse = await tokenVerify.json();
+
+      if( !tokenVerifyResponse.success ) {
+        return;
+      }
+
+      dispatch(liberarAsientos());
+      
+      const data = {
+        origen,
+        destino,
+        startDate: startDate ? dayjs(startDate).format("YYYY-MM-DD") : null,
+        endDate: endDate ? dayjs(endDate).format("YYYY-MM-DD") : null,
+        mascota_allowed
+      }
+
+      const encriptedData = encryptDataNoSave(data, 'search');
+
+      router.replace(`/comprar?search=${ encriptedData }`).then(() => window.location.reload()).catch(_ => setIsLoading(false));
+    } catch(error) {
+      setIsLoading(false);
     }
-
-    const encriptedData = encryptDataNoSave(data, 'search');
-
-    router.replace(`/comprar?search=${ encriptedData }`).then(() => window.location.reload());
-
-    // await router.push(
-    //   `/comprar?search=${ encriptedData }`
-    // );
-
-    setIsLoading(false);
   }
 
   async function getOrigins() {
@@ -351,7 +357,7 @@ const BusquedaServicio = (props) => {
               ></label>
               <button
                 className={`${styles["button-busqueda-servicio"]} ${ isLoading ? styles['loading-button'] : '' }`}
-                onClick={() => captchaRef.current.execute()}
+                onClick={redireccionarBuscarServicio}
                 disabled={!origen || !destino}
               >
                 <img src="img/icon-buscar-blanco.svg" /> Buscar
@@ -362,7 +368,6 @@ const BusquedaServicio = (props) => {
                 sitekey={captchaSiteKey}
                 size='invisible'
                 ref={captchaRef}
-                onChange={() => redireccionarBuscarServicio()}
               />
             </div>
             <div 
