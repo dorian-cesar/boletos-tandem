@@ -308,22 +308,11 @@ export const getServerSideProps = withIronSessionSsr(async function ({
   let nacionalidades = await axios.get(
     publicRuntimeConfig.site_url + "/api/nacionalidades"
   );
-
-  let convenios = await axios.get(
-    publicRuntimeConfig.site_url + "/api/convenios"
-  );
-
-  let mediosDePago = await axios.get(
-    publicRuntimeConfig.site_url + "/api/medios-de-pago"
-  );
-
   return {
     props: {
       ciudades: ciudades.data,
       dias: dias.data,
       nacionalidades: nacionalidades.data,
-      convenios: convenios.data,
-      mediosDePago: mediosDePago.data,
       destinos: destinos.data,
     },
   };

@@ -226,10 +226,6 @@ const StagePago = (props) => {
   }
 
   useEffect(() => {
-    (async () => await getConvenio())();
-  }, [convenioSelected]);
-
-  useEffect(() => {
     (async () => await obtenerMediosPagos())();
   }, []);
 
