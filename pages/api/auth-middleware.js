@@ -18,31 +18,31 @@ export const authMiddleware = handler => async (req, res) => {
 
         console.log('IP:::', forwarded, realIp, remoteAddress);
 
-        if (!rateLimitMap.has(forwarded)) {
-            rateLimitMap.set(forwarded, {
-                count: 0,
-                lastReset: Date.now(),
-            });
-        }
+        // if (!rateLimitMap.has(forwarded)) {
+        //     rateLimitMap.set(forwarded, {
+        //         count: 0,
+        //         lastReset: Date.now(),
+        //     });
+        // }
         
-        const ipData = rateLimitMap.get(forwarded);
+        // const ipData = rateLimitMap.get(forwarded);
 
-        console.log('IPDATA:::', JSON.stringify(ipData));
+        // console.log('IPDATA:::', JSON.stringify(ipData));
         
-        if (Date.now() - ipData.lastReset > windowMs) {
-            ipData.count = 0;
-            ipData.lastReset = Date.now();
-        }
+        // if (Date.now() - ipData.lastReset > windowMs) {
+        //     ipData.count = 0;
+        //     ipData.lastReset = Date.now();
+        // }
         
-        if (ipData.count >= limit) {
-            return res.status(429).json({ message: "Too Many Requests"});
-        }
+        // if (ipData.count >= limit) {
+        //     return res.status(429).json({ message: "Too Many Requests"});
+        // }
         
-        ipData.count += 1;
+        // ipData.count += 1;
 
-        if( !referer || !allowedOrigins.some(d => referer.startsWith(d)) ) {
-            return res.status(401).json({ message: 'Not Allowed' });
-        }
+        // if( !referer || !allowedOrigins.some(d => referer.startsWith(d)) ) {
+        //     return res.status(401).json({ message: 'Not Allowed' });
+        // }
 
         if (!header) {
             return res.status(401).json({ message: 'Authorization header missing' });
