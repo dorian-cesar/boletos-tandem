@@ -131,6 +131,7 @@ const Parrilla = (props) => {
   }
 
   const asientoClass = (asiento, indexParrilla) => {
+    debugger;
     try {
       let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
@@ -190,12 +191,15 @@ const Parrilla = (props) => {
         classes += styles["vacio"] + " ";
       }
 
-      if( boletoValido.boleto.length < 11 && !boletoValido.boleto.includes('INT') ) {
-        if( asiento.estado === 'libre' && boletoValido.clase !== asiento.clase ) {
-          classes += styles["reservado"] + " ";
-        }
-      }  
-
+      if(indexParrilla?.parrilla?.validaAsiento){
+        if( boletoValido.boleto.length < 11 && !boletoValido.boleto.includes('INT') ) {
+          if( asiento.estado === 'libre' && boletoValido.clase !== asiento.clase ) {
+            classes += styles["reservado"] + " ";
+          }
+        }  
+      }
+      
+    
       return classes.trim();
     } catch (error) {
       console.log(
@@ -291,18 +295,20 @@ const Parrilla = (props) => {
       debugger;
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
 
-      if( boletoValido.boleto.length < 11 && !boletoValido.boleto.includes('INT') ) {
-        if ( asiento.clase !== boletoValido.clase ) {
-          toast.warn(
-            `No puede seleccionar un asiento con clase distinta a la del boleto en blanco`,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-            }
-          );
-          setIsLoading(false);
-          return;
+      if(indexParrilla?.parrilla?.validaAsiento){
+        if( boletoValido.boleto.length < 11 && !boletoValido.boleto.includes('INT') ) {
+          if ( asiento.clase !== boletoValido.clase ) {
+            toast.warn(
+              `No puede seleccionar un asiento con clase distinta a la del boleto en blanco`,
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+              }
+            );
+            setIsLoading(false);
+            return;
+          }
         }
       }
 
@@ -452,9 +458,12 @@ const Parrilla = (props) => {
     if (sit.clase && sit.estado === "seleccion") {
       return "img/asiento_seleccionado.svg";
     }
-    if( boletoValido.boleto.length < 11 && !boletoValido.boleto.includes('INT') ) {
-      if( sit.estado === 'libre' && boletoValido.clase !== sit.clase ) {
-        return "img/asiento_ocupado.svg";
+
+    if(indexParrilla?.parrilla?.validaAsiento){
+      if( boletoValido.boleto.length < 11 && !boletoValido.boleto.includes('INT') ) {
+        if( sit.estado === 'libre' && boletoValido.clase !== sit.clase ) {
+          return "img/asiento_ocupado.svg";
+        }
       }
     }
     if (sit.estado === "libre" && sit.valorAsiento > 0) {
