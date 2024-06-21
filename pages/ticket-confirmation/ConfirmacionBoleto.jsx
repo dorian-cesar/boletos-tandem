@@ -308,17 +308,9 @@ export const getServerSideProps = withIronSessionSsr(async function ({
     { id_ciudad: query.origen }
   );
 
-  let dias = await axios.get(publicRuntimeConfig.site_url + "/api/dias");
-
-  let nacionalidades = await axios.get(
-    publicRuntimeConfig.site_url + "/api/nacionalidades"
-  );
-
   return {
     props: {
       ciudades: ciudades.data,
-      dias: dias.data,
-      nacionalidades: nacionalidades.data,
       destinos: destinos.data,
     },
   };

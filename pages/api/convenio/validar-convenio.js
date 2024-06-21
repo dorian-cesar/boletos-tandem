@@ -9,11 +9,10 @@ export default async (req, res) => {
     try {
         console.log(doLogin)
         let token = await doLogin();
+        console.log("req", req.body)
         let data = await axios.post(config.service_url + `/convenio/consultarConvenio`,
-        {
-            "atributo":req.body.atributo,
-            "idConvenio":req.body.idConvenio
-        },{
+           req.body
+        ,{
         headers: {
             'Authorization': `Bearer ${token.token}`
         }
