@@ -143,6 +143,9 @@ const Convenio = (props) => {
                 className="d-none"
               />
               <div>
+              {element.rutaImagen && (
+                  <img src={element.rutaImagen} alt="logo" className={styles["logo"]} />
+                )}
                 <label
                   style={{ color: element.primaryColor }}
                   className={styles["text-coupon"]}
