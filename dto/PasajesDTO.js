@@ -131,7 +131,9 @@ export class PasajeroListaCarritoDTO {
         this.tipoDocumento = asiento?.tipoDocumento || '';
         this.tipoMascota = asiento?.tipoMascota || false;
         this.relacionAsiento = asiento?.asientoAsociado || "";
-        this.descuento = asiento?.descuento ? asiento.descuento : 0;
+        this.descuento = asiento?.descuento || 0;
+        this.convenio = asiento?.convenio || "";
+        this.datoConvenio = asiento?.datoConvenio || "";
     }
 }
 

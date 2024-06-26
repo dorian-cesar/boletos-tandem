@@ -176,6 +176,8 @@ const StagePago = (props) => {
               convenioActivos={convenioActivos}
               descuentoConvenio={descuentoConvenio}
               setDescuentoConvenio={setDescuentoConvenio}
+              convenio={convenio} 
+              setConvenio={setConvenio}
             />
         </Acordeon>
         <Acordeon title="Medio de pago" open={true}>
@@ -193,6 +195,8 @@ const StagePago = (props) => {
           setCodigoCuponera={setCodigoCuponera}
           descuentoConvenio={descuentoConvenio}
           setDescuentoConvenio={setDescuentoConvenio}
+          convenio={convenio} 
+          setConvenio={setConvenio}
         />
       </section>
       <ToastContainer />

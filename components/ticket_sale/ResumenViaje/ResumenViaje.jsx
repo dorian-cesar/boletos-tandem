@@ -25,7 +25,7 @@ const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 export const ResumenViaje = (props) => {
   const { origen, destino,  } = useSelector((state) => state.compra);
-  const { codigoCuponera, setCodigoCuponera , descuentoConvenio, setDescuentoConvenio} = props;
+  const { codigoCuponera, setCodigoCuponera , descuentoConvenio, setDescuentoConvenio, convenio, setConvenio} = props;
   const [resumen, setResumen] = useState({
     carro: {},
   });
@@ -221,12 +221,13 @@ export const ResumenViaje = (props) => {
         montoUsoWallet = valorNuevo < 0 ? totalPagar : saldoMonederoVirtual;
       }
 
+
       let resumenCompra = {
         medioDePago: medioPago,
         montoTotal: totalPagar - montoUsoWallet,
         idSistema: 1,
         idIntegrador: 1000,
-        datosComprador: datosComprador,
+        datosComprador: {...datosComprador, usaConvenio: descuentoConvenio ? true : false},
         montoUsoWallet,
         listaCarrito: [],
       };
@@ -248,13 +249,12 @@ export const ResumenViaje = (props) => {
           }
 
           if (descuentoConvenio) {
-            if(index === 0){
-              const montoDescuento = (totalOriginal * descuentoConvenio.descuento) / 100;
+              const montoDescuento = (nuevoAsiento.tarifa * descuentoConvenio.descuento) / 100;
               const montoUsar = Math.min(montoDescuento, nuevoAsiento.tarifa);
               nuevoAsiento.precio = Math.max(nuevoAsiento.tarifa - montoUsar, 0);
-              restoUsoWallet -= montoUsar;
               nuevoAsiento.descuento = montoDescuento;
-            }  
+              nuevoAsiento.convenio = convenio;
+              nuevoAsiento.datoConvenio = descuentoConvenio?.descuento
           }
 
           carrito.pasajeros.push(new PasajeroListaCarritoDTO(nuevoAsiento));

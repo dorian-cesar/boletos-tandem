@@ -6,8 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 const Convenio = (props) => {
-  const { convenioActivos, descuentoConvenio, setDescuentoConvenio } = props;
-  const [convenio, setConvenio] = useState(null);
+  const { convenioActivos, descuentoConvenio, setDescuentoConvenio , convenio, setConvenio} = props;
   const [convenioFields, setConvenioFields] = useState({});
   const [atributoConvenio, setAtributoConvenio] = useState([]);
   const dispatch = useDispatch();
