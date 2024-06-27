@@ -7,6 +7,7 @@ import ResumenServicio from "./ResumenServicio/ResumenServicio";
 import PuntoEmbarque from "./ResumenServicio/PuntoEmbarque/PuntoEmbarque";
 import DatosPasajero from "./ResumenServicio/DatosPasajero/DatosPasajero";
 import MediosPago from "./ResumenServicio/MediosPago/MediosPago";
+import Convenio from "./ResumenServicio/Convenio/Convenio";
 
 import styles from "./StagePago.module.css";
 import { ResumenViaje } from "../ResumenViaje/ResumenViaje";
@@ -16,6 +17,7 @@ import { asignarDatosComprador } from "store/usuario/compra-slice";
 
 import LocalStorageEntities from "entities/LocalStorageEntities";
 import { decryptData } from "utils/encrypt-data";
+import { ToastContainer } from "react-toastify";
 
 const StagePago = (props) => {
   const { carro, nacionalidades, convenios, mediosDePago, setCarro } = props;
@@ -35,6 +37,8 @@ const StagePago = (props) => {
   const [usaDatosPasajeroPago, setUsaDatosPasajeroPago] = useState(false);
   const [codigoCuponera, setCodigoCuponera] = useState("");
   const [usuario, setUsuario] = useState(null);
+  const [convenioActivos, setConvenioActivos] = useState([]);
+  const [descuentoConvenio, setDescuentoConvenio] = useState(null);
 
   useEffect(() => {
     const localUser = decryptData(LocalStorageEntities.user_auth);
@@ -68,63 +72,10 @@ const StagePago = (props) => {
 
   async function getConvenio() {
     try {
-      const convenio_response = await axios.post("/api/ticket_sale/convenio", {
-        idConvenio: convenioSelected,
-      });
-      setConvenio(convenio_response.data);
-      setConvenioFields({});
+      const convenio_response = await axios.post("/api/convenio/obtener-convenios", {});
+      setConvenioActivos(convenio_response.data?.Convenio);
     } catch ({ message }) {
       console.error(`Error al obtener convenio [${message}]`);
-    }
-  }
-
-  async function validarConvenio() {
-    try {
-      const pasajes = [
-        ...carro.clientes_ida.map(
-          (pasajeIda) => new PasajeConvenioDTO(pasajeIda)
-        ),
-        ...carro.clientes_vuelta.map(
-          (pasajeVuelta) => new PasajeConvenioDTO(pasajeVuelta)
-        ),
-      ];
-
-      const { data } = await axios.post("/api/ticket_sale/validar-convenio", {
-        convenio: convenioSelected,
-        fields: convenioFields,
-        pasajes: pasajes,
-      });
-
-      if (data.mensaje == "OK" && Number(data.descuento) > 0) {
-        setConvenioActive(data);
-      }
-    } catch ({ message }) {
-      console.error(`Error al validar convenio [${message}]`);
-    }
-  }
-
-  function convenioField({ name, value }) {
-    try {
-      let convenioFieldsTemp = { ...convenioFields };
-      convenioFieldsTemp[name] = value;
-      setConvenioFields(convenioFieldsTemp);
-    } catch ({ message }) {
-      console.error(`Error al asignar convenio [${message}]`);
-    }
-  }
-
-  function obtenerPagoConvenioActivo(origen, asiento, piso) {
-    try {
-      return Number(
-        convenioActive.listaBoleto.find(
-          (boleto) =>
-            boleto.origen == origen &&
-            boleto.asiento == asiento &&
-            boleto.piso == piso
-        )
-      );
-    } catch ({ message }) {
-      console.error(`Error al obtener pago convenio [${message}]`);
     }
   }
 
@@ -147,40 +98,6 @@ const StagePago = (props) => {
     }
   }
 
-  function retornarFormularioConvenio() {
-    const formularioConvenio = convenio.map(
-      (formularioConvenio, indexFormularioConvenio) => (
-        <div
-          key={`frm-convenio-key-${indexFormularioConvenio}`}
-          className="grupo-campos mt-5"
-        >
-          <label>{formularioConvenio.tipo}</label>
-          <input
-            onChange={(e) => convenioField(e.target)}
-            value={convenioFields[formularioConvenio.tipo]}
-            type={formularioConvenio.tipoInput}
-            name={formularioConvenio.tipo}
-            className="form-control"
-          />
-        </div>
-      )
-    );
-    return (
-      <>
-        {formularioConvenio}
-        <a
-          className="btn"
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            validarConvenio();
-          }}
-        >
-          Validar Convenio
-        </a>
-      </>
-    );
-  }
   function obtenerCantidadAsientos(tipoClientes) {
     const listaServicios = carro[tipoClientes].reduce(
       (valorInicial, valorActual) => {
@@ -225,12 +142,13 @@ const StagePago = (props) => {
     ));
   }
 
-  useEffect(() => {
-    (async () => await getConvenio())();
-  }, [convenioSelected]);
 
   useEffect(() => {
     (async () => await obtenerMediosPagos())();
+  }, []);
+
+  useEffect(() => {
+    (async () => await getConvenio())();
   }, []);
 
   return (
@@ -253,6 +171,15 @@ const StagePago = (props) => {
           </div>
           <DatosPasajero asiento={datosComprador} usuario={ usuario }/>
         </Acordeon>
+        <Acordeon title="Convenios" open={true}>
+            <Convenio
+              convenioActivos={convenioActivos}
+              descuentoConvenio={descuentoConvenio}
+              setDescuentoConvenio={setDescuentoConvenio}
+              convenio={convenio} 
+              setConvenio={setConvenio}
+            />
+        </Acordeon>
         <Acordeon title="Medio de pago" open={true}>
           <MediosPago
             setMediosPago={setMediosPago}
@@ -266,9 +193,15 @@ const StagePago = (props) => {
         <ResumenViaje
           codigoCuponera={codigoCuponera}
           setCodigoCuponera={setCodigoCuponera}
+          descuentoConvenio={descuentoConvenio}
+          setDescuentoConvenio={setDescuentoConvenio}
+          convenio={convenio} 
+          setConvenio={setConvenio}
         />
       </section>
+      <ToastContainer />
     </main>
+    
   );
 };
 

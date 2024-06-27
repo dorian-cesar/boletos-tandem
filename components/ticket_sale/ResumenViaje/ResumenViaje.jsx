@@ -24,8 +24,8 @@ import { generateToken } from 'utils/jwt-auth';
 const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 export const ResumenViaje = (props) => {
-  const { origen, destino } = useSelector((state) => state.compra);
-  const { codigoCuponera, setCodigoCuponera } = props;
+  const { origen, destino,  } = useSelector((state) => state.compra);
+  const { codigoCuponera, setCodigoCuponera , descuentoConvenio, setDescuentoConvenio, convenio, setConvenio} = props;
   const [resumen, setResumen] = useState({
     carro: {},
   });
@@ -56,6 +56,8 @@ export const ResumenViaje = (props) => {
   const medioPago = useSelector((state) => state.compra.medioPago);
   const dispatch = useDispatch();
   const [soloLectura, setSoloLectura] = useState(false);
+  const [montoDescuentoConvenio, setMontoDescuentoConvenio] = useState(0);
+  const [totalOriginal, setTotalOriginal] = useState(0);
 
   useEffect(() => {
     if (props.soloLectura) {
@@ -219,12 +221,13 @@ export const ResumenViaje = (props) => {
         montoUsoWallet = valorNuevo < 0 ? totalPagar : saldoMonederoVirtual;
       }
 
+
       let resumenCompra = {
         medioDePago: medioPago,
         montoTotal: totalPagar - montoUsoWallet,
         idSistema: 1,
         idIntegrador: 1000,
-        datosComprador: datosComprador,
+        datosComprador: {...datosComprador, usaConvenio: descuentoConvenio ? true : false},
         montoUsoWallet,
         listaCarrito: [],
       };
@@ -233,23 +236,30 @@ export const ResumenViaje = (props) => {
 
       informacionAgrupada.forEach((servicio) => {
         const carrito = new ListaCarritoDTO(servicio, servicio.asientos[0]);
-        servicio.asientos.forEach((asiento) => {
+        servicio.asientos.forEach((asiento, index) => {
           const nuevoAsiento = {
             ...asiento,
             precio: asiento.tarifa,
           };
 
-          debugger;
-
           if (medioPago !== "CUP" && usaWallet && restoUsoWallet > 0) {
-            debugger;
             const montoUsar = Math.min(restoUsoWallet, nuevoAsiento.tarifa);
             nuevoAsiento.precio = Math.max(nuevoAsiento.tarifa - montoUsar, 0);
             restoUsoWallet -= montoUsar;
           }
 
+          if (descuentoConvenio) {
+              const montoDescuento = (nuevoAsiento.tarifa * descuentoConvenio.descuento) / 100;
+              const montoUsar = Math.min(montoDescuento, nuevoAsiento.tarifa);
+              nuevoAsiento.precio = Math.max(nuevoAsiento.tarifa - montoUsar, 0);
+              nuevoAsiento.descuento = montoDescuento;
+              nuevoAsiento.convenio = convenio;
+              nuevoAsiento.datoConvenio = descuentoConvenio?.descuento
+          }
+
           carrito.pasajeros.push(new PasajeroListaCarritoDTO(nuevoAsiento));
         });
+
         resumenCompra.listaCarrito.push(carrito);
       });
 
@@ -488,7 +498,44 @@ export const ResumenViaje = (props) => {
     });
 
     setTotalPagar(total);
+    setTotalOriginal(total);
+
   }, [resumen]);
+
+  useEffect(() => {
+    if (descuentoConvenio) {
+      let totalConDescuento = totalOriginal;
+  
+      if (descuentoConvenio.tipoDescuento === "POR") {
+        const montoDescuento = (totalOriginal * descuentoConvenio.descuento) / 100;
+        totalConDescuento = totalOriginal - montoDescuento;
+      }
+     
+      setTotalOriginal(totalOriginal);
+      setTotalPagar(totalConDescuento);
+      setUsaWallet(false);
+    } else {
+      let total = 0;
+      Object.entries(carroCompras).map(([key, value]) => {
+        const idaList = value.ida || [];
+        const vueltaList = value.vuelta || [];
+
+        Object.entries(idaList).map(([key, value]) => {
+          value.asientos.forEach((element) => {
+            total += element.valorAsiento;
+          });
+        });
+
+        Object.entries(vueltaList).map(([key, value]) => {
+          value.asientos.forEach((element) => {
+            total += element.valorAsiento;
+          });
+        });
+      });
+
+    setTotalPagar(total);
+    }
+  }, [descuentoConvenio]);
 
   return (
     <div className={styles["resumen-container"]}>
@@ -537,9 +584,11 @@ export const ResumenViaje = (props) => {
                 id="flexSwitchCheckDefault"
                 disabled={!user}
                 value={usaWallet}
+                checked={usaWallet}
                 onClick={() => {
                   actualizarSaldoWallet().then();
                   setUsaWallet(!usaWallet);
+                  setDescuentoConvenio(null);
                 }}
               />
               <label
@@ -554,7 +603,12 @@ export const ResumenViaje = (props) => {
                 Sólo se puede pagar con el monedero cuando inicies sesión.
               </span>
             </div>
-          )}
+          )}  
+            { descuentoConvenio ? 
+              <div className={styles["contanedor-total-pagar-descuento"]}>
+                <span>Total anterior: {clpFormat.format(totalOriginal)} </span>
+              </div> : '' 
+            }
           <div className={styles["contanedor-total-pagar"]}>
             <span>Total a pagar: {clpFormat.format(totalPagar)}</span>
           </div>

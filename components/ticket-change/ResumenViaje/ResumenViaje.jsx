@@ -211,7 +211,7 @@ export const ResumenViaje = (props) => {
         informacionAgrupada[0]?.horaSalida.replace(":", "");
       let cambiarBoleto = {
         boleto: boletoValido?.boleto,
-        idSistema: 7,
+        idSistema: 1,
         idIntegrador: 1000,
         asiento: informacionAgrupada[0]?.asientos[0]?.asiento,
         clase: informacionAgrupada[0]?.asientos[0]?.claseBus,
@@ -306,7 +306,7 @@ export const ResumenViaje = (props) => {
         informacionAgrupada[0]?.horaSalida.replace(":", "");
       let cambiarBoleto = {
         boleto: boletoValido?.boleto,
-        idSistema: 7,
+        idSistema: 1,
         idIntegrador: 1000,
         asiento: informacionAgrupada[0]?.asientos[0]?.asiento,
         clase: informacionAgrupada[0]?.asientos[0]?.claseBus,
@@ -340,7 +340,7 @@ export const ResumenViaje = (props) => {
     let resumenCompra = {
       medioDePago: medioPago,
       montoTotal: valorCobrar,
-      idSistema: 7,
+      idSistema: 1,
       integrador: 1000,
       datosComprador: datosComprador,
       listaCarrito: [],

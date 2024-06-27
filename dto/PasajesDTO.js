@@ -100,7 +100,7 @@ export class ListaCarritoDTO {
         this.origen = servicio?.idTerminalOrigen || '';
         this.destino = servicio?.idTerminalDestino || '';
         this.codigoReserva = '1'
-        this.descuento = 0
+        this.descuento = servicio?.descuento ? servicio.descuento : 0;
         this.empresa = servicio?.empresa || '';
         this.clase = asiento?.claseBus || '';
         this.bus = servicio?.busPiso1 || '';
@@ -131,6 +131,9 @@ export class PasajeroListaCarritoDTO {
         this.tipoDocumento = asiento?.tipoDocumento || '';
         this.tipoMascota = asiento?.tipoMascota || false;
         this.relacionAsiento = asiento?.asientoAsociado || "";
+        this.descuento = asiento?.descuento || 0;
+        this.convenio = asiento?.convenio || "";
+        this.datoConvenio = asiento?.datoConvenio || "";
     }
 }
 
