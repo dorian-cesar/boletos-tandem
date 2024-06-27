@@ -7,13 +7,10 @@ const config = serverRuntimeConfig;
 export default async (req, res) => {
 
     try {
-        let dataSent = {"idConvenio":req.body.convenio,
-        "listaAtributo":Object.keys(req.body.fields).map((i)=>{ return {"idCampo":i,"valor":req.body.fields[i]}}),
-        "listaBoleto":req.body.pasajes
-    }
-        console.log(dataSent)
         let token = await doLogin();
-        let data = await axios.post(config.service_url + `/convenio/validartDescuentoConvenio`,dataSent,{
+        console.log("req", req.body)
+        let data = await axios.post(config.service_url + `/convenio/obtenerDetalleConvenioAtributo`,
+            req.body,{
         headers: {
             'Authorization': `Bearer ${token.token}`
         }
