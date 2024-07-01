@@ -14,9 +14,11 @@ import ModalEntities from "entities/ModalEntities";
 import { liberarAsientos } from "store/usuario/compra-slice"
 import { decryptDataNoSaved, encryptDataNoSave, decryptData } from "utils/encrypt-data";
 import LocalStorageEntities from "entities/LocalStorageEntities";
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 
 registerLocale("es", es);
+
+// const captchaSiteKey = process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA;
 
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
   <input
@@ -62,6 +64,8 @@ const BusquedaServicio = (props) => {
   const [disabledButton, setDisabledButton] = useState(true);
   const [origenes, setOrigenes] = useState([]);
 
+  // const captchaRef = useRef();
+
   useEffect(() => {
     getOrigins();
   }, []);
@@ -100,6 +104,19 @@ const BusquedaServicio = (props) => {
     setIsLoading(true);
 
     try {
+      // const token = await captchaRef.current.executeAsync();
+
+      // const tokenVerify = await fetch('/api/token-verify', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ token })
+      // });
+
+      // const tokenVerifyResponse = await tokenVerify.json();
+
+      // if( !tokenVerifyResponse.success ) {
+      //   return;
+      // }
+
       dispatch(liberarAsientos());
       
       const data = {
@@ -346,6 +363,13 @@ const BusquedaServicio = (props) => {
                 <img src="img/icon-buscar-blanco.svg" /> Buscar
               </button>
             </div>
+            {/* <div className="w-100 d-flex justify-content-end">
+              <ReCAPTCHA
+                sitekey={captchaSiteKey}
+                size='invisible'
+                ref={captchaRef}
+              />
+            </div> */}
             <div 
               className="d-none"
               ref={buttonRef}
