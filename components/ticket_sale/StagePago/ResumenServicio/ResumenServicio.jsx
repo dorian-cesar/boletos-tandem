@@ -19,16 +19,16 @@ const ResumenServicio = (props) => {
     Object.entries(carroVenta).map(([key, value]) => {
       if( value.ida ) {
         value.ida.forEach(servicioIda => {
-          const findService = groupInfo.find(servicio => servicio.viaje === `${ origen?.nombre }-${ destino?.nombre }` && servicio.fecha === servicioIda.fechaServicio && servicio.hora === servicioIda.horaSalida);
+          const findService = groupInfo.find(servicio => servicio.viaje === `${ origen?.nombre }-${ destino?.nombre }` && servicio.fecha === servicioIda.fechaSalida && servicio.hora === servicioIda.horaSalida);
           if( findService ) {
             groupInfo.map(servicio => {
-              if( servicio.viaje === `${ origen?.nombre }-${ destino?.nombre }` && servicio.fecha === servicioIda.fechaServicio && servicio.hora === servicioIda.horaSalida ) {
+              if( servicio.viaje === `${ origen?.nombre }-${ destino?.nombre }` && servicio.fecha === servicioIda.fechaSalida && servicio.hora === servicioIda.horaSalida ) {
                 servicio.asientos.push(...servicioIda.asientos);
               }
             });
           } else {
             const viaje = `${ origen?.nombre }-${ destino?.nombre }`;
-            const fecha = servicioIda.fechaServicio;
+            const fecha = servicioIda.fechaSalida;
             const hora = servicioIda.horaSalida;
             const asientos = [];
   
@@ -52,16 +52,16 @@ const ResumenServicio = (props) => {
 
       if( value.vuelta ) {
         value.vuelta.forEach(servicioVuelta => {
-          const findService = groupInfo.find(servicio => servicio.viaje === `${ destino?.nombre }-${ origen?.nombre }` && servicio.fecha === servicioVuelta.fechaServicio && servicio.hora === servicioVuelta.horaSalida);
+          const findService = groupInfo.find(servicio => servicio.viaje === `${ destino?.nombre }-${ origen?.nombre }` && servicio.fecha === servicioVuelta.fechaSalida && servicio.hora === servicioVuelta.horaSalida);
           if( findService ) {
             groupInfo.map(servicio => {
-              if( servicio.viaje === `${ destino?.nombre }-${ origen?.nombre }` && servicio.fecha === servicioVuelta.fechaServicio && servicio.hora === servicioVuelta.horaSalida ) {
+              if( servicio.viaje === `${ destino?.nombre }-${ origen?.nombre }` && servicio.fecha === servicioVuelta.fechaSalida && servicio.hora === servicioVuelta.horaSalida ) {
                 servicio.asientos.push(...servicioVuelta.asientos);
               }
             });
           } else {
             const viaje = `${ destino?.nombre }-${ origen?.nombre }`;
-            const fecha = servicioVuelta.fechaServicio;
+            const fecha = servicioVuelta.fechaSalida;
             const hora = servicioVuelta.horaSalida;
             const asientos = [];
             servicioVuelta.asientos.forEach(asiento => asientos.push(asiento));
