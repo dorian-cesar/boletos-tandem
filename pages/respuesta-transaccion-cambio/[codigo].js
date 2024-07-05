@@ -13,6 +13,7 @@ import { format } from "@formkit/tempo";
 import { limpiarListaCarrito } from "store/usuario/compra-slice";
 import { limpiarCambio } from "store/usuario/cambio-boleto-slice" 
 import { decryptData } from 'utils/encrypt-data';
+import Loader from "../../components/Loader";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -34,6 +35,9 @@ export default function Home(props) {
     },
   });
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [isExito, setIsExito] = useState(false);
+
   const cambioRespuesta = useSelector((state) => state.cambioBoleto);
 
   useEffect(() => {
@@ -41,18 +45,29 @@ export default function Home(props) {
     if(cambioRespuesta?.resultado?.exito){
       setRespuestaCambio(cambioRespuesta);
       dispatch(limpiarCambio());
+      setIsExito(true);
+      setIsLoading(false);
       return;
     }else{
       const cambiarBoleto = decryptData('CHN_TKT');
-      if( carro.cerrar.estado && carro.commit.status === 'AUTHORIZED' && cambiarBoleto) {
+      if( carro?.cerrar?.estado && carro.commit.status === 'AUTHORIZED' && cambiarBoleto) {
         axios.post(
           "/api/ticket_sale/cambiar-boleto",
           cambiarBoleto
         ).then(response => {
+          setIsLoading(false);
+          setIsExito(true);
           setRespuestaCambio(response.data?.object);
           localStorage.removeItem('CHN_TKT');
         })
-        .catch(error => console.error('ERROR AL CAMBIAR BOLETO:', error));
+        .catch(error => {
+          console.error('ERROR AL CAMBIAR BOLETO:', error);
+          setIsExito(false);
+          setIsLoading(false);
+        });
+      } else {
+        setIsExito(false);
+        setIsLoading(false);
       }
     } 
   }, []);
@@ -93,7 +108,7 @@ export default function Home(props) {
 
   return (
     <Layout>
-      {respuestaCambio && props.codigo ? (
+      { !isLoading && isExito && (
         <>
           <section className={styles["main-section"]}>
             <div className={styles["images-container"]}>
@@ -178,7 +193,9 @@ export default function Home(props) {
             </section>
           </section>
         </>
-      ) : (
+        ) 
+      } 
+      { !isLoading && !isExito ? (
         <>
           <div className="row justify-content-center mb-5">
             <div className="text-center mt-5">
@@ -196,7 +213,10 @@ export default function Home(props) {
             </div>
           </div>
         </>
-      )}
+      ) : ""}
+      {
+        isLoading && (<Loader />)
+      }
       <Footer />
     </Layout>
   );

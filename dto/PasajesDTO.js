@@ -51,7 +51,7 @@ export class PasajePagoDTO {
     constructor(pasaje, pasajero, extras, convenioActivo, precio, datoConvenio) {
         this.servicio = pasaje?.idServicio || '';
         this.fechaServicio = extras?.fechaServicio || '';
-        this.fechaPasada = extras?.fechaLlegada || '';
+        this.fechaPasada = extras?.fechaSalida || '';
         this.fechaLlegada = extras?.fechaLlegada || '';
         this.horaSalida = pasaje?.horaSalida || '';
         this.horaLlegada = extras?.horaLlegada || '';
@@ -93,7 +93,7 @@ export class ListaCarritoDTO {
         this.servicio = servicio?.idServicio || '';
         this.fechaServicio = servicio?.fechaServicio || '';
         // TODO: REVISAR FECHA PASADA EN ALGUN FUTURO
-        this.fechaPasada = servicio?.fechaServicio || '';
+        this.fechaPasada = servicio?.fechaSalida || '';
         this.fechaLlegada = servicio?.fechaLlegada || '';
         this.horaSalida = servicio?.horaSalida || '';
         this.horaLlegada = servicio?.horaLlegada || '';
