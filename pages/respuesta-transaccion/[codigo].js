@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo"
 import { limpiarListaCarrito } from "store/usuario/compra-slice";
 
+import { sendGTMEvent } from "@next/third-parties/google";
+
 
 const { publicRuntimeConfig } = getConfig();
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
@@ -66,6 +68,20 @@ export default function Home(props) {
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
 
   const dispatch = useDispatch();
+
+  const agregarEventoTagManager = () => {
+    if( !props.carro || !resumen ) return; 
+    try {
+      sendGTMEvent({
+        event: "purchase",
+        value: {
+          currency: "CLP",
+          transaction_id: props.codigo,
+          value: totalPagar
+        }
+      })
+    } catch (error) {}
+  }
   
   const obtenerInformacion = () => {
     {
@@ -172,6 +188,8 @@ export default function Home(props) {
     setTotalPagar(total);
     dispatch(limpiarListaCarrito());
   }, [resumen])
+
+  useEffect(() => agregarEventoTagManager(), [totalPagar]);
 
   const descargarBoletos = () =>{
     console.log(props);
