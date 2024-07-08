@@ -21,6 +21,8 @@ import CryptoJS from "crypto-js";
 
 import { generateToken } from 'utils/jwt-auth';
 
+import { sendGTMEvent } from "@next/third-parties/google";
+
 const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 export const ResumenViaje = (props) => {
@@ -73,6 +75,20 @@ export const ResumenViaje = (props) => {
   useEffect(() => {
     actualizarSaldoWallet().then();
   }, [user]);
+
+  const agregarEventoTagManager = () => {
+    try {
+      sendGTMEvent({
+        event: "add_payment_info",
+        value: {
+          currency: "CLP",
+          value: totalPagar,
+          coupon: descuentoConvenio ? descuentoConvenio.id : null,
+          payment_type: medioPago,
+        }
+      })
+    } catch (error) {}
+  }
 
   async function actualizarSaldoWallet() {
     if (!!user) {
@@ -262,6 +278,9 @@ export const ResumenViaje = (props) => {
 
         resumenCompra.listaCarrito.push(carrito);
       });
+
+      // TODO: agregar evento [add_payment_info] aquí
+      agregarEventoTagManager();
 
       if (medioPago === "CUP") {
         if (resumenCompra.listaCarrito.length > 1) {
