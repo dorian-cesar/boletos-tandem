@@ -81,7 +81,7 @@ const Convenio = (props) => {
                 autoClose: 3000,
                 hideProgressBar: false,
               });
-            setDescuentoConvenio(convenio_response.data);
+            setDescuentoConvenio({id: convenio, ...convenio_response.data});
           }else{
             toast.error("Rut no valido para descuento", {
                 position: "top-right",
