@@ -130,6 +130,7 @@ const Home = () => {
             {vista === "confirmacion" && <MenuLateral />}
             {vista === "cambioBoleto" && <MenuLateral />}
             {vista === "devolucionBoleto" && <MenuLateral />}
+            {vista === "viajesEspeciales" && <MenuLateral />}
             {vista === "registrarPasajero" && <RegistrarPasajero />}
             {vista === "historialCompraCuponera" && <HistorialCompraCuponera />}
             {vista === "historialCompraCuponeraAntigua" && <HistorialCompraCuponeraAntigua />}
