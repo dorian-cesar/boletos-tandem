@@ -238,7 +238,7 @@ const BusquedaServicio = (props) => {
           <div>
             {isHomeComponent && (
               <h1 className={styles["titulo-azul"]}>
-                ¿Cúal es tu próximo destino?
+                ¿Cuál es tu próximo destino?
               </h1>
             )}
             {mostrarPopup && (
