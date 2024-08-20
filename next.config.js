@@ -16,7 +16,7 @@ module.exports = {
       },
       {
         source: '/viajesEspeciales',
-        destination: '/viajes-especiales/viajesEspeciales',
+        destination: '/viajes-especiales/viajes-especiales',
       },
       {
         source: '/confirmacionBoleto',
