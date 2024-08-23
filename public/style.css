@@ -24,6 +24,10 @@
     background: #6086c49c;
 }
 
+.bg-primary-pullman {
+  background-color: #003fa2;
+}
+
 /*-------------------------------MENU MOVIL---------------------------------*/
 .overlay {
   background: var(--Blanco, #FFF);
