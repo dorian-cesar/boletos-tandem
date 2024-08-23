@@ -123,6 +123,14 @@
   font-weight: 400;
   line-height: normal;
 }
+.overlay .links-menu a.venta-vehiculos {
+  background-image: url(img/icon/question/bus-outline.svg);
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
 .overlay .links-menu a.agencias {
   background-image: url(img/icon/nav/navigate-outline.svg);
   color: #000;
