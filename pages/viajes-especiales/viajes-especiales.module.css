@@ -8,10 +8,6 @@
     min-height: 70vh;
 }
 
-
-
-
-    
   .bloque {
     max-width: 1039px;
     flex-shrink: 0;
@@ -72,6 +68,11 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+
+  }
+
+  .input-data:focus {
+    outline-color: rgba(47, 83, 247, 0.685);
   }
 
   .textarea-data-mensaje {

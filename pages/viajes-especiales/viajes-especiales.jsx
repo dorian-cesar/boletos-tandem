@@ -1,3 +1,4 @@
+import axios from "axios";
 import Layout from "../../components/Layout";
 import Footer from "../../components/Footer";
 import styles from "./viajes-especiales.module.css"
@@ -8,26 +9,36 @@ import { ToastContainer } from "react-toastify";
 import { useEffect, useState, } from "react";
 import { useForm } from "/hooks/useForm";
 import Rut from "rutjs";
+import Input2 from "../../components/Input2";
 
 registerLocale("es", es);
 
 const SolicitudFormFields = {
-  nombres: "",
-  rut: "",
+  rut:"",
+  nombre: "",
   numeroContacto: "",
-  mail: "",
-  mail2: "",
-  cantPasajero: "",
-  origenViaje: "",
-  destinoViaje: "",
+  correoElectronico: "",
+  correoElectronico2: "",
+  cantidadPasajeros: "",
   mensaje: "",
   tipoDocumento: "R",
+  origen:"",
+  destino:""
 
 }
+
 
 export default function Home(props) {
   const [isLoading, setIsLoading] = useState(false);
   const { formState: solicitud, onInputChange } = useForm(SolicitudFormFields);
+  
+  const [origen, setOrigen] = useState(null);
+  const [destino, setDestino] = useState(null);
+
+  const [origenes, setOrigenes] = useState([]);
+  const [destinos, setDestinos] = useState([]);
+
+
   const [error, setError] = useState({
     errorMsg: '',
     status: false
@@ -38,6 +49,7 @@ export default function Home(props) {
     visible: false,
     type: "",
   });
+
 
   const enviar = async () => {
     const formStatus = await validarForm();
@@ -68,15 +80,16 @@ export default function Home(props) {
   const validarForm = () => {
     return new Promise((resolve, reject) => {
       const values = Object.values(solicitud);
+      debugger
       const camposVacios = values.filter((v) => v == '');
       if (camposVacios.length > 0) {
         setError({ status: true, errorMsg: 'Se requiere rellenar todos los campos.' });
         resolve(false);
-      } else if (solicitud.cantPasajero == 0) {
+      } else if (solicitud.cantidadPasajeros == 0) {
         setError({ status: true, errorMsg: 'Se requiere cantidad de pasajeros sea mayor a 0.' });
         resolve(false);
 
-      } else if (solicitud.cantPasajero > 500) {
+      } else if (solicitud.cantidadPasajeros > 500) {
         setError({ status: true, errorMsg: 'Se requiere cantidad de pasajeros sea menor a 500.' });
         resolve(false);
       } else {
@@ -87,7 +100,7 @@ export default function Home(props) {
             return resolve(false);
           }
         }
-        if (solicitud?.mail != solicitud?.mail2) {
+        if (solicitud?.correoElectronico != solicitud?.correoElectronico2) {
           setError({ status: true, errorMsg: 'Los correo no coinciden. Por favor, verificar.' });
           resolve(false);
         } else {
@@ -97,6 +110,61 @@ export default function Home(props) {
       }
     })
   }
+
+ 
+ 
+ 
+  async function getOrigins() {
+    try {
+      const res = await fetch('/api/ciudades');
+      const ciudades = await res.json()
+      setOrigenes(ciudades);
+    } catch(error) {
+      console.log(`Error al obtener ciudades [${ error?.message }]`);
+    }
+  }
+
+  async function getDestinos() {
+    if (origen !== null) {
+      try {
+        let { data } = await axios.post("/api/destinos", {
+          id_ciudad: origen.codigo,
+        });
+        setDestinos(data);
+      } catch ({ message }) {
+        console.error(`Error al obtener destinos [${message}]`);
+      }
+    }
+  }
+
+  useEffect(() => {
+    getOrigins();
+  }, []);
+
+  useEffect(() => {
+    (async () => await getDestinos())();
+  }, [origen]);
+  
+
+  function cambiarOrigen(origenSeleccionado) {
+    setDestino(null);
+    setOrigen(origenSeleccionado);
+  }
+
+  useEffect(() => {
+    (async () => await getDestinos())();
+  }, [origen]);
+
+  function retornaCiudadesSelect(arrayCiudades) {
+    return arrayCiudades.map((ciudad) => {
+      return {
+        value: ciudad,
+        label: ciudad?.nombre,
+      };
+    });
+  }
+
+  
 
   return (
     <Layout>
@@ -161,10 +229,14 @@ export default function Home(props) {
                 <input
                   type="text"
                   className={styles["input-data"]}
-                  name="nombres"
+                  name="nombre"
                   placeholder="Ej: Emma Cortez"
-                  value={solicitud.nombres}
-                  onChange={onInputChange}
+                  value={solicitud.nombre}
+                  // onChange={onInputChange}
+                  onChange={(e) => {
+                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                    onInputChange(e);
+                  }}
                 />
               </div>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
@@ -176,7 +248,11 @@ export default function Home(props) {
                         type="checkbox"
                         value={"R"}
                         name="tipoDocumento"
-                        onChange={onInputChange}
+                        // onChange={onInputChange}
+                        onChange={(e) => {
+                          console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                          onInputChange(e);
+                        }}
                         checked={
                           solicitud?.tipoDocumento == "R"
                             ? true
@@ -192,7 +268,11 @@ export default function Home(props) {
                         type="checkbox"
                         value={"D"}
                         name="tipoDocumento"
-                        onChange={onInputChange}
+                        // onChange={onInputChange}
+                        onChange={(e) => {
+                          console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                          onInputChange(e);
+                        }}
                         checked={
                           solicitud?.tipoDocumento == "D"
                             ? true
@@ -208,7 +288,11 @@ export default function Home(props) {
                         type="checkbox"
                         value={"P"}
                         name="tipoDocumento"
-                        onChange={onInputChange}
+                        // onChange={onInputChange}
+                        onChange={(e) => {
+                          console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                          onInputChange(e);
+                        }}
                         checked={
                           solicitud?.tipoDocumento == "P"
                             ? true
@@ -226,7 +310,11 @@ export default function Home(props) {
                   className={styles["input-data"]}
                   name="rut"
                   value={solicitud?.rut}
-                  onChange={onInputChange}
+                  // onChange={onInputChange}
+                  onChange={(e) => {
+                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                    onInputChange(e);
+                  }}
                 />
               </div>
             </div>
@@ -240,18 +328,26 @@ export default function Home(props) {
                   name="numeroContacto"
                   placeholder="Ej: +56 9 1111 1111"
                   value={solicitud?.numeroContacto}
-                  onChange={onInputChange}
+                  // onChange={onInputChange}
+                  onChange={(e) => {
+                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                    onInputChange(e);
+                  }}
                 />
               </div>
-              <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
+              <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 "}>
                 <label className={styles["title-data"]}>Correo electrónico: </label>
                 <input
                   type="email"
                   className={styles["input-data"]}
-                  name="mail"
-                  placeholder="Ej: ecortez@gmail.com"
-                  value={solicitud?.mail}
-                  onChange={onInputChange}
+                  name="correoElectronico"
+                  placeholder="Ej: ecortez@gcorreoElectronico.com"
+                  value={solicitud?.correoElectronico}
+                  // onChange={onInputChange}
+                  onChange={(e) => {
+                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                    onInputChange(e);
+                  }}
                 />
               </div>
             </div>
@@ -261,10 +357,14 @@ export default function Home(props) {
                 <input
                   type="email"
                   className={styles["input-data"]}
-                  name="mail2"
-                  placeholder="Ej: ecortez@gmail.com"
-                  value={solicitud?.mail2}
-                  onChange={onInputChange}
+                  name="correoElectronico2"
+                  placeholder="Ej: ecortez@gcorreoElectronico.com"
+                  value={solicitud?.correoElectronico2}
+                  // onChange={onInputChange}
+                  onChange={(e) => {
+                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                    onInputChange(e);
+                  }}
                 />
               </div>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
@@ -272,15 +372,19 @@ export default function Home(props) {
                 <input
                   type="number"
                   className={styles["input-data"]}
-                  name="cantPasajero"
+                  name="cantidadPasajeros"
                   placeholder="Ej: 30"
-                  value={solicitud?.cantPasajero}
+                  value={solicitud?.cantidadPasajeros}
                   min={0}
+                  // onChange={(e) => {
+                  //   const value = e.target.value;
+                  //   if (/^\d{0,3}$/.test(value)) {
+                  //     onInputChange(e);
+                  //   }
+                  // }}
                   onChange={(e) => {
-                    const value = e.target.value;
-                    if (/^\d{0,3}$/.test(value)) {
-                      onInputChange(e);
-                    }
+                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                    onInputChange(e);
                   }}
                 />
               </div>
@@ -289,24 +393,57 @@ export default function Home(props) {
             <div className={"row"}>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
                 <label className={styles["title-data"]}>Origen del viaje: </label>
-                <input
+                <Input2
                   type="text"
+                  styles={"input-data "}
+
                   className={styles["input-data"]}
-                  name="origenViaje"
+                  name="origen"
                   placeholder="Ej: Santiago"
-                  value={solicitud?.origenViaje}
+                  items={retornaCiudadesSelect(origenes)}
+                  selected={
+                  origen &&
+                  retornaCiudadesSelect([
+                    origenes.find((i) => i.codigo == origen.codigo),
+                  ])
+                }
+                  setSelected={cambiarOrigen}
                   onChange={onInputChange}
+                  // onChange={(e) => {
+                  //   console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                  //   onInputChange(e);
+
+                  // }}
                 />
               </div>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
                 <label className={styles["title-data"]}>Destino del viaje: </label>
-                <input
+                <Input2
                   type="text"
                   className={styles["input-data"]}
-                  name="destinoViaje"
+                  name="destino"
                   placeholder="Ej: La Serena"
-                  value={solicitud?.destinoViaje}
-                  onChange={onInputChange}
+                  items={retornaCiudadesSelect([
+                    ...destinos,
+                    {
+                      codigo: "NO_OPTIONS",
+                      nombre: "Por favor seleccione un origen",
+                    },
+                  ])}
+                  selected={
+                    destino &&
+                    destinos.length > 0 &&
+                    retornaCiudadesSelect([
+                      destinos.find((i) => i.codigo == destino.codigo),
+                    ])
+                  }
+                  setSelected={setDestino}
+                    value={solicitud?.setDestino}
+                  // onChange={onInputChange}
+                  onChange={(e) => {
+                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                    onInputChange(e);
+                  }}
                 />
               </div>
             </div>
@@ -319,7 +456,11 @@ export default function Home(props) {
                   placeholder="Cantidad max. 500 caracteres"
                   maxLength={500}
                   value={solicitud?.mensaje}
-                  onChange={onInputChange}
+                  // onChange={onInputChange}
+                  onChange={(e) => {
+                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
+                    onInputChange(e);
+                  }}
                 />
               </div>
             </div>
