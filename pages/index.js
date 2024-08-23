@@ -67,6 +67,8 @@ export default function Home(props) {
           modalMethods={ () => window.location.href = "https://www.pullmanbus.cl"}
         />) 
       }
+
+    <script async defer={true} src="https://tracking.bciplus.cl/bciplus/script.js"></script>
     </Layout>
   );
 }

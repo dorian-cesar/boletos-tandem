@@ -2627,3 +2627,26 @@ line-height: normal;
   justify-content: center;
   align-items: center;
 }
+
+.skeleton {
+  background: #e0e0e0;
+  border-radius: 4px;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+.skeleton-text {
+  height: 1.5rem;
+  margin-bottom: 1rem;
+}
+.skeleton-image {
+  height: 200px;
+  margin-bottom: 1rem;
+}

@@ -67,7 +67,7 @@ async function handleGuardarMultiCarro(req, res) {
                 serviceResponse.data.object.codigo,
                 serviceResponse.data.object.codigo,
                 montoTotal,
-                publicRuntimeConfig.site_url + `/api/v2/confirm-transaction?codigo=${ serviceResponse.data.object.codigo }`).then(async ({ url, token }) => {
+                publicRuntimeConfig.site_url + `/confirm-transaction?codigo=${ serviceResponse.data.object.codigo }`).then(async ({ url, token }) => {
                 const response = { url, token, inputName: "TBK_TOKEN", codigo: serviceResponse.data.object.codigo }
                 console.log('RESPONSE:::', response);
                 res.status(200).json(response);

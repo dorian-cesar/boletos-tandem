@@ -14,6 +14,7 @@ import cookie from "cookie";
 import { sendGTMEvent } from "@next/third-parties/google";
 
 import JWT from "jsonwebtoken";
+import { useRouter } from "next/router";
 
 const mediosPago: { [key: string]: { nombre: string; mensaje: string; imagen: string; } } = {
   WBPAY: {
@@ -36,18 +37,25 @@ export default function Home(props: HomeProps) {
     const [carro, setCarro] = useState<any>(null);
     const [codigo, setCodigo] = useState<string>('');
 
+    const router = useRouter();
+
     useEffect(() => {
-        try {
-            const cookies = cookie.parse(document.cookie || '');
-
-            const transactionInfo = cookies.transactionInfo || '';
-
-            const decoded = JWT.verify(transactionInfo, SECRET);
-
-            console.log(decoded);
-        } catch (error) {
-            
+      try {
+        const data = sessionStorage.getItem('transactionInformation');
+        if( data ) {
+          const decoded:any = JWT.verify(data, SECRET);
+          if( decoded && decoded.carro ) {
+            setCarro(decoded.carro);
+          }
+          if( decoded && decoded.cerrar ) {
+            setCodigo(decoded.cerrar.orden);
+          }
+        } else {
+          router.push('/');
         }
+      } catch (error) {
+        router.push('/');
+      }
     }, [])
 
   const [totalPagar, setTotalPagar] = useState(0);
@@ -87,6 +95,7 @@ export default function Home(props: HomeProps) {
   
   const obtenerInformacion = () => {
     {
+      debugger;
       let carritoIda:any = {
         titulo: "",
         detalle: [],
@@ -197,7 +206,7 @@ export default function Home(props: HomeProps) {
 
   const descargarBoletos = () =>{
     console.log(props);
-    carro.carro.boletos.forEach( async (element:any) => {
+    carro.boletos.forEach( async (element:any) => {
       let boleto = {
         codigo: element.codigo,
         boleto: element.boleto
@@ -228,47 +237,49 @@ export default function Home(props: HomeProps) {
           <div className={ styles['orden-compra'] }>
             <span>Orden de compra: {codigo}</span>
           </div>
-          <section className={ styles['detalle-viajes'] }>
-            {Array.isArray(resumen.carro.lista) &&
-              resumen.carro.lista.map((element) => (
-                element.titulo && 
-                (<div className={styles["servicio-ida"]} key={element.titulo}>
-                  <b className={ styles['titulo-servicio'] }>{ element.titulo }</b>
-                  <div className={styles["detalle-container"]}>
-                    {Array.isArray(element.detalle) &&
-                      element.detalle.map((detalleItem:any, index:number) => (
-                        <div key={index} className={styles["detalle-item"]}>
-                          <ul>
-                            <li>
-                              <div>{ detalleItem.origen }</div>
-                              <div>{ detalleItem.hora }</div>
-                            </li>
-                            <li>
-                              <div>{ detalleItem.destino }</div>
-                              <div>{ detalleItem.horaLlegada }</div>
-                            </li>
-                          </ul>
-                          <div className={ styles['resumen-servicio'] }>
-                            <span>Cantidad de Asientos: {detalleItem.cantidadAsientos}</span>
-                            <b>{ detalleItem.total }</b>
+          { carroCompras && carroCompras.length > 0 &&  (
+            <section className={ styles['detalle-viajes'] }>
+              {Array.isArray(resumen.carro.lista) &&
+                resumen.carro.lista.map((element) => (
+                  element.titulo && 
+                  (<div className={styles["servicio-ida"]} key={element.titulo}>
+                    <b className={ styles['titulo-servicio'] }>{ element.titulo }</b>
+                    <div className={styles["detalle-container"]}>
+                      {Array.isArray(element.detalle) &&
+                        element.detalle.map((detalleItem:any, index:number) => (
+                          <div key={index} className={styles["detalle-item"]}>
+                            <ul>
+                              <li>
+                                <div>{ detalleItem.origen }</div>
+                                <div>{ detalleItem.hora }</div>
+                              </li>
+                              <li>
+                                <div>{ detalleItem.destino }</div>
+                                <div>{ detalleItem.horaLlegada }</div>
+                              </li>
+                            </ul>
+                            <div className={ styles['resumen-servicio'] }>
+                              <span>Cantidad de Asientos: {detalleItem.cantidadAsientos}</span>
+                              <b>{ detalleItem.total }</b>
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>)
-              ))}
-          </section>
+                        ))}
+                    </div>
+                  </div>)
+                ))}
+            </section>
+          )}
           <section className={ styles['resumen-pago'] }>
             <div className={ styles['contenedor-metodo-pago'] }>
               <strong>Pagado con:</strong>
               <span>
-                { mediosPago[carro.carro.medioPago].mensaje } 
-                <img src={ mediosPago[carro.carro.medioPago].imagen } alt={ `Icono ${mediosPago[carro.carro.medioPago].nombre}` }/>
+                { mediosPago[carro.medioPago].mensaje } 
+                <img src={ mediosPago[carro.medioPago].imagen } alt={ `Icono ${mediosPago[carro.medioPago].nombre}` }/>
               </span>
             </div>
             <div className={ styles['contenedor-total-pagar'] }>
               <strong>Total Pagado:</strong>
-              <span>{ clpFormat.format(props?.carro?.carro?.monto) }</span>
+              <span>{ clpFormat.format(carro?.monto) }</span>
             </div>
           </section>
           <section className={ styles['action-container'] }>
@@ -287,16 +298,7 @@ export default function Home(props: HomeProps) {
         </section>
       )}
       <Footer />
+      <script async defer={true} src="https://tracking.bciplus.cl/bciplus/script.js"></script>
     </Layout>
   );
 }
-
-export const getServerSideProps = withIronSessionSsr(async function (context) {
-  return {
-    props: {
-      codigo: context.query.codigo || "",
-      token: context.query.token_ws || "",
-      carro: context.query.carro || null,
-    },
-  };
-}, sessionOptions);
