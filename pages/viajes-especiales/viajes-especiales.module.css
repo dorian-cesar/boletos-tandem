@@ -86,7 +86,10 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 1.5;  
-    resize: vertical;  
+    resize: none;  
+}
+.textarea-data-mensaje:focus {
+  outline-color: rgba(47, 83, 247, 0.685);
 }
   
   .button-search-coupon {

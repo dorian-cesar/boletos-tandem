@@ -14,7 +14,7 @@ import Input2 from "../../components/Input2";
 registerLocale("es", es);
 
 const SolicitudFormFields = {
-  rut:"",
+  numeroDocumento:"",
   nombre: "",
   numeroContacto: "",
   correoElectronico: "",
@@ -23,8 +23,9 @@ const SolicitudFormFields = {
   mensaje: "",
   tipoDocumento: "R",
   origen:"",
-  destino:""
-
+  destino:"",
+  origenDesc: "",
+  destinoDesc:""
 }
 
 
@@ -37,7 +38,6 @@ export default function Home(props) {
 
   const [origenes, setOrigenes] = useState([]);
   const [destinos, setDestinos] = useState([]);
-
 
   const [error, setError] = useState({
     errorMsg: '',
@@ -93,13 +93,13 @@ export default function Home(props) {
         setError({ status: true, errorMsg: 'Se requiere cantidad de pasajeros sea menor a 500.' });
         resolve(false);
       } else {
-        if (solicitud?.tipoDocumento == 'R') {
-          let rut = new Rut(solicitud?.rut);
-          if (!rut?.isValid) {
-            setError({ status: true, errorMsg: 'Se requiere ingresar un rut válido' });
-            return resolve(false);
+          if (solicitud?.tipoDocumento == 'R') {
+            let rut = new Rut(solicitud.numeroDocumento);
+            if (!rut?.isValid) {
+              setError({ status: true, errorMsg: 'Se requiere ingresar un rut válido' });
+              return resolve(false);
+            }
           }
-        }
         if (solicitud?.correoElectronico != solicitud?.correoElectronico2) {
           setError({ status: true, errorMsg: 'Los correo no coinciden. Por favor, verificar.' });
           resolve(false);
@@ -111,9 +111,41 @@ export default function Home(props) {
     })
   }
 
- 
- 
- 
+  function setInputDocumento({ name, value }) {
+    try {
+      // Si el tipo de documento es RUT, validamos el formato
+      if (solicitud.tipoDocumento === "R" && name === "numeroDocumento" && value !== "") {
+        value = validarFormatoRut(value);
+      }
+      // Si es RUT, limpiamos caracteres no válidos
+      if (solicitud.tipoDocumento === "R" && name === "numeroDocumento" && value !== "") {
+        value = value.replace(/[^\dkK0-9.-]/g, ""); // Remueve caracteres no permitidos
+        if (value.length > 12) return; // Limita la longitud del RUT
+      }
+      if (solicitud.tipoDocumento === "D" || "P" && name === "numeroDocumento" && value !== "") {
+        value = value.replace(/[^\dkK0-9.-]/g, ""); // Remueve caracteres no permitidos
+        if (value.length > 15) return; // Limita la longitud del DNI y PASAPORTE
+      }
+      // Actualizamos el estado del formulario
+      onInputChange({ target: { name, value } });
+    } catch ({ message }) {
+      console.error(`Error al agregar informacion del comprador [${message}]`);
+    }
+  }
+  
+  function validarFormatoRut( value) {
+    try {
+      if (value.length > 2) {
+        let rut = new Rut(value);
+        value = new Rut(rut.getCleanRut().replace("-", "")).getNiceRut(true);
+      }
+      return value;
+    } catch ({ message }) {
+      console.error(`Error al validar formato de RUT [${message}]`);
+      return value;
+    }
+  }
+
   async function getOrigins() {
     try {
       const res = await fetch('/api/ciudades');
@@ -144,16 +176,38 @@ export default function Home(props) {
   useEffect(() => {
     (async () => await getDestinos())();
   }, [origen]);
-  
 
   function cambiarOrigen(origenSeleccionado) {
     setDestino(null);
     setOrigen(origenSeleccionado);
   }
 
+  function cambiarDestino(destinoSeleccionado) {
+    setDestino(destinoSeleccionado);
+    
+  }
+
   useEffect(() => {
+    if(origen != null){
+      solicitud.origen = origen.codigo;
+      solicitud.origenDesc = origen.nombre
+    }
+    if(destino !=null){
+      solicitud.destino = destino.codigo;
+      solicitud.destinoDesc = destino.nombre
+    }
     (async () => await getDestinos())();
-  }, [origen]);
+  }, [origen], [destino]);
+
+  useEffect(() => {
+   
+    if(destino !=null){
+      solicitud.destino = destino.codigo;
+      solicitud.destinoDesc = destino.nombre
+    }
+    (async () => await getDestinos())();
+  }, [destino]);
+
 
   function retornaCiudadesSelect(arrayCiudades) {
     return arrayCiudades.map((ciudad) => {
@@ -232,11 +286,8 @@ export default function Home(props) {
                   name="nombre"
                   placeholder="Ej: Emma Cortez"
                   value={solicitud.nombre}
-                  // onChange={onInputChange}
-                  onChange={(e) => {
-                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                    onInputChange(e);
-                  }}
+                  onChange={onInputChange}
+                
                 />
               </div>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
@@ -248,11 +299,7 @@ export default function Home(props) {
                         type="checkbox"
                         value={"R"}
                         name="tipoDocumento"
-                        // onChange={onInputChange}
-                        onChange={(e) => {
-                          console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                          onInputChange(e);
-                        }}
+                        onChange={onInputChange}
                         checked={
                           solicitud?.tipoDocumento == "R"
                             ? true
@@ -268,11 +315,7 @@ export default function Home(props) {
                         type="checkbox"
                         value={"D"}
                         name="tipoDocumento"
-                        // onChange={onInputChange}
-                        onChange={(e) => {
-                          console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                          onInputChange(e);
-                        }}
+                        onChange={onInputChange}
                         checked={
                           solicitud?.tipoDocumento == "D"
                             ? true
@@ -288,11 +331,7 @@ export default function Home(props) {
                         type="checkbox"
                         value={"P"}
                         name="tipoDocumento"
-                        // onChange={onInputChange}
-                        onChange={(e) => {
-                          console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                          onInputChange(e);
-                        }}
+                        onChange={onInputChange}
                         checked={
                           solicitud?.tipoDocumento == "P"
                             ? true
@@ -308,13 +347,9 @@ export default function Home(props) {
                   placeholder={solicitud?.tipoDocumento != 'R' ? 'Ej. 111111111' : 'Ej. 11111111-1'}
                   disabled={solicitud?.tipoDocumento != '' ? false : true}
                   className={styles["input-data"]}
-                  name="rut"
-                  value={solicitud?.rut}
-                  // onChange={onInputChange}
-                  onChange={(e) => {
-                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                    onInputChange(e);
-                  }}
+                  name="numeroDocumento"
+                  value={solicitud?.numeroDocumento}
+                  onChange={(e) => setInputDocumento(e.target)}
                 />
               </div>
             </div>
@@ -328,26 +363,19 @@ export default function Home(props) {
                   name="numeroContacto"
                   placeholder="Ej: +56 9 1111 1111"
                   value={solicitud?.numeroContacto}
-                  // onChange={onInputChange}
-                  onChange={(e) => {
-                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                    onInputChange(e);
-                  }}
+                  onChange={onInputChange}
+                  
                 />
               </div>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 "}>
                 <label className={styles["title-data"]}>Correo electrónico: </label>
                 <input
                   type="email"
+                  value={solicitud?.correoElectronico}
                   className={styles["input-data"]}
                   name="correoElectronico"
                   placeholder="Ej: ecortez@gcorreoElectronico.com"
-                  value={solicitud?.correoElectronico}
-                  // onChange={onInputChange}
-                  onChange={(e) => {
-                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                    onInputChange(e);
-                  }}
+                  onChange={onInputChange}
                 />
               </div>
             </div>
@@ -360,11 +388,7 @@ export default function Home(props) {
                   name="correoElectronico2"
                   placeholder="Ej: ecortez@gcorreoElectronico.com"
                   value={solicitud?.correoElectronico2}
-                  // onChange={onInputChange}
-                  onChange={(e) => {
-                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                    onInputChange(e);
-                  }}
+                  onChange={onInputChange}
                 />
               </div>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
@@ -376,15 +400,11 @@ export default function Home(props) {
                   placeholder="Ej: 30"
                   value={solicitud?.cantidadPasajeros}
                   min={0}
-                  // onChange={(e) => {
-                  //   const value = e.target.value;
-                  //   if (/^\d{0,3}$/.test(value)) {
-                  //     onInputChange(e);
-                  //   }
-                  // }}
                   onChange={(e) => {
-                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                    onInputChange(e);
+                    const value = e.target.value;
+                    if (/^\d{0,3}$/.test(value)) {
+                      onInputChange(e);
+                    }
                   }}
                 />
               </div>
@@ -409,11 +429,6 @@ export default function Home(props) {
                 }
                   setSelected={cambiarOrigen}
                   onChange={onInputChange}
-                  // onChange={(e) => {
-                  //   console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                  //   onInputChange(e);
-
-                  // }}
                 />
               </div>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
@@ -437,13 +452,10 @@ export default function Home(props) {
                       destinos.find((i) => i.codigo == destino.codigo),
                     ])
                   }
-                  setSelected={setDestino}
-                    value={solicitud?.setDestino}
-                  // onChange={onInputChange}
-                  onChange={(e) => {
-                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                    onInputChange(e);
-                  }}
+                  setSelected={cambiarDestino}
+                    value={solicitud?.destino}
+                  onChange={onInputChange}
+                
                 />
               </div>
             </div>
@@ -456,11 +468,8 @@ export default function Home(props) {
                   placeholder="Cantidad max. 500 caracteres"
                   maxLength={500}
                   value={solicitud?.mensaje}
-                  // onChange={onInputChange}
-                  onChange={(e) => {
-                    console.log("Input Name:", e.target.name, "Value:", e.target.value);
-                    onInputChange(e);
-                  }}
+                  onChange={onInputChange}
+                
                 />
               </div>
             </div>
@@ -485,7 +494,6 @@ export default function Home(props) {
           </div>
         </div>
       </div>
-
       <ToastContainer />
       <Footer />
     </Layout>
