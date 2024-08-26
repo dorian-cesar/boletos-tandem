@@ -30,7 +30,14 @@ export default function ConfrimTransaction({ serviceResponse }:ConfirmTransactio
     const selector = useSelector((state:any) => state.compra?.listaCarrito) || [];
 
     useEffect(() => {
+        debugger;
+        let keys = 0;
+
         if( selector ) {
+            keys = Object.keys(selector).length;
+        }
+        
+        if( keys > 0 ) {
             const token = JWT.sign(selector, SECRET);
             sessionStorage.setItem('transactionBasketInfo', token);
             setCarroCompras(selector);
