@@ -36,6 +36,7 @@ export default function Home(props: HomeProps) {
 
     const [carro, setCarro] = useState<any>(null);
     const [codigo, setCodigo] = useState<string>('');
+    const [carroCompras, setCarroCompras] = useState<any>([]);
 
     const router = useRouter();
 
@@ -58,6 +59,19 @@ export default function Home(props: HomeProps) {
       }
     }, [])
 
+    useEffect(() => {
+      try {
+        debugger;
+        const data = sessionStorage.getItem('transactionBasketInfo');
+        if( data ) {
+          const decoded:any = JWT.verify(data, SECRET);
+          if( decoded ) {
+            setCarroCompras(decoded);
+          }
+        }
+      } catch (error) {}
+    }, [carro])
+
   const [totalPagar, setTotalPagar] = useState(0);
   const [copiaCarro, setCopiaCarro] = useState({});
   type ResumenType = {
@@ -74,8 +88,6 @@ export default function Home(props: HomeProps) {
     style: 'currency',
     currency: 'CLP',
   });
-
-  const carroCompras = useSelector((state:any) => state.compra?.listaCarrito) || [];
 
   const dispatch = useDispatch();
 
@@ -176,7 +188,7 @@ export default function Home(props: HomeProps) {
 
   useEffect(() => {
     obtenerInformacion();
-  }, [carro]);
+  }, [carroCompras]);
   
   useEffect(() => {
     const carro = carroCompras || copiaCarro;
@@ -237,7 +249,7 @@ export default function Home(props: HomeProps) {
           <div className={ styles['orden-compra'] }>
             <span>Orden de compra: {codigo}</span>
           </div>
-          { carroCompras && carroCompras.length > 0 &&  (
+          { carroCompras &&  (
             <section className={ styles['detalle-viajes'] }>
               {Array.isArray(resumen.carro.lista) &&
                 resumen.carro.lista.map((element) => (

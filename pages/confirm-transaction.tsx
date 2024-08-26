@@ -14,6 +14,7 @@ import { redirect } from 'next/navigation';
 const { publicRuntimeConfig } = getConfig();
 
 import JWT from 'jsonwebtoken';
+import { useSelector } from 'react-redux';
 
 interface ConfirmTransactionProps {
     serviceResponse: any;
@@ -24,6 +25,19 @@ const SECRET = 'xWL!96JRaWi2lT0jG';
 export default function ConfrimTransaction({ serviceResponse }:ConfirmTransactionProps) {
 
     const router = useRouter();
+    const [carroCompras, setCarroCompras] = useState([]);
+
+    const selector = useSelector((state:any) => state.compra?.listaCarrito) || [];
+
+    useEffect(() => {
+        if( selector ) {
+            const token = JWT.sign(selector, SECRET);
+            sessionStorage.setItem('transactionBasketInfo', token);
+            setCarroCompras(selector);
+        } else {
+            setCarroCompras([]);
+        }
+    }, [])
 
     useEffect(() => {
         debugger;
@@ -40,7 +54,7 @@ export default function ConfrimTransaction({ serviceResponse }:ConfirmTransactio
         }
         
         router.push('/error-transaccion');
-    }, []);
+    }, [carroCompras]);
 
     return (
         <Layout>
