@@ -86,13 +86,6 @@ export default function Layout({ children }) {
               </Link>
             </div>
             <div className="w-100">
-              <Link href="/cambio-cuponera-antigua" legacyBehavior>
-                <a href="/cambio-cuponera-antigua" className="cuponeras">
-                  Cambio cuponera antigua
-                </a>
-              </Link>
-            </div>
-            <div className="w-100">
               <Link href="/confirmacionBoleto" legacyBehavior>
                 <a href="" className="confirmacions">
                   Confirmación
@@ -133,6 +126,13 @@ export default function Layout({ children }) {
               <Link href="/teAyudamos" legacyBehavior>
                 <a className="ayuda">
                   Te ayudamos
+                </a>
+              </Link>
+            </div>
+            <div className="w-100">
+              <Link href="https://api.pullman.cl/stuWAR/#/marketplace" legacyBehavior>
+                <a className="venta-vehiculos">
+                  Venta vehículos usados
                 </a>
               </Link>
             </div>
