@@ -3,18 +3,25 @@ import Layout from "../../components/Layout";
 import Footer from "../../components/Footer";
 import styles from "./viajes-especiales.module.css"
 import es from "date-fns/locale/es";
-import DatePicker, { registerLocale } from "react-datepicker";
+import { registerLocale } from "react-datepicker";
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
-import { useEffect, useState, } from "react";
+import { toast } from 'react-toastify';
+import React,{ useEffect, useState, } from "react";
 import { useForm } from "/hooks/useForm";
 import Rut from "rutjs";
 import Input2 from "../../components/Input2";
+import Popup from "../../components/Popup/Popup";
+import ModalEntities from "../../entities/ModalEntities";
+
+
+
+
 
 registerLocale("es", es);
 
 const SolicitudFormFields = {
-  numeroDocumento:"",
+  numeroDocumento: "",
   nombre: "",
   numeroContacto: "",
   correoElectronico: "",
@@ -22,22 +29,41 @@ const SolicitudFormFields = {
   cantidadPasajeros: "",
   mensaje: "",
   tipoDocumento: "R",
-  origen:"",
-  destino:"",
-  origenDesc: "",
-  destinoDesc:""
+  // origen:"",
+  // destino:"",
+  // origenDesc: "",
+  // destinoDesc:""
 }
 
 
 export default function Home(props) {
+
   const [isLoading, setIsLoading] = useState(false);
-  const { formState: solicitud, onInputChange } = useForm(SolicitudFormFields);
-  
+  const { formState: solicitud, setSolicitud, onInputChange } = useForm(SolicitudFormFields);
+  const [mostrarPopup, setMostrarPopup] = useState(false);
+  const { setStage } = props;
+
+  const [tipoMostrar, setTipoMostrar] = useState(null);
+
+
   const [origen, setOrigen] = useState(null);
   const [destino, setDestino] = useState(null);
 
   const [origenes, setOrigenes] = useState([]);
   const [destinos, setDestinos] = useState([]);
+
+
+
+  const abrirPopup = () => {
+    setMostrarPopup(true);
+  };
+  const cerrarPopup = () => {
+    setMostrarPopup(false);
+  };
+
+  function volverInicio() {
+    setStage();
+}
 
   const [error, setError] = useState({
     errorMsg: '',
@@ -51,36 +77,39 @@ export default function Home(props) {
   });
 
 
-  const enviar = async () => {
-    const formStatus = await validarForm();
-    if (formStatus) {
+  const enviarSolicitud = async () => {
+    let formStatus = await validarForm();
+    if (formStatus == true) {
       try {
         setIsLoading(true);
-        // const res = await axios.post("/api/user/registro-usuario", {...registro});
-        // if(res.data.status){
-        //   onChangeAlert({
-        //     msg: '¡Registro completado con éxito!',
-        //     visible: true,
-        //     type: 'alert-success'
-        //   })
-        //   changeMode();
-        // }
+        const res = await axios.post(
+          "/api/parametros/guardar-solicitud-viajes-especiales", 
+          solicitud)
+        if(res.data.status) {
+          
+          abrirPopup();
+          changeMode();
+          setTipoMostrar("OK");
+          
+        }
       } catch (e) {
+        console.log(solicitud)
         setIsLoading(false);
         if (!!e.response) {
-          const { message } = e.response?.data;
-          setError({ status: true, errorMsg: message });
-        } else {
           setError({ status: true, errorMsg: 'Ocurrió un error inesperado.' });
+          setTipoMostrar("ERROR");
+          abrirPopup();
         }
       }
     }
   }
 
+
+
   const validarForm = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const values = Object.values(solicitud);
-      debugger
+
       const camposVacios = values.filter((v) => v == '');
       if (camposVacios.length > 0) {
         setError({ status: true, errorMsg: 'Se requiere rellenar todos los campos.' });
@@ -90,16 +119,16 @@ export default function Home(props) {
         resolve(false);
 
       } else if (solicitud.cantidadPasajeros > 500) {
-        setError({ status: true, errorMsg: 'Se requiere cantidad de pasajeros sea menor a 500.' });
+        setError({ status: true, errorMsg: 'Cantidad maxima 500  pasajeros.' });
         resolve(false);
       } else {
-          if (solicitud?.tipoDocumento == 'R') {
-            let rut = new Rut(solicitud.numeroDocumento);
-            if (!rut?.isValid) {
-              setError({ status: true, errorMsg: 'Se requiere ingresar un rut válido' });
-              return resolve(false);
-            }
+        if (solicitud?.tipoDocumento == 'R') {
+          let rut = new Rut(solicitud.numeroDocumento);
+          if (!rut?.isValid) {
+            setError({ status: true, errorMsg: 'Se requiere ingresar un rut válido' });
+            return resolve(false);
           }
+        }
         if (solicitud?.correoElectronico != solicitud?.correoElectronico2) {
           setError({ status: true, errorMsg: 'Los correo no coinciden. Por favor, verificar.' });
           resolve(false);
@@ -110,6 +139,8 @@ export default function Home(props) {
       }
     })
   }
+
+ 
 
   function setInputDocumento({ name, value }) {
     try {
@@ -122,7 +153,7 @@ export default function Home(props) {
         value = value.replace(/[^\dkK0-9.-]/g, ""); // Remueve caracteres no permitidos
         if (value.length > 12) return; // Limita la longitud del RUT
       }
-      if (solicitud.tipoDocumento === "D" || "P" && name === "numeroDocumento" && value !== "") {
+      if ((solicitud.tipoDocumento === "D" || solicitud.tipoDocumento === "P") && name === "numeroDocumento" && value !== "") {
         value = value.replace(/[^\dkK0-9.-]/g, ""); // Remueve caracteres no permitidos
         if (value.length > 15) return; // Limita la longitud del DNI y PASAPORTE
       }
@@ -132,8 +163,8 @@ export default function Home(props) {
       console.error(`Error al agregar informacion del comprador [${message}]`);
     }
   }
-  
-  function validarFormatoRut( value) {
+
+  function validarFormatoRut(value) {
     try {
       if (value.length > 2) {
         let rut = new Rut(value);
@@ -146,67 +177,67 @@ export default function Home(props) {
     }
   }
 
-  async function getOrigins() {
-    try {
-      const res = await fetch('/api/ciudades');
-      const ciudades = await res.json()
-      setOrigenes(ciudades);
-    } catch(error) {
-      console.log(`Error al obtener ciudades [${ error?.message }]`);
-    }
-  }
+  // async function getOrigins() {
+  //   try {
+  //     const res = await fetch('/api/ciudades');
+  //     const ciudades = await res.json()
+  //     setOrigenes(ciudades);
+  //   } catch(error) {
+  //     console.log(`Error al obtener ciudades [${ error?.message }]`);
+  //   }
+  // }
 
-  async function getDestinos() {
-    if (origen !== null) {
-      try {
-        let { data } = await axios.post("/api/destinos", {
-          id_ciudad: origen.codigo,
-        });
-        setDestinos(data);
-      } catch ({ message }) {
-        console.error(`Error al obtener destinos [${message}]`);
-      }
-    }
-  }
+  // async function getDestinos() {
+  //   if (origen !== null) {
+  //     try {
+  //       let { data } = await axios.post("/api/destinos", {
+  //         id_ciudad: origen.codigo,
+  //       });
+  //       setDestinos(data);
+  //     } catch ({ message }) {
+  //       console.error(`Error al obtener destinos [${message}]`);
+  //     }
+  //   }
+  // }
 
-  useEffect(() => {
-    getOrigins();
-  }, []);
+  // useEffect(() => {
+  //   getOrigins();
+  // }, []);
 
-  useEffect(() => {
-    (async () => await getDestinos())();
-  }, [origen]);
+  // useEffect(() => {
+  //   (async () => await getDestinos())();
+  // }, [origen]);
 
-  function cambiarOrigen(origenSeleccionado) {
-    setDestino(null);
-    setOrigen(origenSeleccionado);
-  }
+  // function cambiarOrigen(origenSeleccionado) {
+  //   setDestino(null);
+  //   setOrigen(origenSeleccionado);
+  // }
 
-  function cambiarDestino(destinoSeleccionado) {
-    setDestino(destinoSeleccionado);
-    
-  }
+  // function cambiarDestino(destinoSeleccionado) {
+  //   setDestino(destinoSeleccionado);
 
-  useEffect(() => {
-    if(origen != null){
-      solicitud.origen = origen.codigo;
-      solicitud.origenDesc = origen.nombre
-    }
-    if(destino !=null){
-      solicitud.destino = destino.codigo;
-      solicitud.destinoDesc = destino.nombre
-    }
-    (async () => await getDestinos())();
-  }, [origen], [destino]);
+  // }
 
-  useEffect(() => {
-   
-    if(destino !=null){
-      solicitud.destino = destino.codigo;
-      solicitud.destinoDesc = destino.nombre
-    }
-    (async () => await getDestinos())();
-  }, [destino]);
+  // useEffect(() => {
+  //   if(origen != null){
+  //     solicitud.origen = origen.codigo;
+  //     solicitud.origenDesc = origen.nombre
+  //   }
+  //   if(destino !=null){
+  //     solicitud.destino = destino.codigo;
+  //     solicitud.destinoDesc = destino.nombre
+  //   }
+  //   (async () => await getDestinos())();
+  // }, [origen], [destino]);
+
+  // useEffect(() => {
+
+  //   if(destino !=null){
+  //     solicitud.destino = destino.codigo;
+  //     solicitud.destinoDesc = destino.nombre
+  //   }
+  //   (async () => await getDestinos())();
+  // }, [destino]);
 
 
   function retornaCiudadesSelect(arrayCiudades) {
@@ -218,7 +249,7 @@ export default function Home(props) {
     });
   }
 
-  
+
 
   return (
     <Layout>
@@ -287,7 +318,7 @@ export default function Home(props) {
                   placeholder="Ej: Emma Cortez"
                   value={solicitud.nombre}
                   onChange={onInputChange}
-                
+
                 />
               </div>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
@@ -364,7 +395,7 @@ export default function Home(props) {
                   placeholder="Ej: +56 9 1111 1111"
                   value={solicitud?.numeroContacto}
                   onChange={onInputChange}
-                  
+
                 />
               </div>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 "}>
@@ -410,7 +441,7 @@ export default function Home(props) {
               </div>
             </div>
 
-            <div className={"row"}>
+            {/* <div className={"row"}>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
                 <label className={styles["title-data"]}>Origen del viaje: </label>
                 <Input2
@@ -458,7 +489,7 @@ export default function Home(props) {
                 
                 />
               </div>
-            </div>
+            </div> */}
             <div className={"row"}>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12"}>
                 <label className={styles["title-data"]}>Mensaje: </label>
@@ -469,7 +500,7 @@ export default function Home(props) {
                   maxLength={500}
                   value={solicitud?.mensaje}
                   onChange={onInputChange}
-                
+
                 />
               </div>
             </div>
@@ -483,19 +514,41 @@ export default function Home(props) {
                           ? styles["button-search-coupon"]
                           : styles["button-search-coupon-disabled"]
                       }
-                      onClick={(e) => enviar()}
+                      onClick={(e) => {
+                        
+                        enviarSolicitud()
+                      
+                      }}
                     >
                       Enviar
                     </button>
                   </div>
                 </div>
               </div>
+             
             </div>
+            
           </div>
+        
         </div>
+        {mostrarPopup &&
+                    (tipoMostrar === "ERROR" ? (
+                        <Popup
+                            modalKey={ModalEntities.request_bad_help}
+                            modalClose={cerrarPopup}
+                            modalMethods={cerrarPopup}
+                        />
+                    ) : (
+                        <Popup
+                            modalKey={ModalEntities.request_for_help}
+                            modalClose={cerrarPopup}
+                            modalMethods={cerrarPopup}
+                        />
+                    ))}
       </div>
       <ToastContainer />
       <Footer />
+    
     </Layout>
   );
 }
