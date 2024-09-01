@@ -279,7 +279,6 @@ export const ResumenViaje = (props) => {
         resumenCompra.listaCarrito.push(carrito);
       });
 
-      // TODO: agregar evento [add_payment_info] aquí
       agregarEventoTagManager();
 
       if (medioPago === "CUP") {
