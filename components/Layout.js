@@ -36,7 +36,7 @@ export default function Layout({ children }) {
   };
 
   useEffect(() => {
-    if( !router.pathname.includes('respuesta-transaccion') ) {
+    if( !router.pathname.includes('/respuesta-transaccion') && !router.pathname.includes('/confirm-transaction') && !router.pathname.includes('/respuesta-transaccion-v2') ) {
       dispatch(liberarAsientos());
       dispatch(limpiarCambio());
     }
