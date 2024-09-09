@@ -23,7 +23,7 @@ const BoletosSeleccion = (props) => {
     const isSelected = selectedBoletos.includes(boleto.boleto);
     if (!isSelected) {
       if (boleto.asientoAsociado > 0) {
-        const associatedBoletos = boletos.filter((element) => element.asiento === boleto.asientoAsociado);
+        const associatedBoletos = boletos.filter((element) => element.asiento === boleto.asientoAsociado && boleto?.imprimeVoucher?.servicio === element?.imprimeVoucher?.servicio);
         const associatedBoletosIds = associatedBoletos.map((item) => item.boleto);
         const newSelectedBoletos = new Set(selectedBoletos);
         newSelectedBoletos.add(boleto.boleto);
@@ -36,7 +36,7 @@ const BoletosSeleccion = (props) => {
       setSelectedBoletos([...selectedBoletos, boleto.boleto]);
     } else {
       if (boleto.asientoAsociado > 0) {
-        const associatedBoletos = boletos.filter((element) => element.asiento === boleto.asientoAsociado);
+        const associatedBoletos = boletos.filter((element) => element.asiento === boleto.asientoAsociado && boleto?.imprimeVoucher?.servicio === element?.imprimeVoucher?.servicio);
         const associatedBoletosIds = associatedBoletos.map((item) => item.boleto);
         const newSelectedBoletos = new Set(selectedBoletos);
         associatedBoletosIds.forEach((codigoBoleto) => {
