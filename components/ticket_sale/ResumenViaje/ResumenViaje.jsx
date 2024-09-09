@@ -623,9 +623,23 @@ export const ResumenViaje = (props) => {
             </div>
           )}  
             { descuentoConvenio ? 
+
+              
+                descuentoConvenio?.id === 'COPEC' ?
+
+                <div className={styles["contanedor-puntaje"]}>
+                <span>Puntos para acumular COPEC: {clpFormat.format(totalOriginal)} </span> // aqui va el metodo para calcular los puntos copec
+              </div> 
+
+              :
+
               <div className={styles["contanedor-total-pagar-descuento"]}>
                 <span>Total anterior: {clpFormat.format(totalOriginal)} </span>
-              </div> : '' 
+              </div> 
+             
+              
+              
+              : '' 
             }
           <div className={styles["contanedor-total-pagar"]}>
             <span>Total a pagar: {clpFormat.format(totalPagar)}</span>

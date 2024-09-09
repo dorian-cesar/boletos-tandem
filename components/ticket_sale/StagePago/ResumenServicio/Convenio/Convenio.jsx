@@ -76,6 +76,15 @@ const Convenio = (props) => {
           );
 
           if(convenio_response.data?.afiliado){
+            if(convenio==='COPEC'){
+                toast.info("Rut valido para convenio", {
+                  position: "top-center",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                });
+              setDescuentoConvenio({id: convenio, ...convenio_response.data});
+            return;
+            }
             toast.info("Descuento aplicado", {
                 position: "top-center",
                 autoClose: 3000,
