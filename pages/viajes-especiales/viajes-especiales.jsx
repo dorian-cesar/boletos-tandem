@@ -98,9 +98,9 @@ export default function Home(props) {
           abrirPopup();
         }
       }
+      limpiarCampos();
     }
     setActButton(false)
-    limpiarCampos();
   }
 
   const limpiarCampos = () => {
