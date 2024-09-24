@@ -91,6 +91,7 @@ const Boleto = (props) => {
                   <div className={styles['ticket-details__travel-detail']}>
                     <span className={styles['bold']}>{props.horaSalida}</span>
                     <span className={styles['bold']}>{props.stage === 0 ? origen?.nombre : destino?.nombre}</span>
+                    <span className={styles['terminal']}>{props.terminalOrigen}</span>
                     <div className={styles['fechaMobile']}>
                     <span>{props.fechaSalida}</span>
                     </div>
@@ -107,6 +108,7 @@ const Boleto = (props) => {
                   <div className={styles['ticket-details__travel-detail']}>
                     <span className={styles['bold']}>{props.horaLlegada}</span>
                     <span className={styles['bold']}>{props.stage === 0 ? destino?.nombre : origen?.nombre}</span>
+                    <span className={styles['terminal']}>{props.terminalDestino}</span>
                     <div className={styles['fechaMobile']} >
                     <span>{props.fechaLlegada}</span>
                     </div>

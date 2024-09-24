@@ -110,6 +110,12 @@
 }
 
 .ticket-details .ticket-details__travel .ticket-details__travel-detail .bold {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.ticket-details .ticket-details__travel .ticket-details__travel-detail .terminal {
+    font-size: 12px;
     font-weight: 700;
 }
 
@@ -469,6 +475,13 @@
         
     
     }
+
+    .ticket-details .ticket-details__travel .ticket-details__travel-detail .terminal {
+        width: 220px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+    
     
 }
 
@@ -587,6 +600,13 @@
         overflow-x: hidden;
         gap: 100px;
     }
+
+    .ticket-details .ticket-details__travel .ticket-details__travel-detail .terminal {
+        width: 220px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+    
 }
 
 
@@ -707,6 +727,13 @@
         overflow-x: hidden;
         gap: 100px;
     }
+
+    .ticket-details .ticket-details__travel .ticket-details__travel-detail .terminal {
+        width: 220px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+    
 }
 
 @media screen and (min-width: 768px) and (max-width: 930px) {
@@ -747,6 +774,13 @@
         width: 100%;
 
     }
+
+    .ticket-details .ticket-details__travel .ticket-details__travel-detail .terminal {
+        width: 220px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+    
 }
 
 @media (width < 770px) {
@@ -774,6 +808,13 @@
         font-size: 12px !important;
         font-weight: 200 !important; 
     }
+
+    .ticket-details .ticket-details__travel .ticket-details__travel-detail .terminal {
+        width: 220px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+    
 
 }
 
