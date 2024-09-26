@@ -128,7 +128,7 @@ const ModoDevolucion = (props) => {
                                 <div className={styles["option-normal"]}>
                                     <div>
                                         {
-                                            boletos[0]?.tipoCompra === "WALLET" ? 
+                                            boletos[0]?.tipoCompra === "WALLET" || boletos[0]?.tipoCompra === "MIXTA"? 
                                             <input
                                             type="checkbox"
                                             checked={
