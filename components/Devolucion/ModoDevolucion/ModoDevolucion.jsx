@@ -127,7 +127,22 @@ const ModoDevolucion = (props) => {
                             <div className={"col-md-6 col-lg-6 mb-3"}>
                                 <div className={styles["option-normal"]}>
                                     <div>
-                                        <input
+                                        {
+                                            boletos[0]?.tipoCompra === "WALLET" ? 
+                                            <input
+                                            type="checkbox"
+                                            checked={
+                                                medioDevolucion === "normal"
+                                            }
+                                            value="normal"
+                                            name="medioDevolucion"
+                                            onChange={
+                                                handleMedioDevolucionChange
+                                            }
+                                            disabled= "disabled"
+                                        />
+                                            : 
+                                            <input
                                             type="checkbox"
                                             checked={
                                                 medioDevolucion === "normal"
@@ -139,6 +154,7 @@ const ModoDevolucion = (props) => {
                                             }
                                             disabled={isLoading}
                                         />
+                                        }      
                                         <label className={styles["label"]}>
                                             &nbsp; Devolución al medio de pago
                                         </label>
