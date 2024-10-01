@@ -88,6 +88,14 @@ export function newIsValidPasajero(pasajero) {
                 }
             }
         }
+
+        if(pasajero.tipoDocumento == 'P') {
+            if (!pasajero.rut || pasajero.rut == '') {
+                validator.valid = false;
+                validator.error = `Debe ingresar un numero de pasaporte para pasajero del asiento ${ pasajero.asiento }`;
+                return validator;
+            }
+        }
         
         if ( !pasajero.email || pasajero.email == '' ) {
             validator.valid = false;
