@@ -555,6 +555,12 @@ export const ResumenViaje = (props) => {
     }
   }, [descuentoConvenio]);
 
+
+  function calcularPuntos(valor, porcentaje){
+    const valorPorcentaje = (valor * porcentaje) / 100;
+    return valorPorcentaje;
+  }
+
   return (
     <div className={styles["resumen-container"]}>
       <h3>Resumen del viaje</h3>
@@ -622,27 +628,27 @@ export const ResumenViaje = (props) => {
               </span>
             </div>
           )}  
-            { descuentoConvenio ? 
-
-              
+            { descuentoConvenio ?        
                 descuentoConvenio?.id === 'COPEC' ?
-
                 <div className={styles["contanedor-puntaje"]}>
-                <span>Puntos para acumular COPEC: {clpFormat.format(totalOriginal)} </span> // aqui va el metodo para calcular los puntos copec
-              </div> 
-
+                <span>Puntos para acumular COPEC: {calcularPuntos(descuentoConvenio.descuento,totalOriginal) } </span> 
+              </div>
               :
-
               <div className={styles["contanedor-total-pagar-descuento"]}>
                 <span>Total anterior: {clpFormat.format(totalOriginal)} </span>
               </div> 
-             
-              
-              
               : '' 
             }
           <div className={styles["contanedor-total-pagar"]}>
-            <span>Total a pagar: {clpFormat.format(totalPagar)}</span>
+          { descuentoConvenio ?        
+                descuentoConvenio?.id === 'COPEC' ?              
+                <span>Total a pagar: {clpFormat.format(totalOriginal)}</span>        
+              :        
+               <span>Total anterior: {clpFormat.format(totalPagar)} </span> 
+              :  
+              <span>Total anterior: {clpFormat.format(totalPagar)} </span>  
+            }
+            
           </div>
           {!soloLectura && (
             <div className={styles["contenedor-checks"]}>
