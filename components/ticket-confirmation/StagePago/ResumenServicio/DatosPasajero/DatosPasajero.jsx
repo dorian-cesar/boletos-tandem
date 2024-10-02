@@ -59,6 +59,10 @@ const DatosPasajero = (props) => {
         if( value.length > 12 ) return;
       }
 
+      if( name === 'tipoDocumento') {
+        carro_temp['rut'] = '';
+      }
+
       carro_temp[name] = value;
       const infoToDispatch = {
         servicio,

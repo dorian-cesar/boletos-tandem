@@ -147,11 +147,11 @@ export default function Home(props) {
             </Head>
             <div className="pasajes">
                 <div className="container">
-                    <BusquedaServicio 
-                        origenes={ props.ciudades } 
-                        dias={ props.dias } 
-                        isShowMascota={ false }
-                        isHomeComponent={ false }/>
+                    <BusquedaServicio
+                        origenes={props.ciudades}
+                        dias={props.dias}
+                        isShowMascota={false}
+                        isHomeComponent={false}/>
                 </div>
             </div>
             <div className="pasajes-compra pb-5">
@@ -159,11 +159,12 @@ export default function Home(props) {
                     <ul className="d-flex flex-row justify-content-around py-4 px-0">
                         {
                             stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
-                                return(
-                                    <div key={ `stage-${ indexStage }` } className={ "seleccion text-center select-num " + (indexStage == stage ? "active" : "")}>
+                                return (
+                                    <div key={`stage-${indexStage}`}
+                                         className={"seleccion text-center select-num " + (indexStage == stage ? "active" : "")}>
                                         <div className="numeros">
                                             <div className="numero">
-                                                { indexStage + 1 }
+                                                {indexStage + 1}
                                             </div>
                                         </div>
                                         <h3>{stageMaped.name}</h3>
@@ -172,34 +173,34 @@ export default function Home(props) {
                             })
                         }
                     </ul>
-                    { 
-                        stages_active[stage].kind == "pasajes_1" || stages_active[stage].kind == "pasajes_2" ? 
-                        <StagePasajes 
-                            key={ `stage-pasajes-${ stages_active[stage].kind }` }
-                            stage={ stage } 
-                            parrilla={ parrilla } 
-                            loadingParrilla={ loadingParrilla } 
-                            setParrilla={ setParrilla } 
-                            startDate={ startDate } 
-                            endDate={ endDate }
-                            carro={ carro }
-                            setCarro={ setCarro }
-                            setStage={ setStage }
-                            searchParrilla={ searchParrilla }
-                            origen={ stages_active[stage].kind == "pasajes_1" ? stateCompra.origen : stateCompra.destino }
-                            destino={ stages_active[stage].kind == "pasajes_2" ? stateCompra.destino : stateCompra.origen }
-                            setModalMab={ setModalMab }
-                            mascota_allowed={ mascota_allowed }/> : ('') 
+                    {
+                        stages_active[stage].kind == "pasajes_1" || stages_active[stage].kind == "pasajes_2" ?
+                            <StagePasajes
+                                key={`stage-pasajes-${stages_active[stage].kind}`}
+                                stage={stage}
+                                parrilla={parrilla}
+                                loadingParrilla={loadingParrilla}
+                                setParrilla={setParrilla}
+                                startDate={startDate}
+                                endDate={endDate}
+                                carro={carro}
+                                setCarro={setCarro}
+                                setStage={setStage}
+                                searchParrilla={searchParrilla}
+                                origen={stages_active[stage].kind == "pasajes_1" ? stateCompra.origen : stateCompra.destino}
+                                destino={stages_active[stage].kind == "pasajes_2" ? stateCompra.destino : stateCompra.origen}
+                                setModalMab={setModalMab}
+                                mascota_allowed={mascota_allowed}/> : ('')
                     }
                     {
-                        stages_active[stage].kind == "pago" ?  
-                        <StagePago 
-                            key={ 'stage-pago' }
-                            carro={ carro }
-                            nacionalidades={ props.nacionalidades }
-                            convenios={ props.convenios }
-                            mediosDePago={ props.mediosDePago }
-                            setCarro={ setCarro }/>: ('')
+                        stages_active[stage].kind == "pago" ?
+                            <StagePago
+                                key={'stage-pago'}
+                                carro={carro}
+                                nacionalidades={props.nacionalidades}
+                                convenios={props.convenios}
+                                mediosDePago={props.mediosDePago}
+                                setCarro={setCarro}/> : ('')
                     }
                 </div>
             </div>
@@ -237,10 +238,13 @@ export default function Home(props) {
                                         Sólo puede viajar una mascota por pasajero.
                                     </li>
                                     <li>
-                                        Sólo transportamos a perros y gatos que quepan cómodamente en un canil rígido y cerrado que va sobre el asiento asignado. El canil no puede superar los 60 cm de largo, 39 cm de ancho y 34 cm de alto.
+                                        Sólo transportamos a perros y gatos que quepan cómodamente en un canil rígido y
+                                        cerrado que va sobre el asiento asignado. El canil no puede superar los 60 cm de
+                                        largo, 39 cm de ancho y 34 cm de alto.
                                     </li>
                                     <li>
-                                        Debe llevar firmada una "Declaración Jurada de tenencia responsable" al momento de abordar la cual se adjunta con el envío de pasajes MAB al correo.
+                                        Debe llevar firmada una "Declaración Jurada de tenencia responsable" al momento
+                                        de abordar la cual se adjunta con el envío de pasajes MAB al correo.
                                     </li>
                                 </ul>
                             </div>
@@ -259,13 +263,14 @@ export default function Home(props) {
             ) : (
                 ""
             )}
-            <ToastContainer />
-            <Footer />
+            <ToastContainer/>
+            <Footer/>
+            <script async defer={true} src="https://tracking.bciplus.cl/bciplus/script.js"></script>
         </Layout>
     );
 }
 
-export const getServerSideProps = withIronSessionSsr(async function ({ req, res, query }) {
+export const getServerSideProps = withIronSessionSsr(async function ({req, res, query }) {
     const decryptedData = query.search ? decryptDataNoSaved(query.search, 'search') : null;
     if( !decryptedData || !decryptedData?.origen || !decryptedData?.destino || !decryptedData?.startDate ) {
         return {
