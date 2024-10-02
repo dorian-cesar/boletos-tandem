@@ -304,7 +304,7 @@
     .text-origen {
         margin-left: 5%;
         color: #000;
-        font-size: 12px;
+        font-size: 10px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
@@ -367,11 +367,13 @@
     .text-destino {
         margin-left: -30px;
         color: #000;
-        font-size: 12px;
+        font-size: 10px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
     }
+
+  
 }
 
 @media screen and (min-width: 396px) and (max-width: 767px) {
@@ -487,7 +489,7 @@
     .text-origen {
         margin-left: 5%;
         color: #000;
-        font-size: 12px;
+        font-size: 10px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
@@ -550,7 +552,7 @@
     .text-destino {
         margin-left: -30px;
         color: #000;
-        font-size: 12px;
+        font-size: 10px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
@@ -671,7 +673,7 @@
     .text-origen {
         margin-left: 5%;
         color: #000;
-        font-size: 12px;
+        font-size: 10px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
@@ -734,7 +736,7 @@
     .text-destino {
         margin-left: -30px;
         color: #000;
-        font-size: 12px;
+        font-size: 10px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;

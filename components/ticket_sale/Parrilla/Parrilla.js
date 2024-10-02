@@ -314,6 +314,15 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
+
+      if(asiento.valorAsiento === 0){
+        toast.error('No puede seleccionar asiento con valor 0', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        })
+        return;
+      }
       
       if( validationCheckInfo ) {
         return;

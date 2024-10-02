@@ -11,6 +11,9 @@ const estadoBoleto = {
 }
 
 const BoletosSeleccion = (props) => {
+
+  const [tipoCompra, setTipoCompra] = useState(null);
+
   const {
     setStage,
     boletos,
@@ -23,7 +26,7 @@ const BoletosSeleccion = (props) => {
     const isSelected = selectedBoletos.includes(boleto.boleto);
     if (!isSelected) {
       if (boleto.asientoAsociado > 0) {
-        const associatedBoletos = boletos.filter((element) => element.asiento === boleto.asientoAsociado);
+        const associatedBoletos = boletos.filter((element) => element.asiento === boleto.asientoAsociado && boleto?.imprimeVoucher?.servicio === element?.imprimeVoucher?.servicio);
         const associatedBoletosIds = associatedBoletos.map((item) => item.boleto);
         const newSelectedBoletos = new Set(selectedBoletos);
         newSelectedBoletos.add(boleto.boleto);
@@ -36,7 +39,7 @@ const BoletosSeleccion = (props) => {
       setSelectedBoletos([...selectedBoletos, boleto.boleto]);
     } else {
       if (boleto.asientoAsociado > 0) {
-        const associatedBoletos = boletos.filter((element) => element.asiento === boleto.asientoAsociado);
+        const associatedBoletos = boletos.filter((element) => element.asiento === boleto.asientoAsociado && boleto?.imprimeVoucher?.servicio === element?.imprimeVoucher?.servicio);
         const associatedBoletosIds = associatedBoletos.map((item) => item.boleto);
         const newSelectedBoletos = new Set(selectedBoletos);
         associatedBoletosIds.forEach((codigoBoleto) => {
@@ -59,13 +62,25 @@ const BoletosSeleccion = (props) => {
     setStage(2);
   }
 
+  useEffect(() => {
+    if (boletos[0].tipoCompra === "WALLET") {
+      setTipoCompra("Saldo Wallet");
+    } else if (boletos[0].tipoCompra === "MIXTA") {
+      setTipoCompra("Saldo Wallet/ Webpay");
+    } else {
+      setTipoCompra("Webpay");
+    }
+  }, [boletos]);
+  
+
   return (
     <div className={styles["container"]}>
       <div className={"fila"}>
-        <div className={styles["title"]}>Devolución de boleto</div>
+        <div className={styles["title"]}>Devolución de boleto </div> 
         <div className={styles["sub-title"]}>
           Selecciona el o los boleto(s) que deseas anular:
         </div>
+        
         {boletos.map((element) => (
           <div key={element.boleto} className={"row"}>
             <div className={"col-12"}>
