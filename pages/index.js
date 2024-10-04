@@ -14,6 +14,7 @@ import ModalEntities from "entities/ModalEntities";
 
 import es from "date-fns/locale/es";
 import dynamic from "next/dynamic";
+import PopupInformativo from "../components/PopupInformativo/PopupInformativo";
 
 registerLocale("es", es);
 
@@ -37,9 +38,8 @@ export default function Home(props) {
   }, []);
 
   useEffect(() => {
-    const width = window.innerWidth;
-    const fechaLimite = new Date(2024, 4, 21);
-    if( width < 770  && new Date() < fechaLimite ) {
+    const fechaLimite = new Date(2024, 9, 8);
+    if( new Date() < fechaLimite ) {
       setIsShowModalMobile(true);
     }
   }, [])
@@ -61,10 +61,8 @@ export default function Home(props) {
       </div>
       <DynamicFooterComponent />
       { isShowModalMobile && (
-        <Popup 
-          modalKey={ ModalEntities.mobile_purchase_info }
+        <PopupInformativo
           modalClose={ () => setIsShowModalMobile(false) }
-          modalMethods={ () => window.location.href = "https://www.pullmanbus.cl"}
         />) 
       }
 
