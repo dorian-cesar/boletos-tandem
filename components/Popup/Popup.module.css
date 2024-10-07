@@ -24,11 +24,21 @@
 
   @media (width <= 425px) {
     .popup-container {
-      width: 320px;
+      width: 90%;
     }
 
     .popup-button {
-      width: 100% !important;
+      width: 80% !important;
+    }
+  }
+
+  @media (width <= 375px) {
+    .popup-container {
+      width: 98%;
+    }
+
+    .popup-button {
+      width: 80% !important;
     }
   }
 

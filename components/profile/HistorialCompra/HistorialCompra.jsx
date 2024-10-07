@@ -101,6 +101,16 @@ const HistorialCompra = () => {
     }
   }, [user]);
 
+  function retornarEstado(estado){
+    if(estado === 'NUL'){
+        return 'Transacción nula'
+    }
+    if(estado === 'ACTI'){
+      return 'Transacción activa'
+    }
+    return 'Sin descripción'
+  }
+
   const MemoizedComponent = useMemo(
     function renderHistorial() {
       if (historial.length === 0) {
@@ -113,15 +123,16 @@ const HistorialCompra = () => {
         return currentItems.map((itemHistorial, index) => (
           <tr key={index}>
             <td>{itemHistorial.codigo}</td>
+            <td>{retornarEstado(itemHistorial.estado)}</td>
             <td>{itemHistorial.fechaCompraFormato}</td>
             <td>{itemHistorial.cantidadBoletos}</td>
             <td>{clpFormat.format(itemHistorial.monto)}</td>
             <td className={styles["boton-descargar"]}>
-              <img
+              {itemHistorial.estado === 'NUL' ?  ''   :   <img
                 width={24}
                 src="/img/icon/general/search-outline.svg"
                 onClick={()=> abrirPopTransaccion(itemHistorial.codigo)}
-              />
+              />   }            
             </td>
           </tr>
         ));
@@ -364,6 +375,7 @@ const HistorialCompra = () => {
             <thead>
               <tr>
                 <th scope="col">Código Transacción</th>
+                <th scope="col">Estado Transacción</th>
                 <th scope="col">Fecha Compra</th>
                 <th scope="col">Cantidad Boletos</th>
                 <th scope="col">Monto</th>
