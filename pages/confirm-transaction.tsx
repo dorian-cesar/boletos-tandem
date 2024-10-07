@@ -26,6 +26,7 @@ export default function ConfrimTransaction({ serviceResponse }:ConfirmTransactio
 
     const router = useRouter();
     const [carroCompras, setCarroCompras] = useState([]);
+    const [hasPushed, setHasPushed] = useState(false);
 
     const selector = useSelector((state:any) => state.compra?.listaCarrito) || [];
 
@@ -47,20 +48,23 @@ export default function ConfrimTransaction({ serviceResponse }:ConfirmTransactio
     }, [])
 
     useEffect(() => {
-        debugger;
-        if( !serviceResponse ) {
+        if( !serviceResponse && !hasPushed ) {
             router.push('/error-transaccion');
+            setHasPushed(true);
             return;
         }
 
-        if( serviceResponse && serviceResponse.cerrar && serviceResponse.cerrar.estado ) {
+        if( serviceResponse && serviceResponse.cerrar && serviceResponse.cerrar.estado && !hasPushed ) {
             const token = JWT.sign(serviceResponse, SECRET);
             sessionStorage.setItem('transactionInformation', token);
             router.push('/respuesta-transaccion-v2', );
+            setHasPushed(true);
             return;
         }
         
-        router.push('/error-transaccion');
+        if( !hasPushed ) {
+            router.push('/error-transaccion');
+        }
     }, [carroCompras]);
 
     return (
