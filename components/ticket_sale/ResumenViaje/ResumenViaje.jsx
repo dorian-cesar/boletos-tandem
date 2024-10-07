@@ -558,7 +558,7 @@ export const ResumenViaje = (props) => {
 
   function calcularPuntos(valor, porcentaje){
     const valorPorcentaje = (valor * porcentaje) / 100;
-    return valorPorcentaje;
+    return Math.floor(valorPorcentaje);
   }
 
   return (
@@ -646,7 +646,7 @@ export const ResumenViaje = (props) => {
             }
           <div className={styles["contanedor-total-pagar"]}>
           { descuentoConvenio ?           
-              <span>Total anterior: {clpFormat.format(totalPagar)} </span>          
+              <span>Total a pagar: {clpFormat.format(totalPagar)} </span>          
               :  
               <span>Total a pagar: {clpFormat.format(totalOriginal)}</span>   
              
