@@ -630,9 +630,14 @@ export const ResumenViaje = (props) => {
           )}  
             { descuentoConvenio ?        
                 descuentoConvenio?.id === 'COPEC' ?
+                <div>
                 <div className={styles["contanedor-puntaje"]}>
-                <span>Puntos para acumular COPEC: {calcularPuntos(descuentoConvenio.descuento,totalOriginal) } </span> 
+                <span>Puntos para acumular COPEC: {calcularPuntos(descuentoConvenio.tarifa,totalPagar) } </span> 
               </div>
+              <div className={styles["contanedor-total-pagar-descuento"]}>
+              <span>Total anterior: {clpFormat.format(totalOriginal)} </span>
+            </div>
+            </div>
               :
               <div className={styles["contanedor-total-pagar-descuento"]}>
                 <span>Total anterior: {clpFormat.format(totalOriginal)} </span>
@@ -640,15 +645,12 @@ export const ResumenViaje = (props) => {
               : '' 
             }
           <div className={styles["contanedor-total-pagar"]}>
-          { descuentoConvenio ?        
-                descuentoConvenio?.id === 'COPEC' ?              
-                <span>Total a pagar: {clpFormat.format(totalOriginal)}</span>        
-              :        
-               <span>Total anterior: {clpFormat.format(totalPagar)} </span> 
+          { descuentoConvenio ?           
+              <span>Total anterior: {clpFormat.format(totalPagar)} </span>          
               :  
-              <span>Total anterior: {clpFormat.format(totalPagar)} </span>  
+              <span>Total a pagar: {clpFormat.format(totalOriginal)}</span>   
+             
             }
-            
           </div>
           {!soloLectura && (
             <div className={styles["contenedor-checks"]}>
