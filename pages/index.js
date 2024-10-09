@@ -15,6 +15,7 @@ import ModalEntities from "entities/ModalEntities";
 import es from "date-fns/locale/es";
 import dynamic from "next/dynamic";
 import PopupInformativo from "../components/PopupInformativo/PopupInformativo";
+import Script from "next/script";
 
 registerLocale("es", es);
 
@@ -66,7 +67,7 @@ export default function Home(props) {
         />) 
       }
 
-    <script async defer={true} src="https://tracking.bciplus.cl/bciplus/script.js"></script>
+      <Script async={true} defer={true} src="https://tracking.bciplus.cl/bciplus/script.js" />
     </Layout>
   );
 }

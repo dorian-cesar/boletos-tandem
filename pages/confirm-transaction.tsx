@@ -31,7 +31,6 @@ export default function ConfrimTransaction({ serviceResponse }:ConfirmTransactio
     const selector = useSelector((state:any) => state.compra?.listaCarrito) || [];
 
     useEffect(() => {
-        debugger;
         let keys = 0;
 
         if( selector ) {
@@ -106,4 +105,3 @@ export const getServerSideProps = withIronSessionSsr(async function (context) {
       },
     };
   }, sessionOptions);
-  
