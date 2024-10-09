@@ -309,7 +309,7 @@ export default function Home(props: HomeProps) {
         </section>
       )}
       <Footer />
-      <Script async={true} defer={true} src="https://tracking.bciplus.cl/bciplus/script.js" />
+      { /*<Script async={true} defer={true} src="https://tracking.bciplus.cl/bciplus/script.js" /> */ }
     </Layout>
   );
 }
