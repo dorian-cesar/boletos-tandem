@@ -1,7 +1,7 @@
 import axios from "axios";
 import Layout from "components/Layout";
 import Footer from "components/Footer";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import Link from "next/link";
@@ -15,6 +15,7 @@ import { sendGTMEvent } from "@next/third-parties/google";
 
 import JWT from "jsonwebtoken";
 import { useRouter } from "next/router";
+import Script from "next/script";
 
 const mediosPago: { [key: string]: { nombre: string; mensaje: string; imagen: string; } } = {
   WBPAY: {
@@ -61,7 +62,6 @@ export default function Home(props: HomeProps) {
 
     useEffect(() => {
       try {
-        debugger;
         const data = sessionStorage.getItem('transactionBasketInfo');
         if( data ) {
           const decoded:any = JWT.verify(data, SECRET);
@@ -107,7 +107,6 @@ export default function Home(props: HomeProps) {
   
   const obtenerInformacion = () => {
     {
-      debugger;
       let carritoIda:any = {
         titulo: "",
         detalle: [],
@@ -310,7 +309,7 @@ export default function Home(props: HomeProps) {
         </section>
       )}
       <Footer />
-      <script async defer={true} src="https://tracking.bciplus.cl/bciplus/script.js"></script>
+      <Script async={true} defer={true} src="https://tracking.bciplus.cl/bciplus/script.js" />
     </Layout>
   );
 }
