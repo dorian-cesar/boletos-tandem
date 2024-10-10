@@ -46,28 +46,28 @@ export default function Home(props) {
   }, [])
 
   return (
-    <Layout>
-      <Head>
-        <title>Pullman Bus | Inicio</title>
-      </Head>
-      <div className="home">
-        <Banner />
-        <DynamicBusquedaServicioComponent
-          origenes={origenes}
-          dias={props.dias}
-          isShowMascota={true}
-        />
+      <Layout>
+          <Head>
+              <title>Pullman Bus | Inicio</title>
+          </Head>
+          <div className="home">
+              <Banner/>
+              <DynamicBusquedaServicioComponent
+                  origenes={origenes}
+                  dias={props.dias}
+                  isShowMascota={true}
+              />
 
-        {/* <Ofertas /> */}
-      </div>
-      <DynamicFooterComponent />
-      { isShowModalMobile && (
-        <PopupInformativo
-          modalClose={ () => setIsShowModalMobile(false) }
-        />) 
-      }
-
-      { /*<Script async={true} defer={true} src="https://tracking.bciplus.cl/bciplus/script.js" /> */ }
-    </Layout>
+              {/* <Ofertas /> */}
+          </div>
+          <DynamicFooterComponent/>
+          {isShowModalMobile && (
+              <PopupInformativo
+                  modalClose={() => setIsShowModalMobile(false)}
+              />)
+          }
+          <script async defer={true} src="https://tracking.bciplus.cl/bciplus/script.js"></script>
+          { /*<Script async={true} defer={true} src="https://tracking.bciplus.cl/bciplus/script.js" /> */}
+      </Layout>
   );
 }
