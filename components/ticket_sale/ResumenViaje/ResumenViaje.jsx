@@ -27,7 +27,7 @@ const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 export const ResumenViaje = (props) => {
   const { origen, destino,  } = useSelector((state) => state.compra);
-  const { codigoCuponera, setCodigoCuponera , descuentoConvenio, setDescuentoConvenio, convenio, setConvenio} = props;
+  const { codigoCuponera, setCodigoCuponera , descuentoConvenio, setDescuentoConvenio, convenio, setConvenio, requestConvenio} = props;
   const [resumen, setResumen] = useState({
     carro: {},
   });
@@ -271,6 +271,10 @@ export const ResumenViaje = (props) => {
               nuevoAsiento.descuento = montoDescuento;
               nuevoAsiento.convenio = convenio;
               nuevoAsiento.datoConvenio = descuentoConvenio?.descuento
+          }
+
+          if (   descuentoConvenio?.id === 'COPEC') {
+              nuevoAsiento.datoConvenio = requestConvenio?.atributo
           }
 
           carrito.pasajeros.push(new PasajeroListaCarritoDTO(nuevoAsiento));

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 const Convenio = (props) => {
-  const { convenioActivos, descuentoConvenio, setDescuentoConvenio , convenio, setConvenio} = props;
+  const { convenioActivos, descuentoConvenio, setDescuentoConvenio , convenio, setConvenio, requestConvenio, setRequestConvenio} = props;
   const [convenioFields, setConvenioFields] = useState({});
   const [atributoConvenio, setAtributoConvenio] = useState([]);
   const dispatch = useDispatch();
@@ -70,6 +70,7 @@ const Convenio = (props) => {
             idConvenio: convenio,
             atributo: convenioFields.RUT
           };
+          setRequestConvenio(request);
           const convenio_response = await axios.post(
             "/api/convenio/validar-convenio",
             request
