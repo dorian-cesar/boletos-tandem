@@ -27,7 +27,7 @@ const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 export const ResumenViaje = (props) => {
   const { origen, destino,  } = useSelector((state) => state.compra);
-  const { codigoCuponera, setCodigoCuponera , descuentoConvenio, setDescuentoConvenio, convenio, setConvenio, requestConvenio} = props;
+  const { codigoCuponera, setCodigoCuponera , descuentoConvenio, setDescuentoConvenio, convenio, setConvenio, requestConvenio, setRequestConvenio} = props;
   const [resumen, setResumen] = useState({
     carro: {},
   });
@@ -284,7 +284,7 @@ export const ResumenViaje = (props) => {
       });
 
       agregarEventoTagManager();
-
+     
       if (medioPago === "CUP") {
         if (resumenCompra.listaCarrito.length > 1) {
           toast.error(
@@ -564,6 +564,14 @@ export const ResumenViaje = (props) => {
     const valorPorcentaje = (valor * porcentaje) / 100;
     return Math.floor(valorPorcentaje);
   }
+
+  useEffect(() => {
+    if(medioPago === 'CUP'){
+       setRequestConvenio(null);
+       setDescuentoConvenio(null);
+       setConvenio(null);
+    }
+  }, [medioPago]);
 
   return (
     <div className={styles["resumen-container"]}>
