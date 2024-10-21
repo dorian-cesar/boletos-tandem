@@ -340,8 +340,8 @@ export default function Terminos() {
                   <ol type='a'>
                     <li>
                       Los afiliados a la Caja de Compensación LA ARAUCANA disfrutarán de los beneficios
-                      conforme lo señalado en el acuerdo respectivo entre está y Pullman Bus. Link
-                      (<a href='https://convenios.laaraucana.cl/beneficios/pullman-20/' target='_blank'>https://convenios.laaraucana.cl/beneficios/pullman-20/</a>)
+                      conforme lo señalado en el acuerdo respectivo entre está y Pullman Bus.<br />
+                      Más información haga clic <a className='fw-bold' href='https://convenios.laaraucana.cl/beneficios/pullman-20/' target='_blank'>aquí</a>
                     </li>
                     <li>
                       Este descuento no será acumulable con otras promociones.
