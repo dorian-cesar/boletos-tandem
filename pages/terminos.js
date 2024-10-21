@@ -353,15 +353,15 @@ export default function Terminos() {
                   </ol>
                   <li className='fw-bold my-3'>Programas de beneficios</li>
                   <p>
-                    Los afiliados a Pullman Costa Central podrán acceder a las tarifas preferenciales siempre y cuando
-                    estén inscritos en los programas Premium, Estudiante o 3ra Edad. Una vez inscritos podrán hacer
-                    uso del beneficio por los canales de venta: Presencial, Página Web y Tótem.
+                    Los afiliados a Pullman Costa Central podrán acceder a las tarifas preferenciales siempre y 
+                    cuando estén inscritos en los programas Premium, Estudiante o 3ra Edad. Una vez inscritos podrán
+                    hacer uso del beneficio por los canales de venta: Presencial y Página Web (Pullmanbus.cl).
                   </p>
                   <ol type='a'>
-                    <li>
+                    <li className='my-2'>
                       Los usuarios inscritos en el programa estudiante podrán acceder a todos los beneficios que
                       la empresa señale.
-                      <p>Periodo de Aplicación:</p>
+                      <p className='m-0'>Periodo de Aplicación:</p>
                       <ul>
                         <li>
                           Esta tarifa preferencial está disponible desde el 1 de marzo hasta el 31 de diciembre de
@@ -372,15 +372,15 @@ export default function Terminos() {
                         Renovación: Requiere renovación anual para continuar accediendo a los beneficios.
                       </p>
                     </li>
-                    <li>
+                    <li className='my-2'>
                       Los usuarios inscritos en el programa Premium pueden acceder a tarifas preferenciales
                       <ul>
                         <li>
-                          Renovación: NO requiere.
+                          Renovación: No requiere.
                         </li>
                       </ul>
                     </li>
-                    <li>
+                    <li className='my-2'>
                       Los usuarios inscritos en el programa de 3ra Edad pueden acceder a tarifas preferenciales
                       exhibiendo su cédula de identidad al momento de realizar la compra.
                       <ul>
@@ -389,20 +389,19 @@ export default function Terminos() {
                           Antonio de Pullman Costa Central, excluyendo otros tramos disponibles en la empresa.
                         </li>
                       </ul>
+                      <p className='m-0'>
+                        Adquisición del Pasaje:
+                      </p>
+                      <ul>
+                        <li>
+                          El pasaje debe ser adquirido de manera presencial.
+                        </li>
+                      </ul>
+                      <p>Renovación: No requiere.</p>
                     </li>
                   </ol>
                 </ol>
-              </article>
-
-              <p className='mt-3'>
-                Adquisición del Pasaje:
-              </p>
-              <ul>
-                <li>
-                  El pasaje debe ser adquirido de manera presencial.
-                </li>
-              </ul>
-              <p>Renovación: No requiere.</p>
+              </article>              
 
               <i className='mt-3'>Actualización: 21–10–2024.</i>
             </div>
