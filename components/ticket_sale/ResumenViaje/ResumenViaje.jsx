@@ -337,6 +337,7 @@ export const ResumenViaje = (props) => {
         });
 
         if( masAsientoSeleccionado || existeAsientoVuelta ) {
+          setIsLoading(false);
           return;
         }
 
