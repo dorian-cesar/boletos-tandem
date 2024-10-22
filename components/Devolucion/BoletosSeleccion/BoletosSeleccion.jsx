@@ -11,6 +11,9 @@ const estadoBoleto = {
 }
 
 const BoletosSeleccion = (props) => {
+
+  const [tipoCompra, setTipoCompra] = useState(null);
+
   const {
     setStage,
     boletos,
@@ -59,13 +62,25 @@ const BoletosSeleccion = (props) => {
     setStage(2);
   }
 
+  useEffect(() => {
+    if (boletos[0].tipoCompra === "WALLET") {
+      setTipoCompra("Saldo Wallet");
+    } else if (boletos[0].tipoCompra === "MIXTA") {
+      setTipoCompra("Saldo Wallet/ Webpay");
+    } else {
+      setTipoCompra("Webpay");
+    }
+  }, [boletos]);
+  
+
   return (
     <div className={styles["container"]}>
       <div className={"fila"}>
-        <div className={styles["title"]}>Devolución de boleto</div>
+        <div className={styles["title"]}>Devolución de boleto </div> 
         <div className={styles["sub-title"]}>
           Selecciona el o los boleto(s) que deseas anular:
         </div>
+        
         {boletos.map((element) => (
           <div key={element.boleto} className={"row"}>
             <div className={"col-12"}>

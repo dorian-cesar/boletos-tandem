@@ -27,7 +27,7 @@ const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 export const ResumenViaje = (props) => {
   const { origen, destino,  } = useSelector((state) => state.compra);
-  const { codigoCuponera, setCodigoCuponera , descuentoConvenio, setDescuentoConvenio, convenio, setConvenio} = props;
+  const { codigoCuponera, setCodigoCuponera , descuentoConvenio, setDescuentoConvenio, convenio, setConvenio, requestConvenio, setRequestConvenio} = props;
   const [resumen, setResumen] = useState({
     carro: {},
   });
@@ -273,6 +273,10 @@ export const ResumenViaje = (props) => {
               nuevoAsiento.datoConvenio = descuentoConvenio?.descuento
           }
 
+          if (   descuentoConvenio?.id === 'COPEC') {
+              nuevoAsiento.datoConvenio = requestConvenio?.atributo
+          }
+
           carrito.pasajeros.push(new PasajeroListaCarritoDTO(nuevoAsiento));
         });
 
@@ -280,7 +284,7 @@ export const ResumenViaje = (props) => {
       });
 
       agregarEventoTagManager();
-
+     
       if (medioPago === "CUP") {
         if (resumenCompra.listaCarrito.length > 1) {
           toast.error(
@@ -555,6 +559,20 @@ export const ResumenViaje = (props) => {
     }
   }, [descuentoConvenio]);
 
+
+  function calcularPuntos(valor, porcentaje){
+    const valorPorcentaje = (valor * porcentaje) / 100;
+    return Math.floor(valorPorcentaje);
+  }
+
+  useEffect(() => {
+    if(medioPago === 'CUP'){
+       setRequestConvenio(null);
+       setDescuentoConvenio(null);
+       setConvenio(null);
+    }
+  }, [medioPago]);
+
   return (
     <div className={styles["resumen-container"]}>
       <h3>Resumen del viaje</h3>
@@ -622,13 +640,29 @@ export const ResumenViaje = (props) => {
               </span>
             </div>
           )}  
-            { descuentoConvenio ? 
+            { descuentoConvenio ?        
+                descuentoConvenio?.id === 'COPEC' ?
+                <div>
+                <div className={styles["contanedor-puntaje"]}>
+                <span>Puntos para acumular COPEC: {calcularPuntos(descuentoConvenio.tarifa,totalPagar) } </span> 
+              </div>
+              <div className={styles["contanedor-total-pagar-descuento"]}>
+              <span>Total anterior: {clpFormat.format(totalOriginal)} </span>
+            </div>
+            </div>
+              :
               <div className={styles["contanedor-total-pagar-descuento"]}>
                 <span>Total anterior: {clpFormat.format(totalOriginal)} </span>
-              </div> : '' 
+              </div> 
+              : '' 
             }
           <div className={styles["contanedor-total-pagar"]}>
-            <span>Total a pagar: {clpFormat.format(totalPagar)}</span>
+          { descuentoConvenio ?           
+              <span>Total a pagar: {clpFormat.format(totalPagar)} </span>          
+              :  
+              <span>Total a pagar: {clpFormat.format(totalOriginal)}</span>   
+             
+            }
           </div>
           {!soloLectura && (
             <div className={styles["contenedor-checks"]}>
