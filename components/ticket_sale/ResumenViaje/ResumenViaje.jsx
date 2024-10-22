@@ -316,6 +316,7 @@ export const ResumenViaje = (props) => {
                 );
                 setCodigoCuponera("");
                 masAsientoSeleccionado = true;
+                setIsLoading(false);
                 return;
               }
             });
@@ -332,6 +333,7 @@ export const ResumenViaje = (props) => {
             );
             setCodigoCuponera("");
             existeAsientoVuelta = true;
+            setIsLoading(false);
             return;
           }
         });
