@@ -50,7 +50,7 @@ export default function Terminos() {
               <h3>Nuestro Sitio WEB</h3>
               <article>
                 <ol className='ol-tyc'>
-                  <li className='fw-bold my-3'>Condiciones Generales de uso del Sitio Web:</li>
+                  <li className='fw-bold my-3'>Condiciones Generales de uso del Sitio Web</li>
                   <ol type="a">
                     <li>El cliente será responsable de mantener sus datos debidamente actualizados en el sistema.</li>
                     <li>
@@ -123,7 +123,7 @@ export default function Terminos() {
                       el Sitio Web para ninguna actividad, propósito comercial o competitivo.
                     </li>
                   </ol>
-                  <li className='fw-bold my-3'>Registro del Usuario en el Sitio Web:</li>
+                  <li className='fw-bold my-3'>Registro del Usuario en el Sitio Web</li>
                   <ol type="a">
                     <li>
                       Pullmanbus.cl ofrece al Usuario la facilidad de registrar una cuenta personal en el Sitio
@@ -152,7 +152,7 @@ export default function Terminos() {
                       monetarias de Pullmanbus.cl, incluso de los costos de litigación y daños.
                     </li>
                   </ol>
-                  <li className='fw-bold my-3'>Monedero Virtual:</li>
+                  <li className='fw-bold my-3'>Monedero Virtual</li>
                   <ol type='a'>
                     <li>
                       Pullmanbus.cl brinda exclusivamente a sus usuarios registrados la posibilidad de llevar a
