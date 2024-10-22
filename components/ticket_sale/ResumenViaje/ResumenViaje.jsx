@@ -299,6 +299,9 @@ export const ResumenViaje = (props) => {
           return;
         }
 
+        let masAsientoSeleccionado = false;
+        let existeAsientoVuelta = false;
+
         Object.entries(carroCompras).map(([key, value]) => {
           if (value.ida) {
             value.ida.forEach((servicioIda) => {
@@ -312,6 +315,7 @@ export const ResumenViaje = (props) => {
                   }
                 );
                 setCodigoCuponera("");
+                masAsientoSeleccionado = true;
                 return;
               }
             });
@@ -327,9 +331,14 @@ export const ResumenViaje = (props) => {
               }
             );
             setCodigoCuponera("");
+            existeAsientoVuelta = true;
             return;
           }
         });
+
+        if( masAsientoSeleccionado || existeAsientoVuelta ) {
+          return;
+        }
 
         let validaCuponera = {
           origen: resumenCompra.listaCarrito[0].origen,
