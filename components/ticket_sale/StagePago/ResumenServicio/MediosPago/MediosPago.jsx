@@ -38,7 +38,7 @@ const MediosPago = (props) => {
               id={element.id}
               name="medioPago"
               value={element.valor2}
-              checked={ carro.datos['medioPago'] === element.valor2 ? 'checked' : '' }
+              checked={ medioPago === element.valor2 ? 'checked' : '' }
               onClick={ (e) => setDataMedioPago(e.target) }
             />
             {element.valor2 === "WBPAY" ? (
@@ -57,7 +57,7 @@ const MediosPago = (props) => {
           </div>
         ))}
 
-        { selectedMedioPago === 'CUP' ? (
+        { medioPago === 'CUP' ? (
           <>
             <span className={styles["text-input-coupon"]}>
               {" "}

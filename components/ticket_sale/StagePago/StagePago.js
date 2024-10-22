@@ -39,6 +39,7 @@ const StagePago = (props) => {
   const [usuario, setUsuario] = useState(null);
   const [convenioActivos, setConvenioActivos] = useState([]);
   const [descuentoConvenio, setDescuentoConvenio] = useState(null);
+  const [requestConvenio, setRequestConvenio] = useState(null);
 
   useEffect(() => {
     const localUser = decryptData(LocalStorageEntities.user_auth);
@@ -178,6 +179,8 @@ const StagePago = (props) => {
               setDescuentoConvenio={setDescuentoConvenio}
               convenio={convenio} 
               setConvenio={setConvenio}
+              requestConvenio={requestConvenio}
+              setRequestConvenio={setRequestConvenio}
             />
         </Acordeon>
         <Acordeon title="Medio de pago" open={true}>
@@ -197,6 +200,8 @@ const StagePago = (props) => {
           setDescuentoConvenio={setDescuentoConvenio}
           convenio={convenio} 
           setConvenio={setConvenio}
+          requestConvenio={requestConvenio}
+          setRequestConvenio={setRequestConvenio}
         />
       </section>
       <ToastContainer />

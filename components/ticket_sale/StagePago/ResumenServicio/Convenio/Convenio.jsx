@@ -4,14 +4,16 @@ import axios from "axios";
 import Rut from "rutjs";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { agregarMedioPago } from 'store/usuario/compra-slice';
 
 const Convenio = (props) => {
-  const { convenioActivos, descuentoConvenio, setDescuentoConvenio , convenio, setConvenio} = props;
+  const { convenioActivos, descuentoConvenio, setDescuentoConvenio , convenio, setConvenio, requestConvenio, setRequestConvenio} = props;
   const [convenioFields, setConvenioFields] = useState({});
   const [atributoConvenio, setAtributoConvenio] = useState([]);
   const dispatch = useDispatch();
 
   const handleRadioChange = async (id) => {
+    debugger;
     setDescuentoConvenio(null);
     try {
       let request = {
@@ -21,6 +23,7 @@ const Convenio = (props) => {
         "/api/convenio/obtener-detalle-convenio",
         request
       );
+      dispatch(agregarMedioPago({ medioPago: null }));
       setAtributoConvenio(convenio_response.data);
     } catch ({ message }) {
       console.error(`Error al obtener convenio [${message}]`);
@@ -70,12 +73,22 @@ const Convenio = (props) => {
             idConvenio: convenio,
             atributo: convenioFields.RUT
           };
+          setRequestConvenio(request);
           const convenio_response = await axios.post(
             "/api/convenio/validar-convenio",
             request
           );
 
           if(convenio_response.data?.afiliado){
+            if(convenio==='COPEC'){
+                toast.info("Rut valido para convenio", {
+                  position: "top-center",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                });
+              setDescuentoConvenio({id: convenio, ...convenio_response.data});
+            return;
+            }
             toast.info("Descuento aplicado", {
                 position: "top-center",
                 autoClose: 3000,
@@ -132,13 +145,12 @@ const Convenio = (props) => {
         {convenioActivos
           .filter((element) => element.convenio !== "WBPAY")
           .map((element) => (
-            <div key={element.convenio} className={styles["body-pay"]}>
+            <div key={element.convenio} className={styles["body-pay"]} onClick={ () => handleRadioChange(element.convenio) }>
               <input
                 type="radio"
                 id={element.convenio}
                 name="convenio"
                 value={element.convenio}
-                onChange={() => handleRadioChange(element.convenio)}
                 className="d-none"
               />
               <div>

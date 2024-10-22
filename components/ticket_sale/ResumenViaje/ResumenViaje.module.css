@@ -108,6 +108,23 @@
     text-decoration: line-through;
 }
 
+.contanedor-puntaje {
+    display: flex;
+    justify-content: center;
+    padding-block: 12px;
+
+}
+.contanedor-puntaje span{
+    color: var(--naranjo-100, #000);
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 26px;
+}
+
+
+
 .contanedor-total-pagar span {
     color: var(--naranjo-100, #FF6500);
     text-align: center;
