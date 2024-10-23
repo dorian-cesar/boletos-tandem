@@ -2554,7 +2554,10 @@ line-height: normal;
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .home .img-principal img {
-    display: none;
+    display: block;
+    height: 25vh;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
   }
 
   .home .bloque.m-neg {
@@ -2567,7 +2570,8 @@ line-height: normal;
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
   .home .img-principal img {
-    display: none;
+    display: block;
+    height: 40vh;
   }
 
   .home .bloque.m-neg {
@@ -2581,7 +2585,11 @@ line-height: normal;
 @media only screen and (min-width: 768px) {
   .home .img-principal img {
     display: block;
-    height: 30vh;
+    height: 40vh;
+  }
+
+  .home .bloque .m-neg {
+    margin-top: -2.5rem;
   }
 }
 

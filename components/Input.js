@@ -5,7 +5,6 @@ import Select from "react-select";
 const customStyles = {
   control: (provided) => ({
     ...provided,
-    width: '200px',
     height: '40px',
     borderRadius: '16px',
     background: 'var(--azul-15, #E1E8F4)',
@@ -25,6 +24,7 @@ const Input = ({ items, selected, setSelected, className, placeholder, isDisable
     <>
       {" "}
       <Select
+        className='w-100'
         value={selected}
         styles={customStyles}
         placeholder={placeholder}
