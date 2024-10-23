@@ -270,7 +270,7 @@ export const ResumenViaje = (props) => {
               nuevoAsiento.precio = Math.max(nuevoAsiento.tarifa - montoUsar, 0);
               nuevoAsiento.descuento = montoDescuento;
               nuevoAsiento.convenio = convenio;
-              nuevoAsiento.datoConvenio = descuentoConvenio?.descuento
+              nuevoAsiento.datoConvenio = requestConvenio?.atributo
           }
 
           if (   descuentoConvenio?.id === 'COPEC') {
