@@ -2666,3 +2666,11 @@ line-height: normal;
   height: 200px;
   margin-bottom: 1rem;
 }
+
+.border-dashed {
+  border-style: dashed;
+}
+
+.btn-primary {
+  background: var(--naranjo-100, #FF6500);
+}

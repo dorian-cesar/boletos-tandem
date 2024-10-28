@@ -194,11 +194,12 @@ const StagePasajes = (props) => {
             setServicios(sortedParrilla)
         } else {
             setServicios(
-                <h5 className="p-2 empty-grill">
-                    Lo sentimos, no existen
-                    resultados para su búsqueda, 
-                    busque en otro horario
-                </h5>
+                <div className="h-100 justify-content-center align-content-center">
+                    <div className="m-auto text-center">
+                        Lo sentimos, no existen resultados
+                        para su búsqueda, intente con otro horario.
+                    </div>
+                </div>
             )
         }
     }
@@ -208,31 +209,38 @@ const StagePasajes = (props) => {
     }, [toggleTipo, toggleHoras, mascotaAllowed, parrilla])
 
     return (
-        
-        <div className={ `container ${ styles['stage-pasajes'] }`}>
-            <FiltroServicios 
-                tipos_servicio={ tipos_servicio }
-                filter_tipo={ filter_tipo }
-                filter_horas={ filter_horas }
-                filter_mascota={ filter_mascota }
-                stage={ stage }
-                toggleTipo={ toggleTipo }
-                toggleHoras={ toggleHoras }
-                mascota_allowed={ mascotaAllowed }
-                setMascota={ setMascotaAllowed }
-            />
-            <div>
-                { loadingParrilla ? <div className="empty-grill"><Loader/></div> : parrilla.length > 0 ? servicios : 
-                    <h5 className="p-2">
-                        Lo sentimos, no existen
-                        resultados para su búsqueda, 
-                        busque en otro horario
-                    </h5>
-                }
-                { parrilla.length < 0 && <div className="empty-grill"></div> }
+        <div className="container py-2">
+            <div className="row justify-content-center gap-2">
+                <div className="d-none d-lg-block d-xl-block d-xxl-block col-12 col-md-3 col-lg-3 col-xl-2 col-xxl-2">
+                    <FiltroServicios 
+                        tipos_servicio={ tipos_servicio }
+                        filter_tipo={ filter_tipo }
+                        filter_horas={ filter_horas }
+                        filter_mascota={ filter_mascota }
+                        stage={ stage }
+                        toggleTipo={ toggleTipo }
+                        toggleHoras={ toggleHoras }
+                        mascota_allowed={ mascotaAllowed }
+                        setMascota={ setMascotaAllowed }/>
+                </div>
+                <div className="col d-flex flex-col gap-3">
+                    {
+                        loadingParrilla ? 
+                        (<Loader />) :
+                        parrilla.length > 0 ?
+                        servicios :
+                        (
+                            <div>
+                                <h5 className="d-flex m-auto">
+                                    Lo sentimos, no existen resultados
+                                    para su búsqueda, intente con otro horario.
+                                </h5>
+                            </div>
+                        )
+                    }
+                </div>
             </div>
         </div>
-        
     )
 }
 

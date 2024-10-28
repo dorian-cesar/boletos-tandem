@@ -5,21 +5,23 @@ export const FiltroServicios = (props) => {
     const { tipos_servicio = [], filter_tipo = [], filter_horas = [], filter_mascota = [], stage, toggleTipo, toggleHoras, setMascota, mascota_allowed } = props;
 
     return (
-        <div key={stage + "it"} className={styles["box-filtro"]}>
-            <div className={styles["container-filtro"]}>
-                <h2 className="container-title">Filtrar por:</h2>
+        <div key={stage + "it"} className='d-flex flex-col bg-white px-2 py-4 rounded-4 gap-2'>
+            <div id="petFilter">
+                <h3>Filtrar por:</h3>
                 <div className="form-check form-switch d-flex align-content-center">
                     <input
                         className="form-check-input"
                         type="checkbox"
                         role="switch"
-                        id="flexSwitchCheckDefault"
+                        id="swirchCheckPetAllowedFilter"
                         defaultChecked={mascota_allowed}
                         onClick={() => setMascota(!mascota_allowed)} />
-                    <label className={`form-check-label ms-1 ${styles['custom-form-check-label']}`} htmlFor="flexSwitchCheckDefault">Mascota a Bordo</label>
+                    <label className={`form-check-label ms-1 ${styles['custom-form-check-label']}`} htmlFor="swirchCheckPetAllowedFilter">Mascota a Bordo</label>
                 </div>
-                <div className={styles['container-service-type']}>
-                    <span className="container-sub-title">Tipo de servicio</span>
+            </div>
+            <div id="serviceType" className='d-flex flex-col mt-2'>
+                <span className='fw-bold'>Tipo de servicio</span>
+                <div className='d-flex flex-col gap-1 mt-1'>
                     {
                         tipos_servicio.map((tipoServicioMapped, indexTipoServicio) => {
                             if (tipoServicioMapped !== undefined && tipoServicioMapped !== '') {
@@ -46,8 +48,10 @@ export const FiltroServicios = (props) => {
                         })
                     }
                 </div>
-                <div className={styles['container-service-schedule']}>
-                    <span className="container-sub-title">Horarios</span>
+            </div>
+            <div id="serviceSchedule" className='d-flex flex-col mt-2'>
+                <span className='fw-bold'>Horarios</span>
+                <div className='d-flex flex-col gap-1 mt-1'>
                     <div className="custom-control custom-checkbox">
                         <input
                             id="horaCheck1"

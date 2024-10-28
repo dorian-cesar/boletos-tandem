@@ -146,7 +146,7 @@ export default function Home(props) {
             <Head>
                 <title>Pullman Bus | Compra Boleto</title>
             </Head>
-            <div className="pasajes">
+            <div className="pasajes d-xs-none d-sm-none d-md-block d-lg-block d-xl-block d-xxl-block">
                 <div className="container">
                     <BusquedaServicio
                         origenes={props.ciudades}
@@ -157,23 +157,6 @@ export default function Home(props) {
             </div>
             <div className="pasajes-compra pb-5">
                 <div className="container">
-                    <ul className="d-flex flex-row justify-content-around py-4 px-0">
-                        {
-                            stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
-                                return (
-                                    <div key={`stage-${indexStage}`}
-                                         className={"seleccion text-center select-num " + (indexStage == stage ? "active" : "")}>
-                                        <div className="numeros">
-                                            <div className="numero">
-                                                {indexStage + 1}
-                                            </div>
-                                        </div>
-                                        <h3>{stageMaped.name}</h3>
-                                    </div>
-                                )
-                            })
-                        }
-                    </ul>
                     {
                         stages_active[stage].kind == "pasajes_1" || stages_active[stage].kind == "pasajes_2" ?
                             <StagePasajes
