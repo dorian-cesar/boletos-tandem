@@ -146,7 +146,7 @@ export default function Home(props) {
             <Head>
                 <title>Pullman Bus | Compra Boleto</title>
             </Head>
-            <div className="pasajes d-xs-none d-sm-none d-md-block d-lg-block d-xl-block d-xxl-block">
+            <div className="pasajes d-none d-md-block">
                 <div className="container">
                     <BusquedaServicio
                         origenes={props.ciudades}

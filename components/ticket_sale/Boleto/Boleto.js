@@ -81,7 +81,7 @@ const Boleto = (props) => {
             <img src="img/logo-pullmanbus.svg" className="img-fluid" width={ 150 } height={ 25 } alt="Logo Pullman Bus"/>
             {props.mascota == '1' ? <img src="img/icon/logos/paw-outline.svg" /> : <div></div>}
           </div>
-          <div className="row mt-1 pt-2 pb-3 gap-2 gap-md-0">
+          <div className="row mt-1 pt-2 pb-3 gap-2 gap-md-0 justify-content-evenly">
             <div className="row col-12 col-md-4 align-items-center text-center">
               <div className="col-4 col-md-12 d-flex flex-col">
                 <span className="fw-bold mb-2">{props.horaSalida}</span>
