@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+
+const path = require('path')
+
 module.exports = {
   async rewrites() {
     return [
@@ -24,7 +27,10 @@ module.exports = {
       },
     ];
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'scss')]
+  },
   images: {
     domains: ['avatars.githubusercontent.com'],
   },
@@ -38,7 +44,7 @@ module.exports = {
   },
   serverRuntimeConfig: {
     site_url: "http://localhost:3000",
-    service_url: process.env.NODE_ENV == "production"?"https://apipasajes.pullman.cl/integracion-comercio-web/rest":"https://apipasajes.pullman.cl/integracion-comercio-web/rest",
+    service_url: process.env.NODE_ENV == "production"?"https://qa.pullman.cl/integracion-comercio-web/rest":"https://qa.pullman.cl/integracion-comercio-web/rest",
     service_password: process.env.NODE_ENV == "production"?"":"INT0000002",
     clave: process.env.NODE_ENV == "production"?"":"xWL!96JRaWi2lT0jG"
   },

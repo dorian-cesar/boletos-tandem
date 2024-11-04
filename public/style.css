@@ -608,57 +608,6 @@ a {
   margin-bottom: 50px;
 }
 
-.btn {
-  width: 100%;
-  padding: 13px 15px;
-  font-size: 15px;
-  text-align: center;
-  font-weight: 700;
-  border-radius: 17px;
-  color: #fff;
-  background-color: var(--naranjo);
-}
-
-.btn-disabled {
-  width: 100%;
-  padding: 13px 15px;
-  font-size: 15px;
-  text-align: center;
-  font-weight: 700;
-  border-radius: 17px;
-  color: #fff;
-  background-color: var(--gris);
-  cursor: not-allowed;
-}
-
-.btn-outline {
-  display: inline-block;
-  width: 100%;
-  padding: 13px 15px;
-  font-size: 15px;
-  text-align: center;
-  font-weight: 700;
-  border-radius: 17px;
-  color: var(--naranjo);
-  background-color: #fff;
-  border: 2px solid var(--naranjo);
-}
-
-.btn-outline:hover {
-  color: #fff;
-  background-color: var(--naranjo);
-}
-
-.btn:hover {
-  color: #fff;
-  background-color: #ff9952;
-}
-
-.btn-disabled:hover {
-  color: #fff;
-  background-color: var(--gris);
-}
-
 .btn-morado {
   background-color: #AF5EEA;
 }
@@ -2669,8 +2618,4 @@ line-height: normal;
 
 .border-dashed {
   border-style: dashed;
-}
-
-.btn-primary {
-  background: var(--naranjo-100, #FF6500);
 }

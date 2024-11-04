@@ -1,6 +1,7 @@
 import axios from "axios";
 import Layout from "components/Layout";
 import Footer from 'components/Footer';
+import MobileSearchBar from 'components/ui/MobileSearchBar';
 import BusquedaServicio from 'components/BusquedaServicio/BusquedaServicio';
 import React, { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
@@ -74,6 +75,21 @@ export default function Home(props) {
     });
     const [stage, setStage] = useState(0);
 
+    const [fechaViaje, setFechaViaje] = useState(startDate ? dayjs(startDate).toDate() : '');
+
+    useEffect(() => {
+        switch (stage) {
+            case 0:
+                setFechaViaje(dayjs(startDate).toDate());
+                break;
+            case 1:
+                setFechaViaje(dayjs(endDate).toDate());
+                break;
+            default:
+                break;
+        }
+    }, [stage]);
+
     const dispatch = useDispatch();
     
     useEffect(() => {
@@ -142,10 +158,17 @@ export default function Home(props) {
     }, [stage])
 
     return (
-        <Layout>
+        <Layout
+            isBuyStage={ true }>
             <Head>
                 <title>Pullman Bus | Compra Boleto</title>
             </Head>
+            <MobileSearchBar 
+                startDate={ startDate }
+                endDate={ endDate }
+                origin={ decryptedData?.origen }
+                destination={ decryptedData?.destino }
+                stage={ stage }/>
             <div className="pasajes d-none d-md-block">
                 <div className="container">
                     <BusquedaServicio

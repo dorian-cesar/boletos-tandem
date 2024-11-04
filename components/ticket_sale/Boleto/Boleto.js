@@ -74,7 +74,7 @@ const Boleto = (props) => {
   }
 
   return (
-    <section className={ `bg-white rounded-3 p-2 ${ styles["info-container"] }` }>
+    <section className={ `bg-white shadow-sm rounded-3 p-2 ${ styles["info-container"] }` }>
       <div className="row justify-content-evenly">
         <div className="d-flex flex-col col-7 px-2 py-0 p-md-3">
           <div className="d-flex flex-row justify-content-between p-2">
@@ -121,7 +121,7 @@ const Boleto = (props) => {
             ) }
           </div>
           <div className="d-flex w-75 mx-auto">
-            <button type="button" className="btn btn-primary btn-sm border-0" onClick={handleOpenPane}>
+            <button type="button" className="btn btn-primary border-0 mx-auto" onClick={handleOpenPane}>
               Comprar
             </button>
           </div>

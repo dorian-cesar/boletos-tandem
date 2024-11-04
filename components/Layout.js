@@ -11,18 +11,15 @@ import { limpiarCambio } from "store/usuario/cambio-boleto-slice";
 
 import { GoogleTagManager } from '@next/third-parties/google'
 import dynamic from "next/dynamic";
+import Header from "./Header/Header";
 
 const googleTagManager = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER;
 
 const DynamicDrawerComponent = dynamic(() => import('react-modern-drawer'), {
   ssr: false
-})
+});
 
-const DynamicHeaderComponent = dynamic(() => import('./Header/Header'), {
-  ssr: false
-})
-
-export default function Layout({ children }) {
+export default function Layout({ children, isBuyStage = false }) {
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
@@ -51,7 +48,7 @@ export default function Layout({ children }) {
         <meta name="keywords" content="Pasajes en bus, Transporte Urbano, buses pullman, Pullman, Pulman, PullmanBus, Pullman Bus, bus, viajes, viaje, viajes interurbanos, viaje en bus" />
       </Head>
 
-      <DynamicHeaderComponent openNav={openNav} />
+      <Header isBuyStage={isBuyStage} openNav={openNav} />
 
       <GoogleTagManager gtmId={ googleTagManager }/>
       <main>{children}</main>

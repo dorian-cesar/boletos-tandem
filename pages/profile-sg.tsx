@@ -2,7 +2,6 @@ import React from 'react'
 import Layout from 'components/Layout'
 import useUser from 'lib/useUser'
 import useEvents from 'lib/useEvents'
-import 'bootstrap/dist/css/bootstrap.css'
 export default function SgProfile() {
   const { user } = useUser({
     redirectTo: '/login',
