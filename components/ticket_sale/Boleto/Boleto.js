@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./Boleto.module.css";
 import Parrilla from "../Parrilla/Parrilla";
 
+import ServiceDetail from "@components/sale/ServiceDetail";
+
 import 'swiper/css';
 import 'swiper/css/effect-flip';
 import 'swiper/css/pagination';
@@ -28,11 +30,20 @@ const Boleto = (props) => {
   const { origen, destino } = useSelector((state) => state.compra);
   const [user, setUser] = useState();
 
+  const sitMapButtonRef = useRef();
+
   const handleOpenPane = () => {
     if( !user ) {
       // buttonRef.current.click();
       // return;
     }
+    const screenSize = screen.width;
+
+    if( screenSize <= 425 ) {
+      sitMapButtonRef.current.click();
+      return;
+    }
+    
     setIsOpened(!isOpened);
   }
   
@@ -75,6 +86,7 @@ const Boleto = (props) => {
 
   return (
     <section className={ `bg-white shadow-sm rounded-3 p-2 ${ styles["info-container"] }` }>
+		  <button ref={ sitMapButtonRef } type="button" className="d-none" data-bs-toggle="modal" data-bs-target="#parrillaModal"></button>
       <div className="row justify-content-evenly">
         <div className="d-flex flex-col col-7 px-2 py-0 p-md-3">
           <div className="d-flex flex-row justify-content-between p-2">
@@ -152,6 +164,16 @@ const Boleto = (props) => {
           />
         </div>
       </LoadingOverlay>
+      <div className="modal fade" id="parrillaModal" tabIndex={ -1 } aria-labelledby="parrillaModalLabel" aria-hidden="true">
+        <div className="modal-dialog modal-fullscreen-sm-down">
+          <div className="modal-content">
+            <div className="modal-header border border-0">
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <ServiceDetail />
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
