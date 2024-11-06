@@ -117,7 +117,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                         <span className='text-secondary fs-6 fw-bold'>{ returnTitle() }</span>
                     </div>
                     <div className='col-2'>
-                        <button type="button" className="btn p-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button type="button" className="btn p-0" data-bs-toggle="modal" data-bs-target="#busquedaServicioModal">
                             <img src="img\icon\buttons\pencil.svg" width={24} height={24}/>
                         </button>
                     </div>
@@ -152,7 +152,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                     )
                 }
             </header>
-            <div className="modal fade" id="exampleModal" tabIndex={ -1 } aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id="busquedaServicioModal" tabIndex={ -1 } aria-labelledby="busquedaServicioModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-fullscreen-sm-down">
                     <div className="modal-content">
                         <div className="modal-header border border-0">

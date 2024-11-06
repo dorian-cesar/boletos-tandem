@@ -2619,3 +2619,23 @@ line-height: normal;
 .border-dashed {
   border-style: dashed;
 }
+
+.empty-seat {
+  height: 31px;
+}
+
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+.fs-7 {
+  font-size: 0.65rem;
+}
+
+.mh-4 {
+  min-height: 450px;
+}
+
+.bg-bus {
+  background-color: #E6ECF6;
+}

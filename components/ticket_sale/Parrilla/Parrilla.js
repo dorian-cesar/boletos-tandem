@@ -18,6 +18,7 @@ import { generateToken } from 'utils/jwt-auth';
 
 import { decryptData } from "utils/encrypt-data";
 import LocalStorageEntities from "entities/LocalStorageEntities";
+import Image from "next/image";
 
 const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
@@ -709,6 +710,31 @@ const Parrilla = (props) => {
     return true;
   }
 
+  const rellenaEspaciosVacios = (cantidad, largoAsietos) => {
+    return Array.from(Array(cantidad - largoAsietos), (e, i) => {
+      return (
+        <div className="col-12 row justify-content-evenly">
+          <div className="col-2 empty-seat"></div>
+          <div className="col-2 empty-seat"></div>
+          <div className="col-2 empty-seat"></div>
+          <div className="col-2 empty-seat"></div>
+        </div>
+      )
+    });
+  }
+
+  const colorTexto = (estadoAsiento) => {
+    // TODO: Agregar logica de analisis de asientos seleccionados
+    if( estadoAsiento.includes('seleccion') || estadoAsiento.includes('seleccion-mascota') ) {
+      return 'text-secondary';
+    } else if ( estadoAsiento.includes('libre') || estadoAsiento.includes('free') ) {
+      return 'text-primary';
+    } else if ( estadoAsiento.includes('ocupado') || estadoAsiento.includes('busy') ) {
+      return 'text-info';
+    } else {
+      return '';
+    }
+  }
   
   return (
     isShowParrilla && (
@@ -723,7 +749,127 @@ const Parrilla = (props) => {
             onClick={() => props.setIsOpened(false)}
           />
         </div>
-        <div className={styles["disponibilidad-bus"]}>
+
+        {/* Mapa asientos vertical -> MOBILE <- */}
+        <div className="d-flex d-md-none row justify-content-evenly">
+          <div className="col-3 align-self-center d-flex flex-col gap-4 p-0">
+            <ul className="col-12 list-group">
+                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                    <Image src="img/ui/service-availability/radio-button-available-outline.svg" alt="Logo asiento disponible" width={ 16 } height={ 16 }/>
+                    <span>Disponible</span>
+                </li>
+                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                    <Image src="img/ui/service-availability/radio-button-selected-outline.svg" alt="Logo asiento seleccionado" width={ 16 } height={ 16 }/>
+                    <span>Seleccionado</span>
+                </li>
+                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                    <Image src="img/ui/service-availability/radio-button-unavailable-outline.svg" alt="Logo asiento no disponible" width={ 16 } height={ 16 }/>
+                    <span>Reservado</span>
+                </li>
+            </ul>
+            <ul className="col-12 list-group">
+                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                    <Image src="img/ui/service-availability/radio-button-mab-available-outline.svg" alt="Logo asiento mascota disponible" width={ 16 } height={ 16 }/>
+                    <span>Disponible</span>
+                </li>
+                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                    <Image src="img/ui/service-availability/radio-button-mab-selected-outline.svg" alt="Logo asiento mascota seleccionado" width={ 16 } height={ 16 }/>
+                    <span>Seleccionado</span>
+                </li>
+                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                    <Image src="img/ui/service-availability/radio-button-mab-unavailable-outline.svg" alt="Logo asiento mascota no disponible" width={ 16 } height={ 16 }/>
+                    <span>Reservado</span>
+                </li>
+            </ul>
+          </div>
+          <div className="col-9 bg-bus rounded py-3 w-50 mh-4 row">
+            <div className="container">
+              <div className="row justify-content-center">
+                <img className="col-12" src="img/ui/service-components/line-floor-h.svg"/>
+                { piso === 1 && (
+                  <div className="col-10 py-1">
+                    <img src="img/ui/service-components/steering-wheel.svg"/>
+                  </div>
+                )}
+                <div className="col-12 row">
+                  <div className="col-3 empty-seat"></div>
+                  <div className="col-3 empty-seat"></div>
+                  <div className="col-3 empty-seat"></div>
+                  <div className="col-3 empty-seat"></div>
+                </div>
+                { props.asientos1 && piso === 1 && (
+                    <>
+                      {
+                        rellenaEspaciosVacios( 7, props.asientos1.length )
+                      }
+                      {
+                        piso === 1 && (
+                          props.asientos1.map((asientosPiso1, _) => {
+                            return (
+                              <div className="col-12 row justify-content-evenly flex-row-reverse">
+                                {
+                                  asientosPiso1.map((asientoPiso1, _) => {
+                                    return (
+                                      <div className="col-2 p-0 py-1 d-flex justify-content-center position-relative" onClick={(e) => { e.stopPropagation(); tomarAsiento(asientoPiso1, props, props.k, 1); }}>
+                                        <span className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${ colorTexto(asientoPiso1?.estado || '' ) }`}>
+                                          { asientoPiso1?.asiento && asientoPiso1.estado !== 'sinasiento' && asientoPiso1?.asiento }
+                                        </span>
+                                        {asientoPiso1.asiento && (
+                                          <img className="img-fluid rotate-90" src={getImage(asientoPiso1, props.k)} />
+                                        )}
+                                      </div> 
+                                    )
+                                  }
+                                  )
+                                }
+                              </div>
+                            )
+                          })
+                        )
+                      }
+                      {
+                        rellenaEspaciosVacios( 7, props.asientos1.length )
+                      }
+                    </>
+                  )
+                }
+                { props.asientos2 && piso === 2 && (
+                  <>
+                    {
+                        piso === 2 && (
+                          props.asientos2.map((asientosPiso2, _) => {
+                            return (
+                              <div className="col-12 row justify-content-evenly flex-row-reverse">
+                                {
+                                  asientosPiso2.map((asientoPiso2, _) => {
+                                    return (
+                                      <div className="col-2 p-0 py-1 d-flex justify-content-center position-relative" onClick={(e) => { e.stopPropagation(); tomarAsiento(asientoPiso2, props, props.k, 2); }}>
+                                        <span className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${ colorTexto(asientoPiso2?.estado || '' ) }`}>
+                                          { asientoPiso2?.asiento && asientoPiso2.estado !== 'sinasiento' && asientoPiso2?.asiento }
+                                        </span>
+                                        {asientoPiso2.asiento && (
+                                          <img className="img-fluid rotate-90" src={getImage(asientoPiso2, props.k)} />
+                                        )}
+                                      </div>
+                                    )
+                                  }
+                                  )
+                                }
+                              </div>
+                            )
+                          })
+                        )
+                      }
+                  </>
+                  )
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mapa asientos horizontal -> DESKTOP <- */}
+        <div className={`d-none d-md-block ${ styles["disponibilidad-bus"] }`}>
           <div className={`${styles["bus"]} ${styles["piso-1"]}`}>
             {piso === 1 && (
               <img

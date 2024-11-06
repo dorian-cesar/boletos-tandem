@@ -41,6 +41,7 @@ const Boleto = (props) => {
 
     if( screenSize <= 425 ) {
       sitMapButtonRef.current.click();
+      setIsOpened(!isOpened);
       return;
     }
     
@@ -168,9 +169,33 @@ const Boleto = (props) => {
         <div className="modal-dialog modal-fullscreen-sm-down">
           <div className="modal-content">
             <div className="modal-header border border-0">
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setIsOpened(!isOpened) }></button>
             </div>
-            <ServiceDetail />
+            <LoadingOverlay
+              active={isLoading}
+              spinner
+              text="Tomando asiento..."
+              className={styles['grill-detail']}>
+              <div className={styles['grill-detail']}>
+                <Parrilla
+                  isShowParrilla={isOpened}
+                  thisParrilla={props.thisParrilla}
+                  setIsShowParrilla={setIsOpened}
+                  asientos1={props.asientos1}
+                  asientos2={props.asientos2}
+                  k={props.k}
+                  parrilla={props}
+                  stage={props.stage}
+                  setParrilla={props.setParrilla}
+                  asientos_selected={props.asientos_selected}
+                  setIsOpened={setIsOpened}
+                  setPasaje={props.setPasaje}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
+                  setModalMab={props.setModalMab}
+                />
+              </div>
+            </LoadingOverlay>
           </div>
         </div>
       </div>

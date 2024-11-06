@@ -61,7 +61,7 @@ const StyledSeat = styled.button<{ $seatStatus: string }>`
   cursor: pointer;
   font-weight: 700;
 
-  @media( width < 768px) {
+  @media( width <= 425px) {
     background-image: url(${ props => ServiceSitImageV[props.$seatStatus] });
   }
 `
