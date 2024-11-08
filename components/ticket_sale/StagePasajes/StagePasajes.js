@@ -211,7 +211,7 @@ const StagePasajes = (props) => {
     return (
         <div className="container py-2">
             <div className="row justify-content-center gap-2">
-                <div className="d-none d-lg-block d-xl-block d-xxl-block col-12 col-md-3">
+                <div className="d-none d-lg-block d-xl-block d-xxl-block col-12 col-md-3 col-lg-3 col-xl-2">
                     <FiltroServicios 
                         tipos_servicio={ tipos_servicio }
                         filter_tipo={ filter_tipo }

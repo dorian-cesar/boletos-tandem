@@ -879,7 +879,7 @@ const Parrilla = (props) => {
           </div>
 
           {/* Mapa asientos horizontal -> DESKTOP <- */}
-          <div className={`d-none d-md-block ${ styles["disponibilidad-bus"] }`}>
+          <div className={`d-none d-md-flex ${ styles["disponibilidad-bus"] }`}>
             <div className={`${styles["bus"]} ${styles["piso-1"]}`}>
               {piso === 1 && (
                 <img
