@@ -36,7 +36,8 @@
     "styled-components": "^6.1.8",
     "swiper": "^11.0.5",
     "swr": "^1.0.1",
-    "transbank-sdk": "^3.0.2"
+    "transbank-sdk": "^3.0.2",
+    "uuid": "^11.0.2"
   },
   "devDependencies": {
     "@octokit/types": "^6.34.0",

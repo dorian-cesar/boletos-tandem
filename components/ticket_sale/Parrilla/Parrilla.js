@@ -13,6 +13,7 @@ import { agregarServicio, eliminarServicio, limpiarListaCarrito } from "store/us
 import { toast } from "react-toastify";
 
 import CryptoJS from "crypto-js";
+import { v4 as uuidv4 } from 'uuid';
 
 import { generateToken } from 'utils/jwt-auth';
 
@@ -136,11 +137,9 @@ const Parrilla = (props) => {
 
   function obtenerAsientosSeleccionados() {
     const returnedArray = [];
-    debugger;
     if (carroCompras[key]) {
       if (carroCompras[key][stage === 0 ? "ida" : "vuelta"]) {
         carroCompras[key][stage === 0 ? "ida" : "vuelta"].filter((carro) => {
-          debugger;
           if (
             carro.idServicio === props.thisParrilla.idServicio &&
             carro.fechaServicio === props.thisParrilla.fechaServicio
@@ -712,8 +711,9 @@ const Parrilla = (props) => {
 
   const rellenaEspaciosVacios = (cantidad, largoAsietos) => {
     return Array.from(Array(cantidad - largoAsietos), (e, i) => {
+      const uuid = uuidv4();
       return (
-        <div className="col-12 row justify-content-evenly">
+        <div key={ uuid } className="col-12 row justify-content-evenly">
           <div className="col-2 empty-seat"></div>
           <div className="col-2 empty-seat"></div>
           <div className="col-2 empty-seat"></div>
@@ -723,13 +723,22 @@ const Parrilla = (props) => {
     });
   }
 
-  const colorTexto = (estadoAsiento) => {
+  const colorTexto = (asiento) => {
     // TODO: Agregar logica de analisis de asientos seleccionados
-    if( estadoAsiento.includes('seleccion') || estadoAsiento.includes('seleccion-mascota') ) {
+    const asientosSeleccionados = obtenerAsientosSeleccionados() || [];
+
+    if (asientosSeleccionados.length > 0) {
+      const findAsiento = asientosSeleccionados.find(
+        (i) => i.asiento === asiento.asiento
+      );
+      if (findAsiento) asiento = findAsiento;
+    }
+
+    if( asiento?.estado.includes('seleccion') || asiento?.estado.includes('seleccion-mascota') ) {
       return 'text-secondary';
-    } else if ( estadoAsiento.includes('libre') || estadoAsiento.includes('free') ) {
+    } else if ( asiento?.estado.includes('libre') || asiento?.estado.includes('free') ) {
       return 'text-primary';
-    } else if ( estadoAsiento.includes('ocupado') || estadoAsiento.includes('busy') ) {
+    } else if ( asiento?.estado.includes('ocupado') || asiento?.estado.includes('busy') ) {
       return 'text-info';
     } else {
       return '';
@@ -738,355 +747,357 @@ const Parrilla = (props) => {
   
   return (
     isShowParrilla && (
-      <section className={styles["grill-detail"]}>
-        <div className="d-none">
-          <input type="checkbox" name="honeypot" checked={validationCheckInfo} onChange={() => setValidationCheckInfo(!validationCheckInfo)} />
-        </div>
-        <div className={styles["cross-container"]}>
-          <img
-            src="img/close.svg"
-            className={styles["cross"]}
-            onClick={() => props.setIsOpened(false)}
-          />
-        </div>
-
-        {/* Mapa asientos vertical -> MOBILE <- */}
-        <div className="d-flex d-md-none row justify-content-evenly">
-          <div className="col-3 align-self-center d-flex flex-col gap-4 p-0">
-            <ul className="col-12 list-group">
-                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
-                    <Image src="img/ui/service-availability/radio-button-available-outline.svg" alt="Logo asiento disponible" width={ 16 } height={ 16 }/>
-                    <span>Disponible</span>
-                </li>
-                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
-                    <Image src="img/ui/service-availability/radio-button-selected-outline.svg" alt="Logo asiento seleccionado" width={ 16 } height={ 16 }/>
-                    <span>Seleccionado</span>
-                </li>
-                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
-                    <Image src="img/ui/service-availability/radio-button-unavailable-outline.svg" alt="Logo asiento no disponible" width={ 16 } height={ 16 }/>
-                    <span>Reservado</span>
-                </li>
-            </ul>
-            <ul className="col-12 list-group">
-                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
-                    <Image src="img/ui/service-availability/radio-button-mab-available-outline.svg" alt="Logo asiento mascota disponible" width={ 16 } height={ 16 }/>
-                    <span>Disponible</span>
-                </li>
-                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
-                    <Image src="img/ui/service-availability/radio-button-mab-selected-outline.svg" alt="Logo asiento mascota seleccionado" width={ 16 } height={ 16 }/>
-                    <span>Seleccionado</span>
-                </li>
-                <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
-                    <Image src="img/ui/service-availability/radio-button-mab-unavailable-outline.svg" alt="Logo asiento mascota no disponible" width={ 16 } height={ 16 }/>
-                    <span>Reservado</span>
-                </li>
-            </ul>
+      <>
+        <section className={styles["grill-detail"]}>
+          <div className="d-none">
+            <input type="checkbox" name="honeypot" checked={validationCheckInfo} onChange={() => setValidationCheckInfo(!validationCheckInfo)} />
           </div>
-          <div className="col-9 bg-bus rounded py-3 w-50 mh-4 row">
-            <div className="container">
-              <div className="row justify-content-center">
-                <img className="col-12" src="img/ui/service-components/line-floor-h.svg"/>
-                { piso === 1 && (
-                  <div className="col-10 py-1">
-                    <img src="img/ui/service-components/steering-wheel.svg"/>
+          <div className={styles["cross-container"]}>
+            <img
+              src="img/close.svg"
+              className={styles["cross"]}
+              onClick={() => props.setIsOpened(false)}
+            />
+          </div>
+
+          {/* Mapa asientos vertical -> MOBILE <- */}
+          <div className="d-flex d-md-none row justify-content-evenly">
+            <div className="col-3 align-self-center d-flex flex-col gap-4 p-0">
+              <ul className="col-12 list-group">
+                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                      <Image src="img/ui/service-availability/radio-button-available-outline.svg" alt="Logo asiento disponible" width={ 16 } height={ 16 }/>
+                      <span>Disponible</span>
+                  </li>
+                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                      <Image src="img/ui/service-availability/radio-button-selected-outline.svg" alt="Logo asiento seleccionado" width={ 16 } height={ 16 }/>
+                      <span>Seleccionado</span>
+                  </li>
+                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                      <Image src="img/ui/service-availability/radio-button-unavailable-outline.svg" alt="Logo asiento no disponible" width={ 16 } height={ 16 }/>
+                      <span>Reservado</span>
+                  </li>
+              </ul>
+              <ul className="col-12 list-group">
+                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                      <Image src="img/ui/service-availability/radio-button-mab-available-outline.svg" alt="Logo asiento mascota disponible" width={ 16 } height={ 16 }/>
+                      <span>Disponible</span>
+                  </li>
+                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                      <Image src="img/ui/service-availability/radio-button-mab-selected-outline.svg" alt="Logo asiento mascota seleccionado" width={ 16 } height={ 16 }/>
+                      <span>Seleccionado</span>
+                  </li>
+                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                      <Image src="img/ui/service-availability/radio-button-mab-unavailable-outline.svg" alt="Logo asiento mascota no disponible" width={ 16 } height={ 16 }/>
+                      <span>Reservado</span>
+                  </li>
+              </ul>
+            </div>
+            <div className="col-9 bg-bus rounded py-3 w-50 mh-4 row">
+              <div className="container">
+                <div className="row justify-content-center">
+                  <img className="col-12" src="img/ui/service-components/line-floor-h.svg"/>
+                  { piso === 1 && (
+                    <div className="col-10 py-1">
+                      <img src="img/ui/service-components/steering-wheel.svg"/>
+                    </div>
+                  )}
+                  <div className="col-12 row">
+                    <div className="col-3 empty-seat"></div>
+                    <div className="col-3 empty-seat"></div>
+                    <div className="col-3 empty-seat"></div>
+                    <div className="col-3 empty-seat"></div>
                   </div>
-                )}
-                <div className="col-12 row">
-                  <div className="col-3 empty-seat"></div>
-                  <div className="col-3 empty-seat"></div>
-                  <div className="col-3 empty-seat"></div>
-                  <div className="col-3 empty-seat"></div>
-                </div>
-                { props.asientos1 && piso === 1 && (
+                  { props.asientos1 && piso === 1 && (
+                      <>
+                        {
+                          rellenaEspaciosVacios( 7, props.asientos1.length )
+                        }
+                        {
+                          piso === 1 && (
+                            props.asientos1.map((asientosPiso1, indexAsientosPiso1) => {
+                              return (
+                                <div key={ `${indexAsientosPiso1}-fila-asientos-piso-1` } className="col-12 row justify-content-evenly flex-row-reverse">
+                                  {
+                                    asientosPiso1.map((asientoPiso1, indexAsientoPiso1) => {
+                                      return (
+                                        <div key={ `${indexAsientoPiso1}-asiento-piso-1` } className="col-2 p-0 py-1 d-flex justify-content-center position-relative" onClick={(e) => { e.stopPropagation(); tomarAsiento(asientoPiso1, props, props.k, 1); }}>
+                                          <span className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${ colorTexto(asientoPiso1 || '' ) }`}>
+                                            { asientoPiso1?.asiento && asientoPiso1.estado !== 'sinasiento' && asientoPiso1?.asiento }
+                                          </span>
+                                          {asientoPiso1.asiento && (
+                                            <img className="img-fluid rotate-90" src={getImage(asientoPiso1, props.k)} />
+                                          )}
+                                        </div> 
+                                      )
+                                    }
+                                    )
+                                  }
+                                </div>
+                              )
+                            })
+                          )
+                        }
+                        {
+                          rellenaEspaciosVacios( 7, props.asientos1.length )
+                        }
+                      </>
+                    )
+                  }
+                  { props.asientos2 && piso === 2 && (
                     <>
                       {
-                        rellenaEspaciosVacios( 7, props.asientos1.length )
-                      }
-                      {
-                        piso === 1 && (
-                          props.asientos1.map((asientosPiso1, _) => {
-                            return (
-                              <div className="col-12 row justify-content-evenly flex-row-reverse">
-                                {
-                                  asientosPiso1.map((asientoPiso1, _) => {
-                                    return (
-                                      <div className="col-2 p-0 py-1 d-flex justify-content-center position-relative" onClick={(e) => { e.stopPropagation(); tomarAsiento(asientoPiso1, props, props.k, 1); }}>
-                                        <span className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${ colorTexto(asientoPiso1?.estado || '' ) }`}>
-                                          { asientoPiso1?.asiento && asientoPiso1.estado !== 'sinasiento' && asientoPiso1?.asiento }
-                                        </span>
-                                        {asientoPiso1.asiento && (
-                                          <img className="img-fluid rotate-90" src={getImage(asientoPiso1, props.k)} />
-                                        )}
-                                      </div> 
+                          piso === 2 && (
+                            props.asientos2.map((asientosPiso2, indexAsientosPiso2) => {
+                              return (
+                                <div key={ `${indexAsientosPiso2}-fila-asientos-piso-2` } className="col-12 row justify-content-evenly flex-row-reverse">
+                                  {
+                                    asientosPiso2.map((asientoPiso2, indexAsientoPiso2) => {
+                                      return (
+                                        <div key={ `${indexAsientoPiso2}-asiento-piso-2` } className="col-2 p-0 py-1 d-flex justify-content-center position-relative" onClick={(e) => { e.stopPropagation(); tomarAsiento(asientoPiso2, props, props.k, 2); }}>
+                                          <span className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${ colorTexto(asientoPiso2 || '' ) }`}>
+                                            { asientoPiso2?.asiento && asientoPiso2.estado !== 'sinasiento' && asientoPiso2?.asiento }
+                                          </span>
+                                          {asientoPiso2.asiento && (
+                                            <img className="img-fluid rotate-90" src={getImage(asientoPiso2, props.k)} />
+                                          )}
+                                        </div>
+                                      )
+                                    }
                                     )
                                   }
-                                  )
-                                }
-                              </div>
-                            )
-                          })
-                        )
-                      }
-                      {
-                        rellenaEspaciosVacios( 7, props.asientos1.length )
-                      }
+                                </div>
+                              )
+                            })
+                          )
+                        }
+                    </>
+                    )
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mapa asientos horizontal -> DESKTOP <- */}
+          <div className={`d-none d-md-block ${ styles["disponibilidad-bus"] }`}>
+            <div className={`${styles["bus"]} ${styles["piso-1"]}`}>
+              {piso === 1 && (
+                <img
+                  src="img/line.svg"
+                  alt="piso-1"
+                  className={styles["linea-piso-1"]}
+                />
+              )}
+              <div className={styles["contenedor-bus"]}>
+                {piso === 1 && (
+                  <div className={styles["fila"]}>
+                    <img
+                      className={styles["imagen-volante"]}
+                      src="img/volante.svg"
+                      alt="Volante conductor"
+                      onClick={() => console.log(totalCompra)}
+                    />
+                  </div>
+                )}
+                <div className={`${styles["fila"]} ${styles["fila-vacia"]}`}>
+                  <div className={styles["columna"]}></div>
+                  <div className={styles["columna"]}></div>
+                  <div className={styles["columna"]}></div>
+                  <div className={styles["columna"]}></div>
+                  <div className={styles["columna"]}></div>
+                </div>
+                {props.asientos1
+                  ? piso === 1 && (
+                    <>
+                      {function () {
+                        let max = 7 - props.asientos1.length;
+                        let n = 0;
+                        let liens = [];
+                        while (n < max) {
+                          liens.push(
+                            <div
+                              key={`fila-asiento-${n}`}
+                              className={styles["fila"]}
+                            ></div>
+                          );
+                          n++;
+                        }
+                        return liens;
+                      }.call(this)}
+                      {props.asientos1.map((i, k) => {
+                        return (
+                          <div
+                            key={`fila-asiento-${k}`}
+                            className={styles["fila"]}
+                          >
+                            {i.map((ii, kk) => {
+                              return (
+                                <div
+                                  key={`columna-asiento-${kk}`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    tomarAsiento(ii, props, props.k, 1);
+                                  }}
+                                  className={`${styles["columna"]
+                                    } ${asientoClass(ii, props.k)} `}
+                                >
+                                  {ii.asiento && (
+                                    <img src={getImage(ii, props.k)} />
+                                  )}
+                                  <span>
+                                    {ii.asiento != "B1" &&
+                                      ii.asiento != "B2" &&
+                                      ii.estado != "sinasiento"
+                                      ? ii.asiento
+                                      : ""}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      })}
+                      {function () {
+                        let max = 7 - props.asientos1.length;
+                        let n = 0;
+                        let liens = [];
+                        while (n < max) {
+                          liens.push(
+                            <div
+                              key={`fila-asiento-${n}`}
+                              className={styles["fila"]}
+                            ></div>
+                          );
+                          n++;
+                        }
+                        return liens;
+                      }.call(this)}
                     </>
                   )
-                }
-                { props.asientos2 && piso === 2 && (
-                  <>
-                    {
-                        piso === 2 && (
-                          props.asientos2.map((asientosPiso2, _) => {
-                            return (
-                              <div className="col-12 row justify-content-evenly flex-row-reverse">
-                                {
-                                  asientosPiso2.map((asientoPiso2, _) => {
-                                    return (
-                                      <div className="col-2 p-0 py-1 d-flex justify-content-center position-relative" onClick={(e) => { e.stopPropagation(); tomarAsiento(asientoPiso2, props, props.k, 2); }}>
-                                        <span className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${ colorTexto(asientoPiso2?.estado || '' ) }`}>
-                                          { asientoPiso2?.asiento && asientoPiso2.estado !== 'sinasiento' && asientoPiso2?.asiento }
-                                        </span>
-                                        {asientoPiso2.asiento && (
-                                          <img className="img-fluid rotate-90" src={getImage(asientoPiso2, props.k)} />
-                                        )}
-                                      </div>
-                                    )
-                                  }
-                                  )
-                                }
-                              </div>
-                            )
-                          })
-                        )
-                      }
-                  </>
+                  : ""}
+                {props.asientos2
+                  ? piso === 2 && (
+                    <>
+                      {props.asientos2.map((i, k) => {
+                        return (
+                          <div
+                            key={`fila-asiento-${k}`}
+                            className={styles["fila"]}
+                          >
+                            {i.map((ii, kk) => {
+                              return (
+                                <div
+                                  key={`columna-asiento-${kk}`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    tomarAsiento(ii, props, props.k, 2);
+                                  }}
+                                  className={`${styles["columna"]
+                                    } ${asientoClass(ii, props.k)} `}
+                                >
+                                  {ii.asiento && (
+                                    <img src={getImage(ii, props.k)} />
+                                  )}
+                                  <span>
+                                    {ii.asiento != "B1" &&
+                                      ii.asiento != "B2" &&
+                                      ii.estado != "sinasiento"
+                                      ? ii.asiento
+                                      : ""}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      })}
+                      {function () {
+                        let max = 10 - props.asientos2.length;
+                        let n = 0;
+                        let liens = [];
+                        while (n < max) {
+                          liens.push(
+                            <div
+                              key={`fila-asiento-${n}`}
+                              className={styles["fila"]}
+                            ></div>
+                          );
+                          n++;
+                        }
+                        return liens;
+                      }.call(this)}
+                    </>
                   )
-                }
+                  : ""}
+              </div>
+            </div>
+            <div className={styles["estados-disponibilidad"]}>
+              <div>
+                <div className={styles["asiento-disponible"]}></div>
+                <span>Disponible</span>
+              </div>
+              <div>
+                <div className={styles["asiento-seleccionado"]}></div>
+                <span>Seleccionado</span>
+              </div>
+              <div>
+                <div className={styles["asiento-reservado"]}></div>
+                <span>Reservado</span>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Mapa asientos horizontal -> DESKTOP <- */}
-        <div className={`d-none d-md-block ${ styles["disponibilidad-bus"] }`}>
-          <div className={`${styles["bus"]} ${styles["piso-1"]}`}>
-            {piso === 1 && (
-              <img
-                src="img/line.svg"
-                alt="piso-1"
-                className={styles["linea-piso-1"]}
-              />
-            )}
-            <div className={styles["contenedor-bus"]}>
-              {piso === 1 && (
-                <div className={styles["fila"]}>
-                  <img
-                    className={styles["imagen-volante"]}
-                    src="img/volante.svg"
-                    alt="Volante conductor"
-                    onClick={() => console.log(totalCompra)}
-                  />
+          <div className={styles["botones-inferiores"]}>
+            <div className={styles["botones-seleccion-piso"]}>
+              <div className={styles["seleccion-pisos"]}>
+                <div
+                  className={`${styles["floor-button"]} ${
+                    piso === 1 && styles["floor-button-selected"]
+                  }`}
+                  onClick={() => setPiso(1)}
+                >
+                  <span>#Piso 1</span>
                 </div>
-              )}
-              <div className={`${styles["fila"]} ${styles["fila-vacia"]}`}>
-                <div className={styles["columna"]}></div>
-                <div className={styles["columna"]}></div>
-                <div className={styles["columna"]}></div>
-                <div className={styles["columna"]}></div>
-                <div className={styles["columna"]}></div>
+                {
+                  (props.asientos2) ? <div
+                  className={`${styles["floor-button"]} ${
+                    piso === 2 && styles["floor-button-selected"]
+                  }`}
+                  onClick={() => setPiso(2)}
+                >
+                  <span>#Piso 2</span>
+                </div> : ""
+                }
+                
               </div>
-              {props.asientos1
-                ? piso === 1 && (
-                  <>
-                    {function () {
-                      let max = 7 - props.asientos1.length;
-                      let n = 0;
-                      let liens = [];
-                      while (n < max) {
-                        liens.push(
-                          <div
-                            key={`fila-asiento-${n}`}
-                            className={styles["fila"]}
-                          ></div>
-                        );
-                        n++;
-                      }
-                      return liens;
-                    }.call(this)}
-                    {props.asientos1.map((i, k) => {
-                      return (
-                        <div
-                          key={`fila-asiento-${k}`}
-                          className={styles["fila"]}
-                        >
-                          {i.map((ii, kk) => {
-                            return (
-                              <div
-                                key={`columna-asiento-${kk}`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  tomarAsiento(ii, props, props.k, 1);
-                                }}
-                                className={`${styles["columna"]
-                                  } ${asientoClass(ii, props.k)} `}
-                              >
-                                {ii.asiento && (
-                                  <img src={getImage(ii, props.k)} />
-                                )}
-                                <span>
-                                  {ii.asiento != "B1" &&
-                                    ii.asiento != "B2" &&
-                                    ii.estado != "sinasiento"
-                                    ? ii.asiento
-                                    : ""}
-                                </span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      );
-                    })}
-                    {function () {
-                      let max = 7 - props.asientos1.length;
-                      let n = 0;
-                      let liens = [];
-                      while (n < max) {
-                        liens.push(
-                          <div
-                            key={`fila-asiento-${n}`}
-                            className={styles["fila"]}
-                          ></div>
-                        );
-                        n++;
-                      }
-                      return liens;
-                    }.call(this)}
-                  </>
-                )
-                : ""}
-              {props.asientos2
-                ? piso === 2 && (
-                  <>
-                    {props.asientos2.map((i, k) => {
-                      return (
-                        <div
-                          key={`fila-asiento-${k}`}
-                          className={styles["fila"]}
-                        >
-                          {i.map((ii, kk) => {
-                            return (
-                              <div
-                                key={`columna-asiento-${kk}`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  tomarAsiento(ii, props, props.k, 2);
-                                }}
-                                className={`${styles["columna"]
-                                  } ${asientoClass(ii, props.k)} `}
-                              >
-                                {ii.asiento && (
-                                  <img src={getImage(ii, props.k)} />
-                                )}
-                                <span>
-                                  {ii.asiento != "B1" &&
-                                    ii.asiento != "B2" &&
-                                    ii.estado != "sinasiento"
-                                    ? ii.asiento
-                                    : ""}
-                                </span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      );
-                    })}
-                    {function () {
-                      let max = 10 - props.asientos2.length;
-                      let n = 0;
-                      let liens = [];
-                      while (n < max) {
-                        liens.push(
-                          <div
-                            key={`fila-asiento-${n}`}
-                            className={styles["fila"]}
-                          ></div>
-                        );
-                        n++;
-                      }
-                      return liens;
-                    }.call(this)}
-                  </>
-                )
-                : ""}
             </div>
-          </div>
-          <div className={styles["estados-disponibilidad"]}>
-            <div>
-              <div className={styles["asiento-disponible"]}></div>
-              <span>Disponible</span>
-            </div>
-            <div>
-              <div className={styles["asiento-seleccionado"]}></div>
-              <span>Seleccionado</span>
-            </div>
-            <div>
-              <div className={styles["asiento-reservado"]}></div>
-              <span>Reservado</span>
-            </div>
-          </div>
-        </div>
-        <div className={styles["botones-inferiores"]}>
-          <div className={styles["botones-seleccion-piso"]}>
-            <div className={styles["seleccion-pisos"]}>
+            <div className={styles["botones-pago"]}>
               <div
-                className={`${styles["floor-button"]} ${
-                  piso === 1 && styles["floor-button-selected"]
-                }`}
-                onClick={() => setPiso(1)}
+                className={styles["button_continue"]}
+                href="#"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  validarAsientosTomados() ? props.setPasaje(props) : "";
+                }}
               >
-                <span>#Piso 1</span>
+                <span>Continuar: { clpFormat.format(totalPagar)}</span>
               </div>
-              {
-                (props.asientos2) ? <div
-                className={`${styles["floor-button"]} ${
-                  piso === 2 && styles["floor-button-selected"]
-                }`}
-                onClick={() => setPiso(2)}
-              >
-                <span>#Piso 2</span>
-              </div> : ""
-              }
-              
+              {/* <div className={styles["button_little_car"]}>
+                <span>Agregar al carro</span>
+              </div> */}
+              <div className={styles["texto-cantidad-asientos"]}>
+                <span>
+                  Cantidad de asientos seleccionados: {asientosPorServicio.length}
+                </span>
+              </div>
+              <div 
+                className="d-none"
+                ref={buttonRef}
+                data-bs-toggle="modal"
+                data-bs-target="#loginModal"></div>
             </div>
           </div>
-          <div className={styles["botones-pago"]}>
-            <div
-              className={styles["button_continue"]}
-              href="#"
-              onClick={(e) => {
-                e.stopPropagation();
-                validarAsientosTomados() ? props.setPasaje(props) : "";
-              }}
-            >
-              <span>Continuar: { clpFormat.format(totalPagar)}</span>
-            </div>
-            {/* <div className={styles["button_little_car"]}>
-              <span>Agregar al carro</span>
-            </div> */}
-            <div className={styles["texto-cantidad-asientos"]}>
-              <span>
-                Cantidad de asientos seleccionados: {asientosPorServicio.length}
-              </span>
-            </div>
-            <div 
-              className="d-none"
-              ref={buttonRef}
-              data-bs-toggle="modal"
-              data-bs-target="#loginModal"></div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </>
     )
   );
 };

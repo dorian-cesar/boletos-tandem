@@ -22,6 +22,8 @@ var customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 const Boleto = (props) => {
   const buttonRef = useRef();
+  const buttonCloseModal = useRef();
+  const sitMapButtonRef = useRef();
 
   const [isOpened, setIsOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,23 +32,27 @@ const Boleto = (props) => {
   const { origen, destino } = useSelector((state) => state.compra);
   const [user, setUser] = useState();
 
-  const sitMapButtonRef = useRef();
 
   const handleOpenPane = () => {
     if( !user ) {
       // buttonRef.current.click();
       // return;
     }
-    const screenSize = screen.width;
-
-    if( screenSize <= 425 ) {
-      sitMapButtonRef.current.click();
-      setIsOpened(!isOpened);
-      return;
-    }
     
     setIsOpened(!isOpened);
   }
+
+  useEffect(() => {
+    const screenSize = screen.width;
+
+    if( screenSize <= 425 ) {
+      if( isOpened ) {
+        sitMapButtonRef.current.click();
+      } else {
+        buttonCloseModal.current.click();
+      }
+    }
+  }, [isOpened])
   
   useEffect(() => {
     const user = decryptData(LocalStorageEntities.user_auth);
@@ -85,9 +91,13 @@ const Boleto = (props) => {
     setIsShowItinerary(!isShowItinerary);
   }
 
+  const handleCloseModal = () =>{
+    setIsOpened(false);
+  } 
+
   return (
     <section className={ `bg-white shadow-sm rounded-3 p-2 ${ styles["info-container"] }` }>
-		  <button ref={ sitMapButtonRef } type="button" className="d-none" data-bs-toggle="modal" data-bs-target="#parrillaModal"></button>
+		  <button ref={ sitMapButtonRef } type="button" className="d-none" data-bs-toggle="modal" data-bs-target={ `#parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}` }></button>
       <div className="row justify-content-evenly">
         <div className="d-flex flex-col col-7 px-2 py-0 p-md-3">
           <div className="d-flex flex-row justify-content-between p-2">
@@ -144,8 +154,8 @@ const Boleto = (props) => {
         active={isLoading}
         spinner
         text="Tomando asiento..."
-        className={styles['grill-detail']}>
-        <div className={styles['grill-detail']}>
+        className={ `${ styles['grill-detail'] }` }>
+        <div className={`${ styles['grill-detail'] }`}>
           <Parrilla
             isShowParrilla={isOpened}
             thisParrilla={props.thisParrilla}
@@ -165,11 +175,11 @@ const Boleto = (props) => {
           />
         </div>
       </LoadingOverlay>
-      <div className="modal fade" id="parrillaModal" tabIndex={ -1 } aria-labelledby="parrillaModalLabel" aria-hidden="true">
+      <div className="modal fade" id={ `parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}` } tabIndex={ -1 } aria-labelledby="parrillaModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-fullscreen-sm-down">
           <div className="modal-content">
             <div className="modal-header border border-0">
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setIsOpened(!isOpened) }></button>
+              <button ref={ buttonCloseModal } type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleCloseModal}></button>
             </div>
             <LoadingOverlay
               active={isLoading}
