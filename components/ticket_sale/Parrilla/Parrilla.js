@@ -724,7 +724,6 @@ const Parrilla = (props) => {
   }
 
   const colorTexto = (asiento) => {
-    // TODO: Agregar logica de analisis de asientos seleccionados
     const asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
     if (asientosSeleccionados.length > 0) {

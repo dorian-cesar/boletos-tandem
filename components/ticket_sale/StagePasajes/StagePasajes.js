@@ -210,6 +210,15 @@ const StagePasajes = (props) => {
 
     return (
         <div className="container py-2">
+            <div className="mb-2 d-flex d-lg-none justify-content-between align-content-center">
+                <button className="border-0 bg-white rounded text-secondary fw-bold d-flex gap-1 p-1" type="button" data-bs-toggle="modal" data-bs-target={ `#filtroModal` }>
+                    <img src="img/ui/service-components/settings-outline.svg" width={24} height={24}/>
+                    Filtros
+                </button>
+                <label>
+                    { servicios?.length || 0 } resultados
+                </label>
+            </div>
             <div className="row justify-content-center gap-2">
                 <div className="d-none d-lg-block d-xl-block d-xxl-block col-12 col-md-3 col-lg-3 col-xl-2">
                     <FiltroServicios 
@@ -238,6 +247,30 @@ const StagePasajes = (props) => {
                             </div>
                         )
                     }
+                </div>
+            </div>
+            <div className="modal fade" id={ `filtroModal` } tabIndex={ -1 } aria-labelledby="filtroModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-fullscreen">
+                    <div className="modal-content">
+                        <div className="modal-header border border-0">
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="d-flex flex-col">
+                            <FiltroServicios 
+                                tipos_servicio={ tipos_servicio }
+                                filter_tipo={ filter_tipo }
+                                filter_horas={ filter_horas }
+                                filter_mascota={ filter_mascota }
+                                stage={ stage }
+                                toggleTipo={ toggleTipo }
+                                toggleHoras={ toggleHoras }
+                                mascota_allowed={ mascotaAllowed }
+                                setMascota={ setMascotaAllowed }/>
+                            <button className="btn btn-primary w-75 my-3 mx-auto rounded-3 fw-bold" data-bs-dismiss="modal">
+                                Filtrar
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

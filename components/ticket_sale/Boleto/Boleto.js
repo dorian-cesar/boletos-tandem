@@ -176,7 +176,7 @@ const Boleto = (props) => {
         </div>
       </LoadingOverlay>
       <div className="modal fade" id={ `parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}` } tabIndex={ -1 } aria-labelledby="parrillaModalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-fullscreen-sm-down">
+        <div className="modal-dialog modal-fullscreen">
           <div className="modal-content">
             <div className="modal-header border border-0">
               <button ref={ buttonCloseModal } type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleCloseModal}></button>

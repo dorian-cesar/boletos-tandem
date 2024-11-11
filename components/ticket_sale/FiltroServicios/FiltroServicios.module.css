@@ -114,3 +114,9 @@
         margin-bottom: 3%;
     }
 }
+
+@media( width <= 768px ) {
+    .custom-shadow {
+        box-shadow: none !important;
+    }
+}

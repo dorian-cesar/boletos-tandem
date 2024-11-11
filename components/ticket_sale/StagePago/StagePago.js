@@ -153,7 +153,7 @@ const StagePago = (props) => {
   }, []);
 
   return (
-    <main className={styles["main-content"]}>
+    <main className={ `${ styles["main-content"] } pt-2` }>
       <section className={styles["info-list"]}>
         <ResumenServicio open={true} />
         <Acordeon title="Datos del comprador" open={true}>
