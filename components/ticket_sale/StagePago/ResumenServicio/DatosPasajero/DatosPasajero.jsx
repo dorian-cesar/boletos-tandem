@@ -12,6 +12,8 @@ const DatosPasajero = (props) => {
   const { servicio, asiento, usuario, pasajero = false } = props;
   const dispatch = useDispatch();
 
+  const [cantidadEquipaje, setCantidadEquipaje] = useState(0);
+
   function retornarDatosCompradorUsuario() {
     let asientoTemporal = { ...asiento };
     asientoTemporal['nombre'] = usuario?.nombres;
@@ -19,6 +21,7 @@ const DatosPasajero = (props) => {
     asientoTemporal['tipoDocumento'] = usuario?.tipoDocumento;
     asientoTemporal['rut'] = usuario?.rut;
     asientoTemporal['email'] = usuario?.mail;
+    asientoTemporal['cantidadEquipaje'] = usuario?.cantidadEquipaje || 0;
     return asientoTemporal;
   }
 
@@ -96,6 +99,25 @@ const DatosPasajero = (props) => {
       console.error(`Error al agregar informacion del comprador [${message}]`);
     }
   }
+
+  useEffect(() => {
+    try {
+      let carro_temp = { ...asiento };
+      carro_temp['cantidadEquipaje'] = cantidadEquipaje;
+      
+      const infoToDispatch = {
+        servicio,
+        asiento: carro_temp,
+      };
+
+      if (servicio) {
+        dispatch(agregarInformacionAsiento(infoToDispatch));
+      }
+
+    } catch (error) {
+      console.error(`Error al agregar informacion del comprador [${message}]`);
+    }
+  }, [cantidadEquipaje])
 
   function validarFormatoRut(name, value) {
     try {
@@ -217,21 +239,25 @@ const DatosPasajero = (props) => {
                   <div className="col-12 col-md-6">
                     <p>Debes indicar cuanto equipaje llevarás en el maletero:</p>
                   </div>
-                  <div className="col-12 col-md-5 row justify-content-between p-3">
+                  <div className="col-12 col-md-5 row justify-content-center gap-1 p-3">
                     <div className="col-2 col-md-4 d-flex justify-content-center p-0">
                       <button 
-                        className={`btn btn-outline-secondary border-2 rounded-circle fw-bold fs-3 d-flex justify-content-center align-items-center ${ styles["button-baggage"] }`}>
+                        className={`btn btn-outline-secondary border-2 rounded-circle fw-bold fs-3 d-flex justify-content-center align-items-center ${ styles["button-baggage"] }`}
+                        disabled={ cantidadEquipaje <= 0 }
+                        onClick={ () => setCantidadEquipaje(cantidadEquipaje - 1) }>
                         -
                       </button>
                     </div>
-                    <div className="col-3 col-md-4 d-flex justify-content-center p-0">
+                    <div className="col-2 col-md-4 d-flex justify-content-center p-0">
                       <span className={`fs-3 bg-secondary bg-opacity-25 d-flex justify-content-center rounded-circle align-items-center border border-2 border-secondary ${styles["button-baggage"]}`}>
-                        0
+                        { cantidadEquipaje }
                       </span>
                     </div>
                     <div className="col-2 col-md-4 d-flex justify-content-center p-0">
                       <button 
-                        className={`btn btn-outline-secondary border-2 rounded-circle fw-bold fs-3 d-flex justify-content-center align-items-center ${ styles["button-baggage"] }`}>
+                        className={`btn btn-outline-secondary border-2 rounded-circle fw-bold fs-3 d-flex justify-content-center align-items-center ${ styles["button-baggage"] }`}
+                        disabled={ cantidadEquipaje >= 1}
+                        onClick={ () => setCantidadEquipaje(cantidadEquipaje + 1) }>
                         +
                       </button>
                     </div>
