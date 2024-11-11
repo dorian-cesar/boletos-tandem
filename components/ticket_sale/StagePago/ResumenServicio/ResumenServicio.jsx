@@ -108,17 +108,7 @@ const ResumenServicio = (props) => {
     <>
       {
         informacionAgrupada.map((info, index) => {
-          return (
-            <Acordeon
-              key={ index }
-              viaje={ info.viaje }
-              fecha={ info.fecha }
-              hora={ info.hora }
-              open={ true }
-            >
-              { renderInformacionPasajero(info) }
-            </Acordeon>
-          );
+          return renderInformacionPasajero(info);
         })
       }
     </>

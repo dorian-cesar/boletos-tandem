@@ -1,6 +1,5 @@
 .container {
     display: flex;
-    padding: 8px 16px;
     flex-direction: column;
     align-items: flex-start;
     gap: 16px; 
@@ -44,4 +43,10 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+}
+
+.button-baggage {
+    height: 48px !important;
+    width: 48px !important;
+    padding: 0 !important;
 }

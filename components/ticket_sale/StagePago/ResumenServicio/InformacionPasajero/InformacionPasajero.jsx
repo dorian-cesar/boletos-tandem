@@ -12,7 +12,7 @@ const InformacionPasajero = (props) => {
     return (
         <>
             <Acordeon title={ title } open={ true }>
-                <DatosPasajero asiento={ asiento } servicio={ servicio } />
+                <DatosPasajero asiento={ asiento } servicio={ servicio } pasajero={ true } />
             </Acordeon> 
         </>
     )

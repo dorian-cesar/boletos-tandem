@@ -1074,6 +1074,7 @@ const Parrilla = (props) => {
               <div
                 className={styles["button_continue"]}
                 href="#"
+                data-bs-dismiss="modal"
                 onClick={(e) => {
                   e.stopPropagation();
                   validarAsientosTomados() ? props.setPasaje(props) : "";

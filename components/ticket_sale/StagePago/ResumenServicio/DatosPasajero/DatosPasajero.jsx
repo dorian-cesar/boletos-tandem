@@ -9,7 +9,7 @@ import {
 } from "store/usuario/compra-slice";
 
 const DatosPasajero = (props) => {
-  const { servicio, asiento, usuario } = props;
+  const { servicio, asiento, usuario, pasajero = false } = props;
   const dispatch = useDispatch();
 
   function retornarDatosCompradorUsuario() {
@@ -210,6 +210,36 @@ const DatosPasajero = (props) => {
               />
             </div>
           </div>
+          {
+            pasajero == true && (
+              <div className="col-12 col-md-12">
+                <div className="row justify-content-around">
+                  <div className="col-12 col-md-6">
+                    <p>Debes indicar cuanto equipaje llevarás en el maletero:</p>
+                  </div>
+                  <div className="col-12 col-md-5 row justify-content-between p-3">
+                    <div className="col-2 col-md-4 d-flex justify-content-center p-0">
+                      <button 
+                        className={`btn btn-outline-secondary border-2 rounded-circle fw-bold fs-3 d-flex justify-content-center align-items-center ${ styles["button-baggage"] }`}>
+                        -
+                      </button>
+                    </div>
+                    <div className="col-3 col-md-4 d-flex justify-content-center p-0">
+                      <span className={`fs-3 bg-secondary bg-opacity-25 d-flex justify-content-center rounded-circle align-items-center border border-2 border-secondary ${styles["button-baggage"]}`}>
+                        0
+                      </span>
+                    </div>
+                    <div className="col-2 col-md-4 d-flex justify-content-center p-0">
+                      <button 
+                        className={`btn btn-outline-secondary border-2 rounded-circle fw-bold fs-3 d-flex justify-content-center align-items-center ${ styles["button-baggage"] }`}>
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          }
         </div>
       </div>
     </>
