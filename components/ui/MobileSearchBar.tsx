@@ -6,6 +6,7 @@ import { format } from "@formkit/tempo";
 import dayjs from "dayjs";
 import { useRouter } from 'next/router';
 import BusquedaServicio from 'components/BusquedaServicio/BusquedaServicio';
+import { useSelector } from 'react-redux';
 
 type City = {
     codigo: string;
@@ -26,8 +27,11 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
     const [activeDate, setActiveDate] = useState(props.startDate || new Date());
     const [prevDate, setPrevDate] = useState<Date | null>(null);
     const [nextDate, setNextDate] = useState<Date | null>(null);
+    const [timeToEnd, setTimeToEnd] = useState<string>('');
 
     const router = useRouter();
+
+    const live_time = useSelector((state: any) => state.compra?.live_time) || 0;
 
     const updateDates = () => {
         if (activeDate) {
@@ -86,7 +90,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
         } else if( props.stage === 1 ) {
             return `${ props.destination.nombre } - ${ props.origin.nombre }`;
         } else {
-            return 'Viaja en Pullman Bus'
+            return `${ props.origin.nombre } - ${ props.destination.nombre }`;
         }
     }
 
@@ -105,6 +109,28 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
         router.replace(`/comprar?search=${ encriptedData }`).then(() => window.location.reload()).catch(err => console.error(err));
     }
 
+    const timer = () => {
+        const now = new Date().getTime();
+        const distance = live_time - now;
+
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        setTimeToEnd(
+          `${minutes < 10 ? "0" : ""}${minutes}:${
+            seconds < 10 ? "0" : ""
+          }${seconds}`
+        );
+    }
+
+    const includeStage = () => props.stage === 0 || props.stage === 1;
+
+    useEffect(() => {
+        if( !includeStage() ) {
+            setInterval(() => timer(), 1000);
+        }
+    }, [props.stage])
+
     return (
         <>
             <header className='container shadow-sm d-block d-md-none sticky-top bg-white rounded-bottom-4 py-2 text-center'>
@@ -112,18 +138,43 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                     <div className='col-2'>
                         <img src="img\icon\buttons\chevron-back-circle-outline.svg" width={24} height={24} onClick={ () => router.push('') }/>
                     </div>
-                    <div className='col-8 d-flex justify-content-center align-content-center'>
-                        <img src="img\icon\general\location-outline.svg" width={24} height={24}/>
-                        <span className='text-secondary fs-6 fw-bold'>{ returnTitle() }</span>
+                    <div className={`${ includeStage() ? 'col-8' : 'col-7' } d-flex justify-content-center align-content-center`}>
+                        {
+                            includeStage() ? (
+                                <>
+                                    <img src="img\icon\general\location-outline.svg" width={24} height={24}/>
+                                    <span className='text-secondary fs-6 fw-bold'>{ returnTitle() }</span>
+                                </>
+                            ) : (
+                                <img src="img\icon\logos\Logo.svg" className='img-fluid' alt='Logo Pullman Bus'/>
+                            )
+                        }
                     </div>
-                    <div className='col-2'>
-                        <button type="button" className="btn p-0" data-bs-toggle="modal" data-bs-target="#busquedaServicioModal">
-                            <img src="img\icon\buttons\pencil.svg" width={24} height={24}/>
-                        </button>
+                    <div className={`${ includeStage() ? 'col-2' : 'col-3'}`}>
+                        {
+                            includeStage() ? (
+                                <button type="button" className="btn p-0" data-bs-toggle="modal" data-bs-target="#busquedaServicioModal">
+                                    <img src="img\icon\buttons\pencil.svg" width={24} height={24}/>
+                                </button>
+                            ) : (
+                                <span className="badge text-bg-secondary bg-opacity-50 d-flex align-items-center gap-1">
+                                    <img src='img\ui\service-components\time-outline.svg' width={16} height={16}/>
+                                    { timeToEnd }
+                                </span>
+                            )
+                        }
                     </div>
+                    {
+                        !includeStage() && (
+                            <div className='col-12 d-flex justify-content-center align-content-center pt-3 pb-2'>
+                                <img src="img\icon\general\location-outline.svg" width={24} height={24}/>
+                                <span className='text-secondary fs-6 fw-bold'>{ returnTitle() }</span>
+                            </div>
+                        )
+                    }
                 </div>
                 {
-                    prevDate && activeDate && nextDate && (
+                    (props.stage == 0 || props.stage == 1) && prevDate && activeDate && nextDate && (
                         <div className='row text-center mt-3 justify-content-evenly'>
                             <div className="col-4 p-0">
                                 <button 
