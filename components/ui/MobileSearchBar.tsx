@@ -116,14 +116,22 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        setTimeToEnd(
-          `${minutes < 10 ? "0" : ""}${minutes}:${
-            seconds < 10 ? "0" : ""
-          }${seconds}`
-        );
+        if( distance >= 0 ) {
+            setTimeToEnd(
+              `${minutes < 10 ? "0" : ""}${minutes}:${
+                seconds < 10 ? "0" : ""
+              }${seconds}`
+            );
+        }
     }
 
-    const includeStage = () => props.stage === 0 || props.stage === 1;
+    const includeStage = () => {
+        if( props.endDate ) {
+            return props.stage === 0 || props.stage === 1;
+        } else {
+            return props.stage === 0;
+        }
+    };
 
     useEffect(() => {
         if( !includeStage() ) {
@@ -174,7 +182,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                     }
                 </div>
                 {
-                    (props.stage == 0 || props.stage == 1) && prevDate && activeDate && nextDate && (
+                    includeStage() && prevDate && activeDate && nextDate && (
                         <div className='row text-center mt-3 justify-content-evenly'>
                             <div className="col-4 p-0">
                                 <button 
