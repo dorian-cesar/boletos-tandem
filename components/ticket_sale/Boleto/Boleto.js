@@ -46,11 +46,13 @@ const Boleto = (props) => {
     const screenSize = screen.width;
 
     if( screenSize <= 425 ) {
-      if( isOpened ) {
-        sitMapButtonRef.current.click();
-      } else {
-        buttonCloseModal.current.click();
-      }
+      try {
+        if( isOpened ) {
+          sitMapButtonRef.current.click();
+        } else {
+          buttonCloseModal.current.click();
+        }
+      } catch (error) {}
     }
   }, [isOpened])
   
@@ -172,6 +174,7 @@ const Boleto = (props) => {
             isLoading={isLoading}
             setIsLoading={setIsLoading}
             setModalMab={props.setModalMab}
+            buttonCloseModalRef={buttonCloseModal}
           />
         </div>
       </LoadingOverlay>
@@ -203,6 +206,7 @@ const Boleto = (props) => {
                   isLoading={isLoading}
                   setIsLoading={setIsLoading}
                   setModalMab={props.setModalMab}
+                  buttonCloseModalRef={buttonCloseModal}
                 />
               </div>
             </LoadingOverlay>

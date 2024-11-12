@@ -743,6 +743,22 @@ const Parrilla = (props) => {
       return '';
     }
   }
+
+  const handleNextStep = (e) => {
+    try {
+      e.stopPropagation();
+      
+      const asientosTomados = validarAsientosTomados();
+  
+      if( asientosTomados ) {
+        try {
+          props.buttonCloseModalRef.current.click();
+        } catch (error) {}
+
+        props.setPasaje(props)
+      }
+    } catch (error) {}
+  }
   
   return (
     isShowParrilla && (
@@ -1073,12 +1089,7 @@ const Parrilla = (props) => {
               <div
                 className={styles["button_continue"]}
                 href="#"
-                data-bs-dismiss="modal"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  validarAsientosTomados() ? props.setPasaje(props) : "";
-                }}
-              >
+                onClick={handleNextStep}>
                 <span>Continuar: { clpFormat.format(totalPagar)}</span>
               </div>
               {/* <div className={styles["button_little_car"]}>
