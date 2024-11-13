@@ -103,7 +103,7 @@ const Boleto = (props) => {
       <div className={ `row justify-content-evenly ${ isOpened ? styles["enabled-details"] : "" }` }>
         <div className="d-flex flex-col col-7 px-2 py-0 p-md-3">
           <div className="d-flex flex-row justify-content-between p-2">
-            <img src="img/logo-pullmanbus.svg" className="img-fluid" width={ 150 } height={ 25 } alt="Logo Pullman Bus"/>
+            <img src="img/ui/service-components/service-logo.svg" className="img-fluid" width={ 150 } height={ 25 } alt="Logo Pullman Bus"/>
             {props.mascota == '1' ? <img src="img/icon/logos/paw-outline.svg" /> : <div></div>}
           </div>
           <div className="row mt-1 pt-2 pb-3 gap-2 gap-md-0 justify-content-evenly">

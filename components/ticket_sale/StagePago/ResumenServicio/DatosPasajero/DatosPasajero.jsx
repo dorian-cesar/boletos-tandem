@@ -181,7 +181,7 @@ const DatosPasajero = (props) => {
               </div>
               <div className={"col"}>
                 <label className={"contenedor"}>
-                  <label className={styles["label"]}>Pasaporte</label>
+                  <label className={styles["label"]}>DNI/Pasaporte</label>
                   <input
                     type="checkbox"
                     checked={asiento["tipoDocumento"] == "P" ? "checked" : ""}
