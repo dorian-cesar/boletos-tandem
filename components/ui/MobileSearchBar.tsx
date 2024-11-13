@@ -20,6 +20,7 @@ type MobileSearchBarProps = {
     destination: City;
     stage: number;
     petAllowed: boolean;
+    setStage: Function;
 }
 
 export default function MobileSearchBar(props:MobileSearchBarProps) {
@@ -47,14 +48,17 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
     };
 
     useEffect(() => {
-        updateDates();
-    }, [activeDate]);
-
-    useEffect(() => {
-        if (props.startDate) {
+        debugger;
+        if( props.endDate && props.stage === 1 ) {
+            setActiveDate(props.endDate);
+        } else if( props.startDate && props.stage === 0 ) {
             setActiveDate(props.startDate);
         }
-    }, [props.startDate]);
+    }, [props.stage])
+
+    useEffect(() => {
+        updateDates();
+    }, [activeDate]);
 
     const checkDate = (date:Date) => {
         const hoy = dayjs();
@@ -139,12 +143,20 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
         }
     }, [props.stage])
 
+    const handleBackButton = () => {
+        if( props.stage === 0 ) {
+            router.push('');
+        } else {
+            props.setStage(props.stage - 1);
+        }
+    }
+
     return (
         <>
             <header className='container shadow-sm d-block d-md-none sticky-top bg-white rounded-bottom-4 py-2 text-center'>
                 <div className='row text-center justify-content-evenly'>
                     <div className='col-2'>
-                        <img src="img\icon\buttons\chevron-back-circle-outline.svg" width={24} height={24} onClick={ () => router.push('') }/>
+                        <img src="img\icon\buttons\chevron-back-circle-outline.svg" width={24} height={24} onClick={ handleBackButton}/>
                     </div>
                     <div className={`${ includeStage() ? 'col-8' : 'col-7' } d-flex justify-content-center align-content-center`}>
                         {

@@ -168,7 +168,8 @@ export default function Home(props) {
                 endDate={ endDate }
                 origin={ decryptedData?.origen }
                 destination={ decryptedData?.destino }
-                stage={ stage }/>
+                stage={ stage }
+                setStage={ setStage }/>
             <div className="pasajes d-none d-md-block">
                 <div className="container">
                     <BusquedaServicio
