@@ -202,12 +202,12 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                                     className='btn btn-outline-secondary btn-sm rounded-3 px-2' 
                                     disabled={ checkDate(prevDate) } 
                                     onClick={ () => searchDate(prevDate) }>
-                                    { prevDate && format(prevDate, "ddd, D MMM") }
+                                    { prevDate && format(prevDate, "ddd, D MMM", "es") }
                                 </button>
                             </div>
                             <div className="col-4 p-0">
                                 <button type="button" className='btn btn-outline-primary btn-sm rounded-3 px-2'>
-                                    { format(activeDate, "ddd, D MMM") }
+                                    { format(activeDate, "ddd, D MMM", "es") }
                                 </button>
                             </div>
                             <div className="col-4 p-0">
@@ -216,7 +216,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                                     className='btn btn-outline-secondary btn-sm rounded-3 px-2' 
                                     disabled={ checkDate(nextDate) }
                                     onClick={ () => searchDate(nextDate) }>
-                                    { nextDate && format(nextDate, "ddd, D MMM") }
+                                    { nextDate && format(nextDate, "ddd, D MMM", "es") }
                                 </button>
                             </div>
                         </div>

@@ -160,7 +160,7 @@ export const ResumenViaje = (props) => {
               datos.total += element.valorAsiento;
             });
 
-            idaNombre = `Salida, ${format(fechaIda, "ddd D MMM")}`;
+            idaNombre = `Salida, ${format(fechaIda, "ddd D MMM", "es")}`;
             datos.total = clpFormat.format(datos.total);
             carritoIda.detalle.push(datos);
           });
@@ -207,7 +207,7 @@ export const ResumenViaje = (props) => {
 
             datos.total = clpFormat.format(datos.total);
             carritoVuelta.detalle.push(datos);
-            vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM")}`;
+            vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM", "es")}`;
           });
         }
       });
