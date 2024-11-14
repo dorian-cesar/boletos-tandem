@@ -135,11 +135,31 @@ export const ResumenViaje = (props) => {
               horaLlegada: value.horaLlegada,
               cantidadAsientos: 0,
               total: 0,
+              asientosEquipaje: []
             };
+
+            const informacionPasajeros = informacionAgrupada.find(servicio => 
+              servicio?.idServicio === value?.idServicio && 
+              servicio?.idTerminalOrigen === value?.idTerminalOrigen && 
+              servicio?.idTerminalDestino === value?.idTerminalDestino && 
+              servicio?.horaSalida === value?.horaSalida)
+            
+            if( informacionPasajeros ) {
+              const asientos = informacionPasajeros?.asientos;
+              if( asientos && asientos.length > 0 ) {
+                asientos.forEach((asiento, indexAsiento) => {
+                  if( asiento?.cantidadEquipaje && asiento.cantidadEquipaje > 0 ) {
+                    datos.asientosEquipaje.push(`Pasajero ${ indexAsiento + 1 } - Asiento ${ asiento?.asiento } x ${ asiento?.cantidadEquipaje }`)
+                  }
+                })
+              }
+            }
+
             value.asientos.forEach((element) => {
               datos.cantidadAsientos += 1;
               datos.total += element.valorAsiento;
             });
+
             idaNombre = `Salida, ${format(fechaIda, "ddd D MMM")}`;
             datos.total = clpFormat.format(datos.total);
             carritoIda.detalle.push(datos);
@@ -160,11 +180,31 @@ export const ResumenViaje = (props) => {
               horaLlegada: value.horaLlegada,
               cantidadAsientos: 0,
               total: 0,
+              asientosEquipaje: []
             };
+
+            const informacionPasajeros = informacionAgrupada.find(servicio => 
+              servicio?.idServicio === value?.idServicio && 
+              servicio?.idTerminalOrigen === value?.idTerminalOrigen && 
+              servicio?.idTerminalDestino === value?.idTerminalDestino && 
+              servicio?.horaSalida === value?.horaSalida)
+            
+            if( informacionPasajeros ) {
+              const asientos = informacionPasajeros?.asientos;
+              if( asientos && asientos.length > 0 ) {
+                asientos.forEach((asiento, indexAsiento) => {
+                  if( asiento?.cantidadEquipaje && asiento.cantidadEquipaje > 0 ) {
+                    datos.asientosEquipaje.push(`Pasajero ${ indexAsiento + 1 } - Asiento ${ asiento?.asiento } x ${ asiento?.cantidadEquipaje }`)
+                  }
+                });
+              }
+            }
+
             value.asientos.forEach((element) => {
               datos.cantidadAsientos += 1;
               datos.total += element.valorAsiento;
             });
+
             datos.total = clpFormat.format(datos.total);
             carritoVuelta.detalle.push(datos);
             vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM")}`;
@@ -495,6 +535,10 @@ export const ResumenViaje = (props) => {
   }, []);
 
   useEffect(() => {
+    obtenerInformacion();
+  }, [informacionAgrupada]);
+
+  useEffect(() => {
     if (payment.url) {
       payment_form.current?.submit();
     }
@@ -567,9 +611,9 @@ export const ResumenViaje = (props) => {
 
   useEffect(() => {
     if(medioPago === 'CUP'){
-       setRequestConvenio(null);
-       setDescuentoConvenio(null);
-       setConvenio(null);
+      setRequestConvenio(null);
+      setDescuentoConvenio(null);
+      setConvenio(null);
     }
   }, [medioPago]);
 
@@ -602,6 +646,22 @@ export const ResumenViaje = (props) => {
                           </span>
                           <b>{detalleItem.total}</b>
                         </div>
+                        {
+                          detalleItem.asientosEquipaje && detalleItem.asientosEquipaje.length > 0 && (
+                            <div className="row mb-5">
+                              <h3 className="col-12 fw-bold text-black">Equipaje</h3>
+                              {
+                                detalleItem.asientosEquipaje.map((asiento) => {
+                                  return (
+                                    <div className="col-12">
+                                      { asiento }
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                          )
+                        }
                       </div>
                     ))}
                 </div>
