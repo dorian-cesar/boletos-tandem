@@ -140,3 +140,8 @@
     line-height: normal;
 }
   
+@media( width <= 425px ) {
+  .bloque {
+    padding: 10px 6px 10px 6px !important;
+  }
+}
