@@ -625,7 +625,7 @@ export const ResumenViaje = (props) => {
           {Array.isArray(resumen.carro.lista) &&
             resumen.carro.lista.map((element) => (
               <div className={styles["servicio-ida"]} key={element.titulo}>
-                <b className={styles["titulo-servicio"]}>{element.titulo}</b>
+                <span className={ `${styles["titulo-servicio"]} fw-bold text-black fs-6`}>{element.titulo}</span>
                 <div className={styles["detalle-container"]}>
                   {Array.isArray(element.detalle) &&
                     element.detalle.map((detalleItem, index) => (
@@ -648,12 +648,12 @@ export const ResumenViaje = (props) => {
                         </div>
                         {
                           detalleItem.asientosEquipaje && detalleItem.asientosEquipaje.length > 0 && (
-                            <div className="row mb-5">
-                              <h3 className="col-12 fw-bold text-black">Equipaje</h3>
+                            <div className={ `row mb-3 dotted-bottom mx-1 pb-3` }>
+                              <span className="col-12 fw-bold text-black fs-6 p-0">Equipaje</span>
                               {
                                 detalleItem.asientosEquipaje.map((asiento) => {
                                   return (
-                                    <div className="col-12">
+                                    <div className="col-12 p-0">
                                       { asiento }
                                     </div>
                                   )

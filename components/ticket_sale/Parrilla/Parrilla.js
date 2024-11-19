@@ -1085,26 +1085,27 @@ const Parrilla = (props) => {
                 
               </div>
             </div>
-            <div className={styles["botones-pago"]}>
-              <div
-                className={styles["button_continue"]}
-                href="#"
-                onClick={handleNextStep}>
-                <span>Continuar: { clpFormat.format(totalPagar)}</span>
+            <div className="container">
+              <div className={ `row ${styles["botones-pago"]} px-2 pb-3` }>
+                <div className="col"></div>
+                <div className="col-5 col-xs-4 col-sm-4 justify-content-center">
+                  <div className="d-grid">
+                    <button className="btn btn-primary border-0 rounded-3" onClick={handleNextStep}>
+                      Continuar: { clpFormat.format(totalPagar)}
+                    </button>
+                  </div>
+                  <div className={styles["texto-cantidad-asientos"]}>
+                    <span>
+                      Cantidad de asientos seleccionados: {asientosPorServicio.length}
+                    </span>
+                  </div>
+                  <div 
+                    className="d-none"
+                    ref={buttonRef}
+                    data-bs-toggle="modal"
+                    data-bs-target="#loginModal"></div>
+                </div>
               </div>
-              {/* <div className={styles["button_little_car"]}>
-                <span>Agregar al carro</span>
-              </div> */}
-              <div className={styles["texto-cantidad-asientos"]}>
-                <span>
-                  Cantidad de asientos seleccionados: {asientosPorServicio.length}
-                </span>
-              </div>
-              <div 
-                className="d-none"
-                ref={buttonRef}
-                data-bs-toggle="modal"
-                data-bs-target="#loginModal"></div>
             </div>
           </div>
         </section>

@@ -245,11 +245,11 @@ const DatosPasajero = (props) => {
                         className={`btn btn-outline-secondary border-2 rounded-circle fw-bold fs-3 d-flex justify-content-center align-items-center ${ styles["button-baggage"] }`}
                         disabled={ cantidadEquipaje <= 0 }
                         onClick={ () => setCantidadEquipaje(cantidadEquipaje - 1) }>
-                        -
+                        <span className="mb-1">-</span>
                       </button>
                     </div>
                     <div className="col-2 col-md-3 d-flex justify-content-center p-0">
-                      <span className={`fs-3 bg-secondary bg-opacity-25 d-flex justify-content-center rounded-circle align-items-center border border-2 border-secondary ${styles["button-baggage"]}`}>
+                      <span className={`fs-4 bg-secondary bg-opacity-25 d-flex justify-content-center rounded-circle align-items-center border border-2 border-secondary ${styles["button-baggage"]}`}>
                         { cantidadEquipaje }
                       </span>
                     </div>
@@ -258,7 +258,7 @@ const DatosPasajero = (props) => {
                         className={`btn btn-outline-secondary border-2 rounded-circle fw-bold fs-3 d-flex justify-content-center align-items-center ${ styles["button-baggage"] }`}
                         disabled={ cantidadEquipaje >= 1}
                         onClick={ () => setCantidadEquipaje(cantidadEquipaje + 1) }>
-                        +
+                        <span>+</span>
                       </button>
                     </div>
                   </div>

@@ -2639,3 +2639,8 @@ line-height: normal;
 .bg-bus {
   background-color: #E6ECF6;
 }
+
+.dotted-bottom {
+  border-bottom: 1px dotted #000;
+  padding-bottom: 10px;
+}
