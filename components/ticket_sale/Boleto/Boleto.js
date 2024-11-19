@@ -98,7 +98,7 @@ const Boleto = (props) => {
   } 
 
   return (
-    <section className={ `bg-white shadow-sm rounded-3 p-2 ${ styles["info-container"] }` }>
+    <section className={ `bg-white shadow-sm rounded-3 ${ styles["info-container"] }` }>
 		  <button ref={ sitMapButtonRef } type="button" className="d-none" data-bs-toggle="modal" data-bs-target={ `#parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}` }></button>
       <div className={ `row justify-content-evenly ${ isOpened ? styles["enabled-details"] : "" }` }>
         <div className="d-flex flex-col col-7 px-2 py-0 p-md-3">
@@ -145,8 +145,8 @@ const Boleto = (props) => {
               (<span>Piso 2 desde: <b>${ props.tarifaSegundoPisoInternet }</b></span>)
             ) }
           </div>
-          <div className="d-flex w-75 mx-auto">
-            <button type="button" className="btn btn-primary border-0 mx-auto" onClick={handleOpenPane}>
+          <div className="d-grid">
+            <button type="button" className="btn btn-primary border-0 rounded-3" onClick={handleOpenPane}>
               Comprar
             </button>
           </div>
