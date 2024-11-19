@@ -41,6 +41,8 @@
 
   .rut{
     margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
 }
 
   .title-data{
@@ -138,6 +140,11 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+}
+
+.spaceAround {
+  display: flex;
+  justify-content: space-around;
 }
   
 @media( width <= 425px ) {

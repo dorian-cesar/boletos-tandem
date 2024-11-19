@@ -22,7 +22,6 @@ const SolicitudFormFields = {
   nombre: "",
   numeroContacto: "",
   correoElectronico: "",
-  correoElectronico2: "",
   cantidadPasajeros: "",
   mensaje: "",
   tipoDocumento: "R",
@@ -90,7 +89,7 @@ export default function Home(props) {
           
         
       } catch (e) {
-        // console.log(solicitud)
+        console.log(solicitud)
         setIsLoading(false);
         if (!!e.response) {
           setError({ status: true, errorMsg: 'Ocurrió un error inesperado.' });
@@ -106,6 +105,35 @@ export default function Home(props) {
   const limpiarCampos = () => {
     setSolicitud(SolicitudFormFields); 
   };
+
+  // const validarForm = () => {
+  //   return new Promise((resolve) => {
+  //     const { mensaje, ...fieldsToValidate } = solicitud;
+
+  //     const values = Object.values(fieldsToValidate);
+  //     const camposVacios = values.filter((v) => v == '');
+  //     if (camposVacios.length > 0) {
+  //       setError({ status: true, errorMsg: 'Se requiere rellenar todos los campos.' });
+  //       resolve(false);
+  //     } else if (solicitud.cantidadPasajeros == 0) {
+  //       setError({ status: true, errorMsg: 'Se requiere cantidad de pasajeros sea mayor a 0.' });
+  //       resolve(false);
+
+  //     } else if (solicitud.cantidadPasajeros > 500) {
+  //       setError({ status: true, errorMsg: 'Cantidad maxima 500  pasajeros.' });
+  //       resolve(false);
+  //     } else {
+  //       if (solicitud?.tipoDocumento == 'R') {
+  //         let rut = new Rut(solicitud.numeroDocumento);
+  //         if (!rut?.isValid) {
+  //           setError({ status: true, errorMsg: 'Se requiere ingresar un rut válido' });
+  //           return resolve(false);
+  //         }
+  //       }
+        
+  //     }
+  //   })
+  // }
 
   const validarForm = () => {
     return new Promise((resolve) => {
@@ -130,17 +158,10 @@ export default function Home(props) {
             return resolve(false);
           }
         }
-        if (solicitud?.correoElectronico != solicitud?.correoElectronico2) {
-          setError({ status: true, errorMsg: 'Los correo no coinciden. Por favor, verificar.' });
-          resolve(false);
-        } else {
-          setError({ status: false, errorMsg: '' });
-          resolve(true);
-        }
+        
       }
     })
   }
-
 
   function setInputDocumento({ name, value }) {
     try {
@@ -238,8 +259,6 @@ export default function Home(props) {
     (async () => await getDestinos())();
   }, [destino]);
 
-
-  
 
   function retornaCiudadesSelect(arrayCiudades) {
     return arrayCiudades.map((ciudad) => {
@@ -340,25 +359,9 @@ export default function Home(props) {
                       <span className="checkmark"></span>
                     </label>
                   </div>
-                  <div className="col-4">
+                  <div className="col-8">
                     <label className="contenedor">
-                      DNI
-                      <input
-                        type="checkbox"
-                        value={"D"}
-                        name="tipoDocumento"
-                        onChange={onInputChange}
-                        checked={
-                          solicitud?.tipoDocumento == "D"
-                            ? true
-                            : false
-                        } />
-                      <span className="checkmark"></span>
-                    </label>
-                  </div>
-                  <div className="col-4">
-                    <label className="contenedor">
-                      Pasaporte
+                      DNI / Pasaporte
                       <input
                         type="checkbox"
                         value={"P"}
@@ -387,19 +390,7 @@ export default function Home(props) {
             </div>
 
             <div className={"row "}>
-              <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
-                <label className={styles["title-data"]}>N° de Contacto: </label>
-                <input
-                  type="text"
-                  className={styles["input-data"]}
-                  name="numeroContacto"
-                  placeholder="Ej: +56 9 1111 1111"
-                  value={solicitud?.numeroContacto}
-                  onChange={onInputChange}
-
-                />
-              </div>
-              <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 "}>
+            <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 "}>
                 <label className={styles["title-data"]}>Correo electrónico: </label>
                 <input
                   type="email"
@@ -410,37 +401,21 @@ export default function Home(props) {
                   onChange={onInputChange}
                 />
               </div>
-            </div>
-            <div className={"row "}>
+
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
-                <label className={styles["title-data"]}>Correo electrónico: </label>
+                <label className={styles["title-data"]}>N° de Contacto: </label>
                 <input
-                  type="email"
+                  type="text"
                   className={styles["input-data"]}
-                  name="correoElectronico2"
-                  placeholder="Ej: ecortez@gcorreoElectronico.com"
-                  value={solicitud?.correoElectronico2}
+                  name="numeroContacto"
+                  placeholder="Ej: +56 9 1111 1111"
+                  value={solicitud?.numeroContacto}
                   onChange={onInputChange}
                 />
               </div>
-              <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
-                <label className={styles["title-data"]}>Cantidad de Pasajero:</label>
-                <input
-                  type="number"
-                  className={styles["input-data"]}
-                  name="cantidadPasajeros"
-                  placeholder="Ej: 30"
-                  value={solicitud?.cantidadPasajeros}
-                  min={0}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (/^\d{0,3}$/.test(value)) {
-                      onInputChange(e);
-                    }
-                  }}
-                />
-              </div>
+              
             </div>
+
 
             <div className={"row"}>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
@@ -491,13 +466,34 @@ export default function Home(props) {
                 />
               </div>
             </div>
+
+            <div className={`${styles.spaceAround} row`}>
+                <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
+                  <label className={styles["title-data"]}>Cantidad de Pasajero:</label>
+                  <input
+                    type="number"
+                    className={styles["input-data"]}
+                    name="cantidadPasajeros"
+                    placeholder="Ej: 30"
+                    value={solicitud?.cantidadPasajeros}
+                    min={0}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d{0,3}$/.test(value)) {
+                        onInputChange(e);
+                      }
+                    }}
+                  />
+                </div>
+            </div>
+
             <div className={"row"}>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12"}>
                 <label className={styles["title-data"]}>Mensaje: </label>
                 <textarea
                   className={styles["textarea-data-mensaje"]}
                   name="mensaje"
-                  placeholder="Cantidad max. 500 caracteres"
+                  placeholder="Opcional"
                   maxLength={500}
                   value={solicitud?.mensaje}
                   onChange={onInputChange}
@@ -536,13 +532,13 @@ export default function Home(props) {
         {mostrarPopup &&
                     (tipoMostrar === "ERROR" ? (
                         <Popup
-                            modalKey={ModalEntities.request_bad_help}
+                            modalKey={ModalEntities.request_bad_viajes_special}
                             modalClose={cerrarPopup}
                             modalMethods={cerrarPopup}
                         />
                     ) : (
                         <Popup
-                            modalKey={ModalEntities.request_for_help}
+                            modalKey={ModalEntities.request_for_viajes_special}
                             modalClose={cerrarPopup}
                             modalMethods={cerrarPopup}
                         />
