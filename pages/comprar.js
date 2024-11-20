@@ -266,8 +266,6 @@ export default function Home(props) {
             )}
             <ToastContainer/>
             <Footer/>
-            <script async defer={true} src="https://tracking.bciplus.cl/bciplus/script.js"></script>
-            { /*<Script async={true} defer={true} src="https://tracking.bciplus.cl/bciplus/script.js" /> */}
         </Layout>
     );
 }

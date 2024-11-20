@@ -66,8 +66,6 @@ export default function Home(props) {
                   modalClose={() => setIsShowModalMobile(false)}
               />)
           }
-          <script async defer={true} src="https://tracking.bciplus.cl/bciplus/script.js"></script>
-          { /*<Script async={true} defer={true} src="https://tracking.bciplus.cl/bciplus/script.js" /> */}
       </Layout>
   );
 }
