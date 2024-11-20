@@ -777,22 +777,23 @@ const Parrilla = (props) => {
 
           {/* Mapa asientos vertical -> MOBILE <- */}
           <div className="d-flex d-md-none row justify-content-evenly">
-            <div className="col-3 align-self-center d-flex flex-col gap-4 p-0">
-              <ul className="col-12 list-group">
-                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+            <div className="col-12 align-self-center d-flex flex-col gap-4 p-0">
+              <ul className="list-group list-group-horizontal justify-content-evenly mx-3 mb-4">
+                  <li className="list-group-item d-flex gap-2 align-items-center border-0 p-0">
                       <Image src="img/ui/service-availability/radio-button-available-outline.svg" alt="Logo asiento disponible" width={ 16 } height={ 16 }/>
                       <span>Disponible</span>
                   </li>
-                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                  <li className="list-group-item d-flex gap-2 align-items-center border-0 p-0">
                       <Image src="img/ui/service-availability/radio-button-selected-outline.svg" alt="Logo asiento seleccionado" width={ 16 } height={ 16 }/>
                       <span>Seleccionado</span>
                   </li>
-                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                  <li className="list-group-item d-flex gap-2 align-items-center border-0 p-0">
                       <Image src="img/ui/service-availability/radio-button-unavailable-outline.svg" alt="Logo asiento no disponible" width={ 16 } height={ 16 }/>
                       <span>Reservado</span>
                   </li>
               </ul>
-              <ul className="col-12 list-group">
+              {/* TODO: Habilitar a futuro para cuando sea MAB */}
+              {/* <ul className="list-group">
                   <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
                       <Image src="img/ui/service-availability/radio-button-mab-available-outline.svg" alt="Logo asiento mascota disponible" width={ 16 } height={ 16 }/>
                       <span>Disponible</span>
@@ -805,9 +806,9 @@ const Parrilla = (props) => {
                       <Image src="img/ui/service-availability/radio-button-mab-unavailable-outline.svg" alt="Logo asiento mascota no disponible" width={ 16 } height={ 16 }/>
                       <span>Reservado</span>
                   </li>
-              </ul>
+              </ul> */}
             </div>
-            <div className="col-9 bg-bus rounded py-3 w-50 mh-4 row">
+            <div className="col-12 bg-bus rounded py-3 mh-4 p-0 w-50">
               <div className="container">
                 <div className="row justify-content-center">
                   <img className="col-12" src="img/ui/service-components/line-floor-h.svg"/>
@@ -1088,7 +1089,7 @@ const Parrilla = (props) => {
             <div className="container">
               <div className={ `row ${styles["botones-pago"]} px-2 pb-3` }>
                 <div className="col"></div>
-                <div className="col-5 col-xs-4 col-sm-4 justify-content-center">
+                <div className="col-12 col-xs-4 col-sm-4 justify-content-center">
                   <div className="d-grid">
                     <button className="btn btn-primary border-0 rounded-3" onClick={handleNextStep}>
                       Continuar: { clpFormat.format(totalPagar)}

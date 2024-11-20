@@ -98,10 +98,10 @@ const Boleto = (props) => {
   } 
 
   return (
-    <section className={ `bg-white shadow-sm rounded-3 ${ styles["info-container"] }` }>
+    <section className={ `container bg-white shadow-sm rounded-3 ${ styles["info-container"] }` }>
 		  <button ref={ sitMapButtonRef } type="button" className="d-none" data-bs-toggle="modal" data-bs-target={ `#parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}` }></button>
       <div className={ `row justify-content-evenly ${ isOpened ? styles["enabled-details"] : "" }` }>
-        <div className="d-flex flex-col col-7 px-2 py-0 p-md-3">
+        <div className="d-flex flex-col col px-md-2 py-md-0 p-md-3">
           <div className="d-flex flex-row justify-content-between p-2">
             <img src="img/ui/service-components/service-logo.svg" className="img-fluid" width={ 150 } height={ 25 } alt="Logo Pullman Bus"/>
             {props.mascota == '1' ? <img src="img/icon/logos/paw-outline.svg" /> : <div></div>}
@@ -132,17 +132,17 @@ const Boleto = (props) => {
             </div>
           </div>
         </div>
-        <div className={ `col-5 col-xs-4 col-sm-4 d-flex flex-col p-0 p-xs-0 p-sm-0 p-md-3 p-xs-2 p-sm-2 justify-content-center align-content-center ${ styles['border-dashed']} gap-3` }>
-          <div className={ `p-2 d-flex flex-col gap-2 m-auto text-center fw-bold ${ styles['floor-pricing']}` }>
+        <div className={ `col-5 col-sm-4 d-flex flex-col p-md-3 p-xl-2 justify-content-evenly ${ styles['border-dashed']} gap-3` }>
+          <div className={ `d-grid p-0 p-md-2 justify-content-center fw-bold gap-2` }>
             { props.tarifaPrimerPisoInternet && (
               props.tarifaValor && props.tarifaValor.primerPisoInternet ? 
-              (<span>Piso 1 desde: <b>{ clpFormat.format(props.tarifaValor.primerPisoInternet) }</b></span>) :
-              (<span>Piso 1 desde: <b>${ props.tarifaPrimerPisoInternet }</b></span>)
+              (<div className="d-flex flex-col flex-md-row gap-md-2 text-center">Piso 1 desde: <b className="text-primary">{ clpFormat.format(props.tarifaValor.primerPisoInternet) }</b></div>) :
+              (<div className="d-flex flex-col flex-md-row gap-md-2 text-center">Piso 1 desde: <b className="text-primary">${ props.tarifaPrimerPisoInternet }</b></div>)
             ) }
             { props.tarifaSegundoPisoInternet && (
               props.tarifaValor && props.tarifaValor.segundoPisoInternet ? 
-              (<span>Piso 2 desde: <b>{ clpFormat.format(props.tarifaValor.segundoPisoInternet) }</b></span>) :
-              (<span>Piso 2 desde: <b>${ props.tarifaSegundoPisoInternet }</b></span>)
+              (<div className="d-flex flex-col flex-md-row gap-md-2 text-center">Piso 2 desde: <b className="text-primary">{ clpFormat.format(props.tarifaValor.segundoPisoInternet) }</b></div>) :
+              (<div className="d-flex flex-col flex-md-row gap-md-2 text-center">Piso 2 desde: <b className="text-primary">${ props.tarifaSegundoPisoInternet }</b></div>)
             ) }
           </div>
           <div className="d-grid">

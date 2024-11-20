@@ -34,6 +34,16 @@
     line-height: normal;
 }
 
+@media (width <= 320px) {
+    .input-switch-pet input {
+        font-size: 1.1rem;
+    }
+    
+    .input-switch-pet label{
+        font-size: 1.1rem;
+    }
+}
+
 .label-titulo-busqueda-servicio {
     color: #000;
     font-size: 16px;
