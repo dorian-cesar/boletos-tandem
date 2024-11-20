@@ -32,18 +32,22 @@ const SolicitudFormFields = {
 }
 
 
+
 export default function Home(props) {
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [mostrarPopup, setMostrarPopup] = useState(false);
-  const [tipoMostrar, setTipoMostrar] = useState(null);
-  const [origen, setOrigen] = useState(null);
+   const [origen, setOrigen] = useState(null);
   const [destino, setDestino] = useState(null);
   const [origenes, setOrigenes] = useState([]);
   const [destinos, setDestinos] = useState([]);
   const [actButton, setActButton] = useState(false)
   const { formState: solicitud,setSolicitud,  onInputChange } = useForm(SolicitudFormFields);
+  
+  const [isLoading, setIsLoading] = useState(false);
+  const [mostrarPopup, setMostrarPopup] = useState(false);
+  const [mostrarPopupError, setMostrarPopupError] = useState(false);
   const { setStage } = props;
+
+
 
 
   const abrirPopup = () => {
@@ -53,9 +57,14 @@ export default function Home(props) {
     setMostrarPopup(false);
   };
 
-  function volverInicio() {
-    setStage();
-}
+  const abrirPopupError = () =>{
+    setMostrarPopupError(true)
+  }
+  const cerrarPopupError = () => {
+    setMostrarPopupError(false);
+  };
+
+
 
   const [error, setError] = useState({
     errorMsg: '',
@@ -70,97 +79,77 @@ export default function Home(props) {
 
 
   const enviarSolicitud = async () => {
-    let formStatus = await validarForm();
+    let formStatus =  validarForm();
+    
     if (formStatus == true) {
       try {
         setIsLoading(true);
+        const newSolicitud = {
+          ...solicitud, 
+          origen: origen?.nombre,
+          destino: destino?.nombre
+        }
         const res = await axios.post(
           "/api/parametros/guardar-solicitud-viajes-especiales", 
-          solicitud)
-        if(res.data.status) {
-          
+          newSolicitud)
+
+        if (res.data.status) {
           abrirPopup();
-          changeMode();
-          setTipoMostrar("OK");
+        }else{
+          abrirPopupError();
         }
-        abrirPopup();
-          changeMode();
-          setTipoMostrar("OK");
-          
         
       } catch (e) {
         console.log(solicitud)
         setIsLoading(false);
         if (!!e.response) {
           setError({ status: true, errorMsg: 'Ocurrió un error inesperado.' });
-          setTipoMostrar("ERROR");
-          abrirPopup();
+          abrirPopupError();
         }
+      }finally{
+        setIsLoading(false);
+        limpiarCampos();
       }
-      limpiarCampos();
+
     }
     setActButton(false)
   }
 
   const limpiarCampos = () => {
     setSolicitud(SolicitudFormFields); 
+    setOrigen(null);
+    setDestino(null)
   };
 
-  // const validarForm = () => {
-  //   return new Promise((resolve) => {
-  //     const { mensaje, ...fieldsToValidate } = solicitud;
-
-  //     const values = Object.values(fieldsToValidate);
-  //     const camposVacios = values.filter((v) => v == '');
-  //     if (camposVacios.length > 0) {
-  //       setError({ status: true, errorMsg: 'Se requiere rellenar todos los campos.' });
-  //       resolve(false);
-  //     } else if (solicitud.cantidadPasajeros == 0) {
-  //       setError({ status: true, errorMsg: 'Se requiere cantidad de pasajeros sea mayor a 0.' });
-  //       resolve(false);
-
-  //     } else if (solicitud.cantidadPasajeros > 500) {
-  //       setError({ status: true, errorMsg: 'Cantidad maxima 500  pasajeros.' });
-  //       resolve(false);
-  //     } else {
-  //       if (solicitud?.tipoDocumento == 'R') {
-  //         let rut = new Rut(solicitud.numeroDocumento);
-  //         if (!rut?.isValid) {
-  //           setError({ status: true, errorMsg: 'Se requiere ingresar un rut válido' });
-  //           return resolve(false);
-  //         }
-  //       }
-        
-  //     }
-  //   })
-  // }
-
   const validarForm = () => {
-    return new Promise((resolve) => {
-      const values = Object.values(solicitud);
+    const { mensaje, ...fieldsToValidate } = solicitud;
+
+      const values = Object.values(fieldsToValidate);
 
       const camposVacios = values.filter((v) => v == '');
-      if (camposVacios.length > 0) {
-        setError({ status: true, errorMsg: 'Se requiere rellenar todos los campos.' });
-        resolve(false);
-      } else if (solicitud.cantidadPasajeros == 0) {
-        setError({ status: true, errorMsg: 'Se requiere cantidad de pasajeros sea mayor a 0.' });
-        resolve(false);
 
-      } else if (solicitud.cantidadPasajeros > 500) {
-        setError({ status: true, errorMsg: 'Cantidad maxima 500  pasajeros.' });
-        resolve(false);
-      } else {
-        if (solicitud?.tipoDocumento == 'R') {
-          let rut = new Rut(solicitud.numeroDocumento);
-          if (!rut?.isValid) {
-            setError({ status: true, errorMsg: 'Se requiere ingresar un rut válido' });
-            return resolve(false);
-          }
+    if (camposVacios.length > 0) {
+      setError({ status: true, errorMsg: `Todos los campos.son obligatorios.`});
+      return false;
+    } else if (solicitud.cantidadPasajeros == 0) {
+      setError({ status: true, errorMsg: 'Se requiere cantidad de pasajeros sea mayor a 0.' });
+      return false;
+
+    } else if (solicitud.cantidadPasajeros > 500) {
+      setError({ status: true, errorMsg: 'Cantidad maxima 500  pasajeros.' });
+      return false;
+    } else {
+      if (solicitud?.tipoDocumento == 'R') {
+        let rut = new Rut(solicitud.numeroDocumento);
+        if (!rut?.isValid) {
+          setError({ status: true, errorMsg: 'Se requiere ingresar un rut válido' });
+          return false;
         }
-        
       }
-    })
+      return true
+      
+    }
+   
   }
 
   function setInputDocumento({ name, value }) {
@@ -243,15 +232,10 @@ export default function Home(props) {
       solicitud.origen = origen.codigo;
       solicitud.origenDesc = origen.nombre
     }
-    if(destino !=null){
-      solicitud.destino = destino.codigo;
-      solicitud.destinoDesc = destino.nombre
-    }
-    (async () => await getDestinos())();
-  }, [origen], [destino]);
+    (async () => await getOrigins())();
+  }, [origen]);
 
   useEffect(() => {
-
     if(destino !=null){
       solicitud.destino = destino.codigo;
       solicitud.destinoDesc = destino.nombre
@@ -295,15 +279,6 @@ export default function Home(props) {
           ) : (
             ""
           )}
-          {isLoading ? (
-            <div className={"d-flex justify-content-center"}>
-              <div className={"spinner-border text-primary"} role="status">
-                <span className="visually-hidden"></span>
-              </div>
-            </div>
-          ) : (
-            ""
-          )}
 
           <div className={"row"}>
             <div className={styles["bloque-texto"]}>
@@ -320,14 +295,9 @@ export default function Home(props) {
               </div> : ''
             }
           </div>
-          {isLoading ?
-            <div className="d-flex justify-content-center">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden"></span>
-              </div>
-            </div> : ''
-          }
+         
           <div className={styles["cuadro"]}>
+           {/* nombre - rut*/}
             <div className={"row"} >
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
                 <label className={styles["title-data"]}>Nombre(s): </label>
@@ -338,7 +308,7 @@ export default function Home(props) {
                   placeholder="Ej: Emma Cortez"
                   value={solicitud.nombre}
                   onChange={onInputChange}
-
+                  maxLength={30}
                 />
               </div>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
@@ -389,19 +359,22 @@ export default function Home(props) {
               </div>
             </div>
 
+              {/* email - contacto*/}
             <div className={"row "}>
-            <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 "}>
-                <label className={styles["title-data"]}>Correo electrónico: </label>
-                <input
-                  type="email"
-                  value={solicitud?.correoElectronico}
-                  className={styles["input-data"]}
-                  name="correoElectronico"
-                  placeholder="Ej: ecortez@gcorreoElectronico.com"
-                  onChange={onInputChange}
-                />
-              </div>
+              <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 "}>
+                  <label className={styles["title-data"]}>Correo electrónico: </label>
+                  <input
+                    type="email"
+                    value={solicitud?.correoElectronico}
+                    className={styles["input-data"]}
+                    name="correoElectronico"
+                    placeholder="Ej: ecortez@gcorreoElectronico.com"
+                    onChange={onInputChange}
+                    maxLength={50}
 
+                  />
+                </div>
+              {/* N° contacto */}
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
                 <label className={styles["title-data"]}>N° de Contacto: </label>
                 <input
@@ -411,12 +384,12 @@ export default function Home(props) {
                   placeholder="Ej: +56 9 1111 1111"
                   value={solicitud?.numeroContacto}
                   onChange={onInputChange}
+                  maxLength={12}
+
                 />
               </div>
-              
             </div>
-
-
+              {/* Origen - Destino */}
             <div className={"row"}>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
                 <label className={styles["title-data"]}>Origen del viaje: </label>
@@ -467,6 +440,7 @@ export default function Home(props) {
               </div>
             </div>
 
+              {/* pasajeros */}
             <div className={`${styles.spaceAround} row`}>
                 <div className={"col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6"}>
                   <label className={styles["title-data"]}>Cantidad de Pasajero:</label>
@@ -487,6 +461,7 @@ export default function Home(props) {
                 </div>
             </div>
 
+              {/* mensaje */}
             <div className={"row"}>
               <div className={"col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12"}>
                 <label className={styles["title-data"]}>Mensaje: </label>
@@ -501,6 +476,14 @@ export default function Home(props) {
                 />
               </div>
             </div>
+            {isLoading ?
+            <div className="d-flex justify-content-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden"></span>
+              </div>
+            </div> : ''
+          }
+              {/* boton */}
             <div className={"row"}>
               <div className={"col-12"}>
                 <div className={styles["grupo-campos"]}>
@@ -529,20 +512,20 @@ export default function Home(props) {
           </div>
         
         </div>
-        {mostrarPopup &&
-                    (tipoMostrar === "ERROR" ? (
-                        <Popup
-                            modalKey={ModalEntities.request_bad_viajes_special}
-                            modalClose={cerrarPopup}
-                            modalMethods={cerrarPopup}
-                        />
-                    ) : (
-                        <Popup
-                            modalKey={ModalEntities.request_for_viajes_special}
-                            modalClose={cerrarPopup}
-                            modalMethods={cerrarPopup}
-                        />
-                    ))}
+        {mostrarPopup && (
+          <Popup
+            modalKey={ModalEntities.correo_viajes_special}
+            modalClose={cerrarPopup}
+            modalMethods={cerrarPopup}
+          />
+        )}
+        {mostrarPopupError && (
+          <Popup
+            modalKey={ModalEntities.bad_viajes_special}
+            modalClose={cerrarPopupError}
+            modalMethods={cerrarPopupError}
+          />
+        )}
       </div>
       <ToastContainer />
       <Footer />
