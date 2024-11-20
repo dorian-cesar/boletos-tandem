@@ -5,7 +5,7 @@ export const FiltroServicios = (props) => {
     const { tipos_servicio = [], filter_tipo = [], filter_horas = [], filter_mascota = [], stage, toggleTipo, toggleHoras, setMascota, mascota_allowed } = props;
 
     return (
-        <div key={stage + "it"} className={ `shadow-sm d-flex flex-col bg-white px-4 py-4 rounded-4 gap-2 ${ styles["custom-shadow"] }` }>
+        <div key={stage + "it"} className={ `shadow-sm d-flex flex-col bg-white px-3 py-4 rounded-4 gap-2 ${ styles["custom-shadow"] }` }>
             <div id="petFilter">
                 <h3>Filtrar por:</h3>
                 <div className="form-check form-switch d-flex align-content-center">
@@ -88,7 +88,7 @@ export const FiltroServicios = (props) => {
                         <label
                             className="custom-control-label"
                             htmlFor="horaCheck2">
-                            &nbsp;12 PM a 19:59 PM
+                            &nbsp;12:00 PM a 19:59 PM
                         </label>
                     </div>
                     <div className="custom-control custom-checkbox">

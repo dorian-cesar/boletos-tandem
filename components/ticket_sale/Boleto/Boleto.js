@@ -102,29 +102,33 @@ const Boleto = (props) => {
 		  <button ref={ sitMapButtonRef } type="button" className="d-none" data-bs-toggle="modal" data-bs-target={ `#parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}` }></button>
       <div className={ `row justify-content-evenly ${ isOpened ? styles["enabled-details"] : "" }` }>
         <div className="d-flex flex-col col px-md-2 py-md-0 p-md-3">
-          <div className="d-flex flex-row justify-content-between p-2">
+          <div className="d-flex flex-row justify-content-between pt-2 p-md-2">
             <img src="img/ui/service-components/service-logo.svg" className="img-fluid" width={ 150 } height={ 25 } alt="Logo Pullman Bus"/>
             {props.mascota == '1' ? <img src="img/icon/logos/paw-outline.svg" /> : <div></div>}
           </div>
-          <div className="row mt-1 pt-2 pb-3 gap-2 gap-md-0 justify-content-evenly">
+          <div className="row mt-0 mt-md-1 p-2 gap-md-0 justify-content-evenly">
             <div className="row col-12 col-md-4 align-items-center text-center">
-              <div className="col-4 col-md-12 d-flex flex-col">
-                <span className="fw-bold mb-2">{props.horaSalida}</span>
+              <div className="col-12 col-md-12 d-flex flex-col">
+                <span className="fw-bold mb-0 mb-md-2">{props.horaSalida}</span>
               </div>
-              <div className="col-8 col-md-12 d-flex flex-col">
+              <div className="col-12 col-md-12 d-flex flex-col">
                 <span className="fw-bold">{props.stage === 0 ? origen?.nombre : destino?.nombre}</span>
                 <span className={ `${ styles["travel-terminal-subtitle"] }` }>{props.terminalOrigen}</span>
                 {/* <span>{props.fechaSalida}</span> */}
               </div>
             </div>
-            <div className="col-12 col-md-4 align-self-center d-flex flex-col text-center align-items-center">
-              <span className={`fw-normal ${ styles["travel-duration"]}`}>Duración: {duracion}</span>
+            <div className="col-12 col-md-4 align-self-center d-flex flex-col text-center align-items-center p-0">
+              <span className={`fw-normal d-block d-md-none ${ styles["travel-duration"]}`}>Duración: {duracion}</span>
+              <div className="d-none d-md-block">
+                <p className="m-0 text-primary fs-6 fw-bold">Duración:</p>
+                <span className={ `${ styles["travel-duration"]}` }>{duracion}</span>
+              </div>
             </div>
             <div className="row col-12 col-md-4 align-items-center text-center">
-              <div className="col-4 col-md-12 d-flex flex-col">
-                <span className="fw-bold mb-2">{props.horaLlegada}</span>
+              <div className="col-12 col-md-12 d-flex flex-col">
+                <span className="fw-bold mb-0 mb-md-2">{props.horaLlegada}</span>
               </div>
-              <div className="col-8 col-md-12 d-flex flex-col">
+              <div className="col-12 col-md-12 d-flex flex-col">
                 <span className="fw-bold">{props.stage === 0 ? destino?.nombre : origen?.nombre}</span>
                 <span className={ `${ styles["travel-terminal-subtitle"] }` }>{props.terminalDestino}</span>
                 {/* <span>{props.fechaLlegada}</span> */}
@@ -132,8 +136,8 @@ const Boleto = (props) => {
             </div>
           </div>
         </div>
-        <div className={ `col-5 col-sm-4 d-flex flex-col p-md-3 p-xl-2 justify-content-evenly ${ styles['border-dashed']} gap-3` }>
-          <div className={ `d-grid p-0 p-md-2 justify-content-center fw-bold gap-2` }>
+        <div className={ `col-5 col-sm-4 d-flex flex-col p-md-3 p-xl-2 justify-content-between justify-content-md-evenly ${ styles['border-dashed']} gap-3` }>
+          <div className={ `d-grid pt-5 p-0 p-md-2 justify-content-center fw-bold gap-2` }>
             { props.tarifaPrimerPisoInternet && (
               props.tarifaValor && props.tarifaValor.primerPisoInternet ? 
               (<div className="d-flex flex-col flex-md-row gap-md-2 text-center">Piso 1 desde: <b className="text-primary">{ clpFormat.format(props.tarifaValor.primerPisoInternet) }</b></div>) :
@@ -145,7 +149,7 @@ const Boleto = (props) => {
               (<div className="d-flex flex-col flex-md-row gap-md-2 text-center">Piso 2 desde: <b className="text-primary">${ props.tarifaSegundoPisoInternet }</b></div>)
             ) }
           </div>
-          <div className="d-grid">
+          <div className="d-grid pb-2 pb-md-0">
             <button type="button" className="btn btn-primary border-0 rounded-3" onClick={handleOpenPane}>
               Comprar
             </button>
