@@ -216,7 +216,7 @@ export default function Home(props: HomeProps) {
     dispatch(limpiarListaCarrito(null));
   }, [resumen])
 
-  useEffect(() => agregarEventoTagManager(), [totalPagar, codigo]);
+  useEffect(() => agregarEventoTagManager(), [totalPagar, codigo, carro]);
 
   const descargarBoletos = () =>{
     console.log(props);
