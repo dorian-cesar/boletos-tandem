@@ -2644,3 +2644,12 @@ line-height: normal;
   border-bottom: 1px dotted #000;
   padding-bottom: 10px;
 }
+
+.dotted-top {
+  border-top: 1px dotted #000;
+  padding-top: 10px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

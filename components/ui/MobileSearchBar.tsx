@@ -177,8 +177,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                                     <img src="img\icon\buttons\pencil.svg" width={24} height={24}/>
                                 </button>
                             ) : (
-                                <span className="badge text-bg-secondary bg-opacity-50 d-flex align-items-center gap-1">
-                                    <img src='img\ui\service-components\time-outline.svg' width={16} height={16}/>
+                                <span className="badge text-bg-secondary bg-opacity-50 d-flex align-items-center gap-1 text-center justify-content-center">
                                     { timeToEnd }
                                 </span>
                             )

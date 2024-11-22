@@ -15,6 +15,7 @@ const DatosPasajero = (props) => {
   const [cantidadEquipaje, setCantidadEquipaje] = useState(0);
 
   function retornarDatosCompradorUsuario() {
+    debugger;
     let asientoTemporal = { ...asiento };
     asientoTemporal['nombre'] = usuario?.nombres;
     asientoTemporal['apellido'] = usuario?.apellidoPaterno;
@@ -26,6 +27,8 @@ const DatosPasajero = (props) => {
   }
 
   useEffect(() => {
+    debugger;
+    
     let asientoTemporal = { ...asiento };
     asientoTemporal["tipoDocumento"] = "R";
     const infoToDispatch = {

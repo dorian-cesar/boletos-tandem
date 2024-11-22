@@ -427,6 +427,8 @@ export const ResumenViaje = (props) => {
             };
             let data;
             try {
+              sessionStorage.setItem('purchase_info', JSON.stringify(informacionAgrupada));
+
               const response = await axios.post(
                 "/api/coupon/canjear-cuponera",
                 canjearCuponera
@@ -463,6 +465,8 @@ export const ResumenViaje = (props) => {
           JSON.stringify(resumenCompra),
           secret
         );
+
+        sessionStorage.setItem('purchase_info', JSON.stringify(informacionAgrupada));
 
         const response = await fetch(`/api/ticket_sale/guardar-multi-carro`, {
           method: "POST",
