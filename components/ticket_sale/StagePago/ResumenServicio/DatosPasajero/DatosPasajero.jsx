@@ -167,34 +167,37 @@ const DatosPasajero = (props) => {
             </div>
           </div>
           <div className={"col-12 col-md-6"}>
-            <div className={"row"}>
-              <div className={"col"}>
-                <label className={"contenedor"}>
-                  <label className={styles["label"]}>RUT</label>
-                  <input
-                    type="checkbox"
-                    checked={asiento["tipoDocumento"] == "R" ? "checked" : ""}
-                    value="R"
-                    name="tipoDocumento"
-                    disabled={ usuario }
-                    onChange={(e) => setDataComprador(e.target)}
-                  />
-                  <span className="checkmark"></span>
-                </label>
-              </div>
-              <div className={"col"}>
-                <label className={"contenedor"}>
-                  <label className={styles["label"]}>DNI/Pasaporte</label>
-                  <input
-                    type="checkbox"
-                    checked={asiento["tipoDocumento"] == "P" ? "checked" : ""}
-                    value="P"
-                    name="tipoDocumento"
-                    disabled={ usuario }
-                    onChange={(e) => setDataComprador(e.target)}
-                  />
-                  <span className={"checkmark"}></span>
-                </label>
+            <div className="container">
+
+              <div className={"row"}>
+                <div className={"col-4 p-0"}>
+                  <label className={"contenedor"}>
+                    <label className={styles["label"]}>RUT</label>
+                    <input
+                      type="checkbox"
+                      checked={asiento["tipoDocumento"] == "R" ? "checked" : ""}
+                      value="R"
+                      name="tipoDocumento"
+                      disabled={ usuario }
+                      onChange={(e) => setDataComprador(e.target)}
+                    />
+                    <span className="checkmark"></span>
+                  </label>
+                </div>
+                <div className={"col-6 p-0"}>
+                  <label className={"contenedor"}>
+                    <label className={styles["label"]}>DNI/Pasaporte</label>
+                    <input
+                      type="checkbox"
+                      checked={asiento["tipoDocumento"] == "P" ? "checked" : ""}
+                      value="P"
+                      name="tipoDocumento"
+                      disabled={ usuario }
+                      onChange={(e) => setDataComprador(e.target)}
+                    />
+                    <span className={"checkmark"}></span>
+                  </label>
+                </div>
               </div>
             </div>
             <div className={"grupo-campos"}>

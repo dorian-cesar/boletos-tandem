@@ -2,6 +2,7 @@ import axios from "axios";
 import Layout from "components/Layout";
 import Footer from 'components/Footer';
 import MobileSearchBar from 'components/ui/MobileSearchBar';
+import SearchBar from 'components/ui/SearchBar';
 import BusquedaServicio from 'components/BusquedaServicio/BusquedaServicio';
 import React, { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
@@ -170,15 +171,13 @@ export default function Home(props) {
                 destination={ decryptedData?.destino }
                 stage={ stage }
                 setStage={ setStage }/>
-            <div className="pasajes d-none d-md-block">
-                <div className="container">
-                    <BusquedaServicio
-                        origenes={props.ciudades}
-                        dias={props.dias}
-                        isShowMascota={false}
-                        isHomeComponent={false}/>
-                </div>
-            </div>
+            <SearchBar 
+                startDate={ startDate }
+                endDate={ endDate }
+                origin={ decryptedData?.origen }
+                destination={ decryptedData?.destino }
+                stage={ stage }
+                setStage={ setStage }/>
             <div className="pasajes-compra pb-5">
                 <div className="container">
                     {
