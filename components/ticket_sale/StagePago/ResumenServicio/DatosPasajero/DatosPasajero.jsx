@@ -12,10 +12,10 @@ const DatosPasajero = (props) => {
   const { servicio, asiento, usuario, pasajero = false } = props;
   const dispatch = useDispatch();
 
+  const [informacionAsiento, setInformacionAsiento] = useState({});
   const [cantidadEquipaje, setCantidadEquipaje] = useState(0);
 
   function retornarDatosCompradorUsuario() {
-    debugger;
     let asientoTemporal = { ...asiento };
     asientoTemporal['nombre'] = usuario?.nombres;
     asientoTemporal['apellido'] = usuario?.apellidoPaterno;
@@ -27,8 +27,6 @@ const DatosPasajero = (props) => {
   }
 
   useEffect(() => {
-    debugger;
-    
     let asientoTemporal = { ...asiento };
     asientoTemporal["tipoDocumento"] = "R";
     const infoToDispatch = {
@@ -36,6 +34,7 @@ const DatosPasajero = (props) => {
       asiento: asientoTemporal,
     };
     if (servicio) {
+      setInformacionAsiento(asientoTemporal);
       dispatch(agregarInformacionAsiento(infoToDispatch));
     } else {
       const datosCompradorUsuario = retornarDatosCompradorUsuario();
@@ -52,7 +51,9 @@ const DatosPasajero = (props) => {
 
   function setDataComprador({ name, value }) {
     try {
-      let carro_temp = { ...asiento };
+      let asientoTemporal = {
+        ...informacionAsiento,
+      }
 
       if (asiento["tipoDocumento"] == "R" && name === "rut" && value !== "") {
         value = validarFormatoRut(name, value);
@@ -64,16 +65,17 @@ const DatosPasajero = (props) => {
       }
 
       if( name === 'tipoDocumento') {
-        carro_temp['rut'] = '';
+        asientoTemporal['rut'] = '';
       }
 
-      carro_temp[name] = value;
+      asientoTemporal[name] = value;
       const infoToDispatch = {
         servicio,
-        asiento: carro_temp,
+        asiento: asientoTemporal,
       };
 
       if (servicio) {
+        setInformacionAsiento(asientoTemporal);
         dispatch(agregarInformacionAsiento(infoToDispatch));
 
         //
@@ -85,7 +87,6 @@ const DatosPasajero = (props) => {
         // Eso TKM
         //
         if( asiento.asientoAsociado ) {
-          debugger;
           let asientoMab = { ...servicio.asientos.find((asientoMab) => asientoMab.asiento === asiento.asientoAsociado) };
           asientoMab[name] = value;
           asientoMab["tipoDocumento"] = asiento.tipoDocumento;
@@ -96,7 +97,7 @@ const DatosPasajero = (props) => {
           }));
         }
       } else {
-        dispatch(asignarDatosComprador(carro_temp));
+        dispatch(asignarDatosComprador(asientoTemporal));
       }
     } catch ({ message }) {
       console.error(`Error al agregar informacion del comprador [${message}]`);
@@ -105,12 +106,14 @@ const DatosPasajero = (props) => {
 
   useEffect(() => {
     try {
-      let carro_temp = { ...asiento };
-      carro_temp['cantidadEquipaje'] = cantidadEquipaje;
+      const asientoTemporal = {
+        ...informacionAsiento,
+        cantidadEquipaje
+      }
       
       const infoToDispatch = {
         servicio,
-        asiento: carro_temp,
+        asiento: asientoTemporal,
       };
 
       if (servicio) {
@@ -175,7 +178,7 @@ const DatosPasajero = (props) => {
                     <label className={styles["label"]}>RUT</label>
                     <input
                       type="checkbox"
-                      checked={asiento["tipoDocumento"] == "R" ? "checked" : ""}
+                      checked={asiento["tipoDocumento"] === "R" ? true : false}
                       value="R"
                       name="tipoDocumento"
                       disabled={ usuario }
@@ -189,7 +192,7 @@ const DatosPasajero = (props) => {
                     <label className={styles["label"]}>DNI/Pasaporte</label>
                     <input
                       type="checkbox"
-                      checked={asiento["tipoDocumento"] == "P" ? "checked" : ""}
+                      checked={asiento["tipoDocumento"] === "P" ? true : false}
                       value="P"
                       name="tipoDocumento"
                       disabled={ usuario }
