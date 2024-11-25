@@ -253,7 +253,7 @@ export default function Home(props) {
     });
   }
 
-
+  
 
   return (
     <Layout>
@@ -270,7 +270,7 @@ export default function Home(props) {
         </div>
         <div className={`mb-5 container ${styles["bloque"]} "col-12 col-md-12"`}>
           <h1 className={styles["title-modify-data"]}>
-            Solicita aquí tu(s) viaje(s) especial(es)
+            Solicita aquí tu viaje especial
           </h1>
           {alerta?.visible ? (
             <div className={"alert " + alerta?.type} role="alert">
@@ -283,8 +283,13 @@ export default function Home(props) {
           <div className={"row"}>
             <div className={styles["bloque-texto"]}>
               <p>
-                ¡Experimenta del transporte exclusivo para ti, tu empresa, fundación o club deportivo! Contáctanos ahora para solicitar una cotización
-                personalizada y descubre cómo podemos llevar tu experiencia de transporte al siguiente nivel. ¡Esperamos tu mensaje!
+                Experimenta de un transporte exclusivo
+                para ti, tu empresa, fundación o club
+                deportivo. Contáctanos ahora para
+                solicitar una cotización personalizada y
+                descubre cómo podemos llevar tu
+                experiencia de transporte al siguiente
+                nivel. <strong>¡Esperamos tu mensaje!</strong>
               </p>
             </div>
           </div>

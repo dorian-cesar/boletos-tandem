@@ -204,7 +204,7 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton, modalBod
     },
     [ModalEntities.correo_viajes_special]: {
       title: "¡Correo Enviado!",
-      body: "Hemos recibido tu solicitud. Pronto un ejecutivo comercia se contactará contigo.  ",
+      body: "Hemos recibido tu solicitud. Pronto un ejecutivo comercial se contactará contigo. ",
       buttonMessage: "Volver al inicio",
       imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
       onClick: modalMethods
