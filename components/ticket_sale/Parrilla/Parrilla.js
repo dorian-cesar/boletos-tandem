@@ -710,7 +710,9 @@ const Parrilla = (props) => {
   }
 
   const rellenaEspaciosVacios = (cantidad, largoAsietos) => {
-    return Array.from(Array(cantidad - largoAsietos), (e, i) => {
+    if( !cantidad || !largoAsietos) return;
+    const total = cantidad - largoAsietos;
+    return Array.from(Array(total < 0 ? 0 : total), (e, i) => {
       const uuid = uuidv4();
       return (
         <div key={ uuid } className="col-12 row justify-content-evenly">
