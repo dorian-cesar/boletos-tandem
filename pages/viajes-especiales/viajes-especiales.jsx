@@ -373,7 +373,7 @@ export default function Home(props) {
                     value={solicitud?.correoElectronico}
                     className={styles["input-data"]}
                     name="correoElectronico"
-                    placeholder="Ej: ecortez@gcorreoElectronico.com"
+                    placeholder="Ej: ejemplo@ejemplo.com"
                     onChange={onInputChange}
                     maxLength={50}
 
