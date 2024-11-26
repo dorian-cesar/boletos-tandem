@@ -95,7 +95,8 @@ const ResumenServicio = (props) => {
             key={ `${ asiento.asiento }-key-${ index }` }
             title={ asiento.asientoAsociado ? `Pasajero ${ pasajero } | Asiento ${ asiento.asiento } + Asiento ${ asiento.asientoAsociado } 🐾` : `Pasajero ${ pasajero } | Asiento ${ asiento.asiento }` }
             asiento={ asiento }
-            servicio={ info } />
+            servicio={ info }
+            nacionalidades={ props.nacionalidades } />
         );
       }
     })

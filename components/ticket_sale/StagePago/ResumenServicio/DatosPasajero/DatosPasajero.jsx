@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useId } from "react";
 import styles from "./DatosPasajero.module.css";
 import Rut from "rutjs";
 
@@ -7,13 +7,40 @@ import {
   agregarInformacionAsiento,
   asignarDatosComprador,
 } from "store/usuario/compra-slice";
+import Input from "@components/Input";
+import Select from "react-select";
+
+const customStyles = {
+  control: (provided) => ({
+    ...provided,
+    borderRadius: '16px',
+    display: 'flex',
+    padding: '4px 8px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '10px',
+    alignSelf: 'stretch',
+    border: '1px solid var(--azul-50, #98B1D9)',
+    background: 'var(--Blanco, #FFF)',
+    width: '100%',
+    zIndex: 9999
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    fontSize: '16px',
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: 'normal',
+  }),
+};
 
 const DatosPasajero = (props) => {
-  const { servicio, asiento, usuario, pasajero = false } = props;
+  const { servicio, asiento, usuario, pasajero = false, nacionalidades = [] } = props;
   const dispatch = useDispatch();
 
   const [informacionAsiento, setInformacionAsiento] = useState({});
   const [cantidadEquipaje, setCantidadEquipaje] = useState(0);
+  const [nationalitySelected, setNationalitySelected] = useState("NO_OPTIONS");
 
   function retornarDatosCompradorUsuario() {
     let asientoTemporal = { ...asiento };
@@ -51,6 +78,7 @@ const DatosPasajero = (props) => {
 
   function setDataComprador({ name, value }) {
     try {
+      debugger;
       let asientoTemporal = {
         ...informacionAsiento,
       }
@@ -137,110 +165,241 @@ const DatosPasajero = (props) => {
     }
   }
 
+  function returnNationalitiesArray() {
+    const nacionalidadesArray = [];
+
+    nacionalidades.map((nacionalidad) => {
+      nacionalidadesArray.push({
+        value: nacionalidad.valor,
+        label: nacionalidad.descripcion,
+      })
+    });
+
+    return nacionalidadesArray;
+  }
+
   return (
     <>
       <div className={styles["container"]}>
         <div className={"row"}>
-          <div className={"col-12 col-md-6"}>
-            <div className={"grupo-campos"}>
-              <label className={styles["label"]}>Nombres</label>
-              <input
-                type="text"
-                value={asiento["nombre"]}
-                name="nombre"
-                placeholder="Ej: Juan Andrés"
-                className={styles["input"]}
-                disabled={ usuario }
-                onChange={(e) => setDataComprador(e.target)}
-              />
-            </div>
-          </div>
-          <div className={"col-12 col-md-6"}>
-            <div className={"grupo-campos"}>
-              <label className={styles["label"]}>Apellidos</label>
-              <input
-                type="text"
-                value={asiento["apellido"]}
-                name="apellido"
-                placeholder="Ej: Espinoza Arcos"
-                className={styles["input"]}
-                disabled={ usuario }
-                onChange={(e) => setDataComprador(e.target)}
-              />
-            </div>
-          </div>
-          <div className={"col-12 col-md-6"}>
-            <div className="container">
+          {
+            pasajero ? (
+              <>
+                <div className={"col-12 col-md-6 mt-1"}>
+                  <div className="container">
+                    <div className={"row"}>
+                      <div className={"col-4 p-0"}>
+                        <label className={"contenedor"}>
+                          <label className={styles["label"]}>RUT</label>
+                          <input
+                            type="checkbox"
+                            checked={asiento["tipoDocumento"] === "R" ? true : false}
+                            value="R"
+                            name="tipoDocumento"
+                            disabled={ usuario }
+                            onChange={(e) => setDataComprador(e.target)}
+                          />
+                          <span className="checkmark"></span>
+                        </label>
+                      </div>
+                      <div className={"col-6 p-0"}>
+                        <label className={"contenedor"}>
+                          <label className={styles["label"]}>DNI/Pasaporte</label>
+                          <input
+                            type="checkbox"
+                            checked={asiento["tipoDocumento"] === "P" ? true : false}
+                            value="P"
+                            name="tipoDocumento"
+                            disabled={ usuario }
+                            onChange={(e) => setDataComprador(e.target)}
+                          />
+                          <span className={"checkmark"}></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={"grupo-campos"}>
+                    <input
+                      type="text"
+                      value={asiento["rut"]}
+                      name="rut"
+                      placeholder="Ej: 111111111"
+                      className={`${
+                        Array.isArray(asiento.errors) &&
+                        asiento.errors.includes("rut")
+                          ? "is-invalid"
+                          : ""
+                      } ${styles["input"]}`}
+                      disabled={ usuario }
+                      onChange={(e) => setDataComprador(e.target)}
+                    />
+                  </div>
+                </div>
+                <div className={"col-12 col-md-6"}>
+                  <div className={"grupo-campos"}>
+                    <label className={ `${styles["label"]} mb-2` }>Nacionalidad</label>
+                    {
+                      nacionalidades && nacionalidades.length > 0 ? (
+                        <Select
+                          options={ returnNationalitiesArray() }
+                          styles={ customStyles }
+                          className="mt-1"
+                          onChange={(e) => {
+                            setDataComprador({ name: 'nacionalidad', ...e});
+                            setNationalitySelected(e.value);
+                          }}
+                          instanceId={useId()}
+                          placeholder={ "Ej: Chilena" }
+                          menuPosition="fixed"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          value={asiento["nacionalidad"]}
+                          name="nacionalidad"
+                          placeholder="Ej: Chilena"
+                          className={styles["input"]}
+                          disabled={ usuario }
+                          onChange={(e) => setDataComprador(e.target)}
+                        />
+                      )
+                    }
+                  </div>
+                </div>
+                <div className={"col-12 col-md-6"}>
+                  <div className={"grupo-campos"}>
+                    <label className={styles["label"]}>Nombres</label>
+                    <input
+                      type="text"
+                      value={asiento["nombre"]}
+                      name="nombre"
+                      placeholder="Ej: Juan Andrés"
+                      className={styles["input"]}
+                      disabled={ usuario }
+                      onChange={(e) => setDataComprador(e.target)}
+                    />
+                  </div>
+                </div>
+                <div className={"col-12 col-md-6"}>
+                  <div className={"grupo-campos"}>
+                    <label className={styles["label"]}>Apellidos</label>
+                    <input
+                      type="text"
+                      value={asiento["apellido"]}
+                      name="apellido"
+                      placeholder="Ej: Espinoza Arcos"
+                      className={styles["input"]}
+                      disabled={ usuario }
+                      onChange={(e) => setDataComprador(e.target)}
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className={"col-12 col-md-6"}>
+                  <div className={"grupo-campos"}>
+                    <label className={styles["label"]}>Nombres</label>
+                    <input
+                      type="text"
+                      value={asiento["nombre"]}
+                      name="nombre"
+                      placeholder="Ej: Juan Andrés"
+                      className={styles["input"]}
+                      disabled={ usuario }
+                      onChange={(e) => setDataComprador(e.target)}
+                    />
+                  </div>
+                </div>
+                <div className={"col-12 col-md-6"}>
+                  <div className={"grupo-campos"}>
+                    <label className={styles["label"]}>Apellidos</label>
+                    <input
+                      type="text"
+                      value={asiento["apellido"]}
+                      name="apellido"
+                      placeholder="Ej: Espinoza Arcos"
+                      className={styles["input"]}
+                      disabled={ usuario }
+                      onChange={(e) => setDataComprador(e.target)}
+                    />
+                  </div>
+                </div>
+                <div className={"col-12 col-md-6"}>
+                  <div className="container">
 
-              <div className={"row"}>
-                <div className={"col-4 p-0"}>
-                  <label className={"contenedor"}>
-                    <label className={styles["label"]}>RUT</label>
+                    <div className={"row"}>
+                      <div className={"col-4 p-0"}>
+                        <label className={"contenedor"}>
+                          <label className={styles["label"]}>RUT</label>
+                          <input
+                            type="checkbox"
+                            checked={asiento["tipoDocumento"] === "R" ? true : false}
+                            value="R"
+                            name="tipoDocumento"
+                            disabled={ usuario }
+                            onChange={(e) => setDataComprador(e.target)}
+                          />
+                          <span className="checkmark"></span>
+                        </label>
+                      </div>
+                      <div className={"col-6 p-0"}>
+                        <label className={"contenedor"}>
+                          <label className={styles["label"]}>DNI/Pasaporte</label>
+                          <input
+                            type="checkbox"
+                            checked={asiento["tipoDocumento"] === "P" ? true : false}
+                            value="P"
+                            name="tipoDocumento"
+                            disabled={ usuario }
+                            onChange={(e) => setDataComprador(e.target)}
+                          />
+                          <span className={"checkmark"}></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={"grupo-campos"}>
                     <input
-                      type="checkbox"
-                      checked={asiento["tipoDocumento"] === "R" ? true : false}
-                      value="R"
-                      name="tipoDocumento"
+                      type="text"
+                      value={asiento["rut"]}
+                      name="rut"
+                      placeholder="Ej: 111111111"
+                      className={`${
+                        Array.isArray(asiento.errors) &&
+                        asiento.errors.includes("rut")
+                          ? "is-invalid"
+                          : ""
+                      } ${styles["input"]}`}
                       disabled={ usuario }
                       onChange={(e) => setDataComprador(e.target)}
                     />
-                    <span className="checkmark"></span>
-                  </label>
+                  </div>
                 </div>
-                <div className={"col-6 p-0"}>
-                  <label className={"contenedor"}>
-                    <label className={styles["label"]}>DNI/Pasaporte</label>
+                <div className={"col-12 col-md-6"}>
+                  <div className={"row"}>
+                    <div className={"col"}>
+                      <label className={styles["container-text"]}>
+                        <label className={styles["label"]}>E-mail</label>
+                      </label>
+                    </div>
+                    <div className={"col"}></div>
+                  </div>
+                  <div className={"grupo-campos"}>
                     <input
-                      type="checkbox"
-                      checked={asiento["tipoDocumento"] === "P" ? true : false}
-                      value="P"
-                      name="tipoDocumento"
+                      type="email"
+                      value={asiento["email"]}
+                      name="email"
+                      placeholder="Ej: correo@correo.cl"
+                      className={styles["input"]}
                       disabled={ usuario }
                       onChange={(e) => setDataComprador(e.target)}
                     />
-                    <span className={"checkmark"}></span>
-                  </label>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className={"grupo-campos"}>
-              <input
-                type="text"
-                value={asiento["rut"]}
-                name="rut"
-                placeholder="Ej: 111111111"
-                className={`${
-                  Array.isArray(asiento.errors) &&
-                  asiento.errors.includes("rut")
-                    ? "is-invalid"
-                    : ""
-                } ${styles["input"]}`}
-                disabled={ usuario }
-                onChange={(e) => setDataComprador(e.target)}
-              />
-            </div>
-          </div>
-          <div className={"col-12 col-md-6"}>
-            <div className={"row"}>
-              <div className={"col"}>
-                <label className={styles["container-text"]}>
-                  <label className={styles["label"]}>E-mail</label>
-                </label>
-              </div>
-              <div className={"col"}></div>
-            </div>
-            <div className={"grupo-campos"}>
-              <input
-                type="email"
-                value={asiento["email"]}
-                name="email"
-                placeholder="Ej: correo@correo.cl"
-                className={styles["input"]}
-                disabled={ usuario }
-                onChange={(e) => setDataComprador(e.target)}
-              />
-            </div>
-          </div>
+              </>
+            )
+          }
           {
             pasajero == true && (
               <div className="col-12 col-md-12">

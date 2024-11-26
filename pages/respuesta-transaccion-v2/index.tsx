@@ -144,7 +144,7 @@ export default function Home(props: HomeProps) {
               datos.cantidadAsientos += 1;
               datos.total += element.valorAsiento;
             });
-            idaNombre = `Salida, ${format(fechaIda, "ddd D MMM")}`;
+            idaNombre = `Salida, ${format(fechaIda, "ddd D MMM", "es")}`;
             datos.totalFormateado = clpFormat.format(datos.total);
             carritoIda.detalle.push(datos);
           });
@@ -172,7 +172,7 @@ export default function Home(props: HomeProps) {
             });
             datos.totalFormateado = clpFormat.format(datos.total);
             carritoVuelta.detalle.push(datos);
-            vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM")}`;
+            vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM", "es")}`;
           });
         }
       });
@@ -274,7 +274,7 @@ export default function Home(props: HomeProps) {
                                           </ul>
                                           <div className={styles['resumen-servicio']}>
                                             <span>Cantidad de Asientos: {detalleItem.cantidadAsientos}</span>
-                                            <b>{detalleItem.total}</b>
+                                            <b>{detalleItem.totalFormateado}</b>
                                           </div>
                                         </div>
                                     ))}

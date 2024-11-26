@@ -155,7 +155,7 @@ const StagePago = (props) => {
   return (
     <main className={ `${ styles["main-content"] } pt-2` }>
       <section className={styles["info-list"]}>
-        <ResumenServicio open={true} />
+        <ResumenServicio open={true} nacionalidades={ nacionalidades }/>
         <Acordeon title="Datos del comprador" open={true}>
           <div className="form-check">
             <input

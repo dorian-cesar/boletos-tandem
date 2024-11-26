@@ -298,10 +298,15 @@ export const getServerSideProps = withIronSessionSsr(async function ({req, res, 
         { id_ciudad: query.origen }
     );
 
+    let nationalities = await axios.get(
+        publicRuntimeConfig.site_url + "/api/nacionalidades"
+    );
+
     return {
         props: {
             ciudades: ciudades.data,
-            destinos: destinos.data
+            destinos: destinos.data,
+            nacionalidades: nationalities.data
         },
     };
 }, sessionOptions);

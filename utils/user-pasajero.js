@@ -62,18 +62,6 @@ export function newIsValidPasajero(pasajero) {
             error: ''
         };
 
-        if ( !pasajero.nombre || pasajero.nombre == '') {
-            validator.valid = false;
-            validator.error = `Debe ingresar un nombre para pasajero del asiento ${ pasajero.asiento }`;
-            return validator;
-        }
-
-        if ( !pasajero.apellido || pasajero.apellido == '' ) {
-            validator.valid = false;
-            validator.error = `Debe ingresar un apellido para pasajero del asiento ${ pasajero.asiento }`;
-            return validator;
-        }
-
         if(pasajero.tipoDocumento == 'R'){
             if (!pasajero.rut || pasajero.rut == '') {
                 validator.valid = false;
@@ -97,16 +85,22 @@ export function newIsValidPasajero(pasajero) {
             }
         }
         
-        if ( !pasajero.email || pasajero.email == '' ) {
+        if ( !pasajero.nacionalidad || pasajero.nacionalidad == '' ) {
             validator.valid = false;
-            validator.error = `Debe ingresar un email para pasajero del asiento ${ pasajero.asiento }`;
+            validator.error = `Debe ingresar una nacionalidad para pasajero del asiento ${ pasajero.asiento }`;
             return validator;
-        } else {
-            if ( !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(pasajero.email) ) {
-                validator.valid = false;
-                validator.error = `Debe ingresar un email válido para pasajero del asiento ${ pasajero.asiento }`;
-                return validator;
-            }
+        }
+
+        if ( !pasajero.nombre || pasajero.nombre == '') {
+            validator.valid = false;
+            validator.error = `Debe ingresar un nombre para pasajero del asiento ${ pasajero.asiento }`;
+            return validator;
+        }
+
+        if ( !pasajero.apellido || pasajero.apellido == '' ) {
+            validator.valid = false;
+            validator.error = `Debe ingresar un apellido para pasajero del asiento ${ pasajero.asiento }`;
+            return validator;
         }
 
         return validator;

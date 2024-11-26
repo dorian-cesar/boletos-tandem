@@ -8,11 +8,11 @@ import DatosPasajero from "../DatosPasajero/DatosPasajero";
 
 
 const InformacionPasajero = (props) => {
-    const { asiento, title, servicio } = props;
+    const { asiento, title, servicio, nacionalidades } = props;
     return (
         <>
             <Acordeon title={ title } open={ true }>
-                <DatosPasajero asiento={ asiento } servicio={ servicio } pasajero={ true } />
+                <DatosPasajero asiento={ asiento } servicio={ servicio } pasajero={ true } nacionalidades={ nacionalidades } />
             </Acordeon> 
         </>
     )
