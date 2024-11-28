@@ -2,12 +2,11 @@ import { useEffect, useState, useId } from "react";
 import styles from "./DatosPasajero.module.css";
 import Rut from "rutjs";
 
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 import {
   agregarInformacionAsiento,
   asignarDatosComprador,
 } from "store/usuario/compra-slice";
-import Input from "@components/Input";
 import Select from "react-select";
 
 import axios from "axios"
@@ -45,10 +44,10 @@ const DatosPasajero = (props) => {
   const [nationalitySelected, setNationalitySelected] = useState(null);
 
   function retornarDatosCompradorUsuario() {
-    let asientoTemporal = { ...asiento };
+    let asientoTemporal = { ...informacionAsiento };
     asientoTemporal['nombre'] = usuario?.nombres;
     asientoTemporal['apellido'] = usuario?.apellidoPaterno;
-    asientoTemporal['tipoDocumento'] = usuario?.tipoDocumento;
+    asientoTemporal['tipoDocumento'] = usuario?.tipoDocumento || 'R';
     asientoTemporal['rut'] = usuario?.rut;
     asientoTemporal['email'] = usuario?.mail;
     asientoTemporal['cantidadEquipaje'] = usuario?.cantidadEquipaje || 0;
@@ -67,6 +66,7 @@ const DatosPasajero = (props) => {
       dispatch(agregarInformacionAsiento(infoToDispatch));
     } else {
       const datosCompradorUsuario = retornarDatosCompradorUsuario();
+      setInformacionAsiento(datosCompradorUsuario ? datosCompradorUsuario : asientoTemporal);
       dispatch(asignarDatosComprador(usuario !== null ? datosCompradorUsuario : asientoTemporal));
     }
   }, []);
@@ -105,7 +105,6 @@ const DatosPasajero = (props) => {
       };
 
       if (servicio) {
-        setInformacionAsiento(asientoTemporal);
         dispatch(agregarInformacionAsiento(infoToDispatch));
 
         //
@@ -129,6 +128,7 @@ const DatosPasajero = (props) => {
       } else {
         dispatch(asignarDatosComprador(asientoTemporal));
       }
+      setInformacionAsiento(asientoTemporal);
     } catch ({ message }) {
       console.error(`Error al agregar informacion del comprador [${message}]`);
     }
