@@ -4,7 +4,7 @@ import styles from "./ResumenViaje.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo";
 import {
-  newIsValidPasajero,
+  newIsValidPasajeroCompra,
   newIsValidComprador,
 } from "../../../utils/user-pasajero";
 import { toast } from "react-toastify";
@@ -523,7 +523,7 @@ export const ResumenViaje = (props) => {
       informacionAgrupada.forEach((servicio) => {
         servicio.asientos.forEach((asiento) => {
           if (!validator || validator.valid) {
-            validator = newIsValidPasajero(asiento);
+            validator = newIsValidPasajeroCompra(asiento);
           }
         });
       });

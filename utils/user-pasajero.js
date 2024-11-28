@@ -54,8 +54,67 @@ export function isValidPasajero(pasajero, indexPasajero, direccionRecorrido, set
     }
 };
 
-
 export function newIsValidPasajero(pasajero) {
+    try {
+        let validator = {
+            valid: true,
+            error: ''
+        };
+
+        if ( !pasajero.nombre || pasajero.nombre == '') {
+            validator.valid = false;
+            validator.error = `Debe ingresar un nombre para pasajero del asiento ${ pasajero.asiento }`;
+            return validator;
+        }
+
+        if ( !pasajero.apellido || pasajero.apellido == '' ) {
+            validator.valid = false;
+            validator.error = `Debe ingresar un apellido para pasajero del asiento ${ pasajero.asiento }`;
+            return validator;
+        }
+
+        if(pasajero.tipoDocumento == 'R'){
+            if (!pasajero.rut || pasajero.rut == '') {
+                validator.valid = false;
+                validator.error = `Debe ingresar un rut para pasajero del asiento ${ pasajero.asiento }`;
+                return validator;
+            } else {
+                const rutValidacion = new Rut(pasajero.rut);
+                if ( !rutValidacion.isValid ) {
+                    validator.valid = false;
+                    validator.error = `Debe ingresar un rut válido para pasajero del asiento ${ pasajero.asiento }`;
+                    return validator;
+                }
+            }
+        }
+
+        if(pasajero.tipoDocumento == 'P') {
+            if (!pasajero.rut || pasajero.rut == '') {
+                validator.valid = false;
+                validator.error = `Debe ingresar un numero de pasaporte para pasajero del asiento ${ pasajero.asiento }`;
+                return validator;
+            }
+        }
+        
+        if ( !pasajero.email || pasajero.email == '' ) {
+            validator.valid = false;
+            validator.error = `Debe ingresar un email para pasajero del asiento ${ pasajero.asiento }`;
+            return validator;
+        } else {
+            if ( !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(pasajero.email) ) {
+                validator.valid = false;
+                validator.error = `Debe ingresar un email válido para pasajero del asiento ${ pasajero.asiento }`;
+                return validator;
+            }
+        }
+
+        return validator;
+    } catch ({ message }) {
+        console.error(`Error al validar pasajero [${ message }]`);
+    }
+}
+
+export function newIsValidPasajeroCompra(pasajero) {
     try {
         let validator = {
             valid: true,
