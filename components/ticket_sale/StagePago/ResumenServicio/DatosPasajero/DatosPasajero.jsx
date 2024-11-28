@@ -135,6 +135,7 @@ const DatosPasajero = (props) => {
   }
 
   useEffect(() => {
+    debugger;
     try {
       const asientoTemporal = {
         ...informacionAsiento,
@@ -215,15 +216,13 @@ const DatosPasajero = (props) => {
         if (servicio) {
           dispatch(agregarInformacionAsiento(infoToDispatch));
         }
+
+        setInformacionAsiento(asientoTemporal);
       } catch (error) {
         console.log(error)
       }
     }
   }
-
-  useEffect(() => {
-    console.log(nationalitySelected);
-  }, [nationalitySelected])
 
   return (
     <>
