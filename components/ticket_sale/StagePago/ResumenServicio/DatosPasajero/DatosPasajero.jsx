@@ -10,6 +10,8 @@ import {
 import Input from "@components/Input";
 import Select from "react-select";
 
+import axios from "axios"
+
 const customStyles = {
   control: (provided) => ({
     ...provided,
@@ -40,7 +42,7 @@ const DatosPasajero = (props) => {
 
   const [informacionAsiento, setInformacionAsiento] = useState({});
   const [cantidadEquipaje, setCantidadEquipaje] = useState(0);
-  const [nationalitySelected, setNationalitySelected] = useState("NO_OPTIONS");
+  const [nationalitySelected, setNationalitySelected] = useState(null);
 
   function retornarDatosCompradorUsuario() {
     let asientoTemporal = { ...asiento };
@@ -178,6 +180,51 @@ const DatosPasajero = (props) => {
     return nacionalidadesArray;
   }
 
+  async function obtenerDatosPasajero() {
+    let asientoTemporal = {
+      ...informacionAsiento,
+    }
+
+    if( asientoTemporal['rut'] && asientoTemporal['tipoDocumento'] === 'R' && asientoTemporal['rut'].length >= 11 ||
+      asientoTemporal['rut'] && asientoTemporal['tipoDocumento'] === 'P' && asientoTemporal['rut'].length >= 6
+    ) {
+      try {
+        debugger;
+        const response = await axios.post(`/api/obtener-datos-pasajero`,{
+          documento: asientoTemporal['rut'],
+          tipodoc: asientoTemporal['tipoDocumento']
+        });
+
+        const { nombres, apellidos, nacionalidad } = response.data;
+  
+        asientoTemporal['nombre'] = nombres;
+        asientoTemporal['apellido'] = apellidos;
+        asientoTemporal['nacionalidad'] = nacionalidad;
+
+        const nacionalidadEncontrada = returnNationalitiesArray().find(nationality => nationality.value === nacionalidad);
+
+        if( nacionalidadEncontrada ) {
+          setNationalitySelected(nacionalidadEncontrada);
+        }
+        
+        const infoToDispatch = {
+          servicio,
+          asiento: asientoTemporal,
+        };
+  
+        if (servicio) {
+          dispatch(agregarInformacionAsiento(infoToDispatch));
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    console.log(nationalitySelected);
+  }, [nationalitySelected])
+
   return (
     <>
       <div className={styles["container"]}>
@@ -232,6 +279,7 @@ const DatosPasajero = (props) => {
                       } ${styles["input"]}`}
                       disabled={ usuario }
                       onChange={(e) => setDataComprador(e.target)}
+                      onBlur={obtenerDatosPasajero}
                     />
                   </div>
                 </div>
@@ -242,11 +290,12 @@ const DatosPasajero = (props) => {
                       nacionalidades && nacionalidades.length > 0 ? (
                         <Select
                           options={ returnNationalitiesArray() }
+                          value={ nationalitySelected }
                           styles={ customStyles }
                           className="mt-1"
                           onChange={(e) => {
                             setDataComprador({ name: 'nacionalidad', ...e});
-                            setNationalitySelected(e.value);
+                            setNationalitySelected(e);
                           }}
                           instanceId={useId()}
                           placeholder={ "Ej: Chilena" }
