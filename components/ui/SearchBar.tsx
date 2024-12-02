@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import { encryptDataNoSave } from "utils/encrypt-data";
-
 import { format } from "@formkit/tempo";
 import dayjs from "dayjs";
 import { useRouter } from 'next/router';
@@ -35,7 +33,6 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
     const live_time = useSelector((state: any) => state.compra?.live_time) || 0;
 
     const updateDates = () => {
-        debugger;
         if (activeDate) {
             const prev = new Date(activeDate);
             const next = new Date(activeDate);
@@ -49,7 +46,6 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
     };
 
     useEffect(() => {
-        console.log("Props cambiaron:", { startDate: props.startDate, endDate: props.endDate, stage: props.stage });
         if( props.endDate && props.stage === 1 ) {
             setActiveDate(props.endDate);
         } else if( props.startDate && props.stage === 0 ) {

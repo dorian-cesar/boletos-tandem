@@ -21,6 +21,7 @@ type MobileSearchBarProps = {
     stage: number;
     petAllowed: boolean;
     setStage: Function;
+    componentSearch: Function;
 }
 
 export default function MobileSearchBar(props:MobileSearchBarProps) {
@@ -48,13 +49,12 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
     };
 
     useEffect(() => {
-        debugger;
         if( props.endDate && props.stage === 1 ) {
             setActiveDate(props.endDate);
         } else if( props.startDate && props.stage === 0 ) {
             setActiveDate(props.startDate);
         }
-    }, [props.stage])
+    }, [props.stage, props.startDate, props.endDate])
 
     useEffect(() => {
         updateDates();
@@ -98,20 +98,13 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
         }
     }
 
-    const searchDate = (date:Date) => {
-        debugger;
-        const data = {
-            origen: props.origin,
-            destino: props.destination,
-            startDate: props.stage === 0 ? dayjs(date).format("YYYY-MM-DD") : props.startDate,
-            endDate: props.stage === 1 ? dayjs(date).format("YYYY-MM-DD") : props.endDate,
-            mascota_allowed: false
-        }
-
-        const encriptedData = encryptDataNoSave(data, 'search');
-
-        router.replace(`/comprar?search=${ encriptedData }`).then(() => window.location.reload()).catch(err => console.error(err));
-    }
+    const handleSearchDate = async (date: Date) => {
+        await props.componentSearch(
+            props.stage === 0 ? date : props.startDate,
+            props.stage === 1 ? date : props.endDate
+        );
+        setActiveDate(date);
+    };
 
     const timer = () => {
         const now = new Date().getTime();
@@ -156,7 +149,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
             <header className='container shadow-sm d-block d-md-none sticky-top bg-white rounded-bottom-4 py-2 text-center'>
                 <div className='row text-center justify-content-evenly'>
                     <div className='col-2'>
-                        <img src="img\icon\buttons\chevron-back-circle-outline.svg" width={24} height={24} onClick={ handleBackButton}/>
+                        <img src="img\icon\buttons\chevron-back-circle-outline.svg" width={24} height={24} onClick={ handleBackButton }/>
                     </div>
                     <div className={`${ includeStage() ? 'col-8' : 'col-7' } d-flex justify-content-center align-content-center`}>
                         {
@@ -200,7 +193,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                                     type="button" 
                                     className='btn btn-outline-secondary btn-sm rounded-3 px-2' 
                                     disabled={ checkDate(prevDate) } 
-                                    onClick={ () => searchDate(prevDate) }>
+                                    onClick={ () => handleSearchDate(prevDate) }>
                                     { prevDate && format(prevDate, "ddd, D MMM", "es") }
                                 </button>
                             </div>
@@ -214,7 +207,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                                     type="button" 
                                     className='btn btn-outline-secondary btn-sm rounded-3 px-2' 
                                     disabled={ checkDate(nextDate) }
-                                    onClick={ () => searchDate(nextDate) }>
+                                    onClick={ () => handleSearchDate(nextDate) }>
                                     { nextDate && format(nextDate, "ddd, D MMM", "es") }
                                 </button>
                             </div>
