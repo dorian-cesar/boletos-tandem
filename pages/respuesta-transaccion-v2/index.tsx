@@ -92,17 +92,20 @@ export default function Home(props: HomeProps) {
   const dispatch = useDispatch();
 
   const agregarEventoTagManager = () => {
-    if( !carro || !resumen ) return; 
     try {
-      sendGTMEvent({
-        event: "purchase",
-        value: {
-          currency: "CLP",
-          transaction_id: codigo,
-          value: totalPagar
-        }
-      })
-    } catch (error) {}
+      if( totalPagar > 0 && carro ) {
+        sendGTMEvent({
+          event: "purchase",
+          value: {
+            currency: "CLP",
+            transaction_id: carro.codigo,
+            value: totalPagar
+          }
+        })
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
   
   const obtenerInformacion = () => {
@@ -213,7 +216,7 @@ export default function Home(props: HomeProps) {
     dispatch(limpiarListaCarrito(null));
   }, [resumen])
 
-  useEffect(() => agregarEventoTagManager(), [totalPagar]);
+  useEffect(() => agregarEventoTagManager(), [totalPagar, codigo, carro]);
 
   const descargarBoletos = () =>{
     console.log(props);

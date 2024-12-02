@@ -39,10 +39,10 @@ export default function Home(props) {
   }, []);
 
   useEffect(() => {
-    /*const fechaLimite = new Date(2024, 9, 8);
-    if( new Date() < fechaLimite ) {
+    const fechaLimite = new Date(2024, 11, 8, 23, 59, 59);
+    if( new Date() <= fechaLimite ) {
       setIsShowModalMobile(true);
-    }*/
+    }
   }, [])
 
   return (
