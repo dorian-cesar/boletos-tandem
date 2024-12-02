@@ -21,6 +21,7 @@ type MobileSearchBarProps = {
     stage: number;
     petAllowed: boolean;
     setStage: Function;
+    componentSearch: Function;
 }
 
 export default function MobileSearchBar(props:MobileSearchBarProps) {
@@ -34,6 +35,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
     const live_time = useSelector((state: any) => state.compra?.live_time) || 0;
 
     const updateDates = () => {
+        debugger;
         if (activeDate) {
             const prev = new Date(activeDate);
             const next = new Date(activeDate);
@@ -47,13 +49,13 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
     };
 
     useEffect(() => {
-        debugger;
+        console.log("Props cambiaron:", { startDate: props.startDate, endDate: props.endDate, stage: props.stage });
         if( props.endDate && props.stage === 1 ) {
             setActiveDate(props.endDate);
         } else if( props.startDate && props.stage === 0 ) {
             setActiveDate(props.startDate);
         }
-    }, [props.stage])
+    }, [props.stage, props.startDate, props.endDate])
 
     useEffect(() => {
         updateDates();
@@ -97,20 +99,13 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
         }
     }
 
-    const searchDate = (date:Date) => {
-        debugger;
-        const data = {
-            origen: props.origin,
-            destino: props.destination,
-            startDate: props.stage === 0 ? dayjs(date).format("YYYY-MM-DD") : props.startDate,
-            endDate: props.stage === 1 ? dayjs(date).format("YYYY-MM-DD") : props.endDate,
-            mascota_allowed: false
-        }
-
-        const encriptedData = encryptDataNoSave(data, 'search');
-
-        router.replace(`/comprar?search=${ encriptedData }`).then(() => window.location.reload()).catch(err => console.error(err));
-    }
+    const handleSearchDate = async (date: Date) => {
+        await props.componentSearch(
+            props.stage === 0 ? date : props.startDate,
+            props.stage === 1 ? date : props.endDate
+        );
+        setActiveDate(date);
+    };
 
     const timer = () => {
         const now = new Date().getTime();
@@ -193,7 +188,9 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                             origenes={null}
                             dias={null}
                             isShowMascota={false}
-                            isHomeComponent={false}/>
+                            isHomeComponent={false}
+                            startDate={props.startDate}
+                            endDate={props.endDate}/>
                     </div>
                 </div>
                 {
@@ -204,7 +201,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                                     type="button" 
                                     className='btn btn-outline-secondary btn-sm rounded-3 px-2' 
                                     disabled={ checkDate(prevDate) } 
-                                    onClick={ () => searchDate(prevDate) }>
+                                    onClick={ () => handleSearchDate(prevDate) }>
                                     { prevDate && format(prevDate, "ddd, D MMM", "es") }
                                 </button>
                             </div>
@@ -218,7 +215,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
                                     type="button" 
                                     className='btn btn-outline-secondary btn-sm rounded-3 px-2' 
                                     disabled={ checkDate(nextDate) }
-                                    onClick={ () => searchDate(nextDate) }>
+                                    onClick={ () => handleSearchDate(nextDate) }>
                                     { nextDate && format(nextDate, "ddd, D MMM", "es") }
                                 </button>
                             </div>

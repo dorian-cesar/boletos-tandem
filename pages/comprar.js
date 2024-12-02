@@ -26,7 +26,6 @@ import { agregarOrigenDestino } from "store/usuario/compra-slice";
 import CryptoJS from "crypto-js";
 
 import { generateToken } from 'utils/jwt-auth';
-import Script from "next/script";
 
 registerLocale("es", es);
 
@@ -56,11 +55,11 @@ export default function Home(props) {
     const router = useRouter();
     const decryptedData = router.query.search ? decryptDataNoSaved(router.query.search, 'search') : null;
 
-    const startDate = dayjs(decryptedData?.startDate).isValid() ? dayjs(decryptedData?.startDate).toDate(): null;
-    const endDate = dayjs(decryptedData?.endDate).isValid() ? dayjs(decryptedData?.endDate).toDate() : null;
-    const origen = decryptedData?.origen?.codigo || '';
-    const destino = decryptedData?.destino != "null" ? decryptedData?.destino?.codigo : null;
-    const mascota_allowed = decryptedData?.mascota_allowed || false;
+    const [startDate, setStartDate] = useState(dayjs(decryptedData?.startDate).isValid() ? dayjs(decryptedData?.startDate).toDate(): null);
+    const [endDate, setEndDate] = useState(dayjs(decryptedData?.endDate).isValid() ? dayjs(decryptedData?.endDate).toDate() : null);
+    const [origen, setOrigen] = useState(decryptedData?.origen?.codigo || '');
+    const [destino, setDestino] = useState(decryptedData?.destino != "null" ? decryptedData?.destino?.codigo : null);
+    const [mascotaAllowed, setMascotaAllowed] = useState(decryptedData?.mascota_allowed || false);
 
     const stateCompra = useSelector((state) => state.compra);
 
@@ -141,6 +140,44 @@ export default function Home(props) {
         }
     };
 
+    async function componentSearch(inputStartDate, inputEndDate) {
+        try {
+            setLoadingParrilla(true);
+
+            const token = generateToken();
+            
+            const request = CryptoJS.AES.encrypt(
+                JSON.stringify(new ObtenerParrillaServicioDTO(stage, origen, destino, inputStartDate, inputEndDate)),
+                secret
+            );
+
+            const response = await fetch(`/api/parrilla`, {
+                method: "POST",
+                body: JSON.stringify({ data: request.toString() }),
+                headers: {
+                    Authorization: `Bearer ${ token }`
+                }
+            });
+            
+            const parrilla = await response.json();
+
+            // const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
+            setParrilla(parrilla.map((parrillaMapped, index) => {
+                return {
+                    ...parrillaMapped,
+                    id: index + 1
+                }
+            }));
+
+            setStartDate(inputStartDate);
+            setEndDate(inputEndDate);
+            setLoadingParrilla(false);   
+        } catch (e) {
+            console.error(e)
+            console.error(`Error al obtener parrilla [${ e.message }]`)
+        }
+    };
+
     const stages_active = endDate ? stages : stages.filter((i) => i.kind != "pasajes_2");
 
     // TODO: Descomentar si falla en produccion
@@ -170,14 +207,16 @@ export default function Home(props) {
                 origin={ decryptedData?.origen }
                 destination={ decryptedData?.destino }
                 stage={ stage }
-                setStage={ setStage }/>
+                setStage={ setStage }
+                componentSearch={ componentSearch }/>
             <SearchBar 
                 startDate={ startDate }
                 endDate={ endDate }
                 origin={ decryptedData?.origen }
                 destination={ decryptedData?.destino }
                 stage={ stage }
-                setStage={ setStage }/>
+                setStage={ setStage }
+                componentSearch={ componentSearch }/>
             <div className="pasajes-compra pb-5">
                 <div className="container">
                     {
@@ -197,7 +236,7 @@ export default function Home(props) {
                                 origen={stages_active[stage].kind == "pasajes_1" ? stateCompra.origen : stateCompra.destino}
                                 destino={stages_active[stage].kind == "pasajes_2" ? stateCompra.destino : stateCompra.origen}
                                 setModalMab={setModalMab}
-                                mascota_allowed={mascota_allowed}/> : ('')
+                                mascota_allowed={mascotaAllowed}/> : ('')
                     }
                     {
                         stages_active[stage].kind == "pago" ?

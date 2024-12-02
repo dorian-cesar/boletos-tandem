@@ -32,13 +32,10 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
 ));
 
 const BusquedaServicio = (props) => {
-
-  const buttonRef = useRef();
-
   const router = useRouter();
 
   const dispatch = useDispatch();
-  const listaCarrito = useSelector((state) => state.compra.listaCarrito);
+
   const {
     dias,
     isShowMascota = false,
@@ -50,31 +47,19 @@ const BusquedaServicio = (props) => {
   const [origen, setOrigen] = useState(null);
   const [destino, setDestino] = useState(null);
   const [destinos, setDestinos] = useState([]);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(props.startDate ? props.startDate : null);
+  const [endDate, setEndDate] = useState(props.endDate ? props.endDate : null);
   const [datePickerKey, setDatePickerKey] = useState(0);
-  const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [activeTab, setActiveTab] = useState("Búsqueda de Servicio");
 
   const [mostrarPopup, setMostrarPopup] = useState(false);
 
-  const [user, setUser] = useState();
-  const [disabledButton, setDisabledButton] = useState(true);
   const [origenes, setOrigenes] = useState([]);
-
-  // const captchaRef = useRef();
 
   useEffect(() => {
     getOrigins();
   }, []);
   
-  useEffect(() => {
-    const user = decryptData(LocalStorageEntities.user_auth);
-    setUser(user);
-  }, []);
-
   const abrirPopup = () => {
     setMostrarPopup(true);
   };
@@ -83,14 +68,21 @@ const BusquedaServicio = (props) => {
   };
 
   useEffect(() => {
-    if( router.query.search ) {
-      setDecryptedData(decryptDataNoSaved(router.query.search, 'search'));
-      setStartDate(decryptedData?.startDate ? dayjs(decryptedData.startDate).toDate() : dayjs().toDate());
-      setEndDate(decryptedData?.endDate ? dayjs(decryptedData.endDate).toDate() : null);
-    }
-    if( !decryptedData ) {
-      setStartDate(dayjs().toDate());
-      setEndDate(null);
+    setStartDate(props.startDate);
+    setEndDate(props.endDate);
+  }, [props.startDate, props.endDate])
+
+  useEffect(() => {
+    if( !startDate ) {
+      if( router.query.search ) {
+        setDecryptedData(decryptDataNoSaved(router.query.search, 'search'));
+        setStartDate(decryptedData?.startDate ? dayjs(decryptedData.startDate).toDate() : dayjs().toDate());
+        setEndDate(decryptedData?.endDate ? dayjs(decryptedData.endDate).toDate() : null);
+      }
+      if( !decryptedData ) {
+        setStartDate(dayjs().toDate());
+        setEndDate(null);
+      }
     }
   }, [])
 
