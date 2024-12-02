@@ -256,7 +256,7 @@ export default function Home(props) {
                 <div className="container">
                   <div className="row justify-content-center">
                     <div className="col-12 col-md-6">
-                      <div className="bg-secondary p-3 rounded-4 shadow-s" onClick={() => console.log(passagers) }>
+                      <div className="bg-secondary p-3 rounded-4 shadow-s">
                         <h5 className="text-white fw-bold m-0">Orden de compra: {resumen?.transaction}</h5>
                       </div>
                     </div>
