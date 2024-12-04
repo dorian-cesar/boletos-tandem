@@ -13,7 +13,7 @@ const customStyles = {
     ...provided,
     color: 'var(--azul-100, #3365B4)',
     fontFamily: 'Titillium Web',
-    fontSize: '16px',
+    fontSize: '14px',
     fontStyle: 'normal',
     fontWeight: 400,
     lineHeight: 'normal',
