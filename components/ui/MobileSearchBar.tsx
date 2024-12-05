@@ -6,7 +6,9 @@ import { format } from "@formkit/tempo";
 import dayjs from "dayjs";
 import { useRouter } from 'next/router';
 import BusquedaServicio from 'components/BusquedaServicio/BusquedaServicio';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { limpiarListaCarritoCambioFecha } from 'store/usuario/compra-slice';
 
 type City = {
     codigo: string;
@@ -34,6 +36,8 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
     const router = useRouter();
 
     const live_time = useSelector((state: any) => state.compra?.live_time) || 0;
+
+    const dispatch = useDispatch();
 
     const updateDates = () => {
         if (activeDate) {
@@ -103,6 +107,11 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
             props.stage === 0 ? date : props.startDate,
             props.stage === 1 ? date : props.endDate
         );
+
+        try {
+            dispatch(limpiarListaCarritoCambioFecha({ stage: props.stage }));
+        } catch (error) {}
+
         setActiveDate(date);
     };
 
