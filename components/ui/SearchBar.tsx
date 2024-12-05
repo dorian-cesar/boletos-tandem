@@ -153,7 +153,7 @@ export default function MobileSearchBar(props:MobileSearchBarProps) {
 
     return (
         <>
-            <header className={`container-fluid shadow-sm d-none ${ includeStage() ? 'd-md-block' : 'd-none'} sticky-top bg-white rounded-bottom-4 py-2 text-center`}>
+            <header className={`container-fluid shadow-sm d-none ${ includeStage() ? 'd-md-block' : 'd-none'} sticky-top bg-white rounded-bottom-4 py-2 text-center header-responsive`}>
                 <div className='row text-center justify-content-evenly'>
                     <div className='col-2'>
                         <img src="img\icon\buttons\chevron-back-circle-outline.svg" width={24} height={24} onClick={ handleBackButton}/>

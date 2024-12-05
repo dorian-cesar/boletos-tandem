@@ -2653,3 +2653,8 @@ line-height: normal;
 .cursor-pointer {
   cursor: pointer;
 }
+
+.header-responsive {
+  position: relative;
+  z-index: -1;
+}
