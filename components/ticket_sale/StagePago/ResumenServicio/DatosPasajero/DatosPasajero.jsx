@@ -224,6 +224,19 @@ const DatosPasajero = (props) => {
     }
   }
 
+  const handleDisabledButtonBagagge = () => {
+    if( 
+      !asiento["tipoDocumento"] || asiento["tipoDocumento"] === '' || 
+      !asiento["rut"] || asiento["rut"] === '' ||
+      !asiento["nacionalidad"] || asiento["nacionalidad"] === '' ||
+      !asiento["nombre"] || asiento["nombre"] === '' ||
+      !asiento["apellido"] || asiento["apellido"] === ''
+    ) {
+      return true;
+    }
+    return false; 
+  }
+
   return (
     <>
       <div className={styles["container"]}>
@@ -459,7 +472,7 @@ const DatosPasajero = (props) => {
                     <div className="col-2 col-md-3 d-flex justify-content-center p-0">
                       <button 
                         className={`btn btn-outline-secondary border-2 rounded-circle fw-bold fs-3 d-flex justify-content-center align-items-center ${ styles["button-baggage"] }`}
-                        disabled={ cantidadEquipaje <= 0 }
+                        disabled={ cantidadEquipaje <= 0 || handleDisabledButtonBagagge() }
                         onClick={ () => setCantidadEquipaje(cantidadEquipaje - 1) }>
                         <span className="mb-1">-</span>
                       </button>
@@ -472,7 +485,7 @@ const DatosPasajero = (props) => {
                     <div className="col-2 col-md-3 d-flex justify-content-center p-0">
                       <button 
                         className={`btn btn-outline-secondary border-2 rounded-circle fw-bold fs-3 d-flex justify-content-center align-items-center ${ styles["button-baggage"] }`}
-                        disabled={ cantidadEquipaje >= 1}
+                        disabled={ cantidadEquipaje >= 1 || handleDisabledButtonBagagge() }
                         onClick={ () => setCantidadEquipaje(cantidadEquipaje + 1) }>
                         <span>+</span>
                       </button>
