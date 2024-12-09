@@ -305,12 +305,12 @@ export const ResumenViaje = (props) => {
           }
 
           if (descuentoConvenio) {
-              const montoDescuento = (nuevoAsiento.tarifa * descuentoConvenio.descuento) / 100;
-              const montoUsar = Math.min(montoDescuento, nuevoAsiento.tarifa);
-              nuevoAsiento.precio = Math.max(nuevoAsiento.tarifa - montoUsar, 0);
-              nuevoAsiento.descuento = montoDescuento;
+              const montoDescuento = Math.round((nuevoAsiento.tarifa * descuentoConvenio.descuento) / 100);
+              const montoUsar = Math.round(montoDescuento, nuevoAsiento.tarifa);
+              nuevoAsiento.precio = Math.round(Math.max(nuevoAsiento.tarifa - montoUsar, 0));
+              nuevoAsiento.descuento = Math.round(montoDescuento);
               nuevoAsiento.convenio = convenio;
-              nuevoAsiento.datoConvenio = descuentoConvenio?.descuento
+              nuevoAsiento.datoConvenio = requestConvenio?.atributo
           }
 
           if (   descuentoConvenio?.id === 'COPEC') {
@@ -324,7 +324,7 @@ export const ResumenViaje = (props) => {
       });
 
       agregarEventoTagManager();
-     
+       
       if (medioPago === "CUP") {
         if (resumenCompra.listaCarrito.length > 1) {
           toast.error(
@@ -577,8 +577,8 @@ export const ResumenViaje = (props) => {
       let totalConDescuento = totalOriginal;
   
       if (descuentoConvenio.tipoDescuento === "POR") {
-        const montoDescuento = (totalOriginal * descuentoConvenio.descuento) / 100;
-        totalConDescuento = totalOriginal - montoDescuento;
+        const montoDescuento = Math.round((totalOriginal * descuentoConvenio.descuento) / 100);
+        totalConDescuento = totalOriginal - Math.round(montoDescuento);
       }
      
       setTotalOriginal(totalOriginal);
@@ -603,7 +603,7 @@ export const ResumenViaje = (props) => {
         });
       });
 
-    setTotalPagar(total);
+    setTotalPagar(Math.round(total));
     }
   }, [descuentoConvenio]);
 
