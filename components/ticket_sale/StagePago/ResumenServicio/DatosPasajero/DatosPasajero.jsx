@@ -2,7 +2,7 @@ import { useEffect, useState, useId } from "react";
 import styles from "./DatosPasajero.module.css";
 import Rut from "rutjs";
 
-import {  useDispatch } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 import {
   agregarInformacionAsiento,
   asignarDatosComprador,
@@ -37,6 +37,8 @@ const customStyles = {
 
 const DatosPasajero = (props) => {
   const { servicio, asiento, usuario, pasajero = false, nacionalidades = [] } = props;
+  const { datosComprador } = useSelector((state) => state.compra);
+
   const dispatch = useDispatch();
 
   const [informacionAsiento, setInformacionAsiento] = useState({});
@@ -80,9 +82,12 @@ const DatosPasajero = (props) => {
 
   function setDataComprador({ name, value }) {
     try {
-      debugger;
-      let asientoTemporal = {
-        ...informacionAsiento,
+      let asientoTemporal;
+
+      if( servicio ) {
+        asientoTemporal = { ...informacionAsiento };
+      } else {
+        asientoTemporal = { ...datosComprador };
       }
 
       if (asiento["tipoDocumento"] == "R" && name === "rut" && value !== "") {
@@ -215,6 +220,24 @@ const DatosPasajero = (props) => {
   
         if (servicio) {
           dispatch(agregarInformacionAsiento(infoToDispatch));
+
+          if( asiento.asientoAsociado ) {
+            let asientoMab = { ...servicio.asientos.find((asientoMab) => asientoMab.asiento === asiento.asientoAsociado) };
+
+            asientoMab = {
+              ...asientoMab,
+              rut: asientoTemporal?.rut,
+              tipoDocumento: asientoTemporal?.tipoDocumento,
+              nombre: asientoTemporal?.nombre,
+              apellido: asientoTemporal?.apellido,
+              nacionalidad: asientoTemporal?.nacionalidad
+            }
+  
+            dispatch(agregarInformacionAsiento({
+              servicio,
+              asiento: asientoMab
+            }));
+          }
         }
 
         setInformacionAsiento(asientoTemporal);
