@@ -134,6 +134,7 @@ export class PasajeroListaCarritoDTO {
         this.descuento = asiento?.descuento || 0;
         this.convenio = asiento?.convenio || "";
         this.datoConvenio = asiento?.datoConvenio || "";
+        this.cantidadEquipaje = asiento?.cantidadEquipaje || 0;
     }
 }
 

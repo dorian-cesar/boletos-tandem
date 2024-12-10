@@ -90,6 +90,14 @@ const DatosPasajero = (props) => {
         asientoTemporal = { ...datosComprador };
       }
 
+      if( name === "rut" ) {
+        try {
+          if( typeof(value) === 'string' ) {
+            value = value.toUpperCase();
+          }
+        } catch (error) {}
+      }
+
       if (asiento["tipoDocumento"] == "R" && name === "rut" && value !== "") {
         value = validarFormatoRut(name, value);
       }
