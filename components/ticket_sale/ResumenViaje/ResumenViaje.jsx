@@ -419,7 +419,7 @@ export const ResumenViaje = (props) => {
                 destino: resumenCompra.listaCarrito[0].destino,
                 idOrigen: resumenCompra.listaCarrito[0].origen,
                 idDestino: resumenCompra.listaCarrito[0].destino,
-                rut: datosComprador?.rut
+                rut: resumenCompra.listaCarrito[0].pasajeros[0]?.rut
                   .replace(".", "")
                   .replace(".", ""),
                 tipoDocumento: datosComprador.tipoDocumento,
