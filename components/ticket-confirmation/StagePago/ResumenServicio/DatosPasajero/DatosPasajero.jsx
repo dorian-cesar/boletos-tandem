@@ -46,7 +46,6 @@ const DatosPasajero = (props) => {
 
   function setDataComprador({ name, value }) {
     try {
-      debugger;
       let carro_temp = { ...asiento };
       value = validarFormatoRut(name, value);
 

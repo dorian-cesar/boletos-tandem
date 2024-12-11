@@ -183,8 +183,6 @@ const StagePasajes = (props) => {
             );
         });
 
-        debugger;
-
         if( sortedParrilla.length > 0 ) {
             setServicios(sortedParrilla)
         } else {

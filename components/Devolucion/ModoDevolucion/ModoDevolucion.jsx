@@ -81,7 +81,6 @@ const ModoDevolucion = (props) => {
                 "/api/anulacion",
                 informacionDevolucion
             );
-			debugger;
             if (response.data.status) {
                 setIsLoading(false);
                 setPopUpDevolucionWallet(false);

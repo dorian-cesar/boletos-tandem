@@ -158,7 +158,6 @@ export const ResumenViaje = (props) => {
 
   async function sendToPayment() {
     try {
-      debugger;
       if (valorCobrar < 0) {
         abrirPopup();
       }
@@ -259,7 +258,6 @@ export const ResumenViaje = (props) => {
   }
 
   async function finalizarCambioTBK() {
-    debugger;
     try {
       cerrarPopup();
       let validator = isPaymentValid();
@@ -336,7 +334,6 @@ export const ResumenViaje = (props) => {
   }
 
   async function pagarWebPay() {
-    debugger;
     let resumenCompra = {
       medioDePago: medioPago,
       montoTotal: valorCobrar,

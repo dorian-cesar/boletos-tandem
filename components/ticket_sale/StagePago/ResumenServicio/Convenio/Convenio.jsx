@@ -13,7 +13,6 @@ const Convenio = (props) => {
   const dispatch = useDispatch();
 
   const handleRadioChange = async (id) => {
-    debugger;
     setDescuentoConvenio(null);
     try {
       let request = {

@@ -23,7 +23,6 @@ export const cambioBoletoSlice = createSlice({
     initialState,
     reducers: {
         agregarCambio: (state, action) => {
-            debugger;
             const { archivo, resultado, voucher } = action.payload;
             state.archivo = archivo;
             state.resultado = resultado;

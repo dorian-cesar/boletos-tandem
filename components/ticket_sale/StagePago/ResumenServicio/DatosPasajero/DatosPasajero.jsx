@@ -148,7 +148,6 @@ const DatosPasajero = (props) => {
   }
 
   useEffect(() => {
-    debugger;
     try {
       const asientoTemporal = {
         ...informacionAsiento,
@@ -203,7 +202,6 @@ const DatosPasajero = (props) => {
       asientoTemporal['rut'] && asientoTemporal['tipoDocumento'] === 'P' && asientoTemporal['rut'].length >= 6
     ) {
       try {
-        debugger;
         const response = await axios.post(`/api/obtener-datos-pasajero`,{
           documento: asientoTemporal['rut'],
           tipodoc: asientoTemporal['tipoDocumento']

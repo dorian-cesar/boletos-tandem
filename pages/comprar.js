@@ -105,7 +105,6 @@ export default function Home(props) {
 
     async function searchParrilla(in_stage) {
         try {
-            debugger;
             const stage_active = in_stage ?? stage;
             setLoadingParrilla(true);
 

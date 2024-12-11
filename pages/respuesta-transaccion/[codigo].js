@@ -132,8 +132,6 @@ export default function Home(props) {
       const carro_temp = { ...resumen };
       carro_temp.carro["lista"] = datos;
 
-      debugger;
-
       const paymentMethod = props?.carro.carro.medioPago;
       const amount = props?.carro.carro.monto;
       const tickets = props.carro.carro.boletos;

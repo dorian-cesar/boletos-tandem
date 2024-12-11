@@ -44,7 +44,6 @@ export default function Home(props: HomeProps) {
 
   useEffect(() => {
     try {
-      debugger;
       const data = sessionStorage.getItem('transactionInformation');
       if( data ) {
         const decoded:any = JWT.verify(data, SECRET);
@@ -282,7 +281,6 @@ export default function Home(props: HomeProps) {
     if( purchaseInfo && purchaseInfo.length > 0 ) {
       purchaseInfo.forEach((purchase) => {
         purchase.asientos.forEach((seat) => {
-          debugger;
           if( !seat.tipoMascota ) {
             groupPassagers[seat.rut] = {
               name: seat.nombre,

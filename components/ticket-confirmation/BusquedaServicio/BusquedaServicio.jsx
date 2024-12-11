@@ -103,7 +103,6 @@ useEffect(() => {
 }, [boletoValido]);
 
   async function searchParrilla() {
-    debugger;
     try {
       if(carroCompras.length > 0) {
           useDispatch(limpiarListaCarrito());
