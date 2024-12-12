@@ -243,7 +243,7 @@ export const ResumenViaje = (props) => {
       } catch (error) {
         data = error.response.data;
       }
-      if (data.status) {
+      if ( data.status && data.status >= 200 || data.status <= 299 ) {
         dispatch(agregarCambio(data.object));
         const url = `/respuesta-transaccion-cambio/${data.object.voucher.boleto}`;
         router.push(url);
@@ -360,7 +360,7 @@ export const ResumenViaje = (props) => {
 
     } catch (error) {
 
-      toast.error("Error al completar cambio de boleto", {
+      toast.error(error?.response?.data?.message || "Error al completar cambio de boleto", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
