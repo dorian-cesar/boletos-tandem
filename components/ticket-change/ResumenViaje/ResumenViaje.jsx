@@ -329,11 +329,11 @@ export const ResumenViaje = (props) => {
       encryptDataNoTime(cambiarBoleto, 'CHN_TKT');
 
       if (!isPaymentValid()) return;
-      await pagarWebPay(); 
+      await pagarWebPay( cambiarBoleto ); 
     } catch (error) {}
   }
 
-  async function pagarWebPay() {
+  async function pagarWebPay( canjeBoleto ) {
     let resumenCompra = {
       medioDePago: medioPago,
       montoTotal: valorCobrar,
@@ -341,6 +341,7 @@ export const ResumenViaje = (props) => {
       integrador: 1000,
       datosComprador: datosComprador,
       listaCarrito: [],
+      canjeBoleto
     };
 
     try {
@@ -358,6 +359,13 @@ export const ResumenViaje = (props) => {
       });
 
     } catch (error) {
+
+      toast.error("Error al completar cambio de boleto", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+      });
+
     }
   }
 
