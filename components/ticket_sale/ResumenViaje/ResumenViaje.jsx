@@ -436,7 +436,8 @@ export const ResumenViaje = (props) => {
               );
               data = response.data;
             } catch (error) {
-              data = error.response.data;
+              // Esto hace que pase igual a la pagina de /respuesta-transaccion-canje
+              // data = error.response.data;
             }
             if (data) {
               dispatch(agregarCompraCuponera(data));
