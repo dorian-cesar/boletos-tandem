@@ -209,11 +209,14 @@ const DatosPasajero = (props) => {
           tipodoc: asientoTemporal['tipoDocumento']
         });
 
+        setCantidadEquipaje(0);
+
         const { nombres, apellidos, nacionalidad } = response.data;
   
         asientoTemporal['nombre'] = nombres;
         asientoTemporal['apellido'] = apellidos;
         asientoTemporal['nacionalidad'] = nacionalidad;
+        asientoTemporal['cantidadEquipaje'] = 0;
 
         const nacionalidadEncontrada = returnNationalitiesArray().find(nationality => nationality.value === nacionalidad);
 
