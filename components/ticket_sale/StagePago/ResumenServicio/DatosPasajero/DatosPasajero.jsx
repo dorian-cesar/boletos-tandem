@@ -109,6 +109,8 @@ const DatosPasajero = (props) => {
 
       if( name === 'tipoDocumento') {
         asientoTemporal['rut'] = '';
+        asientoTemporal['cantidadEquipaje'] = 0;
+        setCantidadEquipaje(0);
       }
 
       asientoTemporal[name] = value;
