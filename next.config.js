@@ -15,6 +15,10 @@ module.exports = {
         destination: '/ticket-change/CambioBoleto',
       },
       {
+        source: '/viajesEspeciales',
+        destination: '/viajes-especiales/viajes-especiales',
+      },
+      {
         source: '/confirmacionBoleto',
         destination: '/ticket-confirmation/ConfirmacionBoleto',
       },
