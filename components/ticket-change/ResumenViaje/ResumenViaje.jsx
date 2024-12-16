@@ -235,6 +235,7 @@ export const ResumenViaje = (props) => {
       if (!isPaymentValid()) return;
       let data;
       try {
+        debugger;
         const response = await axios.post(
           "/api/ticket_sale/cambiar-boleto",
           cambiarBoleto
@@ -243,7 +244,7 @@ export const ResumenViaje = (props) => {
       } catch (error) {
         data = error.response.data;
       }
-      if ( data.status && data.status >= 200 || data.status <= 299 ) {
+      if ( data.status && (data.status >= 200 || data.status <= 299) ) {
         dispatch(agregarCambio(data.object));
         const url = `/respuesta-transaccion-cambio/${data.object.voucher.boleto}`;
         router.push(url);
