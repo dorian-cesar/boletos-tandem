@@ -1,95 +1,409 @@
-import axios from 'axios'
 import Layout from 'components/Layout'
-import { useState } from 'react'
 
 import Head from 'next/head'
 import Footer from '../components/Footer';
 
-
-
-
-export default function Terminos(props) {
-  const [stage, setStage] = useState(0);
+export default function Terminos() {
   return (
     <Layout>
       <Head>
         <title>Pullman Bus | Terminos de Uso</title>
       </Head>
-      <div className="pullman-mas mb-5">
+      <div className="pullman-tyc mb-5">
         <div className="container">
-          <div className="row py-4">
+          <div className="row pb-1 pt-3">
             <div className="col-12">
-              <span>Home &gt; Bases Legales </span>
+              <span>Home &gt; Términos y condiciones </span>
             </div>
           </div>
           <div className="row pb-5">
-            <div className="col-md-12 col-12 d-flex align-items-center bloque flex-column">
+            <div className="col-md-12 col-12 d-flex bloque flex-column">
+              <h1 className="mb-4 mx-auto">Términos y condiciones</h1>
+              <article className='mb-4'>
+                <p>
+                  Pullman Bus, ofrece un servicio de compras de pasajes en buses interurbanos a través del sitio
+                  web pullmanbus.cl, en adelante Pullmanbus.cl.
+                </p>
+                <p>
+                  Para todos los efectos legales, las palabras que a continuación se señalan se entenderá de la
+                  siguiente manera:
+                </p>
+                <ol type="A">
+                  <li>"Prestadoras de Servicios", son todas aquellas empresas que ofrecen servicios de transporte interurbano de pasajeros;</li>
+                  <li>"Cliente" o "Usuario", toda persona natural que utilice el servicio de la plataforma web pulllmanbus.cl</li>
+                </ol>
+                <p>
+                  Todos los usuarios que contraten los servicios ofrecidos por Pullman Bus, entiéndase, buses
+                  Pullman Bus, Nilahue, Pullman Costa a través de la plataforma, deberán aceptar los Términos y
+                  Condiciones que más abajo se indican.
+                </p>
+                <p>
+                  Al contratar cualquier servicio ofrecido en el portal Pullmanbus.cl, el cliente declara conocer,
+                  comprender y aceptar los Términos y Condiciones de uso.
+                </p>
+                <p>
+                  Pullman Bus se reserva el derecho de modificar esta declaración en cualquier momento, por esta
+                  razón se le recomienda que, como usuario, lea periódicamente este documento.
+                </p>
+              </article>
 
-              <h1>Términos de uso</h1>
-              <h3>I.- CONDICIONES GENERALES DE USO.</h3>
-              <p>Pullman Bus, es una plataforma de venta de boletos de buses bajo la URL www.pullmanbus.cl. desarrollada y administrada por WIT Innovación y Tecnología SPA RUT 77.122.368-0, domiciliada en Los Conquistadores Providencia, Santiago, representada por Don Alejandro González domiciliado en la misma dirección, para nuestro cliente Pullman Bus representada por Don Luis Pedro Farias.</p>
-              <p>Se considerará en el siguiente documento los siguientes términos: “Prestadoras de Servicios” a todas las empresas que ofrecen servicios de transporte, “Cliente” a toda persona que utilice el servicio de la plataforma y “Plataforma”, “Sitio Web” o “pullmanbus.cl” al portal web pullmanbus.cl.</p>
-              <h3>II.- DE LAS CONDICIONES GENERALES DE USO.</h3>
-              <p>La plataforma restringe las compras de pasajes solo a la disponibilidad de servicios y a los asientos disponibles entregados por las Prestadoras de Servicios y desplegados en pantalla por este sistema. El Cliente entiende y acepta que la información ofertada es proporcionada directa y exclusivamente por las Prestadoras de Servicios</p>
-              <p>Estos términos y condiciones solo aplican para la compra de pasajes por Internet, es importante resaltar que la opción de reserva de pasajes no se encuentra habilitada por este medio, solo se hará efectiva la confirmación cuando sea validado el pago correspondiente por parte del Cliente.</p>
-              <p>La venta de pasajes por Internet estará disponible para todas las personas naturales o jurídicas, chilenas o extranjeras para realizar los viajes contratados y que realicen sus compras con tarjetas de débito y/o crédito bancarias de entidades chilenas. Pullmanbus.cl no se hace responsable por el uso de tarjetas de crédito o débito hecha por terceros o por menores de edad.</p>
-              <p>El Cliente aceptará y hará de su conocimiento que pullmanbus.cl no realiza ni presta el servicio de transporte de pasajeros, por lo que no le corresponderá ninguna responsabilidad por el servicio prestado ni por situaciones anómalas que pudieran presentarse durante el servicio adquirido como: retrasos en la hora de los servicios o desvíos no planificados, cambios en los puntos de embarque, cancelación o suspensión de servicios, extravíos o daños en el equipaje, accidentes de viajes, cambios de asientos o buses, permisos de viaje para menores edad sin sus padres, entre otros.</p>
-              <p>Otros puntos a considerar:</p>
-              <ul>
-                <li>El cliente será responsable de mantener sus datos debidamente actualizados en el sistema.</li>
-                <li>La contraseña del cliente es intransferible y es su responsabilidad la debida confidencialidad de esta.</li>
-                <li>Empresas Pullman Bus no guarda registro de las tarjetas de crédito y/o débito porque los datos de éstas son encriptados por Transbank S.A. y es esta última la que certifica la transacción</li>
-                <li>Pullman Bus en caso de necesidad, (incluyendo, pero no limitado acaso fortuito o fuerza mayor), podrá cancelar el servicio, sustituyéndolo por otro similar, operado por Pullman Bus u otra empresa de buses asociada.</li>
-                <li>Las horas de viajes y de llegada a destino son referenciales, dependiendo de las condiciones de tránsito y climáticas. En caso de atraso en la llegada de un bus a un destino, respecto de la hora estimada inicialmente, La Empresa no asume las conexiones contratadas por un pasajero con un tercero.</li>
-                <li>Pullman Bus se reserva la facultad, de que, si estima que un pasajero pudiese afectar la seguridad o transporte de los demás pasajeros, se negará a prestarle el servicio, debido a una conducta contraria al comportamiento razonable que debe mantener una persona abordo.</li>
-                <li>Que la persona o cliente realice una infracción o delito que puedan poner en peligro o riesgo la seguridad del bus, de los demás pasajeros y de su tripulación, que altere la disciplina y buen orden abordo.</li>
-                <li>Que la persona o cliente de muestras o signos evidentes de haber ingerido bebidas alcohólicas en exceso y/o alguna sustancia psicotrópica.</li>
-                <li>Que incurra en el incumplimiento de cualquier Ley o regulación que aplique o que no acate cualquier requerimiento realizado por la autoridad gubernamental respectiva.</li>
-              </ul>
-              <h3>III.- DISPOSICIONES GENERALES.</h3>
-              <p>La realización de actos de contravención a las presentes condiciones generales de uso, como, asimismo, de la normativa legal chilena aplicable al efecto, implicará la terminación inmediata de cualquier relación contractual entre el cliente y pullmanbus.cl, sin perjuicio de las responsabilidades civiles, penales y de otra índole que procedan, según sea el caso. pullmanbus.cl fija su domicilio fiscal en la ciudad de Santiago y se someten a la competencia de sus Tribunales, a efectos legales.</p>
-              <h3>IV.- DE LOS MEDIOS DE PAGO Y SERVICIOS DE COMPRA.</h3>
-              <p>El Cliente acepta ingresar datos personales correctos y válidos al momento de realizar la compra. Estos mismos datos serán utilizados en la emisión del pasaje, el cual debe incluir nombre completo y número de RUN o Pasaporte del usuario que viajará, pullmanbus.cl no se hace responsable por errores imputados al cliente al momento de ingresar datos en el procesamiento de la compra bien sea datos personales o bancarios. Será responsabilidad del Cliente demostrar la veracidad de sus datos en caso de ser requerido por alguna otra instancia. La operación de compra se hará efectiva mediante el pago aprobado del valor del pasaje adquirido por el Cliente, la que tendrá como efecto la reserva de los asientos disponibles que hayan sido seleccionados en dicha operación.</p>
-              <p>Si el pago no se materializa, la operación será fallida y, en consecuencia, los asientos seleccionados quedarán disponibles para una nueva operación. Bajo ningún concepto se realizará reserva sin pago asociado. Una vez efectuado el pago, el pasaje será emitido de forma nominativa con todos los datos correspondientes y se enviará un aviso de confirmación a la dirección de correo electrónico registrada por el Cliente. En caso de ser necesario, deberá llamar o escribir a nuestros Canales de Atención para que sea enviado de forma directa. El comprobante enviado en la confirmación de compra indicará las instrucciones a seguir por el Cliente en cuanto a la impresión y presentación del boleto, para poder ocupar el servicio contratado. La disposición del pasaje al momento de la salida del bus en documento impreso será de entera responsabilidad de El Cliente y no podrá ser realizado en el terminal ni en ventanillas del operador de bus.</p>
-              <p>Pullmanbus.cl no será responsable por la pérdida o robo del pasaje de confirmación ni será responsable en caso de que no pueda realizar el viaje por no contar con el boleto de compra. No está establecido en nuestras condiciones los cambios en la fecha u hora del viaje, datos personales, asientos, ni ninguna otra información que afecte la compra ya validada. En caso de un error o cambio, el Cliente deberá proceder a la devolución del pasaje con los respectivos tiempos para devolución y proceder a realizar una nueva compra.</p>
-              <p>Pullmanbus.cl no podrá garantizar que los servicios de las Prestadoras de Servicios estén libres de errores o fallas en el funcionamiento, por lo tanto, no será responsable por caso de interrupciones o fallas por parte de las Prestadoras de Servicios, o en caso se situaciones fortuitas que ameriten la suspensión de las rutas, inundaciones, sismos o cierre de las vías. El uso, condiciones de crédito, intereses, entre otros, son de exclusiva responsabilidad de su banco emisor, y deben ser gestionadas con la entidad bancaria correspondiente.</p>
-              <p>Pullmanbus.cl no guardará ningún tipo de registro de datos bancarios Los precios son definidos por las Prestadoras de Servicios y están sujetos a cambios sin previo aviso. El Cliente no podrá utilizar los servicios ofrecidos por pullmanbus.cl para uso comercial ni actividades con fines de lucro, sin expresa autorización. Asimismo, no podrá efectuar reservaciones de pasajes con el fin de obtener lucro mediante especulaciones de precios y se prohíbe la reventa al público de pasajes adquiridos mediante los servicios ofrecidos por nuestra plataforma.</p>
-              <p>Pullmanbus.cl, procurará mantener, en la medida de lo posible, la continuidad de los servicios ofrecidos las 24 horas del día por los 365 días del año. Sin embargo, se hace presente la posibilidad de existencia de errores y/o fallos propios de un sistema informático que afecten dicha continuidad, frente a los cuales, El Cliente y/o usuario declara conocer y aceptar como posibles contingencias fortuitas, eximiendo a pullmanbus.cl de cualquier responsabilidad ulterior alrespecto. El Cliente será responsable de presentarse en el terminal o paradero de embarque correspondiente en el tiempo establecido por cada una de las Prestadoras de Servicios y solo podrá abordar el bus en el punto de embarque indicado al momento de hacer la compra y reflejado en el pasaje. Una vez confirmado el pasaje no podrá cambiarse el punto de embarque. Para rutas internacionales, en caso de ser negado el ingreso al país destino, lo cual es a completa responsabilidad del cliente, pullmanbus.cl no estará obligado a devolver los valores de los boletos.</p>
-              <h3>V.- CONDICIONES DE ANULACIÓN DE COMPRAS POR INTERNET.</h3>
-              <ul>
-                <p>Pullman Bus confirmará la recepción mediante el envío de un correo electrónico. El cliente podrá comunicarse vía correo a clientes@pullmanbus.cl para confirmar dicha recepción. Los plazos de reversa de las anulaciones solicitadas a través de nuestra página web se cursarán con un plazo de:</p>
-                <li>15 días hábiles para las compras con tarjeta de débito. Pullman Bus realizará una transferencia electrónica a la cuenta corriente indicada por el cliente al momento de solicitar su anulación.</li>
-                <li>15 días hábiles para las compras con tarjeta de crédito bancarias y de casas comerciales. Dicho cargo se reversará en el siguiente o subsiguiente estado de pago, según el banco o casa comercial emisora de la tarjeta.</li>
-                <li>Para realizar el proceso de anulación, el cliente debe ingresar al sitio www.pullmanbus.cl, e ir al Menú en opción “Devolución de boleto”, donde deberá ingresar el código de transacción.</li>
-                <li>La anulación puede ser por uno o el total de los boletos comprados en la transacción.</li>
-                <li>La anulación debe ser realizada por lo menos 4 horas antes de la salida del servicio del boleto que se desea anular.</li>
-                <li>El monto de la devolución será del 85% del valor del pasaje. Según lo señalado en el artículo 67 del decreto Supremo 212 del Ministerio de Transportes.</li>
-              </ul>
-              <h3>VI.- CONDICIONES COMERCIALES Y RESTRICCIONES.</h3>
-              <ul>
-                <li>Estas condiciones y restricciones sólo aplican para la compra de pasajes por Internet. La opción de reserva de pasajes no se encuentra habilitada por este medio.</li>
-                <li>La venta de pasajes por Internet estará disponible para todas las personas que posean tarjetas de crédito bancarias y de casas comerciales en convenio con Pullman Bus.</li>
-                <li>El sistema de Venta de Pasajes por Internet limita las compras de pasajes solo a la disponibilidad de servicios y a los asientos disponibles desplegados en pantalla por este sistema, al momento de realizar y confirmar la compra.</li>
-                <li>La compra de Pasajes por Internet aceptará como medio de pago las tarjetas de crédito bancarias emitidas en Chile y se realizará a través del servicio WEB PAY de Transbank S.A. que incorpora elementos de seguridad provistos por Transbank S.A. Se limita la cantidad de compras diarias con tarjetas de crédito bancarias y/o de casas comerciales por razones de seguridad para nuestros clientes.</li>
-                <li>Las tarjetas de crédito emitidas en Chile serán cargadas en pesos conforme a lo determinado por Transbank S.A.</li>
-                <li>El uso, condiciones de crédito, intereses y otras condiciones de las tarjetas de crédito bancarias aplicables son de exclusiva responsabilidad de su emisor y no de Pullman Bus.</li>
-                <li>Las compras de pasajes mediante tarjetas de crédito bancarias y de casas comerciales podrán ser anuladas parcial o totalmente siempre que cumplan con las condiciones que más adelante se detallan.</li>
-                <li>El o los boletos electrónicos serán enviados vía E-Mail a la dirección de correo electrónico ingresada por el cliente al momento de registrarse para efectuar compras por internet.</li>
-                <li>Las compras de pasajes en www.pullmanbus.cl son válidas para la fecha y hora del servicio seleccionado por el cliente al momento de efectuar la compra, por lo tanto, no se realizarán canjes o cambios para las compras realizadas vía internet.</li>
-              </ul>
-              <h3>VII.- BENEFICIOS.</h3>
-              <p>Los clientes socios de Pullman Pass obtendrán como beneficio la acumulación de un 10% del valor de la compra en puntos, los que se harán efectivos luego de realizado el servicio. Estos puntos podrán ser utilizados para canjear pasajes. Nota: Los beneficios o descuentos se podrán modificar o dejar sin efecto unilateralmente por la empresa, sin previo aviso. Los beneficios no son acumulables con otras promociones o convenios.</p>
-              <p>Una conducta contraria al comportamiento razonable que debe mantener una persona abordo.</p>
-              <ul>
-                <li>Que la persona o cliente realice una infracción o delito que puedan poner en peligro o riesgo la seguridad del bus, de los demás pasajeros y de su tripulación, que altere la disciplina y buen orden abordo.</li>
-                <li>Que la persona o cliente de muestras o signos evidentes de haber ingerido bebidas alcohólicas en exceso y/o alguna sustancia psicotrópica.</li>
-                <li>Que incurra en el incumplimiento de cualquier Ley o regulación que aplique o que no acate cualquier requerimiento realizado por la autoridad gubernamental respectiva.</li>
-              </ul>
-              <h3>VIII.- CONDICIONES DEL EQUIPAJE: Artículo 68 decreto supremo 212.</h3>
-              <p>En los servicios rurales e interurbanos, cada pasajero tendrá derecho a llevar, libre de pago, hasta treinta kilos de equipaje, siempre que su volumen no exceda de 180 decímetros cúbicos.</p>
-              <h3>IX.- LÍMITES DE RESPONSABILIDAD: Artículo 70 Decreto Supremo 212 MTT.</h3>
-              <p>El transporte de valijas, bultos y paquetes será de responsabilidad de las empresas cuando se lleven en la parrilla o en las cámaras portaequipajes, las que deberán entregar al pasajero un comprobante por cada bulto. Ello ocurrirá en todo caso respecto al transporte de cartas y encomiendas en cuanto se haga conforme a la ley. Las especies primeramente citadas serán de cuidado de los pasajeros cuando se lleven en las parrillas portaequipajes interiores.</p>
-              <p>Cuando un pasajero lo desee podrá hacer declaración escrita a la empresa de las especies que transporte o remita. Esto será obligatorio cuando, a juicio del pasajero o remitente, el valor de los objetos exceda de 5 Unidades Tributarias Mensuales. Al efecto, las empresas pondrán a disposición del público en sus terminales los formularios adecuados para hacer la declaración y podrán verificar la autenticidad de ellas.</p>
+              <h3>Nuestro Sitio WEB</h3>
+              <article>
+                <ol className='ol-tyc'>
+                  <li className='fw-bold my-3'>Condiciones Generales de uso del Sitio Web</li>
+                  <ol type="a">
+                    <li>El cliente será responsable de mantener sus datos debidamente actualizados en el sistema.</li>
+                    <li>
+                      La venta de servicios a través del Sitio Web estará disponible para todas las personas naturales 
+                      o jurídicas en condiciones legales para realizar los viajes contratados.</li>
+                    <li>
+                      Para hacer compras utilizando el Sitio Web, el Usuario entiende que debe ingresar 
+                      todos los datos necesarios y solicitados por la plataforma para poder proceder con la transacción.
+                    </li>
+                    <li>
+                      Pullmanbus.cl se compromete a mantener en la medida de lo posible, el Sitio Web activo
+                      durante las 24 horas del día y sin interrupción, excepto cuando exista imposibilidad de
+                      funcionar integralmente o sea interrumpido el sistema de telecomunicación o informática
+                      por situaciones de fuerza mayor, incluyéndose, por su complejidad, la dependencia de
+                      servicios de telecomunicación brindados por terceros, razón por la cual no se asegura de
+                      forma alguna un servicio sin posibilidad de error.
+                    </li>
+                    <li>
+                      Al utilizar el Sitio Web, el Usuario autoriza a Pullmanbus.cl y a sus agentes a acceder a
+                      sitios web de terceros, incluyendo, pero no limitado, a sitios web de bancos y de otras
+                      plataformas de pago, designadas por el banco o en representación del mismo, para
+                      recuperar la información solicitada para el procesamiento de cualquier transacción
+                      generada por el Usuario en el Sitio Web de pullmanbus.cl.
+                    </li>
+                    <li>
+                      Pullmanbus.cl no permite la reserva de servicios. Los pasajes o servicios serán confirmados
+                      y emitidos únicamente cuando se haya confirmado la realización del pago por parte del
+                      Usuario a través de la empresa responsable de gestionar el pago y la transacción.
+                      Pullmanbus.cl no tiene injerencia en los resultados de la relación entre el Usuario y la
+                      empresa responsable del pago, ya que la empresa administra sus operaciones de forma
+                      independiente.
+                    </li>
+                    <li>
+                      Pullmanbus.cl aceptará como medio de pago, tarjetas de débito o crédito bancarias
+                      emitidas en Chile a través del servicio WebPay Plus de Transbank S.A., el cual incorpora
+                      elementos de seguridad provistos por TransBank S.A.
+                    </li>
+                    <li>
+                      Pullmanbus.cl no puede garantizar que los servicios de la empresa responsable de los
+                      pagos estén libres de errores o fallas en el funcionamiento. En el evento de ocurrir
+                      cualquier error durante la finalización del proceso de pago, existe la posibilidad cierta que
+                      la transacción aparezca momentáneamente reflejada en la cuenta bancaria del cliente. En
+                      caso de producirse, esta transacción será reversada automáticamente por el banco dentro
+                      de los plazos que ellos determinen, no teniendo injerencia alguna Pullmanbus.cl. Si
+                      cumplido este tiempo aún se mantiene el cargo en su cuenta, el cliente deberá
+                      comunicarse con Pullmanbus.cl o por cualquiera de sus canales de atención para verificar
+                      el estatus de la transacción. Si verificado por Pullmanbus.cl que el cargo se mantuvo y no
+                      hubo reversa por parte de la entidad bancaria o casa comercial, el reembolso deberá
+                      realizarlo Pullmanbus.cl
+                    </li>
+                    <li>
+                      Pullmanbus.cl no guarda registro de datos bancarios, los cuales son encriptados por
+                      Transbank S.A., y es este quien certifica la seguridad de la transacción.
+                    </li>
+                    <li>
+                      En caso de ser estrictamente necesario, se utilizarán los datos registrados por los
+                      clientes (correo electrónico, número de teléfono, etc.) para informar el estado de su
+                      compra online, cambio o suspensión de servicio.
+                    </li>
+                    <li>
+                      Pullmanbus.cl cuenta con una billetera digital propia (en adelante referida como
+                      "Monedero Virtual"), la cual podrá ser utilizada para pagar servicios dentro de
+                      Pullmanbus.cl.
+                    </li>
+                    <li>
+                      El Sitio Web podrá ser usado exclusivamente para fines personales y no para fines
+                      comerciales. El Cliente entiende y acepta que no está autorizado a revender, utilizar,
+                      copiar, monitorizar (por ejemplo, mediante spider, scrape), desplegar, descargar o
+                      reproducir ningún contenido o información, software, productos o facilidad disponible en
+                      el Sitio Web para ninguna actividad, propósito comercial o competitivo.
+                    </li>
+                  </ol>
+                  <li className='fw-bold my-3'>Registro del Usuario en el Sitio Web</li>
+                  <ol type="a">
+                    <li>
+                      Pullmanbus.cl ofrece al Usuario la facilidad de registrar una cuenta personal en el Sitio
+                      Web. Dicha cuenta de usuario estará vinculada con su correo electrónico, R.U.T. y/o
+                      número de identificación o número telefónico.
+                    </li>
+                    <li>
+                      Es de exclusiva responsabilidad del Usuario mantener la confidencialidad de su cuenta, su
+                      contraseña y de restringir el acceso a su ordenador o dispositivos con el fin de evitar
+                      accesos no autorizados a su cuenta registrada y a su Monedero Virtual. Pullmanbus.cl no
+                      será responsable por pérdidas en las que el Usuario pueda incurrir debido a accesos o
+                      credenciales compartidas de su cuenta registrada o monedero virtual.
+                    </li>
+                    <li>
+                      Es responsabilidad del Usuario proporcionar a Pullmanbus.cl datos correctos, exactos y
+                      actuales. En caso de equivocaciones por parte del Usuario, Pullmanbus.cl no tiene ninguna
+                      responsabilidad por la corrección ni verificación de los datos proporcionados.
+                    </li>
+                    <li>
+                      Si la cuenta o transacciones del Usuario muestran señales de fraude, abuso o actividades
+                      sospechosas, Pullmanbus.cl puede cancelar cualquier compra relacionada con su nombre,
+                      dirección de correo electrónico o cuenta, así como denegar el acceso al Sitio Web o
+                      bloquear temporalmente cualquier cuenta abierta en Pullmanbus.cl. En caso de detectar
+                      alguna actividad fraudulenta. Pullmanbus.cl se reserva el derecho de tomar cualquier
+                      acción legal necesaria contra el Usuario y el Usuario será responsable de las pérdidas
+                      monetarias de Pullmanbus.cl, incluso de los costos de litigación y daños.
+                    </li>
+                  </ol>
+                  <li className='fw-bold my-3'>Monedero Virtual</li>
+                  <ol type='a'>
+                    <li>
+                      Pullmanbus.cl brinda exclusivamente a sus usuarios registrados la posibilidad de llevar a
+                      cabo transacciones mediante el saldo disponible en su Monedero Virtual, el cual se
+                      encuentra disponible al iniciar su sesión.
+                    </li>
+                    <li>
+                      Para la utilización de saldo en el Monedero Virtual, el Usuario deberá proceder
+                      previamente a la anulación de un pasaje adquirido en Pullmanbus.cl, solicitando el
+                      reembolso al monedero virtual.
+                    </li>
+                    <li>
+                      El saldo existente en el monedero virtual podrá ser utilizado única y exclusivamente para
+                      compra de pasajes en Pullmanbus.cl.
+                    </li>
+                    <li>
+                      En caso que el Usuario no cuente con saldo suficiente para cubrir el total de la compra,
+                      podrá combinar la forma de pago, empleando el saldo disponible en su Monedero Virtual
+                      y el uso de una tarjeta bancaria u otro medio de pago disponible en Pullmanbus.cl.
+                    </li>
+                    <li>
+                      Si el usuario adquiere un pasaje de bus por un valor inferior al saldo disponible en su
+                      Monedero Virtual, se descontará el importe total de la transacción del saldo disponible,
+                      quedando la diferencia como saldo para futuras compras en el Monedero Virtual del
+                      Usuario.
+                    </li>
+                    <li>
+                      El saldo existente en el Monedero Virtual podrá ser utilizado única y exclusivamente en la
+                      compra de pasajes de bus emitidos por Pullmanbus.cl y bajo ninguna circunstancia será
+                      reembolsable o transferible en dinero efectivo a otra cuenta bancaria distinta del
+                      monedero virtual.
+                    </li>
+                  </ol>
+                  <li className='fw-bold my-3'>Cambio de boleto</li>
+                  <ol type='a'>
+                    <li>
+                      Los cambios en los boletos deben realizarse en el Sitio Web y están permitidos
+                      únicamente hasta cuatro (4) horas antes de la hora de salida del bus.
+                    </li>
+                    <li>
+                      El Usuario al efectuar el Cambio de Boleto sólo aplicará en el par Origen-Destino original
+                      del boleto, donde podrá modificar: fecha de viaje, horario y asiento.
+                    </li>
+                    <li>
+                      El cambio de boleto podrá ser efectuado bajo los siguientes 2 escenarios:
+                    </li>
+                    <ol type='i'>
+                      <li>
+                        Si el costo del boleto original es mayor al nuevo boleto, entonces la diferencia será
+                        ingresada al monedero virtual, esto aplica sólo si el Usuario ha iniciado sesión
+                        previamente, de lo contrario el usuario asumirá la perdida.
+                      </li>
+                      <li>
+                        Si el costo del boleto original es menor al boleto nuevo, se cobrará la diferencia al
+                        Usuario por medio de Transbank S.A.
+                      </li>
+                      <li>
+                        El boleto modificado no podrá ser anulado.
+                      </li>
+                    </ol>
+                  </ol>
+                  <li className='fw-bold my-3'>Anulación de boleto</li>
+                  <ol type='a'>
+                    <li>
+                      El monto reembolsable por la anulación del pasaje será del 85% de su valor, conforme lo
+                      señalado en el artículo 67 del Decreto Supremo 212 del Ministerio de Transportes.
+                    </li>
+                    <li>
+                      El usuario podrá solicitar la anulación de su o sus boletos en Pullmanbus.cl hasta cuatro (4)
+                      horas antes de la hora de salida del bus.
+                    </li>
+                    <li>
+                      El reembolso por las anulaciones de pasajes solicitadas a través de Pullmanbus.cl se
+                      cursará dentro del plazo que a continuación se señala:
+                    </li>
+                    <ol type='i'>
+                      <li>
+                        De 7 a 10 días hábiles para las compras con tarjeta de débito. En dicho caso
+                        Pullmanbus.cl realizará una transferencia electrónica a la cuenta bancaria indicada por
+                        el cliente al momento de solicitar la anulación.
+                      </li>
+                      <li>
+                        De 10 a 20 días hábiles para las compras con tarjeta de crédito bancarias y de casas
+                        comerciales. Dicho cargo se verá reflejado en el siguiente o subsiguiente estado de
+                        pago según el banco o casa comercial emisora de la tarjeta.
+                      </li>
+                    </ol>
+                    <li>
+                      Para realizar el proceso de anulación, el Usuario deberá ingresar a Pullmanbus.cl y dar clic
+                      en el menú desplegable, seleccionando la opción “Devolución de Boleto”, donde deberá
+                      ingresar el Código de Transacción y dar clic en buscar. Luego deberá seleccionar el o los
+                      boletos a anular.
+                    </li>
+                    <li>
+                      Pullmanbus.cl sólo aceptará la anulación de boletos web, por lo que todo boleto adquirido
+                      en boletería deberá ser devuelto por el mismo medio hasta cuatro (4) horas antes de la
+                      hora de salida del bus.
+                    </li>
+                  </ol>
+                  <li className='fw-bold my-3'>Mascotas a Bordo (MAB)</li>
+                  <ol type='a'>
+                    <li>
+                      La adquisición del servicio MAB es exclusiva de Pullmanbus.cl; la cual consiste en asientos
+                      dobles que están caracterizados por una patita que es el sello MAB.
+                    </li>
+                    <li>
+                      Pullmanbus.cl sólo transporta a perros de raza pequeña y gatos.
+                    </li>
+                    <li>
+                      Las mascotas deben viajar en un canil rígido y cerrado que va sobre el asiento asignado. El
+                      canil no puede superar los 60 cm de largo, 40 cm de ancho y 35 cm de alto.
+                    </li>
+                    <li>
+                      Pullmanbus.cl sólo permite una mascota por canil, ya que esta debe permanecer durante
+                      todo el viaje al interior del canil.
+                    </li>
+                    <li>
+                      Pullmanbus.cl no permite que ninguna mascota viaje sola, por ende, la mascota debe
+                      viajar acompañada de un adulto responsable.
+                    </li>
+                    <li>
+                      El Usuario deberá llevar firmada una Declaración Jurada de tenencia responsable en viaje
+                      MAB al momento de abordar (esta declaración se adjunta con el envío de los pasajes al
+                      correo).
+                    </li>
+                    <li>
+                      El Usuario debe llevar bolsas y útiles de aseo para limpiar posibles deposiciones, orina o
+                      vómitos de la mascota.
+                    </li>
+                    <li>
+                      Pullmanbus.cl se reserva el derecho de cancelación del servicio sin derecho a devolución si
+                      el Usuario no cumple con las condiciones estipuladas del servicio MAB.
+                    </li>
+                    <li>
+                      Las mascotas de apoyo emocional se rigen bajo las condiciones del servicio MAB. Lo cual
+                      implica que deben ser perros de raza pequeña y gatos (punto 6.b) que quepan en un canil
+                      rígido (punto 6.c).
+                    </li>
+                    <li>
+                      Pullmanbus.cl permite el viaje de perros lazarillo bajo las siguientes condiciones:
+                    </li>
+                    <ol type='i'>
+                      <li>
+                        El perro debe ir con una correa o arnés puesto al momento del viaje.
+                      </li>
+                      <li>
+                        El perro debe llevar puesto un distintivo oficial que lo identifique como perro lazarillo
+                        y tener sus documentos sanitarios al día.
+                      </li>
+                      <li>
+                        El perro debe viajar a los pies del pasajero evitando obstruir pasillos.
+                      </li>
+                      <li>
+                        Durante el viaje, el pasajero es responsable del buen comportamiento de la mascota.
+                      </li>
+                    </ol>
+                  </ol>
+                  <li className='fw-bold my-3'>Cuponera</li>
+                  <p>
+                    La cuponera es un talonario que ofrece boletos de ida y regreso a un precio preferencial para las
+                    rutas disponibles en pullmanbus.cl. Al adquirir y utilizar una cuponera, usted acepta las siguientes
+                    condiciones de uso:
+                  </p>
+                  <ol type='a'>
+                    <li>
+                      La cuponera es NOMINATIVA, es decir, solo puede ser utilizada por el adquirente de ella.
+                    </li>
+                    <li>
+                      Los boletos Cuponera, estarán asociados al par Origen/Destino cómo también puede estar
+                      habilitada a todos los tramos realizados por la empresa. La adquisición de la Cuponera
+                      brindará al usuario poder combinar los boletos tanto de ida como vuelta.
+                    </li>
+                    <li>
+                      La cuponera es intransferible sea total o parcial.
+                    </li>
+                    <li>
+                      El Usuario sólo puede realizar dos viajes diarios, es decir, uno de ida y uno de regreso.
+                    </li>
+                    <li>
+                      La cuponera solo podrá ser utilizada dentro del plazo de 60 o 120 días corridos a contar de
+                      la fecha de adquisición, según condiciones contratadas.
+                    </li>
+                  </ol>
+                  <li className='fw-bold my-3'>Convenio</li>
+                  <ol type='a'>
+                    <li>
+                      Los afiliados a la Caja de Compensación LA ARAUCANA disfrutarán de los beneficios
+                      conforme lo señalado en el acuerdo respectivo entre está y Pullman Bus.<br />
+                      Más información haga clic <a className='fw-bold' href='https://convenios.laaraucana.cl/beneficios/pullman-20/' target='_blank'>aquí</a>
+                    </li>
+                    <li>
+                      Este descuento no será acumulable con otras promociones.
+                    </li>
+                    <li>
+                      Este convenio comprende los viajes realizados a través de por las empresas: Pullman Bus,
+                      Nilahue y Pullman Costa Central.
+                    </li>
+                  </ol>
+                  <li className='fw-bold my-3'>Programas de beneficios</li>
+                  <p>
+                    Los afiliados a Pullman Costa Central podrán acceder a las tarifas preferenciales siempre y 
+                    cuando estén inscritos en los programas Premium, Estudiante o 3ra Edad. Una vez inscritos podrán
+                    hacer uso del beneficio por los canales de venta: Presencial y Página Web (Pullmanbus.cl).
+                  </p>
+                  <ol type='a'>
+                    <li className='my-2'>
+                      Los usuarios inscritos en el programa estudiante podrán acceder a todos los beneficios que
+                      la empresa señale.
+                      <p className='m-0'>Periodo de Aplicación:</p>
+                      <ul>
+                        <li>
+                          Esta tarifa preferencial está disponible desde el 1 de marzo hasta el 31 de diciembre de
+                          cada año calendario.
+                        </li>
+                      </ul>
+                      <p>
+                        Renovación: Requiere renovación anual para continuar accediendo a los beneficios.
+                      </p>
+                    </li>
+                    <li className='my-2'>
+                      Los usuarios inscritos en el programa Premium pueden acceder a tarifas preferenciales
+                      <ul>
+                        <li>
+                          Renovación: No requiere.
+                        </li>
+                      </ul>
+                    </li>
+                    <li className='my-2'>
+                      Los usuarios inscritos en el programa de 3ra Edad pueden acceder a tarifas preferenciales
+                      exhibiendo su cédula de identidad al momento de realizar la compra.
+                      <ul>
+                        <li>
+                          Este beneficio es aplicable únicamente y exclusivamente en el tramo Santiago – San
+                          Antonio de Pullman Costa Central, excluyendo otros tramos disponibles en la empresa.
+                        </li>
+                      </ul>
+                      <p className='m-0'>
+                        Adquisición del Pasaje:
+                      </p>
+                      <ul>
+                        <li>
+                          El pasaje debe ser adquirido de manera presencial.
+                        </li>
+                      </ul>
+                      <p>Renovación: No requiere.</p>
+                    </li>
+                  </ol>
+                </ol>
+              </article>              
+
+              <i className='mt-3'>Actualización: 21–10–2024.</i>
             </div>
           </div>
         </div>

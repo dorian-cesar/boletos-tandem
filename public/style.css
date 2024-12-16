@@ -2658,3 +2658,47 @@ line-height: normal;
   height: 200px;
   margin-bottom: 1rem;
 }
+
+.pullman-tyc h1 {
+  font-size: 36px;
+  font-weight: 400;
+  color: #3365B4;
+}
+
+.pullman-tyc h1 strong {
+  font-weight: 700;
+} 
+
+.pullman-tyc p {
+  color: #333333;
+  font-size: 16px;
+} 
+
+.pullman-tyc img {
+  padding-bottom: 20px;
+}
+
+.pullman-tyc .foto-header img {
+  border-radius: 10px;
+  padding-bottom: 0px;
+}
+
+.pullman-tyc .foto-header {
+  display: flex;
+  justify-content: center;
+}
+
+.pullman-tyc a {
+  color: #EB7F33;
+  font-size: 16px;
+}
+
+.pullman-tyc h3 {
+  color: #EB7F33;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* .ol-tyc li {
+  font-weight: bold;
+} */
