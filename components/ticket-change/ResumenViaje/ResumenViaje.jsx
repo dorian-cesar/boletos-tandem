@@ -235,21 +235,29 @@ export const ResumenViaje = (props) => {
       if (!isPaymentValid()) return;
       let data;
       try {
-        debugger;
         const response = await axios.post(
           "/api/ticket_sale/cambiar-boleto",
           cambiarBoleto
         );
-        data = response.data;
+
+        data = {
+          status: true,
+          object: response?.data?.object || response?.data
+        }
+
       } catch (error) {
-        data = error.response.data;
+        data = {
+          status: false,
+          message: error?.response?.data?.object.resultado.mensaje || "Error al cambiar el boleto"
+        }
       }
-      if ( data.status && (data.status >= 200 || data.status <= 299) ) {
+
+      if ( data.status ) {
         dispatch(agregarCambio(data.object));
         const url = `/respuesta-transaccion-cambio/${data.object.voucher.boleto}`;
         router.push(url);
       } else {
-        toast.warn(data.object?.resultado?.mensaje, {
+        toast.warn(data.message, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
