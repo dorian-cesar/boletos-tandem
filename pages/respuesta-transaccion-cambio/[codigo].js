@@ -41,7 +41,6 @@ export default function Home(props) {
   const cambioRespuesta = useSelector((state) => state.cambioBoleto);
 
   useEffect(() => {
-    debugger;
     if(cambioRespuesta?.resultado?.exito){
       setRespuestaCambio(cambioRespuesta);
       dispatch(limpiarCambio());

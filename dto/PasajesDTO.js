@@ -115,7 +115,6 @@ export class ListaCarritoDTO {
 
 export class PasajeroListaCarritoDTO {
     constructor(asiento) {
-        debugger;
         this.monto = asiento?.tarifa.toString() || '0';
         this.precio = asiento?.precio.toString() || asiento?.tarifa.toString() || '0';
         this.idaVuelta = asiento?.idaVuelta || false;
@@ -134,6 +133,7 @@ export class PasajeroListaCarritoDTO {
         this.descuento = asiento?.descuento || 0;
         this.convenio = asiento?.convenio || "";
         this.datoConvenio = asiento?.datoConvenio || "";
+        this.cantidadEquipaje = asiento?.cantidadEquipaje || 0;
     }
 }
 

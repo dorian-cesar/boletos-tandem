@@ -1,6 +1,8 @@
 import axios from "axios";
 import Layout from "components/Layout";
 import Footer from 'components/Footer';
+import MobileSearchBar from 'components/ui/MobileSearchBar';
+import SearchBar from 'components/ui/SearchBar';
 import BusquedaServicio from 'components/BusquedaServicio/BusquedaServicio';
 import React, { useEffect, useState } from "react";
 import { withIronSessionSsr } from "iron-session/next";
@@ -24,7 +26,6 @@ import { agregarOrigenDestino } from "store/usuario/compra-slice";
 import CryptoJS from "crypto-js";
 
 import { generateToken } from 'utils/jwt-auth';
-import Script from "next/script";
 
 registerLocale("es", es);
 
@@ -54,11 +55,11 @@ export default function Home(props) {
     const router = useRouter();
     const decryptedData = router.query.search ? decryptDataNoSaved(router.query.search, 'search') : null;
 
-    const startDate = dayjs(decryptedData?.startDate).isValid() ? dayjs(decryptedData?.startDate).toDate(): null;
-    const endDate = dayjs(decryptedData?.endDate).isValid() ? dayjs(decryptedData?.endDate).toDate() : null;
-    const origen = decryptedData?.origen?.codigo || '';
-    const destino = decryptedData?.destino != "null" ? decryptedData?.destino?.codigo : null;
-    const mascota_allowed = decryptedData?.mascota_allowed || false;
+    const [startDate, setStartDate] = useState(dayjs(decryptedData?.startDate).isValid() ? dayjs(decryptedData?.startDate).toDate(): null);
+    const [endDate, setEndDate] = useState(dayjs(decryptedData?.endDate).isValid() ? dayjs(decryptedData?.endDate).toDate() : null);
+    const [origen, setOrigen] = useState(decryptedData?.origen?.codigo || '');
+    const [destino, setDestino] = useState(decryptedData?.destino != "null" ? decryptedData?.destino?.codigo : null);
+    const [mascotaAllowed, setMascotaAllowed] = useState(decryptedData?.mascota_allowed || false);
 
     const stateCompra = useSelector((state) => state.compra);
 
@@ -73,6 +74,21 @@ export default function Home(props) {
         datos: { tipoRut: "rut" },
     });
     const [stage, setStage] = useState(0);
+
+    const [fechaViaje, setFechaViaje] = useState(startDate ? dayjs(startDate).toDate() : '');
+
+    useEffect(() => {
+        switch (stage) {
+            case 0:
+                setFechaViaje(dayjs(startDate).toDate());
+                break;
+            case 1:
+                setFechaViaje(dayjs(endDate).toDate());
+                break;
+            default:
+                break;
+        }
+    }, [stage]);
 
     const dispatch = useDispatch();
     
@@ -89,7 +105,6 @@ export default function Home(props) {
 
     async function searchParrilla(in_stage) {
         try {
-            debugger;
             const stage_active = in_stage ?? stage;
             setLoadingParrilla(true);
 
@@ -124,6 +139,44 @@ export default function Home(props) {
         }
     };
 
+    async function componentSearch(inputStartDate, inputEndDate) {
+        try {
+            setLoadingParrilla(true);
+
+            const token = generateToken();
+            
+            const request = CryptoJS.AES.encrypt(
+                JSON.stringify(new ObtenerParrillaServicioDTO(stage, origen, destino, inputStartDate, inputEndDate)),
+                secret
+            );
+
+            const response = await fetch(`/api/parrilla`, {
+                method: "POST",
+                body: JSON.stringify({ data: request.toString() }),
+                headers: {
+                    Authorization: `Bearer ${ token }`
+                }
+            });
+            
+            const parrilla = await response.json();
+
+            // const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
+            setParrilla(parrilla.map((parrillaMapped, index) => {
+                return {
+                    ...parrillaMapped,
+                    id: index + 1
+                }
+            }));
+
+            setStartDate(inputStartDate);
+            setEndDate(inputEndDate);
+            setLoadingParrilla(false);   
+        } catch (e) {
+            console.error(e)
+            console.error(`Error al obtener parrilla [${ e.message }]`)
+        }
+    };
+
     const stages_active = endDate ? stages : stages.filter((i) => i.kind != "pasajes_2");
 
     // TODO: Descomentar si falla en produccion
@@ -142,38 +195,29 @@ export default function Home(props) {
     }, [stage])
 
     return (
-        <Layout>
+        <Layout
+            isBuyStage={ true }>
             <Head>
                 <title>Pullman Bus | Compra Boleto</title>
             </Head>
-            <div className="pasajes">
-                <div className="container">
-                    <BusquedaServicio
-                        origenes={props.ciudades}
-                        dias={props.dias}
-                        isShowMascota={false}
-                        isHomeComponent={false}/>
-                </div>
-            </div>
+            <MobileSearchBar 
+                startDate={ startDate }
+                endDate={ endDate }
+                origin={ decryptedData?.origen }
+                destination={ decryptedData?.destino }
+                stage={ stage }
+                setStage={ setStage }
+                componentSearch={ componentSearch }/>
+            <SearchBar 
+                startDate={ startDate }
+                endDate={ endDate }
+                origin={ decryptedData?.origen }
+                destination={ decryptedData?.destino }
+                stage={ stage }
+                setStage={ setStage }
+                componentSearch={ componentSearch }/>
             <div className="pasajes-compra pb-5">
                 <div className="container">
-                    <ul className="d-flex flex-row justify-content-around py-4 px-0">
-                        {
-                            stages.filter((stageMaped) => endDate || (!endDate && stageMaped.kind != "pasajes_2")).map((stageMaped, indexStage) => {
-                                return (
-                                    <div key={`stage-${indexStage}`}
-                                         className={"seleccion text-center select-num " + (indexStage == stage ? "active" : "")}>
-                                        <div className="numeros">
-                                            <div className="numero">
-                                                {indexStage + 1}
-                                            </div>
-                                        </div>
-                                        <h3>{stageMaped.name}</h3>
-                                    </div>
-                                )
-                            })
-                        }
-                    </ul>
                     {
                         stages_active[stage].kind == "pasajes_1" || stages_active[stage].kind == "pasajes_2" ?
                             <StagePasajes
@@ -191,7 +235,7 @@ export default function Home(props) {
                                 origen={stages_active[stage].kind == "pasajes_1" ? stateCompra.origen : stateCompra.destino}
                                 destino={stages_active[stage].kind == "pasajes_2" ? stateCompra.destino : stateCompra.origen}
                                 setModalMab={setModalMab}
-                                mascota_allowed={mascota_allowed}/> : ('')
+                                mascota_allowed={mascotaAllowed}/> : ('')
                     }
                     {
                         stages_active[stage].kind == "pago" ?
@@ -290,10 +334,15 @@ export const getServerSideProps = withIronSessionSsr(async function ({req, res, 
         { id_ciudad: query.origen }
     );
 
+    let nationalities = await axios.get(
+        publicRuntimeConfig.site_url + "/api/nacionalidades"
+    );
+
     return {
         props: {
             ciudades: ciudades.data,
-            destinos: destinos.data
+            destinos: destinos.data,
+            nacionalidades: nationalities.data
         },
     };
 }, sessionOptions);

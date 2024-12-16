@@ -33,108 +33,85 @@ const TeAyudamos = (props) => {
         <title>Pullman Bus | Te Ayudamos</title>
       </Head>
       {stage == 0 ? (
-        <div className={styles["body"]}>
-          <div className={styles["title"]}>Nuestro canales de atención</div>
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="d-flex row justify-content-center">
-                <div className="col-12 col-md-12 col-sm-12 col-lg-5 col-xl-5 col-xxl-5">
-                  <div
-                    className={`${styles["question-body"]} "d-flex justify-content-center" `}
-                  >
-                    <div className={styles["image"]}>
-                      <img src="/img/icon/help/help-circle-outline.svg"></img>
-                    </div>
-                    <div className={styles["title-message"]}>
-                      Preguntas frecuentes
-                    </div>
-                    <div className={styles["message"]}>
-                      Aquí tienes un montón de respuestas a las preguntas que la
-                      gente suele hacer. Échale un vistazo y hagamos que todo sea
-                      más fácil para ti!
-                    </div>
-                    <div
-                      className={styles["button"]}
-                      onClick={() => {
-                        cambiarVista(1);
-                      }}
-                    >
-                      Encuentra respuestas aquí
-                    </div>
-                  </div>
+        <div className="pt-3 pb-5 bg-bus">
+          <h2 className="text-center text-secondary fw-bold mb-4">Nuestros canales de atención</h2>
+          <div className="container overflow-hidden">
+            <div className="row g-2 g-md-0 justify-content-center gap-3">
+
+              <div className="card text-center col-12 col-md-5 bg-white shadow-sm border-0 p-3 rounded-4">
+                <div className="card-header bg-white border-0">
+                  <img src="/img/icon/help/help-circle-outline.svg" height={ 48 } width={ 48 }/>
+                  <h4 className="text-secondary fw-bold mb-0">Preguntas frecuentes</h4>
                 </div>
-                <div className="col-12 col-md-12 col-sm-12 col-lg-5 col-xl-5 col-xxl-5">
-                  <div
-                    className={`${styles["question-body"]} "d-flex justify-content-center" `}
-                  >
-                    <div className={styles["image"]}>
-                      <img src="/img/icon/help/megaphone-outline.svg"></img>
-                    </div>
-                    <div className={styles["title-message"]}>Escríbenos</div>
-                    <div className={styles["message"]}>
-                      ¿No hallaste lo que necesitabas en nuestra sección de
-                      preguntas frecuentes? Mándanos un mensaje y nos pondremos en
-                      acción para responderte lo más pronto posible.
-                    </div>
-                    <div
-                      className={styles["button"]}
-                      onClick={() => {
-                        cambiarVista(2);
-                      }}
-                    >
-                      Habla con Nosotros
-                    </div>
+                <div className="card-body">
+                  <p>
+                    Aquí tienes un montón de respuestas a las preguntas que la
+                    gente suele hacer. Échale un vistazo y hagamos que todo sea
+                    más fácil para ti!
+                  </p>
+                </div>
+                <div className="card-footer border-0">
+                  <div className="d-grid">
+                    <button className="btn btn-primary rounded-4 fw-bold" onClick={() => cambiarVista(1)}>
+                      Encuentra respuestas aquí
+                    </button>
                   </div>
                 </div>
               </div>
-              <div className="d-flex row justify-content-center">
-                <div className="col-12 col-md-12 col-sm-12 col-lg-5 col-xl-5 col-xxl-5">
-                  <div className={`${styles["other-body"]}  `}>
-                    <div className={styles["title-contact"]}>
-                      Tambien puedes contactarnos a:
-                    </div>
-                    <div className={"row"}>
-                      <div className={"col-12"}>
-                        {/* <a className={ styles['link-contacto'] } href="tel:26006000018">
-                          <img
-                            className={styles["image-icon"]}
-                            src="/img/icon/help/call-outline.svg"
-                          ></img>
-                          600 600 0018
-                        </a> */}
-                      </div>
-                    </div>
-                    <div className={"row"}>
-                      <div className={"col-12"}>
-                        <a className={ styles['link-contacto'] } href="https://wa.me/56996193091" target="_blank">
-                          <img
-                            className={styles["image-icon"]}
-                            src="/img/icon/help/what-up.svg"
-                          ></img>
-                          +569 96193091
-                        </a>
-                      </div>
-                    </div>
+
+              <div className="card text-center col-12 col-md-5 bg-white shadow-sm border-0 p-3 rounded-4">
+                <div className="card-header bg-white border-0">
+                  <img src="/img/icon/help/megaphone-outline.svg" height={ 48 } width={ 48 }/>
+                  <h4 className="text-secondary fw-bold mb-0">Escríbenos</h4>
+                </div>
+                <div className="card-body">
+                  <p>
+                    ¿No hallaste lo que necesitabas en nuestra sección de
+                    preguntas frecuentes? Mándanos un mensaje y nos pondremos en
+                    acción para responderte lo más pronto posible.
+                  </p>
+                </div>
+                <div className="card-footer border-0">
+                  <div className="d-grid">
+                    <button className="btn btn-primary rounded-4 fw-bold" onClick={() => cambiarVista(2)}>
+                      Habla con nosotros
+                    </button>
                   </div>
                 </div>
-                <div className="col-12 col-md-12 col-sm-12 col-lg-5 col-xl-5 col-xxl-5">
-                  <div className={`${styles["other-body"]}  `}>
-                    <div className={styles["title-contact"]}>
-                      Horario de atención:
-                    </div>
-                    <div className={"row"}>
-                      <div className={"col-12"}>
-                        <span className={styles["text-bold"]}>SAC</span> | Lunes a
-                        viernes: 09:00AM - 18:00PM
-                      </div>
-                    </div>
-                    <div className={"row"}>
-                      {/* <div className={"col-12"}>
-                        <span className={styles["text-bold"]}>Call Center</span> |
-                        Lunes a viernes: 09:00AM - 18:00PM <br />
-                        Sábado, domingos y festivos: 09:00AM - 19:00PM
-                      </div> */}
-                    </div>
+              </div>
+
+              <div className="card col-12 col-md-5 bg-white shadow-sm border-0 p-3 rounded-4">
+                <div className="card-body">
+                  <div>
+                    <h5 className="text-secondary fw-bold">Horario de atención al cliente:</h5>
+                    <span><b>Lunes a viernes:</b> 09:00AM - 18:00PM</span>
+                  </div>
+                  <div>
+                    <h5 className="text-secondary fw-bold mt-4">
+                      Atención via WhatsApp:
+                    </h5>
+                    <p className="fs-6 mb-0">Sábados, domingos y festivos: 09:00AM - 18:00PM</p>
+                    <a className="text-black" href="https://wa.me/56996193091" target="_blank">
+                      <img src="/img/icon/help/what-up.svg"/>
+                      <span className="mx-1">+569 96193091</span>
+                      <span>(sólo mensajes, <b>NO</b> llamados telefónicos)</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="card col-12 col-md-5 bg-white shadow-sm border-0 p-3 rounded-4">
+                <div className="card-body">
+                  <h5 className="text-secondary fw-bold">¿Buscas cotizar un viaje especial?</h5>
+                  <span>
+                    Escríbenos y solicita una cotización personalizada y descubre cómo podemos transformar tu experiencia de transporte en algo único.
+                  </span>
+                </div>
+                <div className="card-footer border-0">
+                  <div className="d-grid">
+                    <button className="btn btn-primary rounded-4 fw-bold">
+                      Contáctanos
+                    </button>
                   </div>
                 </div>
               </div>

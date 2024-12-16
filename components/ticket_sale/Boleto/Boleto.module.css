@@ -835,3 +835,42 @@
         display: none;
     } */
 }
+
+.enabled-details {
+    padding-bottom: 5px;
+    border-bottom: 2px solid #f0f0f0;
+    border-radius: 16px;
+}
+
+.border-dashed {
+    border-left: #000 1px dashed;
+}
+
+.floor-pricing b {
+    color: #FF6500;
+}
+
+.info-container {
+    font-size: 16px !important;
+}
+
+.travel-terminal-subtitle {
+    font-size: 14px;
+}
+
+@media( width < 425px ) {
+    .info-container {
+        font-size: 14px !important;
+    }
+
+    .travel-terminal-subtitle {
+        font-size: 12px;
+    }
+}
+
+.travel-duration {
+    color: var(--naranjo-100, #FF6500);
+    font-weight: 400;
+    line-height: normal;
+    text-decoration-line: underline;
+}

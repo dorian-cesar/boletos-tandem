@@ -29,7 +29,7 @@ import LocalStorageEntities from "entities/LocalStorageEntities";
 import { decryptData } from "utils/encrypt-data";
 
 
-export default function Header({ openNav }: { openNav: any }) {
+export default function Header({ openNav, isBuyStage = false }: { openNav: any, isBuyStage:boolean }) {
   const [user, setUser] = useState();
   const router = useRouter();
   const { getItem, clear } = useLocalStorage();
@@ -156,7 +156,7 @@ export default function Header({ openNav }: { openNav: any }) {
 
   return (
     <>
-      <header className={`sticky-top bg-white ${styles["header"]}`}>
+      <header className={ isBuyStage ? `d-none d-md-block sticky-top bg-white ${styles["header"]}` : `sticky-top bg-white ${styles["header"]}` }>
         <div className="container">
           <div className="row">
             <div className="col-2 col-sm-1">

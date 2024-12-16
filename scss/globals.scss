@@ -1,0 +1,22 @@
+$theme-colors: (
+    'primary': #FF6500,
+    'secondary': #3365B4,
+    'info': #BFBFBF
+);
+
+.btn-primary {
+    --bs-btn-color: #FFFFFF !important; // Color de texto en los botones
+    --bs-btn-bg: #FF6500; // Color de fondo del botón primario
+    --bs-btn-border-color: #FF6500;
+    --bs-btn-hover-color: #FFFFFF !important;
+    --bs-btn-hover-bg: darken(#FF6500, 10%);
+    --bs-btn-hover-color: #FFFFFF !important;
+    --bs-btn-active-color: #FFFFFF !important;
+}
+
+.btn-outline-primary {
+    --bs-btn-hover-color: #FFFFFF !important;
+    --bs-btn-active-color: #FFFFFF !important;
+}
+
+@import 'bootstrap/scss/bootstrap';

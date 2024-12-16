@@ -27,7 +27,7 @@ const ResumenServicio = (props) => {
           });
         } else {
           const viaje = `${servicioIda.terminalOrigen}-${servicioIda.terminalDestino}`;
-          const fecha = servicioIda.fechaServicio;
+          const fecha = servicioIda.fechaSalida;
           const hora = servicioIda.horaSalida;
           const asientos = [];
 
@@ -59,7 +59,7 @@ const ResumenServicio = (props) => {
             });
           } else {
             const viaje = `${servicioVuelta.terminalOrigen}-${servicioVuelta.terminalDestino}`;
-            const fecha = servicioVuelta.fechaServicio;
+            const fecha = servicioVuelta.fechaSalida;
             const hora = servicioVuelta.horaSalida;
             const asientos = [];
 

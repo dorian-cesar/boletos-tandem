@@ -67,7 +67,6 @@ const CambiarPassword = (props) => {
   };
 
   const validarForm = () => {
-    debugger;
     return new Promise((resolve, reject) => {
       if (
         changePassword.password == "" ||

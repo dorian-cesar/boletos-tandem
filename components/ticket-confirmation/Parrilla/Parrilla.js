@@ -84,7 +84,6 @@ const Parrilla = (props) => {
   let asientosPorServicio = [];
 
   function actualizarTotalPagar() {
-    debugger;
     let total = 0;
     Object.keys(carroCompras).forEach((servicios) => {
       carroCompras[servicios]?.ida?.forEach(
@@ -106,7 +105,6 @@ const Parrilla = (props) => {
   }
 
   function obtenerAsientosSeleccionados() {
-    debugger;
     const returnedArray = [];
     if (carroCompras[key]) {
       if (carroCompras[key]['ida']) {
@@ -131,7 +129,6 @@ const Parrilla = (props) => {
   }
 
   const asientoClass = (asiento, indexParrilla) => {
-    debugger;
     try {
       let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
@@ -292,7 +289,6 @@ const Parrilla = (props) => {
 
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
-      debugger;
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
 
       if(indexParrilla?.parrilla?.validaAsiento){
@@ -440,9 +436,6 @@ const Parrilla = (props) => {
   }
 
   function getImage(sit, indexParrilla) {
-    if (sit.tipo === "pet") {
-      debugger;
-    }
     let asientosSeleccionados = obtenerAsientosSeleccionados() || [];
 
     if (asientosSeleccionados.length > 0) {

@@ -23,7 +23,7 @@ registerLocale("es", es);
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
   <input
     type="text"
-    className="fecha-input form-control"
+    className="fecha-input form-control m-0 w-100"
     onClick={onClick}
     ref={ref}
     defaultValue={value}
@@ -32,13 +32,10 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
 ));
 
 const BusquedaServicio = (props) => {
-
-  const buttonRef = useRef();
-
   const router = useRouter();
 
   const dispatch = useDispatch();
-  const listaCarrito = useSelector((state) => state.compra.listaCarrito);
+
   const {
     dias,
     isShowMascota = false,
@@ -50,31 +47,19 @@ const BusquedaServicio = (props) => {
   const [origen, setOrigen] = useState(null);
   const [destino, setDestino] = useState(null);
   const [destinos, setDestinos] = useState([]);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(props.startDate ? props.startDate : null);
+  const [endDate, setEndDate] = useState(props.endDate ? props.endDate : null);
   const [datePickerKey, setDatePickerKey] = useState(0);
-  const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [activeTab, setActiveTab] = useState("Búsqueda de Servicio");
 
   const [mostrarPopup, setMostrarPopup] = useState(false);
 
-  const [user, setUser] = useState();
-  const [disabledButton, setDisabledButton] = useState(true);
   const [origenes, setOrigenes] = useState([]);
-
-  // const captchaRef = useRef();
 
   useEffect(() => {
     getOrigins();
   }, []);
   
-  useEffect(() => {
-    const user = decryptData(LocalStorageEntities.user_auth);
-    setUser(user);
-  }, []);
-
   const abrirPopup = () => {
     setMostrarPopup(true);
   };
@@ -83,14 +68,21 @@ const BusquedaServicio = (props) => {
   };
 
   useEffect(() => {
-    if( router.query.search ) {
-      setDecryptedData(decryptDataNoSaved(router.query.search, 'search'));
-      setStartDate(decryptedData?.startDate ? dayjs(decryptedData.startDate).toDate() : dayjs().toDate());
-      setEndDate(decryptedData?.endDate ? dayjs(decryptedData.endDate).toDate() : null);
-    }
-    if( !decryptedData ) {
-      setStartDate(dayjs().toDate());
-      setEndDate(null);
+    setStartDate(props.startDate);
+    setEndDate(props.endDate);
+  }, [props.startDate, props.endDate])
+
+  useEffect(() => {
+    if( !startDate ) {
+      if( router.query.search ) {
+        setDecryptedData(decryptDataNoSaved(router.query.search, 'search'));
+        setStartDate(decryptedData?.startDate ? dayjs(decryptedData.startDate).toDate() : dayjs().toDate());
+        setEndDate(decryptedData?.endDate ? dayjs(decryptedData.endDate).toDate() : null);
+      }
+      if( !decryptedData ) {
+        setStartDate(dayjs().toDate());
+        setEndDate(null);
+      }
     }
   }, [])
 
@@ -249,132 +241,112 @@ const BusquedaServicio = (props) => {
               />
             )}
             {isShowMascota && (
-              <div
-                className={styles["title-mascota-abordo"]}
-                onClick={() => setMascota(!mascota_allowed)}
-              >
-                <img
-                  src={
-                    mascota_allowed
-                      ? "img/icon/buttons/paw-outline-orange.svg"
-                      : "img/icon/buttons/paw-outline.svg"
-                  }
-                  style={{
-                    marginRight: "5px",
-                    color: mascota_allowed
-                      ? "var(--color-icon-activo, #00FF00)"
-                      : "var(--color-icon-inactivo, #FF0000)",
-                  }}
-                />
-                <span
-                  className={styles["label-titulo-busqueda-servicio"]}
-                >
-                  Mascota a bordo
-                </span>
+              <div className="container px-xs-0 px-sm-3 px-md-4 px-lg-5 px-xl-2 px-xxl-4">
+                <div className={`form-check form-switch form-check-reverse ${ styles['input-switch-pet'] }`}>
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    role="switch"
+                    id="isMascotaAllowedSwitch"
+                    value={ mascota_allowed }
+                    onChange={ () => setMascota(!mascota_allowed) }
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor="isMascotaAllowedSwitch"
+                  >
+                    Mascota a bordo
+                  </label>
+                </div>
               </div>
             )}
           </div>
-          <div className={ styles['input-container'] }>
-            <div className={styles["grupo-campos"]}>
-              <label className={styles["label-titulo-busqueda-servicio"]}>Origen</label>
-              <Input
-                className="sel-input origen"
-                placeholder="Seleccione origen"
-                items={retornaCiudadesSelect(origenes)}
-                selected={
-                  origen &&
-                  retornaCiudadesSelect([
-                    origenes.find((i) => i.codigo == origen.codigo),
-                  ])
-                }
-                setSelected={cambiarOrigen}/>
+          <div className="container">
+            <div className="row d-flex justify-content-evenly align-items-end">
+              <div className="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-2 col-xxl-2">
+                <label className={styles["label-titulo-busqueda-servicio"]}>Origen</label>
+                <Input
+                  className="sel-input origen"
+                  placeholder="Seleccione origen"
+                  items={retornaCiudadesSelect(origenes)}
+                  selected={
+                    origen &&
+                    retornaCiudadesSelect([
+                      origenes.find((i) => i.codigo == origen.codigo),
+                    ])
+                  }
+                  setSelected={cambiarOrigen}/>
+              </div>
+              <div className="col-12 col-sm-12 col-md-1 col-lg-auto col-xl-auto col-xxl-auto d-flex">
+                <img
+                  src="img/repeat-outline.svg"
+                  onClick={() => invertirDestinos()}
+                  className="pointer mx-auto mb-1 d-none d-md-block"
+                />
+              </div>
+              <div className="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-2 col-xxl-2">
+                <label className={ styles["label-titulo-busqueda-servicio"] }>
+                  Destino
+                </label>
+                <Input
+                  className="sel-input destino"
+                  placeholder="Seleccione destino"
+                  items={retornaCiudadesSelect([
+                    ...destinos,
+                    {
+                      codigo: "NO_OPTIONS",
+                      nombre: "Por favor seleccione un origen",
+                    },
+                  ])}
+                  selected={
+                    destino &&
+                    destinos.length > 0 &&
+                    retornaCiudadesSelect([
+                      destinos.find((i) => i.codigo == destino.codigo),
+                    ])
+                  }
+                  setSelected={setDestino}/>
+              </div>
+              <div className="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-2 col-xxl-2">
+                <label className={styles["label-titulo-busqueda-servicio"]}>
+                  Salida
+                </label>
+                <DatePicker
+                  key={datePickerKey}
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  filterDate={isValidStart}
+                  locale={"es"}
+                  minDate={new Date()}
+                  dateFormat="dd/MM/yyyy"
+                  customInput={<CustomInput />}
+                />
+              </div>
+              <div className="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-2 col-xxl-2">
+                <label className={styles["label-titulo-busqueda-servicio"]}>
+                  Vuelta
+                </label>
+                <DatePicker
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  filterDate={isValidAfter}
+                  locale={"es"}
+                  minDate={startDate}
+                  dateFormat="dd/MM/yyyy"
+                  className={ styles['input'] }
+                  customInput={<CustomInput />}
+                />
+              </div>
+              <div className="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-2 col-xxl-2">
+                <button
+                    className={`mx-auto mt-4 mt-md-0 ${styles["button-busqueda-servicio"]} ${ isLoading ? styles['loading-button'] : '' }`}
+                    onClick={redireccionarBuscarServicio}
+                    disabled={!origen || !destino}
+                  >
+                    <img src="img/icon-buscar-blanco.svg" /> Buscar
+                </button>
+              </div>
             </div>
-            <img
-              src="img/repeat-outline.svg"
-              onClick={() => invertirDestinos()}
-              className="pointer"
-            />
-            <div className={ styles["grupo-campos"] }>
-              <label className={ styles["label-titulo-busqueda-servicio"] }>
-                Destino
-              </label>
-              <Input
-                className="sel-input destino"
-                placeholder="Seleccione destino"
-                items={retornaCiudadesSelect([
-                  ...destinos,
-                  {
-                    codigo: "NO_OPTIONS",
-                    nombre: "Por favor seleccione un origen",
-                  },
-                ])}
-                selected={
-                  destino &&
-                  destinos.length > 0 &&
-                  retornaCiudadesSelect([
-                    destinos.find((i) => i.codigo == destino.codigo),
-                  ])
-                }
-                setSelected={setDestino}/>
-            </div>
-            <div className={styles["grupo-campos"]}>
-              <label
-                className={styles["label-titulo-busqueda-servicio"]}
-              >
-                Salida
-              </label>
-              <DatePicker
-                key={datePickerKey}
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                filterDate={isValidStart}
-                locale={"es"}
-                minDate={new Date()}
-                dateFormat="dd/MM/yyyy"
-                customInput={<CustomInput />}
-              />
-            </div>
-            <div className={styles["grupo-campos"]}>
-              <label
-                className={styles["label-titulo-busqueda-servicio"]}
-              >
-                Vuelta
-              </label>
-              <DatePicker
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-                filterDate={isValidAfter}
-                locale={"es"}
-                minDate={startDate}
-                dateFormat="dd/MM/yyyy"
-                className={ styles['input'] }
-                customInput={<CustomInput />}
-              />
-            </div>
-            <div className={styles["grupo-campos"]}>
-              <label
-                className={styles["label-titulo-busqueda-servicio"]}
-              ></label>
-              <button
-                className={`${styles["button-busqueda-servicio"]} ${ isLoading ? styles['loading-button'] : '' }`}
-                onClick={redireccionarBuscarServicio}
-                disabled={!origen || !destino}
-              >
-                <img src="img/icon-buscar-blanco.svg" /> Buscar
-              </button>
-            </div>
-            {/* <div className="w-100 d-flex justify-content-end">
-              <ReCAPTCHA
-                sitekey={captchaSiteKey}
-                size='invisible'
-                ref={captchaRef}
-              />
-            </div> */}
-            <div 
-              className="d-none"
-              ref={buttonRef}
-              data-bs-toggle="modal"
-              data-bs-target="#loginModal"></div>
           </div>
         </div>
       </section>

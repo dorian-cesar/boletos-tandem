@@ -370,7 +370,6 @@ const Parrilla = (props) => {
   }
 
   function validarMaximoAsientos(asientos, asientoSeleccion) {
-    debugger;
     const cantidadAsientos = asientos.length;
 
     if (cantidadAsientos >= MAXIMO_COMPRA_ASIENTO) {

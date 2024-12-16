@@ -103,7 +103,6 @@ useEffect(() => {
 }, [boletoValido]);
 
   async function searchParrilla() {
-    debugger;
     try {
       if(carroCompras.length > 0) {
           useDispatch(limpiarListaCarrito());
@@ -159,67 +158,60 @@ useEffect(() => {
       <div className={styles["bloque"]}>
         <div className="row">
           <div className="col-12 col-md-6 col-lg-3">
-            <div className="grupo-campos">
-              <label className="label-input">¿De dónde viajamos?</label>
-              <Input
-                className="sel-input origen"
-                placeholder="Seleccione origen"
-                items={retornaCiudadesSelect(origenes)}
-                selected={
-                  origen &&
-                  retornaCiudadesSelect([
-                    origenes.find((i) => i.codigo == origen),
-                  ])
-                }
-                setSelected={cambiarOrigen}
-                isDisabled={true}
-              />
-            </div>
+            <label className="label-input">¿De dónde viajamos?</label>
+            <Input
+              className="sel-input origen"
+              placeholder="Seleccione origen"
+              items={retornaCiudadesSelect(origenes)}
+              selected={
+                origen &&
+                retornaCiudadesSelect([
+                  origenes.find((i) => i.codigo == origen),
+                ])
+              }
+              setSelected={cambiarOrigen}
+              isDisabled={true}
+            />
           </div>
           <div className="col-12 col-md-6 col-lg-3">
-            <div className="grupo-campos">
-              <label className="label-input">¿A dónde viajamos?</label>
-              <Input
-                className="sel-input destino"
-                placeholder="Seleccione destino"
-                items={retornaCiudadesSelect([
-                  ...destinos,
-                  {
-                    codigo: "NO_OPTIONS",
-                    nombre: "Por favor seleccione un origen",
-                  },
-                ])}
-                selected={
-                  destino &&
-                  destinos.length > 0 &&
-                  retornaCiudadesSelect([
-                    destinos.find((i) => i.codigo == destino),
-                  ])
-                }
-                setSelected={setDestino}
-                isDisabled={true}
-              />
-            </div>
+            <label className="label-input">¿A dónde viajamos?</label>
+            <Input
+              className="sel-input destino"
+              placeholder="Seleccione destino"
+              items={retornaCiudadesSelect([
+                ...destinos,
+                {
+                  codigo: "NO_OPTIONS",
+                  nombre: "Por favor seleccione un origen",
+                },
+              ])}
+              selected={
+                destino &&
+                destinos.length > 0 &&
+                retornaCiudadesSelect([
+                  destinos.find((i) => i.codigo == destino),
+                ])
+              }
+              setSelected={setDestino}
+              isDisabled={true}
+            />
           </div>
           <div className="col-12 col-md-6 col-lg-3">
-            <div className="grupo-campos mb-4">
-              <label className="label-input">¿Cuándo viajamos?</label>
-              <DatePicker
-                key={datePickerKey}
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                filterDate={isValidStart}
-                locale={"es"}
-                minDate={new Date()}
-                dateFormat="dd/MM/yyyy"
-                customInput={<CustomInput />}
-              />
-            </div>
+            <label className="label-input">¿Cuándo viajamos?</label>
+            <DatePicker
+              key={datePickerKey}
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              filterDate={isValidStart}
+              locale={"es"}
+              minDate={new Date()}
+              dateFormat="dd/MM/yyyy"
+              customInput={<CustomInput />}
+            />
           </div>
-          <div className="col-12 col-md-6 col-lg-3 g-3 mt-4">
-            <div className="w-100">
-              <label className="label-input"></label>
-              <button onClick={searchParrilla} className="btn">
+          <div className="col-12 col-md-6 col-lg-3 align-content-center">
+            <div className="d-flex justify-content-center align-content-center">
+              <button onClick={searchParrilla} className="btn btn-primary fw-medium rounded-4 px-4 mt-3">
                 Buscar servicios
               </button>
             </div>

@@ -3,7 +3,10 @@ import { store } from 'store/store';
 import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
 import fetchJson from 'lib/fetchJson'
-import 'bootstrap/dist/css/bootstrap.css'
+
+import 'bootstrap/dist/css/bootstrap.css';
+import '../scss/globals.scss';
+
 import '../public/style.css'
 import 'react-datepicker/dist/react-datepicker.min.css'
 import '../public/custom.css'
