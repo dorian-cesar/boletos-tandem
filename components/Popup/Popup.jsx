@@ -194,7 +194,22 @@ const Popup = ({ modalKey, modalClose , modalMethods, modalTitleButton, modalBod
       buttonMessage: "WWW.PULLMANBUS.CL",
       imageIcon: "/img/icon/popup/warning-outline.svg",
       onClick: modalMethods
-    }
+    },
+      [ModalEntities.bad_viajes_special]: {
+      title: "¡Ups! Hubo un error ",
+      body: "No hemos recibido tu correo, intenta nuevamente.",
+      buttonMessage: "Volver al formulario",
+      imageIcon: "/img/icon/popup/warning-outline.svg",
+      onClick: modalMethods
+    },
+    [ModalEntities.correo_viajes_special]: {
+      title: "¡Correo Enviado!",
+      body: "Hemos recibido tu solicitud. Pronto un ejecutivo comercial se contactará contigo. ",
+      buttonMessage: "Volver al inicio",
+      imageIcon: "/img/icon/popup/checkmark-circle-outline.svg",
+      onClick: modalMethods
+    },
+  
   };
 
   const handleButtonClick = () => {

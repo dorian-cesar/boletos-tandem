@@ -49,6 +49,10 @@ export const useForm = ( initialForm = {}, formValidations = {}) => {
         setFormValidation( formCheckedValues );
     }
 
+    const setSolicitud = (newState) => {
+        setFormState(newState);
+      };
+
 
 
     return {
@@ -58,6 +62,7 @@ export const useForm = ( initialForm = {}, formValidations = {}) => {
         onResetForm,
 
         ...formValidation,
-        isFormValid
+        isFormValid,
+        setSolicitud
     }
 }
