@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import PreguntasFrecuente from "../../components/PreguntasFrecuente/PreguntasFrecuente";
 import NecesitasAyuda from "../../components/NecesitasAyuda/NecesitasAyuda";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const mappedStages = {
   preguntas: 1,
@@ -109,9 +110,11 @@ const TeAyudamos = (props) => {
                 </div>
                 <div className="card-footer border-0">
                   <div className="d-grid">
-                    <button className="btn btn-primary rounded-4 fw-bold">
-                      Contáctanos
-                    </button>
+                    <Link href="/viajesEspeciales" legacyBehavior>
+                      <a href='#' className="btn btn-primary rounded-4 fw-bold" role="button">
+                        Contáctanos
+                      </a>
+                    </Link>
                   </div>
                 </div>
               </div>
