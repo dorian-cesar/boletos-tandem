@@ -41,6 +41,8 @@ scenarios:
         - get:
             url: "/cambioBoleto"
         - get:
+            url: "/viajesEspeciales"
+        - get:
             url: "/confirmacionBoleto"
         - get:
             url: "/teAyudamos"

@@ -23,6 +23,11 @@ if (typeof window !== 'undefined') {
     }
 }
 
+const STAGES = {
+    STAGE_IDA: 0,
+    STAGE_VUELTA: 1
+}
+
 export const compraSlice = createSlice({
     name: 'counter',
     initialState,
@@ -146,6 +151,52 @@ export const compraSlice = createSlice({
             state.medioPago = '';
             state.live_time = null;
         },
+        limpiarListaCarritoCambioFecha: (state, action) => {
+            const { stage } = action.payload;
+            if( state.listaCarrito ) {
+                const parOrigenDestino = Object.entries(state.listaCarrito);
+
+                parOrigenDestino.map(([keyParOrigenDestino, value]) => {
+                    let servicio;
+                    if( stage === STAGES.STAGE_IDA ) {
+                        servicio = value?.ida;
+                    } else if( stage === STAGES.STAGE_VUELTA ) {
+                        servicio = value?.vuelta;
+                    }
+
+                    if( servicio ) {
+                        servicio.forEach((servicioSeleccionado) => {
+                            servicioSeleccionado.asientos.forEach(async ( element ) => {
+                                let liberarAsiento = {
+                                    servicio: servicioSeleccionado?.idServicio,
+                                    codigoReserva: 1,
+                                    fecha: servicioSeleccionado?.fechaServicio,
+                                    origen: servicioSeleccionado?.idTerminalOrigen,
+                                    destino: servicioSeleccionado?.idTerminalDestino,
+                                    integrador: 1000,
+                                    asiento: element?.asiento,
+                                    tarifa: element?.tarifa,
+                                }
+                                try {
+                                    const { data } = await axios.post("/api/ticket_sale/liberar-asiento", liberarAsiento);
+                                } catch (e) {}
+                            });
+                        });
+
+                        try {
+                            if( stage === STAGES.STAGE_IDA ) {
+                                delete state.listaCarrito[keyParOrigenDestino]?.ida;
+                            } else if( stage === STAGES.STAGE_VUELTA ) {
+                                delete state.listaCarrito[keyParOrigenDestino]?.vuelta;
+                            }
+                        } catch (error) {
+                            console.error("Servicio no encontrado", error);
+                        }
+                    }
+                });
+
+            }
+        },
         liberarAsientos: (state, action) => {
             Object.entries(state.listaCarrito).map(([key, value]) => {
                 if(value.ida){
@@ -217,7 +268,8 @@ export const {
     limpiarListaCarrito,
     liberarAsientos,
     agregarOrigenDestino,
-    agregarCompraCuponera
+    agregarCompraCuponera,
+    limpiarListaCarritoCambioFecha
 } = compraSlice.actions;
 
 export default compraSlice.reducer;

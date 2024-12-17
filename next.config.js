@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+
+const path = require('path')
+
 module.exports = {
   async rewrites() {
     return [
@@ -15,6 +18,10 @@ module.exports = {
         destination: '/ticket-change/CambioBoleto',
       },
       {
+        source: '/viajesEspeciales',
+        destination: '/viajes-especiales/viajes-especiales',
+      },
+      {
         source: '/confirmacionBoleto',
         destination: '/ticket-confirmation/ConfirmacionBoleto',
       },
@@ -24,7 +31,10 @@ module.exports = {
       },
     ];
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'scss')]
+  },
   images: {
     domains: ['avatars.githubusercontent.com'],
   },

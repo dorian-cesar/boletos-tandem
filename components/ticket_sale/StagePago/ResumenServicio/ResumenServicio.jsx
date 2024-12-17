@@ -95,7 +95,8 @@ const ResumenServicio = (props) => {
             key={ `${ asiento.asiento }-key-${ index }` }
             title={ asiento.asientoAsociado ? `Pasajero ${ pasajero } | Asiento ${ asiento.asiento } + Asiento ${ asiento.asientoAsociado } 🐾` : `Pasajero ${ pasajero } | Asiento ${ asiento.asiento }` }
             asiento={ asiento }
-            servicio={ info } />
+            servicio={ info }
+            nacionalidades={ props.nacionalidades } />
         );
       }
     })
@@ -108,17 +109,7 @@ const ResumenServicio = (props) => {
     <>
       {
         informacionAgrupada.map((info, index) => {
-          return (
-            <Acordeon
-              key={ index }
-              viaje={ info.viaje }
-              fecha={ info.fecha }
-              hora={ info.hora }
-              open={ true }
-            >
-              { renderInformacionPasajero(info) }
-            </Acordeon>
-          );
+          return renderInformacionPasajero(info);
         })
       }
     </>

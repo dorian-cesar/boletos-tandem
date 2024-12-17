@@ -4,7 +4,7 @@ import styles from "./ResumenViaje.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo";
 import {
-  newIsValidPasajero,
+  newIsValidPasajeroCompra,
   newIsValidComprador,
 } from "../../../utils/user-pasajero";
 import { toast } from "react-toastify";
@@ -135,12 +135,32 @@ export const ResumenViaje = (props) => {
               horaLlegada: value.horaLlegada,
               cantidadAsientos: 0,
               total: 0,
+              asientosEquipaje: []
             };
+
+            const informacionPasajeros = informacionAgrupada.find(servicio => 
+              servicio?.idServicio === value?.idServicio && 
+              servicio?.idTerminalOrigen === value?.idTerminalOrigen && 
+              servicio?.idTerminalDestino === value?.idTerminalDestino && 
+              servicio?.horaSalida === value?.horaSalida)
+            
+            if( informacionPasajeros ) {
+              const asientos = informacionPasajeros?.asientos;
+              if( asientos && asientos.length > 0 ) {
+                asientos.forEach((asiento, indexAsiento) => {
+                  if( asiento?.cantidadEquipaje && asiento.cantidadEquipaje > 0 ) {
+                    datos.asientosEquipaje.push(`Pasajero ${ indexAsiento + 1 } - Asiento ${ asiento?.asiento } x ${ asiento?.cantidadEquipaje }`)
+                  }
+                })
+              }
+            }
+
             value.asientos.forEach((element) => {
               datos.cantidadAsientos += 1;
               datos.total += element.valorAsiento;
             });
-            idaNombre = `Salida, ${format(fechaIda, "ddd D MMM")}`;
+
+            idaNombre = `Salida, ${format(fechaIda, "ddd D MMM", "es")}`;
             datos.total = clpFormat.format(datos.total);
             carritoIda.detalle.push(datos);
           });
@@ -160,14 +180,34 @@ export const ResumenViaje = (props) => {
               horaLlegada: value.horaLlegada,
               cantidadAsientos: 0,
               total: 0,
+              asientosEquipaje: []
             };
+
+            const informacionPasajeros = informacionAgrupada.find(servicio => 
+              servicio?.idServicio === value?.idServicio && 
+              servicio?.idTerminalOrigen === value?.idTerminalOrigen && 
+              servicio?.idTerminalDestino === value?.idTerminalDestino && 
+              servicio?.horaSalida === value?.horaSalida)
+            
+            if( informacionPasajeros ) {
+              const asientos = informacionPasajeros?.asientos;
+              if( asientos && asientos.length > 0 ) {
+                asientos.forEach((asiento, indexAsiento) => {
+                  if( asiento?.cantidadEquipaje && asiento.cantidadEquipaje > 0 ) {
+                    datos.asientosEquipaje.push(`Pasajero ${ indexAsiento + 1 } - Asiento ${ asiento?.asiento } x ${ asiento?.cantidadEquipaje }`)
+                  }
+                });
+              }
+            }
+
             value.asientos.forEach((element) => {
               datos.cantidadAsientos += 1;
               datos.total += element.valorAsiento;
             });
+
             datos.total = clpFormat.format(datos.total);
             carritoVuelta.detalle.push(datos);
-            vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM")}`;
+            vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM", "es")}`;
           });
         }
       });
@@ -379,33 +419,37 @@ export const ResumenViaje = (props) => {
               boleto: {
                 fechaLlegada: resumenCompra.listaCarrito[0].fechaLlegada,
                 horaLlegada: resumenCompra.listaCarrito[0].horaLlegada,
-                nombre: resumenCompra.datosComprador?.nombre,
-                apellido: resumenCompra.datosComprador?.apellido,
+                nombre: datosComprador?.nombre,
+                apellido: datosComprador?.apellido,
                 asiento: resumenCompra.listaCarrito[0].pasajeros[0].asiento,
                 clase: resumenCompra.listaCarrito[0].pasajeros[0].clase,
                 idServicio: resumenCompra.listaCarrito[0].servicio,
                 fechaServicio: fechaServicioParse,
                 fechaSalida: fechaServicioSalidarParse,
                 piso: resumenCompra.listaCarrito[0].pasajeros[0].piso,
-                email: resumenCompra.listaCarrito[0].pasajeros[0].email,
+                email: datosComprador?.email,
                 destino: resumenCompra.listaCarrito[0].destino,
                 idOrigen: resumenCompra.listaCarrito[0].origen,
                 idDestino: resumenCompra.listaCarrito[0].destino,
-                rut: resumenCompra.datosComprador.rut
+                rut: resumenCompra.listaCarrito[0].pasajeros[0]?.documento
                   .replace(".", "")
                   .replace(".", ""),
-                tipoDocumento: resumenCompra.datosComprador.tipoDocumento,
+                tipoDocumento: datosComprador.tipoDocumento,
+                cantidadEquipaje: resumenCompra.listaCarrito[0].pasajeros[0]?.cantidadEquipaje || 0
               },
             };
             let data;
             try {
+              sessionStorage.setItem('purchase_info', JSON.stringify(informacionAgrupada));
+
               const response = await axios.post(
                 "/api/coupon/canjear-cuponera",
                 canjearCuponera
               );
               data = response.data;
             } catch (error) {
-              data = error.response.data;
+              // Esto hace que pase igual a la pagina de /respuesta-transaccion-canje
+              // data = error.response.data;
             }
             if (data) {
               dispatch(agregarCompraCuponera(data));
@@ -435,6 +479,8 @@ export const ResumenViaje = (props) => {
           JSON.stringify(resumenCompra),
           secret
         );
+
+        sessionStorage.setItem('purchase_info', JSON.stringify(informacionAgrupada));
 
         const response = await fetch(`/api/ticket_sale/guardar-multi-carro`, {
           method: "POST",
@@ -491,7 +537,7 @@ export const ResumenViaje = (props) => {
       informacionAgrupada.forEach((servicio) => {
         servicio.asientos.forEach((asiento) => {
           if (!validator || validator.valid) {
-            validator = newIsValidPasajero(asiento);
+            validator = newIsValidPasajeroCompra(asiento);
           }
         });
       });
@@ -505,6 +551,10 @@ export const ResumenViaje = (props) => {
   useEffect(() => {
     obtenerInformacion();
   }, []);
+
+  useEffect(() => {
+    obtenerInformacion();
+  }, [informacionAgrupada]);
 
   useEffect(() => {
     if (payment.url) {
@@ -579,9 +629,9 @@ export const ResumenViaje = (props) => {
 
   useEffect(() => {
     if(medioPago === 'CUP'){
-       setRequestConvenio(null);
-       setDescuentoConvenio(null);
-       setConvenio(null);
+      setRequestConvenio(null);
+      setDescuentoConvenio(null);
+      setConvenio(null);
     }
   }, [medioPago]);
 
@@ -593,7 +643,7 @@ export const ResumenViaje = (props) => {
           {Array.isArray(resumen.carro.lista) &&
             resumen.carro.lista.map((element) => (
               <div className={styles["servicio-ida"]} key={element.titulo}>
-                <b className={styles["titulo-servicio"]}>{element.titulo}</b>
+                <span className={ `${styles["titulo-servicio"]} fw-bold text-black fs-6`}>{element.titulo}</span>
                 <div className={styles["detalle-container"]}>
                   {Array.isArray(element.detalle) &&
                     element.detalle.map((detalleItem, index) => (
@@ -614,6 +664,22 @@ export const ResumenViaje = (props) => {
                           </span>
                           <b>{detalleItem.total}</b>
                         </div>
+                        {
+                          detalleItem.asientosEquipaje && detalleItem.asientosEquipaje.length > 0 && (
+                            <div className={ `row mb-3 dotted-bottom mx-1 pb-3` }>
+                              <span className="col-12 fw-bold text-black fs-6 p-0">Equipaje</span>
+                              {
+                                detalleItem.asientosEquipaje.map((asiento) => {
+                                  return (
+                                    <div className="col-12 p-0">
+                                      { asiento }
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                          )
+                        }
                       </div>
                     ))}
                 </div>
