@@ -41,6 +41,8 @@
 
   .rut{
     margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
 }
 
   .title-data{
@@ -86,7 +88,10 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 1.5;  
-    resize: vertical;  
+    resize: none;  
+}
+.textarea-data-mensaje:focus {
+  outline-color: rgba(47, 83, 247, 0.685);
 }
   
   .button-search-coupon {
@@ -119,7 +124,7 @@
     cursor: pointer;
 }
 
-.button-search-coupon-disabled {
+.button-search-coupon:disabled {
     display: flex;
     height: 40px;
     padding: 0px 52px;
@@ -136,4 +141,14 @@
     font-weight: 700;
     line-height: normal;
 }
+
+.spaceAround {
+  display: flex;
+  justify-content: space-around;
+}
   
+@media( width <= 425px ) {
+  .bloque {
+    padding: 10px 6px 10px 6px !important;
+  }
+}
