@@ -13,7 +13,6 @@ const Convenio = (props) => {
   const dispatch = useDispatch();
 
   const handleRadioChange = async (id) => {
-    debugger;
     setDescuentoConvenio(null);
     try {
       let request = {
@@ -52,16 +51,16 @@ const Convenio = (props) => {
     return (
       <>
         {formularioConvenio}
-        <a
-          className="btn"
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            validarConvenio();
-          }}
-        >
-          Validar Convenio
-        </a>
+        <div className="d-grid">
+          <button
+            className="btn btn-primary border-4 rounded-4 fw-bold fs-6"
+            onClick={(e) => {
+              e.preventDefault();
+              validarConvenio();
+            }}>
+            Validar Convenio
+          </button>
+        </div>
       </>
     );
   }

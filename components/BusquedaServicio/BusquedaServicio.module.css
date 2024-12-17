@@ -11,14 +11,37 @@
 }
 
 .title-mascota-abordo {
-    color: var(--azul-100, #3365B4);
-    font-size: 32px;
+    font-size: 1.5rem;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
     display: flex;
     align-items: right;
     justify-content: right;
+}
+
+.input-switch-pet input {
+    font-size: 1.2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.input-switch-pet label{
+    font-size: 1.2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+@media (width <= 320px) {
+    .input-switch-pet input {
+        font-size: 1.1rem;
+    }
+    
+    .input-switch-pet label{
+        font-size: 1.1rem;
+    }
 }
 
 .label-titulo-busqueda-servicio {
@@ -104,7 +127,7 @@
     }
 
     .seleccion-servicio {
-        margin-top: 12px;
+        margin-top: -12px;
         position: relative;
         z-index: 2;
         display: flex;
@@ -137,7 +160,7 @@
     }
 
     .seleccion-servicio {
-        margin-top: 12px;
+        margin-top: -12px;
     }
 }
 
@@ -149,7 +172,7 @@
 
 @media (width < 760px) {
     .seleccion-servicio {
-        margin-top: 12px;
+        margin-top: -12px;
     }
 }
 

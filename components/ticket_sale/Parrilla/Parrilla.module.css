@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-block-start: 25px;
 }
 
 .cross-container {
@@ -25,12 +24,13 @@
     border-radius: 10px;
     display: flex;
     flex-direction: row;
-    width: 465px;
     align-items: flex-start;
+    width: 60%;
+    max-width: 465px;
 }
 
 .bus .fila {
-    width: 100%;
+    min-width: 24px;
     display: flex;
     flex-direction: column;
 }
@@ -50,7 +50,7 @@
     justify-content: center;
     align-items: center;
     padding-block: 5px;
-    margin-block: 1px;
+    margin: 5px;
 }
 
 .contenedor-bus {
@@ -141,7 +141,6 @@
 .botones-inferiores .botones-seleccion-piso {
     display: flex;
     flex-direction: row;
-    width: 465px;
     justify-content: center;
     margin-block-start: 24px;
 }
@@ -302,47 +301,41 @@
 
 }
 
-@media (max-width: 767px) {
+@media ( width <= 425px ) {
     .bus .fila .columna span {
         transform: rotate(0deg);
-        
     }
+
     .grill-detail {
         align-items: center;
         height: 100%;
         padding-top: 14px;
     }
+
     .disponibilidad-bus {
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-end;
-        gap: 144px;
         width: auto;
-        height: 500px;
         flex-direction: column-reverse;
         align-content: space-between;
+        gap: 15px;
     }
   
     .bus {
         height: auto;
         align-items: center;
         transform: rotate(90deg);
-        margin: 10px;
-    }
-    .cross-container {
-        margin-left: 30px;
-        margin-top: 7%;
+        display: block;
     }
 
     .botones-inferiores .botones-pago {
-        
         align-items: center;
     }
   
     .botones-inferiores .botones-seleccion-piso {
         display: flex;
         flex-direction: row;
-        width: 465px;
         justify-content: center;
         margin-block-start: 24px;
     }
@@ -356,16 +349,10 @@
         gap: 8px;
         flex-shrink: 0;
     }
+  }
 
-    .cross-container .cross {
-        display: flex;
-        justify-content: flex-end;
-        padding: 0;
-    
+  @media( width <= 425px ) {
+    .cross-container {
+        display: none;
     }
-
-    .botones-inferiores {
-        margin-top: 10%;
-    }
-
   }

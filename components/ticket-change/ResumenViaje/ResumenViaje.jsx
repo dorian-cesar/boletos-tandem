@@ -158,7 +158,6 @@ export const ResumenViaje = (props) => {
 
   async function sendToPayment() {
     try {
-      debugger;
       if (valorCobrar < 0) {
         abrirPopup();
       }
@@ -219,7 +218,7 @@ export const ResumenViaje = (props) => {
         fechaServicio: fechaServicioParse,
         fechaSalida: fechaServicioSalidarParse,
         piso: informacionAgrupada[0]?.asientos[0]?.piso,
-        email: informacionAgrupada[0]?.asientos[0]?.email,
+        email: datosComprador.email,
         destino: informacionAgrupada[0]?.idTerminalDestino,
         idOrigen: informacionAgrupada[0]?.idTerminalOrigen,
         idDestino: informacionAgrupada[0]?.idTerminalDestino,
@@ -240,16 +239,25 @@ export const ResumenViaje = (props) => {
           "/api/ticket_sale/cambiar-boleto",
           cambiarBoleto
         );
-        data = response.data;
+
+        data = {
+          status: true,
+          object: response?.data?.object || response?.data
+        }
+
       } catch (error) {
-        data = error.response.data;
+        data = {
+          status: false,
+          message: error?.response?.data?.object.resultado.mensaje || "Error al cambiar el boleto"
+        }
       }
-      if (data.status) {
+
+      if ( data.status ) {
         dispatch(agregarCambio(data.object));
         const url = `/respuesta-transaccion-cambio/${data.object.voucher.boleto}`;
         router.push(url);
       } else {
-        toast.warn(data.object?.resultado?.mensaje, {
+        toast.warn(data.message, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -259,7 +267,6 @@ export const ResumenViaje = (props) => {
   }
 
   async function finalizarCambioTBK() {
-    debugger;
     try {
       cerrarPopup();
       let validator = isPaymentValid();
@@ -314,7 +321,7 @@ export const ResumenViaje = (props) => {
         fechaServicio: fechaServicioParse,
         fechaSalida: fechaServicioSalidarParse,
         piso: informacionAgrupada[0]?.asientos[0]?.piso,
-        email: informacionAgrupada[0]?.asientos[0]?.email,
+        email: datosComprador.email,
         destino: informacionAgrupada[0]?.idTerminalDestino,
         idOrigen: informacionAgrupada[0]?.idTerminalOrigen,
         idDestino: informacionAgrupada[0]?.idTerminalDestino,
@@ -331,12 +338,11 @@ export const ResumenViaje = (props) => {
       encryptDataNoTime(cambiarBoleto, 'CHN_TKT');
 
       if (!isPaymentValid()) return;
-      await pagarWebPay(); 
+      await pagarWebPay( cambiarBoleto ); 
     } catch (error) {}
   }
 
-  async function pagarWebPay() {
-    debugger;
+  async function pagarWebPay( canjeBoleto ) {
     let resumenCompra = {
       medioDePago: medioPago,
       montoTotal: valorCobrar,
@@ -344,6 +350,7 @@ export const ResumenViaje = (props) => {
       integrador: 1000,
       datosComprador: datosComprador,
       listaCarrito: [],
+      canjeBoleto
     };
 
     try {
@@ -361,6 +368,13 @@ export const ResumenViaje = (props) => {
       });
 
     } catch (error) {
+
+      toast.error(error?.response?.data?.message || "Error al completar cambio de boleto", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+      });
+
     }
   }
 

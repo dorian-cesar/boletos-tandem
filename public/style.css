@@ -608,57 +608,6 @@ a {
   margin-bottom: 50px;
 }
 
-.btn {
-  width: 100%;
-  padding: 13px 15px;
-  font-size: 15px;
-  text-align: center;
-  font-weight: 700;
-  border-radius: 17px;
-  color: #fff;
-  background-color: var(--naranjo);
-}
-
-.btn-disabled {
-  width: 100%;
-  padding: 13px 15px;
-  font-size: 15px;
-  text-align: center;
-  font-weight: 700;
-  border-radius: 17px;
-  color: #fff;
-  background-color: var(--gris);
-  cursor: not-allowed;
-}
-
-.btn-outline {
-  display: inline-block;
-  width: 100%;
-  padding: 13px 15px;
-  font-size: 15px;
-  text-align: center;
-  font-weight: 700;
-  border-radius: 17px;
-  color: var(--naranjo);
-  background-color: #fff;
-  border: 2px solid var(--naranjo);
-}
-
-.btn-outline:hover {
-  color: #fff;
-  background-color: var(--naranjo);
-}
-
-.btn:hover {
-  color: #fff;
-  background-color: #ff9952;
-}
-
-.btn-disabled:hover {
-  color: #fff;
-  background-color: var(--gris);
-}
-
 .btn-morado {
   background-color: #AF5EEA;
 }
@@ -2554,7 +2503,10 @@ line-height: normal;
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .home .img-principal img {
-    display: none;
+    display: block;
+    height: 25vh;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
   }
 
   .home .bloque.m-neg {
@@ -2567,7 +2519,8 @@ line-height: normal;
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
   .home .img-principal img {
-    display: none;
+    display: block;
+    height: 40vh;
   }
 
   .home .bloque.m-neg {
@@ -2581,7 +2534,11 @@ line-height: normal;
 @media only screen and (min-width: 768px) {
   .home .img-principal img {
     display: block;
-    height: 30vh;
+    height: 40vh;
+  }
+
+  .home .bloque .m-neg {
+    margin-top: -2.5rem;
   }
 }
 
@@ -2702,3 +2659,46 @@ line-height: normal;
 /* .ol-tyc li {
   font-weight: bold;
 } */
+
+.border-dashed {
+  border-style: dashed;
+}
+
+.empty-seat {
+  height: 31px;
+}
+
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+.fs-7 {
+  font-size: 0.65rem;
+}
+
+.mh-4 {
+  min-height: 450px;
+}
+
+.bg-bus {
+  background-color: #E6ECF6;
+}
+
+.dotted-bottom {
+  border-bottom: 1px dotted #000;
+  padding-bottom: 10px;
+}
+
+.dotted-top {
+  border-top: 1px dotted #000;
+  padding-top: 10px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.header-responsive {
+  position: relative;
+  z-index: 10;
+}

@@ -35,52 +35,48 @@ const SECRET = 'xWL!96JRaWi2lT0jG';
 
 export default function Home(props: HomeProps) {
 
-    const [carro, setCarro] = useState<any>(null);
-    const [codigo, setCodigo] = useState<string>('');
-    const [carroCompras, setCarroCompras] = useState<any>([]);
+  const [carro, setCarro] = useState<any>(null);
+  const [codigo, setCodigo] = useState<string>('');
+  const [carroCompras, setCarroCompras] = useState<any>([]);
+  const [passagers, setPassagers] = useState({});
 
-    const router = useRouter();
+  const router = useRouter();
 
-    useEffect(() => {
-      try {
-        const data = sessionStorage.getItem('transactionInformation');
-        if( data ) {
-          const decoded:any = JWT.verify(data, SECRET);
-          if( decoded && decoded.carro ) {
-            setCarro(decoded.carro);
-          }
-          if( decoded && decoded.cerrar ) {
-            setCodigo(decoded.cerrar.orden);
-          }
-        } else {
-          router.push('/');
+  useEffect(() => {
+    try {
+      const data = sessionStorage.getItem('transactionInformation');
+      if( data ) {
+        const decoded:any = JWT.verify(data, SECRET);
+        if( decoded && decoded.carro ) {
+          setCarro(decoded.carro);
         }
-      } catch (error) {
+        if( decoded && decoded.cerrar ) {
+          setCodigo(decoded.cerrar.orden);
+        }
+      } else {
         router.push('/');
       }
-    }, [])
+    } catch (error) {
+      router.push('/');
+    }
+  }, [])
 
-    useEffect(() => {
-      try {
-        const data = sessionStorage.getItem('transactionBasketInfo');
-        if( data ) {
-          const decoded:any = JWT.verify(data, SECRET);
-          if( decoded ) {
-            setCarroCompras(decoded);
-          }
+  useEffect(() => {
+    try {
+      const data = sessionStorage.getItem('transactionBasketInfo');
+      if( data ) {
+        const decoded:any = JWT.verify(data, SECRET);
+        if( decoded ) {
+          setCarroCompras(decoded);
         }
-      } catch (error) {}
-    }, [carro])
+      }
+    } catch (error) {}
+  }, [carro])
 
   const [totalPagar, setTotalPagar] = useState(0);
   const [copiaCarro, setCopiaCarro] = useState({});
-  type ResumenType = {
-    carro: {
-      lista?: any[];
-    };
-  };
   
-  const [resumen, setResumen] = useState<ResumenType>({
+  const [resumen, setResumen] = useState<any>({
     carro: {},
   });
 
@@ -109,88 +105,103 @@ export default function Home(props: HomeProps) {
   }
   
   const obtenerInformacion = () => {
-    {
-      let carritoIda:any = {
-        titulo: "",
-        detalle: [],
-      };
-      let carritoVuelta:any = {
-        titulo: "",
-        detalle: [],
-      };
-      
-      let idaNombre;
-      let vueltaNombre;
+    let carritoIda:any = {
+      titulo: "",
+      detalle: [],
+    };
+    let carritoVuelta:any = {
+      titulo: "",
+      detalle: [],
+    };
+    
+    let idaNombre;
+    let vueltaNombre;
 
-      Object.keys(carroCompras).forEach((key) => {
-        const compra = carroCompras[key];
-        if (compra.ida && compra.ida.length > 0) {
-          const fechaIdaFormateada = compra.ida[0].fechaSalida.split("/");
-          const fechaIda = new Date(
-            `${fechaIdaFormateada[1]}/${fechaIdaFormateada[0]}/${fechaIdaFormateada[2]}`
-          );
-          const idaList = compra.ida;
-          idaList.forEach((value:any) => {
-            const datos = {
-              origen: `${value.terminalOrigen}`,
-              destino: `${value.terminalDestino}`,
-              hora: value.horaSalida,
-              horaLlegada: value.horaLlegada,
-              cantidadAsientos: 0,
-              total: 0,
-              totalFormateado: ''
-            };
-            value.asientos.forEach((element:any) => {
-              datos.cantidadAsientos += 1;
-              datos.total += element.valorAsiento;
-            });
-            idaNombre = `Salida, ${format(fechaIda, "ddd D MMM")}`;
-            datos.totalFormateado = clpFormat.format(datos.total);
-            carritoIda.detalle.push(datos);
+    Object.keys(carroCompras).forEach((key) => {
+      const compra = carroCompras[key];
+      if (compra.ida && compra.ida.length > 0) {
+        const fechaIdaFormateada = compra.ida[0].fechaSalida.split("/");
+        const fechaIda = new Date(
+          `${fechaIdaFormateada[1]}/${fechaIdaFormateada[0]}/${fechaIdaFormateada[2]}`
+        );
+        const idaList = compra.ida;
+        idaList.forEach((value:any) => {
+          const datos = {
+            origen: `${value.terminalOrigen}`,
+            destino: `${value.terminalDestino}`,
+            hora: value.horaSalida,
+            horaLlegada: value.horaLlegada,
+            cantidadAsientos: 0,
+            total: 0,
+            totalFormateado: ''
+          };
+          value.asientos.forEach((element:any) => {
+            datos.cantidadAsientos += 1;
+            datos.total += element.valorAsiento;
           });
-        }
+          idaNombre = `Salida, ${format(fechaIda, "ddd D MMM", "es")}`;
+          datos.totalFormateado = clpFormat.format(datos.total);
+          carritoIda.detalle.push(datos);
+        });
+      }
 
-        if (compra.vuelta && compra.vuelta.length > 0) {
-          const fechaVueltaFormateada = compra.vuelta[0].fechaSalida.split("/");
-          const fechaVuelta = new Date(
-            `${fechaVueltaFormateada[1]}/${fechaVueltaFormateada[0]}/${fechaVueltaFormateada[2]}`
-          );
-          const vueltaList = compra.vuelta;
-          vueltaList.forEach((value:any) => {
-            const datos = {
-              origen: `${value.terminalOrigen}`,
-              destino: `${value.terminalDestino}`,
-              hora: value.horaSalida,
-              horaLlegada: value.horaLlegada,
-              cantidadAsientos: 0,
-              total: 0,
-              totalFormateado: ''
-            };
-            value.asientos.forEach((element:any) => {
-              datos.cantidadAsientos += 1;
-              datos.total += element.valorAsiento;
-            });
-            datos.totalFormateado = clpFormat.format(datos.total);
-            carritoVuelta.detalle.push(datos);
-            vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM")}`;
+      if (compra.vuelta && compra.vuelta.length > 0) {
+        const fechaVueltaFormateada = compra.vuelta[0].fechaSalida.split("/");
+        const fechaVuelta = new Date(
+          `${fechaVueltaFormateada[1]}/${fechaVueltaFormateada[0]}/${fechaVueltaFormateada[2]}`
+        );
+        const vueltaList = compra.vuelta;
+        vueltaList.forEach((value:any) => {
+          const datos = {
+            origen: `${value.terminalOrigen}`,
+            destino: `${value.terminalDestino}`,
+            hora: value.horaSalida,
+            horaLlegada: value.horaLlegada,
+            cantidadAsientos: 0,
+            total: 0,
+            totalFormateado: ''
+          };
+          value.asientos.forEach((element:any) => {
+            datos.cantidadAsientos += 1;
+            datos.total += element.valorAsiento;
           });
-        }
-      });
+          datos.totalFormateado = clpFormat.format(datos.total);
+          carritoVuelta.detalle.push(datos);
+          vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM", "es")}`;
+        });
+      }
+    });
 
-      const datos = [];
-      carritoIda.titulo = idaNombre;
-      carritoVuelta.titulo = vueltaNombre;
-      datos.push(carritoIda);
-      datos.push(carritoVuelta);
-      const carro_temp:any = { ...resumen };
-      carro_temp.carro["lista"] = datos;
-      setResumen(carro_temp);
+    const datos = [];
+    carritoIda.titulo = idaNombre;
+    carritoVuelta.titulo = vueltaNombre;
+    datos.push(carritoIda);
+    datos.push(carritoVuelta);
+    const carro_temp = { ...resumen };
+    carro_temp.carro["lista"] = datos;
+
+    if( carro ) {
+      const paymentMethod = carro.medioPago;
+      const amount = carro.monto;
+      const tickets = carro.boletos;
+  
+      const transactionInfo = {
+        transaction: codigo,
+        detail: carro_temp,
+        paymentMethod: paymentMethod,
+        amount,
+        tickets
+      }
+  
+      setResumen(transactionInfo);
+  
+      sessionStorage.setItem('purchase', JSON.stringify(transactionInfo));
     }
   };
 
   useEffect(() => {
     obtenerInformacion();
-  }, [carroCompras]);
+  }, [carro]);
   
   useEffect(() => {
     const carro = carroCompras || copiaCarro;
@@ -238,79 +249,191 @@ export default function Home(props: HomeProps) {
       } catch (e) {}
     });
   }
+
+  useEffect(() => {
+    getPassagersInfo();
+
+    const carro = carroCompras || copiaCarro;
+    let total = 0;
+    Object.entries(carro).map(([key, value]:any) => {
+      const idaList = value.ida || [];
+      const vueltaList = value.vuelta || [];
+
+      Object.entries(idaList).map(([key, value]:any) => {
+        value.asientos.forEach((element) => {
+          total += element.valorAsiento;
+        });
+      });
+
+      Object.entries(vueltaList).map(([key, value]:any) => {
+        value.asientos.forEach((element) => {
+          total += element.valorAsiento;
+        });
+      });
+    });
+
+    setTotalPagar(total);
+  }, [resumen])
+
+  const getPassagersInfo = () => {
+    let groupPassagers = {}
+    const purchaseInfo = JSON.parse(sessionStorage.getItem('purchase_info'));
+    if( purchaseInfo && purchaseInfo.length > 0 ) {
+      purchaseInfo.forEach((purchase) => {
+        purchase.asientos.forEach((seat) => {
+          if( !seat.tipoMascota ) {
+            groupPassagers[seat.rut] = {
+              name: seat.nombre,
+              lastName: seat.apellido,
+              id: seat.rut,
+              email: seat.email
+            }
+          }
+        })
+      })
+    }
+    setPassagers(groupPassagers);
+  }
+
   return (
       <Layout>
-        {carro && (
-            <section className={styles['main-section']}>
-              <div className={styles['images-container']}>
-                <img src="/img/ticket-outline.svg" alt="ticket" className={styles['ticket-image']}/>
-                <img src="/img/checkmark-circle-outline.svg" alt="confirmado" className={styles['confirmado-image']}/>
-              </div>
-              <h1>¡Muchas gracias por tu compra!</h1>
-              <span className={styles['compra-realizada']}>Tu compra se ha realizado con éxito. Próximamente, recibirás un correo electrónico con los boletos adquiridos.</span>
-              <div className={styles['orden-compra']}>
-                <span>Orden de compra: {codigo}</span>
-              </div>
-              {carroCompras && (
-                  <section className={styles['detalle-viajes']}>
-                    {Array.isArray(resumen.carro.lista) &&
-                        resumen.carro.lista.map((element) => (
-                            element.titulo &&
-                            (<div className={styles["servicio-ida"]} key={element.titulo}>
-                              <b className={styles['titulo-servicio']}>{element.titulo}</b>
-                              <div className={styles["detalle-container"]}>
-                                {Array.isArray(element.detalle) &&
-                                    element.detalle.map((detalleItem: any, index: number) => (
-                                        <div key={index} className={styles["detalle-item"]}>
-                                          <ul>
-                                            <li>
-                                              <div>{detalleItem.origen}</div>
-                                              <div>{detalleItem.hora}</div>
-                                            </li>
-                                            <li>
-                                              <div>{detalleItem.destino}</div>
-                                              <div>{detalleItem.horaLlegada}</div>
-                                            </li>
-                                          </ul>
-                                          <div className={styles['resumen-servicio']}>
-                                            <span>Cantidad de Asientos: {detalleItem.cantidadAsientos}</span>
-                                            <b>{detalleItem.total}</b>
-                                          </div>
-                                        </div>
-                                    ))}
+        <div className="container my-4">
+          {
+            resumen ? (
+              <div className="card text-center border-0 shadow-sm rounded-4">
+                <div className="card-header bg-white border-0">
+                  <img src="/img/ui/transaction/transaction-success.svg" alt="confirmado"/>
+                </div>
+                <div className="card-body">
+                  <h1 className="fw-bold text-secondary">¡Muchas gracias por tu compra!</h1>
+                  <div className="container mt-3 mb-2">
+                    <div className="row justify-content-center">
+                      <p className="col-12 col-md-8">
+                        Tú compra se ha realizado con éxito. Próximamente, recibirás un correo electronico con los boletos adquiridos.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="container">
+                    <div className="row justify-content-center">
+                      <div className="col-12 col-md-6">
+                        <div className="bg-secondary p-3 rounded-4 shadow-s">
+                          <h5 className="text-white fw-bold m-0">Orden de compra: {resumen?.transaction}</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {
+                    passagers && (
+                      <div className="mt-3">
+                        <b>Datos de los pasajeros:</b>
+                        <div className="container mt-3">
+                          <div className="row justify-content-center gap-2">
+                            { Object.entries(passagers).map(([key, value]:any) => (
+                              <div className="col-12 col-md-3 text-center d-flex flex-col">
+                                <h5 className="fw-bold">{value.name} {value.lastName}</h5>
+                                <span>{value.id}</span>
+                                <span>{value.email}</span>
                               </div>
-                            </div>)
-                        ))}
-                  </section>
-              )}
-              <section className={styles['resumen-pago']}>
-                <div className={styles['contenedor-metodo-pago']}>
-                  <strong>Pagado con:</strong>
-                  <span>
-                {mediosPago[carro.medioPago].mensaje}
-                    <img src={mediosPago[carro.medioPago].imagen} alt={`Icono ${mediosPago[carro.medioPago].nombre}`}/>
-              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  }
+                  {
+                    resumen?.detail?.carro?.lista && (
+                      <div className="mt-4 dotted-top dotted-bottom pt-5">
+                        <div className="container">
+                          <div className="row justify-content-center gap-4">
+                            { resumen?.detail?.carro?.lista.map((lista) => (
+                              lista?.titulo && (
+                                <div className="col-12 col-md-5">
+                                  <h6 className="fw-bold">{ lista?.titulo }</h6>
+                                    { lista?.detalle.map((detalle, index) => (
+                                      <div key={index} className={ `my-5 ${styles["detalle-item"]}` }>
+                                        <ul>
+                                          <li>
+                                            <div>{detalle.origen}</div>
+                                            <div>{detalle.hora}</div>
+                                          </li>
+                                          <li>
+                                            <div>{detalle.destino}</div>
+                                            <div>{detalle.horaLlegada}</div>
+                                          </li>
+                                        </ul>
+                                        <div className={styles['resumen-servicio']}>
+                                          <span>Cantidad de Asientos: {detalle.cantidadAsientos}</span>
+                                          <b>{detalle.totalFormateado}</b>
+                                        </div>
+                                      </div>
+                                    ))}
+                                </div>
+                              )
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  }
+                  {
+                    resumen?.paymentMethod && (
+                      <div className="container dotted-bottom">
+                        <div className="row justify-content-center gap-4 gap-md-2 py-4">
+                          <div className="col-12 col-md-5 d-flex flex-col">
+                            <strong className="text-start text-md-center">Pagado con:</strong>
+                            <div className="d-flex gap-3 justify-content-center">
+                              <span className="text-start text-md-center">{mediosPago[resumen.paymentMethod]?.mensaje || 'Pago electrónico'}</span>
+                              <img src={mediosPago[resumen.paymentMethod]?.imagen || 'generico'} alt={`Icono ${mediosPago[resumen.paymentMethod]?.nombre}`}/>
+                            </div>
+                          </div>
+                          <div className="col-12 col-md-5 d-flex flex-row justify-content-center gap-3">
+                            <strong className="fs-3">Total Pagado:</strong>
+                            <span className="fs-3 text-primary fw-bold">{clpFormat.format(resumen.amount)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  }
+                  <div className="container pb-3 pt-4">
+                    <div className="row justify-content-evenly gap-5 gap-md-2">
+                      <div className="col-12 col-md-5 d-flex justify-content-center align-self-center">
+                        <img src='/img/icon/general/download-outline.svg' className="cursor-pointer" onClick={() => descargarBoletos()}/>
+                        <span className="fw-bold text-decoration-underline cursor-pointer" onClick={() => descargarBoletos()}>
+                          Descarga tus boletos aquí
+                        </span>
+                      </div>
+                      <div className="col-12 col-md-5">
+                        <Link href="/">
+                          <div className="d-grid">
+                            <button className="btn btn-primary rounded-4">
+                              Volver al inicio
+                            </button>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className={styles['contenedor-total-pagar']}>
-                  <strong>Total Pagado:</strong>
-                  <span>{clpFormat.format(carro?.monto)}</span>
+              </div>
+            ) : (
+              <div className="row justify-content-center mb-5">
+                <div className="text-center mt-5">
+                  <h1>Lo sentimos 😢,</h1>
+                  <h2>no se pudo llevar a cabo la transacción</h2>
+                  <h2>de tu compra.</h2>
                 </div>
-              </section>
-              <section className={styles['action-container']}>
-                <div className={styles['contenedor-descarga-boletos']}>
-                  <img src='/img/icon/general/download-outline.svg'/>
-                  <span onClick={() => descargarBoletos()}>
-                Descarga tus boletos aquí
-              </span>
+                <div className="text-center mt-5">
+                  <h5>Por favor, intentelo nuevamente.</h5>
                 </div>
-                <div className={styles['contenedor-volver-inicio']}>
-                  <Link href="/" className={styles['btn']}>
-                    Volver al inicio
+                <div className="mt-5 mb-5 col-lg-2">
+                  <Link className="btn-outline" href="/">
+                    Salir
                   </Link>
                 </div>
-              </section>
-            </section>
-        )}
+              </div>
+            )
+          }
+        </div>
         <Footer/>
       </Layout>
   );
