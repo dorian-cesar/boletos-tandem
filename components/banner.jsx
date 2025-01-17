@@ -27,15 +27,19 @@ const Banner = ( props ) => {
 
     async function transformImages() {
         const images = await getBannerImages();
-        const bannerImages = [];
-        images.map(({ llave, link, imagen }) => bannerImages.push({
+        let bannerImages = [];
+        images.map(({ llave, link, imagen, posicion }) => bannerImages.push({
             key: llave,
             url: link ? link : '/',
-            image: imagen
+            image: imagen,
+            posicion
         }));
+
         if (images.length < 1 ){
             bannerImages.push(imagenDeRespaldo)
         }
+        
+        bannerImages = bannerImages.sort((a, b) => a.posicion - b.posicion);
 
         return bannerImages;
     }
@@ -47,29 +51,38 @@ const Banner = ( props ) => {
     }, [])
 
     return (
-        <Swiper 
-            spaceBetween={ 30 }
-            centeredSlides={ true }
-            loop={ true }
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
-            pagination={{ clickable: true }}
-            navigation={ true }
-            allowTouchMove={ false }
-            modules={[ Autoplay, Pagination, Navigation ]}
-            className='img-principal'>
+        <>
             {
-                images.length < 1 ? (<div style={{ height: '500px' }}></div>) : 
-                images.map(({ url, image }, index) => (
-                    <SwiperSlide className="swiper-slide" key={index}>
-                        <Link href={ url } legacyBehavior>
-                            <a href='#' target='_blank'>
-                                <img className='w-100' src={image} />
-                            </a>
-                        </Link>
-                    </SwiperSlide>
-                ))
+                images.length > 0 ? (
+                    <Swiper 
+                        spaceBetween={ 30 }
+                        centeredSlides={ true }
+                        loop={ true }
+                        autoplay={{ delay: 5000, disableOnInteraction: false }}
+                        pagination={{ clickable: true }}
+                        navigation={ true }
+                        allowTouchMove={ false }
+                        modules={[ Autoplay, Pagination, Navigation ]}
+                        className='img-principal'>
+                        {
+                            images.length < 1 ? (<div style={{ height: '500px' }}></div>) : 
+                            images.map(({ url, image }, index) => (
+                                <SwiperSlide className="swiper-slide" key={index}>
+                                    <Link href={ url } legacyBehavior>
+                                        <a href='#' target='_blank'>
+                                            <img className='w-100' src={image} />
+                                        </a>
+                                    </Link>
+                                </SwiperSlide>
+                            ))
+                        }
+                    </Swiper>
+                ) : (
+                    <div>
+                    </div>
+                )
             }
-        </Swiper>
+        </>
     )
 }
 
