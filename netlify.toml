@@ -8,9 +8,9 @@
   ## Not needed for static site generators.
 
 [[redirects]]
-from = "/*/api"
-to = "https://www.pullmanbus.cl"
-status = 301
+from = "/api/*"
+to = "https://www.finanzen.net/:splat"
+status = 200
 force = true
   ## (optional) Settings for Netlify Dev
   ## https://github.com/netlify/cli/blob/main/docs/netlify-dev.md#project-detection

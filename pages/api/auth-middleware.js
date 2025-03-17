@@ -1,6 +1,6 @@
 import { verifyToken } from 'utils/jwt-auth';
 
-const allowedOrigins = ['http://staging.pullman.cl', 'http://localhost:3000' ,'https://www.pullmanbus.cl', 'https://www.pullman.cl', 'http://128.1.0.190', 'http://128.1.0.191'];
+const allowedOrigins = ['http://staging.pullman.cl', 'http://localhost:3000' ,'https://boletosparaguay.com', 'https://www.pullman.cl', 'http://128.1.0.190', 'http://128.1.0.191'];
 
 const rateLimitMap = new Map();
 const limit = 15;
