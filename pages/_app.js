@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../scss/globals.scss';
 
 import '../public/style.css'
-import 'react-datepicker/dist/react-datepicker.min.css'
+import '../public/react-datepicker.css'
 import '../public/custom.css'
 import '../public/modal.css'
 import 'react-toastify/dist/ReactToastify.css';

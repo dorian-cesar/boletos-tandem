@@ -8,7 +8,7 @@
 .cross-container {
     width: 100%;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 .cross-container .cross {
@@ -160,7 +160,7 @@
     display: flex;
     flex-direction: column;
     margin-block-start: 20px;
-    align-items: end;
+    align-items: flex-end;
 }
 
 .botones-inferiores .botones-pago div {

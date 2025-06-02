@@ -70,7 +70,7 @@
 .ticket-details {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
     border-right: dashed 1px #7F7F7F;
     margin-block: 10px;
     width: 500px;
@@ -102,7 +102,7 @@
 .ticket-details .ticket-details__travel .ticket-details__travel-detail {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
 }
 
 .ticket-details .ticket-details__travel .ticket-details__travel-detail:nth-child(2) * {
@@ -397,7 +397,7 @@
     .ticket-details {
         display: flex;
         flex-direction: column;
-        align-items: start;
+        align-items: flex-start;
         border-right: none;
         margin-block: 10px;
         width: 100%;
@@ -485,7 +485,7 @@
     .ticket-details {
         display: flex;
         flex-direction: column;
-        align-items: start;
+        align-items: flex-start;
         border-right: none;
         margin-block: 10px;
         width: 100%;

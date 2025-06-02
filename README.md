@@ -4,8 +4,8 @@
 
 ## Features
 
-- Version de node v16.17.0
-- Version de nest.js v13.2.4
+- Version de Node v16.17.0
+- Version de Next.js v13.2.4
 - Servidor aplicativo PM2
 
 
