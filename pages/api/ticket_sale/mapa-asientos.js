@@ -36,7 +36,35 @@ async function handleMapaAsientos(req, res) {
             }
         });
 
+        const asientosSimulados = [
+            {
+                "idAsiento": 1,
+                "numeroAsiento": "1A",
+                "estado": "Disponible",
+                "piso": 1
+            },
+            {
+                "idAsiento": 2,
+                "numeroAsiento": "1B",
+                "estado": "Ocupado",
+                "piso": 1
+            },
+            {
+                "idAsiento": 3,
+                "numeroAsiento": "1C",
+                "estado": "Disponible",
+                "piso": 1
+            },
+            {
+                "idAsiento": 4,
+                "numeroAsiento": "1D",
+                "estado": "Ocupado",
+                "piso": 1
+            }
+        ];
+
         res.status(200).json(serviceResponse.data);
+        // res.status(200).json(asientosSimulados);
     } catch(e){
         res.status(400).json(e.response.data)
     }

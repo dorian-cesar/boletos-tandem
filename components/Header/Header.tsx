@@ -159,7 +159,7 @@ export default function Header({ openNav, isBuyStage = false }: { openNav: any, 
       <header className={ isBuyStage ? `d-none d-md-block sticky-top bg-white ${styles["header"]}` : `sticky-top bg-white ${styles["header"]}` }>
         <div className="container">
           <div className="row">
-            <div className="col-2 col-sm-1">
+            <div className="col-2 col-sm-1 justify-content-center d-flex align-items-center">
               <span onClick={openNav}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +184,7 @@ export default function Header({ openNav, isBuyStage = false }: { openNav: any, 
             </div>
             <div className="col-6 col-sm-9 d-flex align-items-center ">
               <a href="/">
-                <img src="../img/icon/logos/Logo.svg" width={ 300 } height={100 } className="img-fluid" />
+                <img src="../img/icon/logos/Logo.svg" width={ 300 } height={ 100 } className="img-fluid p-2" />
               </a>
             </div>
             <div className="col-4 col-sm-2 d-flex justify-content-end">

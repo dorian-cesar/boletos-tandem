@@ -1,89 +1,89 @@
-import React, { useEffect, useState } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import Link from 'next/link';
+import React, { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import Link from "next/link";
 
 const imagenDeRespaldo = {
-    key: 'banner_01',
-    url: '/',
-    image: 'https://pullman.cl/imagenes/fenix/banner/banner-1.jpg'
-}
+  key: "banner_01",
+  url: "/",
+  image: "https://pullman.cl/imagenes/fenix/banner/banner-1.jpg",
+};
 
-const Banner = ( props ) => {
+const Banner = (props) => {
+  const [images, setImages] = useState([]);
 
-    const [images, setImages] = useState([]);
+  async function getBannerImages() {
+    try {
+      const response = await fetch("/api/banner");
+      const { object } = await response.json();
+      return object;
+    } catch (error) {
+      return [];
+    }
+  }
 
-    async function getBannerImages() {
-        try {
-            const response = await fetch('/api/banner');
-            const { object } = await response.json();
-            return object;
-        } catch (error) {
-            return [];
-        }
+  async function transformImages() {
+    const images = await getBannerImages();
+    let bannerImages = [];
+    images.map(({ llave, link, imagen, posicion }) =>
+      bannerImages.push({
+        key: llave,
+        url: link ? link : "/",
+        image: imagen,
+        posicion,
+      })
+    );
+
+    if (images.length < 1) {
+      bannerImages.push(imagenDeRespaldo);
     }
 
-    async function transformImages() {
-        const images = await getBannerImages();
-        let bannerImages = [];
-        images.map(({ llave, link, imagen, posicion }) => bannerImages.push({
-            key: llave,
-            url: link ? link : '/',
-            image: imagen,
-            posicion
-        }));
+    bannerImages = bannerImages.sort((a, b) => a.posicion - b.posicion);
 
-        if (images.length < 1 ){
-            bannerImages.push(imagenDeRespaldo)
-        }
-        
-        bannerImages = bannerImages.sort((a, b) => a.posicion - b.posicion);
+    return bannerImages;
+  }
 
-        return bannerImages;
-    }
+  useEffect(() => {
+    transformImages().then((images) => {
+      setImages(images);
+    });
+  }, []);
 
-    useEffect(() => {
-        transformImages().then(images => {
-            setImages(images);
-        });
-    }, [])
-
-    return (
-        <>
-            {
-                images.length > 0 ? (
-                    <Swiper 
-                        spaceBetween={ 30 }
-                        centeredSlides={ true }
-                        loop={ true }
-                        autoplay={{ delay: 5000, disableOnInteraction: false }}
-                        pagination={{ clickable: true }}
-                        navigation={ true }
-                        allowTouchMove={ false }
-                        modules={[ Autoplay, Pagination, Navigation ]}
-                        className='img-principal'>
-                        {
-                            images.length < 1 ? (<div style={{ height: '500px' }}></div>) : 
-                            images.map(({ url, image }, index) => (
-                                <SwiperSlide className="swiper-slide" key={index}>
-                                    <Link href={ url } legacyBehavior>
-                                        <a href='#' target='_blank'>
-                                            <img className='w-100' src={image} />
-                                        </a>
-                                    </Link>
-                                </SwiperSlide>
-                            ))
-                        }
-                    </Swiper>
-                ) : (
-                    <div>
-                    </div>
-                )
-            }
-        </>
-    )
-}
+  return (
+    <>
+      {images.length > 0 ? (
+        <Swiper
+          spaceBetween={30}
+          centeredSlides={true}
+          loop={true}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          pagination={{ clickable: true }}
+          navigation={true}
+          allowTouchMove={false}
+          modules={[Autoplay, Pagination, Navigation]}
+          className="img-principal"
+        >
+          {images.length < 1 ? (
+            <div style={{ height: "500px" }}></div>
+          ) : (
+            images.map(({ url, image }, index) => (
+              <SwiperSlide className="swiper-slide" key={index}>
+                <Link href={url} legacyBehavior>
+                  <a href="#" target="_blank">
+                    <img className="w-100" src={image} />
+                  </a>
+                </Link>
+              </SwiperSlide>
+            ))
+          )}
+        </Swiper>
+      ) : (
+        <div></div>
+      )}
+    </>
+  );
+};
 
 export default Banner;

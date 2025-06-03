@@ -74,6 +74,8 @@ const Boleto = (props) => {
     currency: "CLP",
   });
 
+  duracion = 8789; // simulado para pruebas
+
   duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
 
   async function showItinerary() {
@@ -103,7 +105,7 @@ const Boleto = (props) => {
       <div className={ `row justify-content-evenly ${ isOpened ? styles["enabled-details"] : "" }` }>
         <div className="d-flex flex-col col px-md-2 py-md-0 p-md-3">
           <div className="d-flex flex-row justify-content-between pt-2 p-md-2">
-            <img src="img/ui/service-components/service-logo.svg" className="img-fluid" width={ 150 } height={ 25 } alt="Logo Pullman Bus"/>
+            <img src="img/ui/service-components/service-logo.svg" className="img-fluid p-1" width={ 150 } height={ 25 } alt="Logo Pullman Bus"/>
             {props.mascota == '1' ? <img src="img/icon/logos/paw-outline.svg" /> : <div></div>}
           </div>
           <div className="row mt-0 mt-md-1 p-2 gap-md-0 justify-content-evenly">
@@ -151,7 +153,7 @@ const Boleto = (props) => {
           </div>
           <div className="d-grid pb-2 pb-md-0">
             <button type="button" className="btn btn-primary border-0 rounded-3" onClick={handleOpenPane}>
-              Comprar
+              Seleccionar Asiento
             </button>
           </div>
         </div>

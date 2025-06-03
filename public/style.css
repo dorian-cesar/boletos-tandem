@@ -739,12 +739,23 @@ input.fecha-input,
   width: 200px;
   height: 40px;
   color: var(--azul-100, #3365B4);
-  /* font-family: Titillium Web; */
+  /* font-family: 'Titillium Web', sans-serif; */
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   border: 1px solid var(--color-borde, #CCCCCC); 
+}
+
+input.fecha-input:focus {
+    border: 1px solid var(--naranjo);
+}
+
+.sel-input::placeholder {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--azul-100, #3365B4);
 }
 
 select.form-control.seleccion {
