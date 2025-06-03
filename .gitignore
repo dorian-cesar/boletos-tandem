@@ -37,4 +37,6 @@ yarn-error.log*
 .netlify
 
 result.txt
-*/token.json
+/cache/token.json
+view.json
+/pages/comprar backup.js

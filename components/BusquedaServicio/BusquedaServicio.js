@@ -120,6 +120,8 @@ const BusquedaServicio = (props) => {
       }
 
       const encriptedData = encryptDataNoSave(data, 'search');
+      // const encriptedData = encryptDataNoSave(data, process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA);
+
 
       router.replace(`/comprar?search=${ encriptedData }`).then(() => window.location.reload()).catch(_ => setIsLoading(false));
     } catch(error) {

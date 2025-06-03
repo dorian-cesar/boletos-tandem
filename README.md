@@ -4,11 +4,10 @@
 
 ## Features
 
-- Version de Node v16.17.0
+<!-- - Version de Node v16.17.0 -->
+- Version de Node v18.20.8 (npm v10.8.2)
 - Version de Next.js v13.2.4
 - Servidor aplicativo PM2
-
-
 
 ## Appendix
 

@@ -24,7 +24,9 @@ export function decryptDataNoSaved(data, key) {
         const transformData = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
         return transformData;
     } catch (error) {
+        console.error("Decryption failed:", error);
         return {};
+
     }
 }
 
