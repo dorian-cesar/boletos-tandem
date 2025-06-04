@@ -11,8 +11,12 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Popup from "../Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
-import { liberarAsientos } from "store/usuario/compra-slice"
-import { decryptDataNoSaved, encryptDataNoSave, decryptData } from "utils/encrypt-data";
+import { liberarAsientos } from "store/usuario/compra-slice";
+import {
+  decryptDataNoSaved,
+  encryptDataNoSave,
+  decryptData,
+} from "utils/encrypt-data";
 import LocalStorageEntities from "entities/LocalStorageEntities";
 // import ReCAPTCHA from "react-google-recaptcha";
 
@@ -36,18 +40,16 @@ const BusquedaServicio = (props) => {
 
   const dispatch = useDispatch();
 
-  const {
-    dias,
-    isShowMascota = false,
-    isHomeComponent = true
-  } = props;
+  const { dias, isShowMascota = false, isHomeComponent = true } = props;
 
   const [decryptedData, setDecryptedData] = useState(null);
   const [mascota_allowed, setMascota] = useState(false);
   const [origen, setOrigen] = useState(null);
   const [destino, setDestino] = useState(null);
   const [destinos, setDestinos] = useState([]);
-  const [startDate, setStartDate] = useState(props.startDate ? props.startDate : null);
+  const [startDate, setStartDate] = useState(
+    props.startDate ? props.startDate : null
+  );
   const [endDate, setEndDate] = useState(props.endDate ? props.endDate : null);
   const [datePickerKey, setDatePickerKey] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +61,11 @@ const BusquedaServicio = (props) => {
   useEffect(() => {
     getOrigins();
   }, []);
-  
+
+  useEffect(() => {
+    getDestinos();
+  }, [origen]);
+
   const abrirPopup = () => {
     setMostrarPopup(true);
   };
@@ -70,28 +76,34 @@ const BusquedaServicio = (props) => {
   useEffect(() => {
     setStartDate(props.startDate);
     setEndDate(props.endDate);
-  }, [props.startDate, props.endDate])
+  }, [props.startDate, props.endDate]);
 
   useEffect(() => {
-    if( !startDate ) {
-      if( router.query.search ) {
-        setDecryptedData(decryptDataNoSaved(router.query.search, 'search'));
-        setStartDate(decryptedData?.startDate ? dayjs(decryptedData.startDate).toDate() : dayjs().toDate());
-        setEndDate(decryptedData?.endDate ? dayjs(decryptedData.endDate).toDate() : null);
+    if (!startDate) {
+      if (router.query.search) {
+        setDecryptedData(decryptDataNoSaved(router.query.search, "search"));
+        setStartDate(
+          decryptedData?.startDate
+            ? dayjs(decryptedData.startDate).toDate()
+            : dayjs().toDate()
+        );
+        setEndDate(
+          decryptedData?.endDate ? dayjs(decryptedData.endDate).toDate() : null
+        );
       }
-      if( !decryptedData ) {
+      if (!decryptedData) {
         setStartDate(dayjs().toDate());
         setEndDate(null);
       }
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     setDatePickerKey((prevKey) => prevKey + 1);
   }, [startDate]);
 
   async function redireccionarBuscarServicio() {
-    if( isLoading ) return;
+    if (isLoading) return;
 
     setIsLoading(true);
 
@@ -110,45 +122,70 @@ const BusquedaServicio = (props) => {
       // }
 
       dispatch(liberarAsientos());
-      
+
       const data = {
         origen,
         destino,
         startDate: startDate ? dayjs(startDate).format("YYYY-MM-DD") : null,
         endDate: endDate ? dayjs(endDate).format("YYYY-MM-DD") : null,
-        mascota_allowed
-      }
+        mascota_allowed,
+      };
 
-      const encriptedData = encryptDataNoSave(data, 'search');
+      const encriptedData = encryptDataNoSave(data, "search");
       // const encriptedData = encryptDataNoSave(data, process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA);
 
-
-      router.replace(`/comprar?search=${ encriptedData }`).then(() => window.location.reload()).catch(_ => setIsLoading(false));
-    } catch(error) {
+      router
+        .replace(`/comprar?search=${encriptedData}`)
+        .then(() => window.location.reload())
+        .catch((_) => setIsLoading(false));
+    } catch (error) {
       setIsLoading(false);
     }
   }
 
   async function getOrigins() {
     try {
-      const res = await fetch('/api/ciudades');
-      const ciudades = await res.json()
+      const res = await fetch("/api/ciudades");
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+      }
+      const data = await res.json();
+      // console.log("Ciudades obtenidas:", data);
+      const ciudades = data.map((item) => item.origen);
       setOrigenes(ciudades);
-    } catch(error) {
-      console.log(`Error al obtener ciudades [${ error?.message }]`);
+      // console.log("Origenes:", ciudades);
+    } catch (error) {
+      console.error(`Error al obtener ciudades: ${error?.message}`);
     }
   }
 
+  // async function getDestinos() {
+  //   if (origen !== null) {
+  //     try {
+  //       let { data } = await axios.post("/api/ciudades");
+  //       setDestinos(data);
+  //     } catch ({ message }) {
+  //       console.error(`Error al obtener destinos [${message}]`);
+  //     }
+  //   }
+  // }
+
   async function getDestinos() {
-    if (origen !== null) {
+    if (origen) {
       try {
-        let { data } = await axios.post("/api/destinos", {
-          id_ciudad: origen.codigo,
-        });
-        setDestinos(data);
-      } catch ({ message }) {
-        console.error(`Error al obtener destinos [${message}]`);
+        const { data } = await axios.get("/api/ciudades");
+        const origenData = data.find((item) => item.origen === origen);
+        if (origenData) {
+          setDestinos(origenData.destinos);
+        } else {
+          setDestinos([]);
+        }
+      } catch (error) {
+        console.error(`Error al obtener destinos [${error.message}]`);
+        setDestinos([]);
       }
+    } else {
+      setDestinos([]);
     }
   }
 
@@ -169,10 +206,17 @@ const BusquedaServicio = (props) => {
   function retornaCiudadesSelect(arrayCiudades) {
     return arrayCiudades.map((ciudad) => {
       return {
+        label: ciudad,
         value: ciudad,
-        label: ciudad?.nombre,
       };
     });
+  }
+
+  function retornaDestinosSelect(arrayDestinos) {
+    return arrayDestinos.map((destino) => ({
+      label: destino,
+      value: destino,
+    }));
   }
 
   function cambiarOrigen(origenSeleccionado) {
@@ -191,8 +235,8 @@ const BusquedaServicio = (props) => {
   }, [startDate]);
 
   useEffect(() => {
-    if( !router.query.search ) return;
-    const decryptedData =  decryptDataNoSaved(router.query.search, 'search');
+    if (!router.query.search) return;
+    const decryptedData = decryptDataNoSaved(router.query.search, "search");
     const { origen, destino, startDate, endDate } = decryptedData;
     const startDateFromUrl =
       startDate && startDate !== "null" && dayjs(startDate).isValid()
@@ -227,8 +271,10 @@ const BusquedaServicio = (props) => {
 
   return (
     <>
-      <section className={ isHomeComponent ? 'container pb-5' : 'container py-1' }>
-        <div className={ isHomeComponent ? styles['seleccion-servicio'] : '' }>
+      <section
+        className={isHomeComponent ? "container pb-5" : "container py-1"}
+      >
+        <div className={isHomeComponent ? styles["seleccion-servicio"] : ""}>
           <div>
             {isHomeComponent && (
               <h1 className={styles["titulo-azul"]}>
@@ -244,14 +290,16 @@ const BusquedaServicio = (props) => {
             )}
             {isShowMascota && (
               <div className="container px-xs-0 px-sm-3 px-md-4 px-lg-5 px-xl-2 px-xxl-4">
-                <div className={`form-check form-switch form-check-reverse ${ styles['input-switch-pet'] }`}>
+                <div
+                  className={`form-check form-switch form-check-reverse ${styles["input-switch-pet"]}`}
+                >
                   <input
                     className="form-check-input"
                     type="checkbox"
                     role="switch"
                     id="isMascotaAllowedSwitch"
-                    value={ mascota_allowed }
-                    onChange={ () => setMascota(!mascota_allowed) }
+                    value={mascota_allowed}
+                    onChange={() => setMascota(!mascota_allowed)}
                   />
                   <label
                     className="form-check-label"
@@ -266,8 +314,10 @@ const BusquedaServicio = (props) => {
           <div className="container">
             <div className="row d-flex justify-content-evenly align-items-end">
               <div className="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-2 col-xxl-2">
-                <label className={styles["label-titulo-busqueda-servicio"]}>Origen</label>
-                <Input
+                <label className={styles["label-titulo-busqueda-servicio"]}>
+                  Origen
+                </label>
+                {/* <Input
                   className="sel-input origen"
                   placeholder="Seleccione origen"
                   items={retornaCiudadesSelect(origenes)}
@@ -277,7 +327,15 @@ const BusquedaServicio = (props) => {
                       origenes.find((i) => i.codigo == origen.codigo),
                     ])
                   }
-                  setSelected={cambiarOrigen}/>
+                  setSelected={cambiarOrigen}
+                /> */}
+                <Input
+                  className="sel-input origen"
+                  placeholder="Seleccione origen"
+                  items={retornaCiudadesSelect(origenes)}
+                  selected={origen ? { label: origen, value: origen } : null}
+                  setSelected={cambiarOrigen}
+                />
               </div>
               <div className="col-12 col-sm-12 col-md-1 col-lg-auto col-xl-auto col-xxl-auto d-flex">
                 <img
@@ -287,10 +345,10 @@ const BusquedaServicio = (props) => {
                 />
               </div>
               <div className="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-2 col-xxl-2">
-                <label className={ styles["label-titulo-busqueda-servicio"] }>
+                <label className={styles["label-titulo-busqueda-servicio"]}>
                   Destino
                 </label>
-                <Input
+                {/* <Input
                   className="sel-input destino"
                   placeholder="Seleccione destino"
                   items={retornaCiudadesSelect([
@@ -307,7 +365,24 @@ const BusquedaServicio = (props) => {
                       destinos.find((i) => i.codigo == destino.codigo),
                     ])
                   }
-                  setSelected={setDestino}/>
+                  setSelected={setDestino}
+                /> */}
+                <div
+                  style={{
+                    pointerEvents: !origen ? "none" : "auto",
+                    opacity: !origen ? 0.7 : 1,
+                  }}
+                >
+                  <Input
+                    className="sel-input destino"
+                    placeholder={"Seleccione destino"}
+                    items={retornaDestinosSelect(destinos)}
+                    selected={
+                      destino ? { label: destino, value: destino } : null
+                    }
+                    setSelected={setDestino}
+                  />
+                </div>
               </div>
               <div className="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-2 col-xxl-2">
                 <label className={styles["label-titulo-busqueda-servicio"]}>
@@ -335,17 +410,19 @@ const BusquedaServicio = (props) => {
                   locale={"es"}
                   minDate={startDate}
                   dateFormat="dd/MM/yyyy"
-                  className={ styles['input'] }
+                  className={styles["input"]}
                   customInput={<CustomInput />}
                 />
               </div>
               <div className="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-2 col-xxl-2">
                 <button
-                    className={`mx-auto mt-4 mt-md-0 ${styles["button-busqueda-servicio"]} ${ isLoading ? styles['loading-button'] : '' }`}
-                    onClick={redireccionarBuscarServicio}
-                    disabled={!origen || !destino}
-                  >
-                    <img src="img/icon-buscar-blanco.svg" /> Buscar
+                  className={`mx-auto mt-4 mt-md-0 ${
+                    styles["button-busqueda-servicio"]
+                  } ${isLoading ? styles["loading-button"] : ""}`}
+                  onClick={redireccionarBuscarServicio}
+                  disabled={!origen || !destino}
+                >
+                  <img src="img/icon-buscar-blanco.svg" /> Buscar
                 </button>
               </div>
             </div>

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { liberarAsientos } from "store/usuario/compra-slice";
 import { limpiarCambio } from "store/usuario/cambio-boleto-slice";
+// import Ofertas from "components/Ofertas/Ofertas";
 
 import Banner from "components/banner";
 
@@ -55,7 +56,7 @@ export default function Home(props) {
               <DynamicBusquedaServicioComponent
                   origenes={origenes}
                   dias={props.dias}
-                  isShowMascota={true}
+                  // isShowMascota={true}
               />
 
               {/* <Ofertas /> */}

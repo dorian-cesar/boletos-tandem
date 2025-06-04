@@ -1,0 +1,10 @@
+.svgImage {
+  display: block;
+  margin: 0 auto;
+  transform: translateZ(0);
+}
+
+.svgShadow:hover {
+  transform: scale(1.35);
+  transition: all 0.3s ease;
+}

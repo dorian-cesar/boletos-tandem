@@ -57,7 +57,7 @@ const Banner = (props) => {
         <Swiper
           spaceBetween={30}
           centeredSlides={true}
-          loop={true}
+          // loop={true}
           autoplay={{ delay: 5000, disableOnInteraction: false }}
           pagination={{ clickable: true }}
           navigation={true}

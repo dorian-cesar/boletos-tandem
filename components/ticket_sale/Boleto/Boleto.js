@@ -74,8 +74,6 @@ const Boleto = (props) => {
     currency: "CLP",
   });
 
-  duracion = 8789; // simulado para pruebas
-
   duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
 
   async function showItinerary() {

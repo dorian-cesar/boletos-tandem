@@ -39,4 +39,5 @@ yarn-error.log*
 result.txt
 /cache/token.json
 view.json
+view.html
 /pages/comprar backup.js

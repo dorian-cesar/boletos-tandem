@@ -66,9 +66,9 @@ export default function Home(props) {
       ? dayjs(decryptedData?.endDate).toDate()
       : null
   );
-  const [origen, setOrigen] = useState(decryptedData?.origen?.codigo || "");
+  const [origen, setOrigen] = useState(decryptedData?.origen || "");
   const [destino, setDestino] = useState(
-    decryptedData?.destino != "null" ? decryptedData?.destino?.codigo : null
+    decryptedData?.destino != "null" ? decryptedData?.destino : null
   );
   const [mascotaAllowed, setMascotaAllowed] = useState(
     decryptedData?.mascota_allowed || false
@@ -138,6 +138,14 @@ export default function Home(props) {
         secret
       );
 
+      console.log("dto: ", new ObtenerParrillaServicioDTO(
+            stage_active,
+            origen,
+            destino,
+            startDate,
+            endDate
+          ));
+
       const response = await fetch(`/api/parrilla`, {
         method: "POST",
         body: JSON.stringify({ data: request.toString() }),
@@ -147,6 +155,7 @@ export default function Home(props) {
       });
 
       const parrilla = await response.json();
+      console.log("parrilla: ", parrilla);
 
       // const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
       setParrilla(
@@ -183,6 +192,14 @@ export default function Home(props) {
         secret
       );
 
+      console.log("dto: ", new ObtenerParrillaServicioDTO(
+            stage_active,
+            origen,
+            destino,
+            startDate,
+            endDate
+          ));
+
       const response = await fetch(`/api/parrilla`, {
         method: "POST",
         body: JSON.stringify({ data: request.toString() }),
@@ -192,6 +209,7 @@ export default function Home(props) {
       });
 
       const parrilla = await response.json();
+      console.log("parrilla: ", parrilla);
 
       // const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
       setParrilla(
@@ -400,10 +418,11 @@ export const getServerSideProps = withIronSessionSsr(async function ({
   return {
     props: {
       // ciudades: ciudades.data,
-      ciudades: ["santiago", "valparaiso", "concepcion"],
+      ciudades: ["santiago", "valparaiso", "concepcion", "puerto montt"],
       // destinos: destinos.data,
       destinos: [
         { codigo: "santiago", nombre: "Santiago" },
+        { codigo: "puerto-montt", nombre: "Puerto Montt" },
         { codigo: "valparaiso", nombre: "Valparaíso" },
         { codigo: "concepcion", nombre: "Concepción" },
       ],

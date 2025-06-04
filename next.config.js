@@ -41,14 +41,20 @@ module.exports = {
   env: {
     PROJECT_DIRNAME: __dirname,
     site_url: "https://boletosparaguay.com",
-   
   },
   publicRuntimeConfig: {
     site_url: "https://boletosparaguay.com",
   },
+  // serverRuntimeConfig: {
+  //   site_url: "https://boletosparaguay.com",
+  //   service_url: process.env.NODE_ENV == "production"?"https://apipasajes.pullman.cl/integracion-comercio-web/rest":"https://apipasajes.pullman.cl/integracion-comercio-web/rest",
+  //   service_password: process.env.NODE_ENV == "production"?"":"INT0000002",
+  //   clave: process.env.NODE_ENV == "production"?"":"xWL!96JRaWi2lT0jG"
+  // },
   serverRuntimeConfig: {
     site_url: "https://boletosparaguay.com",
-    service_url: process.env.NODE_ENV == "production"?"https://apipasajes.pullman.cl/integracion-comercio-web/rest":"https://apipasajes.pullman.cl/integracion-comercio-web/rest",
+    service_url: "",
+    url_api: "https://boletos.dev-wit.com/api",
     service_password: process.env.NODE_ENV == "production"?"":"INT0000002",
     clave: process.env.NODE_ENV == "production"?"":"xWL!96JRaWi2lT0jG"
   },

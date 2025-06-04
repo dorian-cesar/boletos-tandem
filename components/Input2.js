@@ -12,8 +12,6 @@
       border: '1px solid var(--azul-50, #98B1D9)',
       background: 'var(--Blanco, #FFF)',
       color: 'var(--gris-50, #7F7F7F)',
-      
-
     }),
 
     placeholder: (provided) => ({
