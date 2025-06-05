@@ -35,6 +35,8 @@ const StagePasajes = (props) => {
     setModalMab,
   } = props;
 
+  console.log("StagePasajes", props);
+
   const [filter_tipo, setFilterTipo] = useState([]);
   const [filter_horas, setFilterHoras] = useState([]);
   const [filter_mascota, setFilterMascota] = useState([]);

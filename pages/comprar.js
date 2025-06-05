@@ -138,20 +138,20 @@ export default function Home(props) {
         secret
       );
 
-      console.log("dto: ", new ObtenerParrillaServicioDTO(
-            stage_active,
-            origen,
-            destino,
-            startDate,
-            endDate
-          ));
+      // console.log("dto: ", new ObtenerParrillaServicioDTO(
+      //       stage_active,
+      //       origen,
+      //       destino,
+      //       startDate,
+      //       endDate
+      //     ));
 
       const response = await fetch(`/api/parrilla`, {
         method: "POST",
         body: JSON.stringify({ data: request.toString() }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
       });
 
       const parrilla = await response.json();
@@ -203,9 +203,9 @@ export default function Home(props) {
       const response = await fetch(`/api/parrilla`, {
         method: "POST",
         body: JSON.stringify({ data: request.toString() }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
       });
 
       const parrilla = await response.json();

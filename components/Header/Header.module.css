@@ -1,19 +1,33 @@
 .tooltip-container {
-    background-color: white;
-    width: 500px;
-    padding: 16px;
-    border-radius: 16px;
-    z-index: 99999;
-    position: relative;
-    /* border: 1px solid var(--gris-50, #7F7F7F); */
+  background-color: white;
+  width: 500px;
+  padding: 16px;
+  border-radius: 16px;
+  z-index: 99999;
+  position: relative;
+  /* border: 1px solid var(--gris-50, #7F7F7F); */
+}
+
+.svgImage {
+  display: block;
+  margin: 0 auto;
+  transform: translateZ(0);
+  transition: filter 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.4s ease-out;
+  cursor: pointer;
+}
+
+.svgShadow:hover {
+  filter: drop-shadow(0 0 10px rgba(13, 110, 253, 0.7))
+    drop-shadow(0 0 20px rgba(13, 110, 253, 0.4));
 }
 
 .header {
-    box-shadow: 0 0 3px rgba(51, 101, 180, 0.2);
+  box-shadow: 0 0 3px rgba(51, 101, 180, 0.2);
 }
 
 @media print {
-    .header {
-        display: none;
-    }
+  .header {
+    display: none;
+  }
 }

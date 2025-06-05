@@ -146,7 +146,7 @@ export default function Header({ openNav, isBuyStage = false }: { openNav: any, 
  const [isMobile, setIsMobile] = useState(false);
  useEffect(() => {
    const handleResize = () => {
-     setIsMobile(window.innerWidth < 470);
+     setIsMobile(window.innerWidth < 768);
    };
    window.addEventListener('resize', handleResize);
    handleResize();
@@ -191,7 +191,7 @@ export default function Header({ openNav, isBuyStage = false }: { openNav: any, 
               {user == null ? (
                 <img
                 src={isMobile ? "../img/icon-foto-mobile.svg" : "../img/icon/logos/cuenta.svg"}
-                className="img-fluid"
+                className={`img-fluid cuenta-img ${styles.svgImage} ${styles.svgShadow}`}
                 data-bs-toggle="modal"
                 data-bs-target="#loginModal"
               />
@@ -244,7 +244,7 @@ export default function Header({ openNav, isBuyStage = false }: { openNav: any, 
                     {timeToEnd}
                   </span>
                 )}
-                <img src="../img/cart-outline.svg" width={30} />
+                <img src="../img/cart-outline.svg" width={30} className={`${styles.svgImage} ${styles.svgShadow}`} />
                 {carroCompras.length > 0 && (
                   <span className="badge bg-primary rounded-pill">
                     {carroCompras.length}

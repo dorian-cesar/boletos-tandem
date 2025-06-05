@@ -5,10 +5,10 @@ import Parrilla from "../Parrilla/Parrilla";
 
 import ServiceDetail from "@components/sale/ServiceDetail";
 
-import 'swiper/css';
-import 'swiper/css/effect-flip';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/effect-flip";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 import LoadingOverlay from "react-loading-overlay";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -29,33 +29,36 @@ const Boleto = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isShowItinerary, setIsShowItinerary] = useState(false);
   const [itinerario, setItinerario] = useState([]);
-  const { origen, destino } = useSelector((state) => state.compra);
+  let { origen, destino } = useSelector((state) => state.compra);
+  origen = origen?.toUpperCase();
+  destino = destino?.toUpperCase();
   const [user, setUser] = useState();
-
+  
+  console.log("Boleto props:::", props);
 
   const handleOpenPane = () => {
-    if( !user ) {
+    if (!user) {
       // buttonRef.current.click();
       // return;
     }
-    
+
     setIsOpened(!isOpened);
-  }
+  };
 
   useEffect(() => {
     const screenSize = screen.width;
 
-    if( screenSize <= 425 ) {
+    if (screenSize <= 425) {
       try {
-        if( isOpened ) {
+        if (isOpened) {
           sitMapButtonRef.current.click();
         } else {
           buttonCloseModal.current.click();
         }
       } catch (error) {}
     }
-  }, [isOpened])
-  
+  }, [isOpened]);
+
   useEffect(() => {
     const user = decryptData(LocalStorageEntities.user_auth);
     setUser(user);
@@ -65,7 +68,7 @@ const Boleto = (props) => {
     props.fechaLlegada + " " + props.horaLlegada,
     "DD/MM/YYYY HH:mm"
   ).diff(
-    dayjs(props.fechaSalida + " " + props.horaSalida, "DD/MM/YYYY HH:mm"),
+    dayjs(props.date + " " + props.departureTime, "DD/MM/YYYY HH:mm"),
     "minute"
   );
 
@@ -77,13 +80,15 @@ const Boleto = (props) => {
   duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
 
   async function showItinerary() {
-    console.log('PROPS:::', props);
+    console.log("PROPS:::", props);
     if (itinerario.length === 0) {
       try {
-        const { data } = await axios.post("/api/itinerario", { servicio: props.idServicio });
+        const { data } = await axios.post("/api/itinerario", {
+          servicio: props.idServicio,
+        });
         setItinerario(data.object);
       } catch (error) {
-        toast.error('Error al obtener el itinerario', {
+        toast.error("Error al obtener el itinerario", {
           position: "bottom-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -93,64 +98,134 @@ const Boleto = (props) => {
     setIsShowItinerary(!isShowItinerary);
   }
 
-  const handleCloseModal = () =>{
+  const handleCloseModal = () => {
     setIsOpened(false);
-  } 
+  };
 
   return (
-    <section className={ `container bg-white shadow-sm rounded-3 ${ styles["info-container"] }` }>
-		  <button ref={ sitMapButtonRef } type="button" className="d-none" data-bs-toggle="modal" data-bs-target={ `#parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}` }></button>
-      <div className={ `row justify-content-evenly ${ isOpened ? styles["enabled-details"] : "" }` }>
+    <section
+      className={`container bg-white shadow-sm rounded-3 ${styles["info-container"]}`}
+    >
+      <button
+        ref={sitMapButtonRef}
+        type="button"
+        className="d-none"
+        data-bs-toggle="modal"
+        data-bs-target={`#parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}`}
+      ></button>
+      <div
+        className={`row justify-content-evenly ${
+          isOpened ? styles["enabled-details"] : ""
+        }`}
+      >
         <div className="d-flex flex-col col px-md-2 py-md-0 p-md-3">
           <div className="d-flex flex-row justify-content-between pt-2 p-md-2">
-            <img src="img/ui/service-components/service-logo.svg" className="img-fluid p-1" width={ 150 } height={ 25 } alt="Logo Pullman Bus"/>
-            {props.mascota == '1' ? <img src="img/icon/logos/paw-outline.svg" /> : <div></div>}
+            <img
+              src="img/ui/service-components/service-logo.svg"
+              className="img-fluid p-1"
+              width={150}
+              height={25}
+              alt="Logo Pullman Bus"
+            />
+            {props.mascota == "1" ? (
+              <img src="img/icon/logos/paw-outline.svg" />
+            ) : (
+              <div></div>
+            )}
           </div>
           <div className="row mt-0 mt-md-1 p-2 gap-md-0 justify-content-evenly">
             <div className="row col-12 col-md-4 align-items-center text-center">
               <div className="col-12 col-md-12 d-flex flex-col">
-                <span className="fw-bold mb-0 mb-md-2">{props.horaSalida}</span>
+                <span className="fw-bold mb-0 mb-md-2">
+                  {props.departureTime}
+                </span>
               </div>
               <div className="col-12 col-md-12 d-flex flex-col">
-                <span className="fw-bold">{props.stage === 0 ? origen?.nombre : destino?.nombre}</span>
-                <span className={ `${ styles["travel-terminal-subtitle"] }` }>{props.terminalOrigen}</span>
+                <span className="fw-bold">
+                  {props.stage === 0 ? origen : destino}
+                </span>
+                <span className={`${styles["travel-terminal-subtitle"]}`}>
+                  {props.terminalOrigen}
+                </span>
                 {/* <span>{props.fechaSalida}</span> */}
               </div>
             </div>
             <div className="col-12 col-md-4 align-self-center d-flex flex-col text-center align-items-center p-0">
-              <span className={`fw-normal d-block d-md-none ${ styles["travel-duration"]}`}>Duración: {duracion}</span>
+              <span
+                className={`fw-normal d-block d-md-none ${styles["travel-duration"]}`}
+              >
+                Duración: {duracion}
+              </span>
               <div className="d-none d-md-block">
                 <p className="m-0 text-primary fs-6 fw-bold">Duración:</p>
-                <span className={ `${ styles["travel-duration"]}` }>{duracion}</span>
+                <span className={`${styles["travel-duration"]}`}>
+                  {duracion}
+                </span>
               </div>
             </div>
             <div className="row col-12 col-md-4 align-items-center text-center">
               <div className="col-12 col-md-12 d-flex flex-col">
-                <span className="fw-bold mb-0 mb-md-2">{props.horaLlegada}</span>
+                <span className="fw-bold mb-0 mb-md-2">
+                  {props.horaLlegada}
+                </span>
               </div>
               <div className="col-12 col-md-12 d-flex flex-col">
-                <span className="fw-bold">{props.stage === 0 ? destino?.nombre : origen?.nombre}</span>
-                <span className={ `${ styles["travel-terminal-subtitle"] }` }>{props.terminalDestino}</span>
+                <span className="fw-bold">
+                  {props.stage === 0 ? destino : origen}
+                </span>
+                <span className={`${styles["travel-terminal-subtitle"]}`}>
+                  {props.terminalDestino}
+                </span>
                 {/* <span>{props.fechaLlegada}</span> */}
               </div>
             </div>
           </div>
         </div>
-        <div className={ `col-5 col-sm-4 d-flex flex-col p-md-3 p-xl-2 justify-content-between justify-content-md-evenly ${ styles['border-dashed']} gap-3` }>
-          <div className={ `d-grid pt-5 p-0 p-md-2 justify-content-center fw-bold gap-2` }>
-            { props.tarifaPrimerPisoInternet && (
-              props.tarifaValor && props.tarifaValor.primerPisoInternet ? 
-              (<div className="d-flex flex-col flex-md-row gap-md-2 text-center">Piso 1 desde: <b className="text-primary">{ clpFormat.format(props.tarifaValor.primerPisoInternet) }</b></div>) :
-              (<div className="d-flex flex-col flex-md-row gap-md-2 text-center">Piso 1 desde: <b className="text-primary">${ props.tarifaPrimerPisoInternet }</b></div>)
-            ) }
-            { props.tarifaSegundoPisoInternet && (
-              props.tarifaValor && props.tarifaValor.segundoPisoInternet ? 
-              (<div className="d-flex flex-col flex-md-row gap-md-2 text-center">Piso 2 desde: <b className="text-primary">{ clpFormat.format(props.tarifaValor.segundoPisoInternet) }</b></div>) :
-              (<div className="d-flex flex-col flex-md-row gap-md-2 text-center">Piso 2 desde: <b className="text-primary">${ props.tarifaSegundoPisoInternet }</b></div>)
-            ) }
+        <div
+          className={`col-5 col-sm-4 d-flex flex-col p-md-3 p-xl-2 justify-content-between justify-content-md-evenly ${styles["border-dashed"]} gap-3`}
+        >
+          <div
+            className={`d-grid pt-5 p-0 p-md-2 justify-content-center fw-bold gap-2`}
+          >
+            {props.tarifaPrimerPisoInternet &&
+              (props.tarifaValor && props.tarifaValor.primerPisoInternet ? (
+                <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
+                  Piso 1 desde:{" "}
+                  <b className="text-primary">
+                    {clpFormat.format(props.tarifaValor.primerPisoInternet)}
+                  </b>
+                </div>
+              ) : (
+                <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
+                  Piso 1 desde:{" "}
+                  <b className="text-primary">
+                    ${props.tarifaPrimerPisoInternet}
+                  </b>
+                </div>
+              ))}
+            {props.tarifaSegundoPisoInternet &&
+              (props.tarifaValor && props.tarifaValor.segundoPisoInternet ? (
+                <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
+                  Piso 2 desde:{" "}
+                  <b className="text-primary">
+                    {clpFormat.format(props.tarifaValor.segundoPisoInternet)}
+                  </b>
+                </div>
+              ) : (
+                <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
+                  Piso 2 desde:{" "}
+                  <b className="text-primary">
+                    ${props.tarifaSegundoPisoInternet}
+                  </b>
+                </div>
+              ))}
           </div>
           <div className="d-grid pb-2 pb-md-0">
-            <button type="button" className="btn btn-primary border-0 rounded-3" onClick={handleOpenPane}>
+            <button
+              type="button"
+              className="btn btn-primary border-0 rounded-3"
+              onClick={handleOpenPane}
+            >
               Seleccionar Asiento
             </button>
           </div>
@@ -160,8 +235,9 @@ const Boleto = (props) => {
         active={isLoading}
         spinner
         text="Tomando asiento..."
-        className={ `${ styles['grill-detail'] }` }>
-        <div className={`${ styles['grill-detail'] }`}>
+        className={`${styles["grill-detail"]}`}
+      >
+        <div className={`${styles["grill-detail"]}`}>
           <Parrilla
             isShowParrilla={isOpened}
             thisParrilla={props.thisParrilla}
@@ -182,18 +258,32 @@ const Boleto = (props) => {
           />
         </div>
       </LoadingOverlay>
-      <div className="modal fade" id={ `parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}` } tabIndex={ -1 } aria-labelledby="parrillaModalLabel" aria-hidden="true">
+      <div
+        className="modal fade"
+        id={`parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}`}
+        tabIndex={-1}
+        aria-labelledby="parrillaModalLabel"
+        aria-hidden="true"
+      >
         <div className="modal-dialog modal-fullscreen">
           <div className="modal-content overflow-y-scroll overflow-x-hidden">
             <div className="modal-header border border-0">
-              <button ref={ buttonCloseModal } type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleCloseModal}></button>
+              <button
+                ref={buttonCloseModal}
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onClick={handleCloseModal}
+              ></button>
             </div>
             <LoadingOverlay
               active={isLoading}
               spinner
               text="Tomando asiento..."
-              className={styles['grill-detail']}>
-              <div className={styles['grill-detail']}>
+              className={styles["grill-detail"]}
+            >
+              <div className={styles["grill-detail"]}>
                 <Parrilla
                   isShowParrilla={isOpened}
                   thisParrilla={props.thisParrilla}

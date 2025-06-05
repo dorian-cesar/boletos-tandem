@@ -8,40 +8,60 @@ import { authMiddleware } from "./auth-middleware";
 
 import CryptoJS from "crypto-js";
 
-async function handlerParrilla(req, res) {
-  try {
-    let token = await doLogin();
+// async function handlerParrilla(req, res) {
+//   try {
+//     let token = await doLogin();
 
+//     const { data } = JSON.parse(req.body);
+
+//     const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+//     const decrypted = CryptoJS.AES.decrypt(data, secret);
+//     const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+
+//     const serviceResponse = await axios.post(
+//       config.service_url + `/integracion/obtenerServicio`,
+//       {
+//         origen: serviceRequest.origen,
+//         destino: serviceRequest.destino,
+//         fecha: serviceRequest.startDate,
+//         hora: "0000",
+//         idSistema: 1,
+//       },
+//       {
+//         headers: {
+//           Authorization: `Bearer ${token.token}`,
+//         },
+//       }
+//     );
+//     console.log(serviceResponse.data);
+//     res.status(200).json(serviceResponse.data);
+//   } catch (e) {
+//     console.error(e);
+//     res.status(400).json(e.response.data);
+//   }
+// }
+
+// export default authMiddleware(handlerParrilla);
+
+export default async (req, res) => {
+  try {
     const { data } = JSON.parse(req.body);
 
     const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
     const decrypted = CryptoJS.AES.decrypt(data, secret);
     const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 
-    // const serviceResponse = await axios.post(
-    //   config.service_url + `/integracion/obtenerServicio`,
-    //   {
-    //     origen: serviceRequest.origen,
-    //     destino: serviceRequest.destino,
-    //     fecha: serviceRequest.startDate,
-    //     hora: "0000",
-    //     idSistema: 1,
-    //   },
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${token.token}`,
-    //     },
-    //   }
-    // );
     const { origen, destino, startDate } = serviceRequest;
 
+    console.log("Request to service:", {
+      origen,
+      destino,
+      startDate,
+    });
+
     const serviceResponse = await axios.get(
-      config.url_api + `/services?origin=${origen}&destination=${destino}&date=${startDate}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token.token}`,
-        },
-      }
+      config.url_api +
+        `/services?origin=${origen}&destination=${destino}&date=${startDate}`
     );
     console.log(serviceResponse.data);
     res.status(200).json(serviceResponse.data);
@@ -49,6 +69,6 @@ async function handlerParrilla(req, res) {
     console.error(e);
     res.status(400).json(e.response.data);
   }
-}
+};
 
-export default authMiddleware(handlerParrilla);
+

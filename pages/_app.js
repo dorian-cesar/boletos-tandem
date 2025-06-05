@@ -41,6 +41,9 @@ function MyApp({ Component, pageProps }) {
           body {
             font-family: ${titillium.style.fontFamily};
           }
+          [class*="placeholder"] {
+            font-family: inherit !important;
+          }
         `}</style>
       </SWRConfig>
     </Provider>

@@ -35,3 +35,28 @@
 //     })
 // }
 // export default doLogin;
+
+
+import fs from 'fs';
+import { join } from 'path';
+import dayjs from 'dayjs';
+
+const doLogin = () => {
+    return new Promise((resolve, reject) => {
+        let serviciosPath = "cache/token.json";
+        if(fs.existsSync(serviciosPath)) {
+            let serviciosStats = fs.statSync(serviciosPath);
+            let fileTime = dayjs(serviciosStats.ctime);
+            let now = dayjs();
+            
+            if(now.diff(fileTime, 'minute') < 1 && serviciosStats.size > 0) {
+                let serviciosFile = fs.readFileSync(serviciosPath, {encoding: 'utf8'});
+                resolve(JSON.parse(serviciosFile));
+                return;
+            }
+        }
+        reject(new Error("No hay sistema de autenticación disponible"));
+    });
+}
+
+export default doLogin;

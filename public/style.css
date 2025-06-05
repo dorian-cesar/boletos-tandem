@@ -751,13 +751,6 @@ input.fecha-input:focus {
     border: 1px solid var(--naranjo);
 }
 
-.sel-input::placeholder {
-  font-family: 'Titillium Web', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  color: var(--azul-100, #3365B4);
-}
-
 select.form-control.seleccion {
   width: 100%;
   background-color: #fff;
@@ -2539,6 +2532,11 @@ line-height: normal;
     position: relative;
     z-index: 2;
   }
+
+  .cuenta-img {
+    width: 80%;
+    height: auto;
+  }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -2550,6 +2548,15 @@ line-height: normal;
 
   .home .bloque .m-neg {
     margin-top: -2.5rem;
+  }
+
+  .img-fluid {
+    max-width: unset; 
+  }
+
+  .cuenta-img {
+    width: 120%;
+    height: auto;
   }
 }
 
@@ -2578,6 +2585,18 @@ line-height: normal;
     margin-top: -110px;
     position: relative;
     z-index: 2;
+  }
+
+  .cuenta-img {
+    width: 90%;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .cuenta-img {
+    width: 80%;
+    height: auto;
   }
 }
 

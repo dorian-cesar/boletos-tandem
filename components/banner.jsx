@@ -25,7 +25,9 @@ const Banner = (props) => {
   }
 
   async function transformImages() {
-    const images = await getBannerImages();
+    // const images = await getBannerImages();
+    const images = [];
+
     let bannerImages = [];
     images.map(({ llave, link, imagen, posicion }) =>
       bannerImages.push({
