@@ -412,6 +412,7 @@ const BusquedaServicio = (props) => {
                   dateFormat="dd/MM/yyyy"
                   className={styles["input"]}
                   customInput={<CustomInput />}
+                  isClearable
                 />
               </div>
               <div className="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-2 col-xxl-2">

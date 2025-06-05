@@ -189,13 +189,13 @@ const StagePasajes = (props) => {
 
       if (sort == "hora-up")
         return (
-          Number(prevValue.horaSalida.replace(":", "")) -
-          Number(actValue.horaSalida.replace(":", ""))
+          Number(prevValue.departureTime.replace(":", "")) -
+          Number(actValue.departureTime.replace(":", ""))
         );
 
       return (
-        Number(actValue.horaSalida.replace(":", "")) -
-        Number(prevValue.horaSalida.replace(":", ""))
+        Number(actValue.departureTime.replace(":", "")) -
+        Number(prevValue.departureTime.replace(":", ""))
       );
     });
   }
@@ -213,7 +213,7 @@ const StagePasajes = (props) => {
       if (mascotaAllowed && mappedParrilla.mascota == 0) return;
 
       if (filter_horas.length > 0) {
-        const horaSalida = moment(mappedParrilla.horaSalida, "hh:mm");
+        const horaSalida = moment(mappedParrilla.departureTime, "hh:mm");
 
         let isTime = filter_horas.some((horaFiltro) => {
           let [inicio, fin] = horaFiltro.split("-");

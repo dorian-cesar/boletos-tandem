@@ -154,7 +154,13 @@ export default function Home(props) {
         // },
       });
 
-      const parrilla = await response.json();
+      const res = await response.json();
+
+      const parrilla = res.map((item) => ({
+        ...item,
+        stage_active,
+      }));
+
       console.log("parrilla: ", parrilla);
 
       // const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
@@ -192,13 +198,16 @@ export default function Home(props) {
         secret
       );
 
-      console.log("dto: ", new ObtenerParrillaServicioDTO(
-            stage_active,
-            origen,
-            destino,
-            startDate,
-            endDate
-          ));
+      // console.log(
+      //   "dto: ",
+      //   new ObtenerParrillaServicioDTO(
+      //     stage,
+      //     origen,
+      //     destino,
+      //     startDate,
+      //     endDate
+      //   )
+      // );
 
       const response = await fetch(`/api/parrilla`, {
         method: "POST",
@@ -208,7 +217,13 @@ export default function Home(props) {
         // },
       });
 
-      const parrilla = await response.json();
+      const res = await response.json();
+
+      const parrilla = res.map((item) => ({
+        ...item,
+        stage,
+      }));
+
       console.log("parrilla: ", parrilla);
 
       // const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));

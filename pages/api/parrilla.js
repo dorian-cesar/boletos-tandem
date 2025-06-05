@@ -63,7 +63,7 @@ export default async (req, res) => {
       config.url_api +
         `/services?origin=${origen}&destination=${destino}&date=${startDate}`
     );
-    console.log(serviceResponse.data);
+    // console.log(serviceResponse.data);
     res.status(200).json(serviceResponse.data);
   } catch (e) {
     console.error(e);

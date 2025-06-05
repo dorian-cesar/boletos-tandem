@@ -33,7 +33,7 @@ const Boleto = (props) => {
   origen = origen?.toUpperCase();
   destino = destino?.toUpperCase();
   const [user, setUser] = useState();
-  
+
   console.log("Boleto props:::", props);
 
   const handleOpenPane = () => {
@@ -64,6 +64,15 @@ const Boleto = (props) => {
     setUser(user);
   }, []);
 
+  function formatToAmPm(timeStr) {
+    const [hours, minutes] = timeStr.split(":").map(Number);
+    const ampm = hours < 12 ? "AM" : "PM";
+    const hour12 = hours % 12 === 0 ? 12 : hours % 12;
+    return `${hour12}:${minutes.toString().padStart(2, "0")} ${ampm}`;
+  }
+
+  let departureTime = formatToAmPm(props.departureTime);
+
   let duracion = dayjs(
     props.fechaLlegada + " " + props.horaLlegada,
     "DD/MM/YYYY HH:mm"
@@ -84,7 +93,7 @@ const Boleto = (props) => {
     if (itinerario.length === 0) {
       try {
         const { data } = await axios.post("/api/itinerario", {
-          servicio: props.idServicio,
+          servicio: props.id,
         });
         setItinerario(data.object);
       } catch (error) {
@@ -111,7 +120,7 @@ const Boleto = (props) => {
         type="button"
         className="d-none"
         data-bs-toggle="modal"
-        data-bs-target={`#parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}`}
+        data-bs-target={`#parrillaModal-${props.id}-${props.idTerminalOrigen}${props.idTerminalDestino}`}
       ></button>
       <div
         className={`row justify-content-evenly ${
@@ -137,7 +146,7 @@ const Boleto = (props) => {
             <div className="row col-12 col-md-4 align-items-center text-center">
               <div className="col-12 col-md-12 d-flex flex-col">
                 <span className="fw-bold mb-0 mb-md-2">
-                  {props.departureTime}
+                  {departureTime}
                 </span>
               </div>
               <div className="col-12 col-md-12 d-flex flex-col">
@@ -260,7 +269,7 @@ const Boleto = (props) => {
       </LoadingOverlay>
       <div
         className="modal fade"
-        id={`parrillaModal-${props.idServicio}-${props.idTerminalOrigen}${props.idTerminalDestino}`}
+        id={`parrillaModal-${props.id}-${props.idTerminalOrigen}${props.idTerminalDestino}`}
         tabIndex={-1}
         aria-labelledby="parrillaModalLabel"
         aria-hidden="true"
