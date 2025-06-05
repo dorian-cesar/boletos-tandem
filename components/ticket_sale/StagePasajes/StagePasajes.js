@@ -301,11 +301,11 @@ const StagePasajes = (props) => {
           ) : parrilla.length > 0 ? (
             servicios
           ) : (
-            <div>
-              <h5 className="d-flex m-auto">
+            <div className="h-100 justify-content-center align-content-center">
+              <div className="m-auto text-center">
                 Lo sentimos, no existen resultados para su búsqueda, intente con
                 otro horario.
-              </h5>
+              </div>
             </div>
           )}
         </div>

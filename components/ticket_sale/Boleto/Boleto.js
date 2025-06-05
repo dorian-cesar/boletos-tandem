@@ -64,29 +64,61 @@ const Boleto = (props) => {
     setUser(user);
   }, []);
 
-  function formatToAmPm(timeStr) {
-    const [hours, minutes] = timeStr.split(":").map(Number);
+  // let duracion = dayjs(
+  //   props.arrivalDate + " " + props.arrivalTime,
+  //   "DD/MM/YYYY HH:mm"
+  // ).diff(
+  //   dayjs(props.date + " " + props.departureTime, "DD/MM/YYYY HH:mm"),
+  //   "minute"
+  // );
+
+  // duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
+
+  // function format24HourWithAmPm(timeStr) {
+  //   const [hours, minutes] = timeStr.split(":").map(Number);
+  //   const ampm = hours < 12 ? "AM" : "PM";
+  //   return `${hours.toString().padStart(2, "0")}:${minutes
+  //     .toString()
+  //     .padStart(2, "0")} ${ampm}`;
+  // }
+
+  // let departureTime = format24HourWithAmPm(props.departureTime);
+
+  const arrival = dayjs(
+    `${props.arrivalDate} ${props.arrivalTime}`,
+    "YYYY-MM-DD HH:mm"
+  );
+
+  const departure = dayjs(
+    `${props.date} ${props.departureTime}`,
+    "YYYY-MM-DD HH:mm"
+  );
+
+  let duracionMinutos = arrival.diff(departure, "minute");
+
+  let duracion =
+    Math.floor(duracionMinutos / 60) +
+    " hrs " +
+    (duracionMinutos % 60) +
+    " min";
+
+  function formatTo24HourWithAmPm(timeStr) {
+    const date = dayjs(timeStr, ["HH:mm", "hh:mm A"]);
+    const hours = date.hour();
+    const minutes = date.minute();
     const ampm = hours < 12 ? "AM" : "PM";
-    const hour12 = hours % 12 === 0 ? 12 : hours % 12;
-    return `${hour12}:${minutes.toString().padStart(2, "0")} ${ampm}`;
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")} ${ampm}`;
   }
 
-  let departureTime = formatToAmPm(props.departureTime);
-
-  let duracion = dayjs(
-    props.fechaLlegada + " " + props.horaLlegada,
-    "DD/MM/YYYY HH:mm"
-  ).diff(
-    dayjs(props.date + " " + props.departureTime, "DD/MM/YYYY HH:mm"),
-    "minute"
-  );
+  let formattedDeparture = formatTo24HourWithAmPm(props.departureTime);
+  let formattedArrival = formatTo24HourWithAmPm(props.arrivalTime);
 
   const clpFormat = new Intl.NumberFormat("es-CL", {
     style: "currency",
     currency: "CLP",
   });
-
-  duracion = Math.floor(duracion / 60) + " hrs " + (duracion % 60) + " min";
 
   async function showItinerary() {
     console.log("PROPS:::", props);
@@ -120,7 +152,7 @@ const Boleto = (props) => {
         type="button"
         className="d-none"
         data-bs-toggle="modal"
-        data-bs-target={`#parrillaModal-${props.id}-${props.idTerminalOrigen}${props.idTerminalDestino}`}
+        data-bs-target={`#parrillaModal-${props.id}-${props.idTerminalOrigin}${props.idTerminalDestination}`}
       ></button>
       <div
         className={`row justify-content-evenly ${
@@ -146,7 +178,7 @@ const Boleto = (props) => {
             <div className="row col-12 col-md-4 align-items-center text-center">
               <div className="col-12 col-md-12 d-flex flex-col">
                 <span className="fw-bold mb-0 mb-md-2">
-                  {departureTime}
+                  {formattedDeparture}
                 </span>
               </div>
               <div className="col-12 col-md-12 d-flex flex-col">
@@ -154,7 +186,7 @@ const Boleto = (props) => {
                   {props.stage === 0 ? origen : destino}
                 </span>
                 <span className={`${styles["travel-terminal-subtitle"]}`}>
-                  {props.terminalOrigen}
+                  {props.terminalOrigin}
                 </span>
                 {/* <span>{props.fechaSalida}</span> */}
               </div>
@@ -174,16 +206,14 @@ const Boleto = (props) => {
             </div>
             <div className="row col-12 col-md-4 align-items-center text-center">
               <div className="col-12 col-md-12 d-flex flex-col">
-                <span className="fw-bold mb-0 mb-md-2">
-                  {props.horaLlegada}
-                </span>
+                <span className="fw-bold mb-0 mb-md-2">{formattedArrival}</span>
               </div>
               <div className="col-12 col-md-12 d-flex flex-col">
                 <span className="fw-bold">
                   {props.stage === 0 ? destino : origen}
                 </span>
                 <span className={`${styles["travel-terminal-subtitle"]}`}>
-                  {props.terminalDestino}
+                  {props.terminalDestination}
                 </span>
                 {/* <span>{props.fechaLlegada}</span> */}
               </div>
@@ -196,7 +226,7 @@ const Boleto = (props) => {
           <div
             className={`d-grid pt-5 p-0 p-md-2 justify-content-center fw-bold gap-2`}
           >
-            {props.tarifaPrimerPisoInternet &&
+            {props.priceFirst &&
               (props.tarifaValor && props.tarifaValor.primerPisoInternet ? (
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 1 desde:{" "}
@@ -208,11 +238,11 @@ const Boleto = (props) => {
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 1 desde:{" "}
                   <b className="text-primary">
-                    ${props.tarifaPrimerPisoInternet}
+                    ${props.priceFirst}
                   </b>
                 </div>
               ))}
-            {props.tarifaSegundoPisoInternet &&
+            {props.priceSecond &&
               (props.tarifaValor && props.tarifaValor.segundoPisoInternet ? (
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 2 desde:{" "}
@@ -224,7 +254,7 @@ const Boleto = (props) => {
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 2 desde:{" "}
                   <b className="text-primary">
-                    ${props.tarifaSegundoPisoInternet}
+                    ${props.priceSecond}
                   </b>
                 </div>
               ))}
@@ -269,7 +299,7 @@ const Boleto = (props) => {
       </LoadingOverlay>
       <div
         className="modal fade"
-        id={`parrillaModal-${props.id}-${props.idTerminalOrigen}${props.idTerminalDestino}`}
+        id={`parrillaModal-${props.id}-${props.idTerminalOrigin}${props.idTerminalDestination}`}
         tabIndex={-1}
         aria-labelledby="parrillaModalLabel"
         aria-hidden="true"

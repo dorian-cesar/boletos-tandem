@@ -423,7 +423,7 @@ const BusquedaServicio = (props) => {
                   onClick={redireccionarBuscarServicio}
                   disabled={!origen || !destino}
                 >
-                  <img src="img/icon-buscar-blanco.svg" /> Buscar
+                  <img src="img/icon-buscar-blanco.svg" style={{ width: '15px' }}/> Buscar
                 </button>
               </div>
             </div>
