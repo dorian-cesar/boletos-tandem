@@ -115,9 +115,14 @@ const Boleto = (props) => {
   let formattedDeparture = formatTo24HourWithAmPm(props.departureTime);
   let formattedArrival = formatTo24HourWithAmPm(props.arrivalTime);
 
-  const clpFormat = new Intl.NumberFormat("es-CL", {
+  // const clpFormat = new Intl.NumberFormat("es-CL", {
+  //   style: "currency",
+  //   currency: "CLP",
+  // });
+
+  const pygFormat = new Intl.NumberFormat("es-PY", {
     style: "currency",
-    currency: "CLP",
+    currency: "PYG",
   });
 
   async function showItinerary() {
@@ -152,7 +157,8 @@ const Boleto = (props) => {
         type="button"
         className="d-none"
         data-bs-toggle="modal"
-        data-bs-target={`#parrillaModal-${props.id}-${props.idTerminalOrigin}${props.idTerminalDestination}`}
+        // data-bs-target={`#parrillaModal-${props.id}-${props.idTerminalOrigin}${props.idTerminalDestination}`}
+        data-bs-target={`#parrillaModal-${props.idParrilla}-${props.terminalOrigin}${props.terminalDestination}`}
       ></button>
       <div
         className={`row justify-content-evenly ${
@@ -227,35 +233,31 @@ const Boleto = (props) => {
             className={`d-grid pt-5 p-0 p-md-2 justify-content-center fw-bold gap-2`}
           >
             {props.priceFirst &&
-              (props.tarifaValor && props.tarifaValor.primerPisoInternet ? (
+              (props.priceFirst ? (
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 1 desde:{" "}
                   <b className="text-primary">
-                    {clpFormat.format(props.tarifaValor.primerPisoInternet)}
+                    {pygFormat.format(props.priceFirst)}
                   </b>
                 </div>
               ) : (
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 1 desde:{" "}
-                  <b className="text-primary">
-                    ${props.priceFirst}
-                  </b>
+                  <b className="text-primary">${props.priceFirst}</b>
                 </div>
               ))}
             {props.priceSecond &&
-              (props.tarifaValor && props.tarifaValor.segundoPisoInternet ? (
+              (props.priceSecond ? (
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 2 desde:{" "}
                   <b className="text-primary">
-                    {clpFormat.format(props.tarifaValor.segundoPisoInternet)}
+                    {pygFormat.format(props.priceSecond)}
                   </b>
                 </div>
               ) : (
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 2 desde:{" "}
-                  <b className="text-primary">
-                    ${props.priceSecond}
-                  </b>
+                  <b className="text-primary">${props.priceSecond}</b>
                 </div>
               ))}
           </div>
@@ -281,8 +283,8 @@ const Boleto = (props) => {
             isShowParrilla={isOpened}
             thisParrilla={props.thisParrilla}
             setIsShowParrilla={setIsOpened}
-            asientos1={props.asientos1}
-            asientos2={props.asientos2}
+            asientos1={props.layout}
+            asientos2={props.layout}
             k={props.k}
             parrilla={props}
             stage={props.stage}
@@ -299,7 +301,7 @@ const Boleto = (props) => {
       </LoadingOverlay>
       <div
         className="modal fade"
-        id={`parrillaModal-${props.id}-${props.idTerminalOrigin}${props.idTerminalDestination}`}
+        id={`parrillaModal-${props.idParrilla}-${props.terminalOrigin}${props.terminalDestination}`}
         tabIndex={-1}
         aria-labelledby="parrillaModalLabel"
         aria-hidden="true"
@@ -327,8 +329,8 @@ const Boleto = (props) => {
                   isShowParrilla={isOpened}
                   thisParrilla={props.thisParrilla}
                   setIsShowParrilla={setIsOpened}
-                  asientos1={props.asientos1}
-                  asientos2={props.asientos2}
+                  asientos1={props.layout}
+                  asientos2={props.layout}
                   k={props.k}
                   parrilla={props}
                   stage={props.stage}

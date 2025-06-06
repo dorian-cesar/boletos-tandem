@@ -53,11 +53,11 @@ export default async (req, res) => {
 
     const { origen, destino, startDate } = serviceRequest;
 
-    console.log("Request to service:", {
-      origen,
-      destino,
-      startDate,
-    });
+    // console.log("Request to service:", {
+    //   origen,
+    //   destino,
+    //   startDate,
+    // });
 
     const serviceResponse = await axios.get(
       config.url_api +

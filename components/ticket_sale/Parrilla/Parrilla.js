@@ -52,6 +52,8 @@ const Parrilla = (props) => {
     setModalMab,
   } = props;
 
+  console.log(`Parrilla props: `, props);
+
   const [openPane, setOpenPane] = useState(false);
   const [key, setKey] = useState(null);
   const [totalPagar, setTotalPagar] = useState(0);
@@ -110,13 +112,13 @@ const Parrilla = (props) => {
 
   useEffect(() => {
     setKey(
-      `${props?.thisParrilla?.idTerminalOrigen}-${props?.thisParrilla?.idTerminalDestino}`
+      `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
     );
   }, []);
 
   useEffect(() => {
     setKey(
-      `${props?.thisParrilla?.idTerminalOrigen}-${props?.thisParrilla?.idTerminalDestino}`
+      `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
     );
   }, [stage, parrilla]);
 
@@ -151,8 +153,8 @@ const Parrilla = (props) => {
       if (carroCompras[key][stage === 0 ? "ida" : "vuelta"]) {
         carroCompras[key][stage === 0 ? "ida" : "vuelta"].filter((carro) => {
           if (
-            carro.idServicio === props.thisParrilla.idServicio &&
-            carro.fechaServicio === props.thisParrilla.fechaServicio
+            carro.idServicio === props.thisParrilla.id &&
+            carro.fechaServicio === props.thisParrilla.date
           ) {
             carro.asientos.forEach((carro) => {
               returnedArray.push({
@@ -243,22 +245,19 @@ const Parrilla = (props) => {
     try {
       const parrillaTemporal = [...parrilla.parrilla];
 
-      const token = generateToken();
-
       const request = CryptoJS.AES.encrypt(
         JSON.stringify(new BuscarPlanillaVerticalOpenPaneDTO(parrilla)),
         secret
       );
 
       const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
-        method: "POST",
+        method: "GET",
         body: JSON.stringify({ data: request.toString() }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       const data = await response.json();
+
+      console.log(`Recargando panel para el servicio ${parrillaTemporal[indexParrilla].idServicio}`);
 
       let nuevaParrilla = { ...parrillaTemporal[indexParrilla] };
       nuevaParrilla.loadingAsientos = false;
@@ -608,8 +607,6 @@ const Parrilla = (props) => {
         return;
       }
 
-      const token = generateToken();
-
       const request = CryptoJS.AES.encrypt(
         JSON.stringify(new BuscarPlanillaVerticalOpenPaneDTO(parrilla)),
         secret
@@ -618,17 +615,16 @@ const Parrilla = (props) => {
       const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
         method: "POST",
         body: JSON.stringify({ data: request.toString() }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       const data = await response.json();
 
+      console.log(`Abriendo panel para el servicio ${parrillaTemporal[indexParrilla].idServicio} - Data: `, data);
+
       parrillaModificada[indexParrilla].loadingAsientos = false;
-      parrillaModificada[indexParrilla].asientos1 = data[1];
-      if (!!parrillaTemporal[indexParrilla].busPiso2) {
-        parrillaModificada[indexParrilla].asientos2 = data[2];
+      parrillaModificada[indexParrilla].asientos1 = data.floor1;
+      if (!!parrillaTemporal[indexParrilla].data.floor2) {
+        parrillaModificada[indexParrilla].asientos2 = data.floor2;
       }
       setParrilla(parrillaModificada);
     } catch ({ message }) {
@@ -873,7 +869,7 @@ const Parrilla = (props) => {
                     <>
                       {rellenaEspaciosVacios(7, props.asientos1.length)}
                       {piso === 1 &&
-                        props.asientos1.map(
+                        props.asientos1.floor1.seatMap.map(
                           (asientosPiso1, indexAsientosPiso1) => {
                             return (
                               <div

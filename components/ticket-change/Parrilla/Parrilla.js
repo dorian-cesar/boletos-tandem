@@ -49,9 +49,14 @@ const Parrilla = (props) => {
   const [piso, setPiso] = useState(1);
   
 
-  const clpFormat = new Intl.NumberFormat("es-CL", {
+  // const clpFormat = new Intl.NumberFormat("es-CL", {
+  //   style: "currency",
+  //   currency: "CLP",
+  // });
+
+  const pygFormat = new Intl.NumberFormat("es-PY", {
     style: "currency",
-    currency: "CLP",
+    currency: "PYG",
   });
 
   useEffect(() => {
@@ -76,7 +81,7 @@ const Parrilla = (props) => {
 
   useEffect(() => {
     setKey(
-      `${props?.thisParrilla?.idTerminalOrigen}-${props?.thisParrilla?.idTerminalDestino}`
+      `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
     );
   }, []);
 
@@ -111,8 +116,8 @@ const Parrilla = (props) => {
       if (carroCompras[key]["ida"]) {
         carroCompras[key]["ida"].filter((carro) => {
           if (
-            carro.idServicio === props.thisParrilla.idServicio &&
-            carro.fechaServicio === props.thisParrilla.fechaServicio
+            carro.id === props.thisParrilla.id &&
+            carro.date === props.thisParrilla.date
           ) {
             carro.asientos.forEach((carro) => {
               returnedArray.push({
@@ -203,7 +208,7 @@ const Parrilla = (props) => {
     try {
       const parrillaTemporal = [...parrilla.parrilla];
 
-      const token = generateToken();
+      // const token = generateToken();
             
       const request = CryptoJS.AES.encrypt(
           JSON.stringify(new BuscarPlanillaVerticalOpenPaneDTO(parrilla)),
@@ -211,14 +216,13 @@ const Parrilla = (props) => {
       );
 
       const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
-          method: "POST",
+          method: "GET",
           body: JSON.stringify({ data: request.toString() }),
-          headers: {
-              Authorization: `Bearer ${ token }`
-          }
       });
 
       const data = await response.json();
+
+      console.log("Data de recarga de panel:", data);
 
       let nuevaParrilla = { ...parrillaTemporal[indexParrilla] };
       nuevaParrilla.loadingAsientos = false;
@@ -429,8 +433,6 @@ const Parrilla = (props) => {
       if (parrilla.parrilla[indexParrilla].id == openPane) {
         return;
       }
-      
-      const token = generateToken();
             
       const request = CryptoJS.AES.encrypt(
           JSON.stringify(new BuscarPlanillaVerticalOpenPaneDTO(parrilla)),
@@ -438,14 +440,13 @@ const Parrilla = (props) => {
       );
 
       const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
-          method: "POST",
+          method: "GET",
           body: JSON.stringify({ data: request.toString() }),
-          headers: {
-              Authorization: `Bearer ${ token }`
-          }
       });
 
       const data = await response.json();
+
+      console.log("Data de apertura de panel:", data);
 
       parrillaModificada[indexParrilla].loadingAsientos = false;
       parrillaModificada[indexParrilla].asientos1 = data[1];
@@ -758,7 +759,7 @@ const Parrilla = (props) => {
                 validarAsientosTomados() ? props.setPasaje(props) : "";
               }}
             >
-              <span>Continuar: { clpFormat.format(totalPagar) }</span>
+              <span>Continuar: { pygFormat.format(totalPagar) }</span>
             </div>
             <div className={styles["texto-cantidad-asientos"]}>
               <span>

@@ -35,7 +35,7 @@ const StagePasajes = (props) => {
     setModalMab,
   } = props;
 
-  console.log("StagePasajes", props);
+  // console.log("StagePasajes", props);
 
   const [filter_tipo, setFilterTipo] = useState([]);
   const [filter_horas, setFilterHoras] = useState([]);
@@ -76,11 +76,11 @@ const StagePasajes = (props) => {
   );
 
   const tipos_servicio = parrilla.reduce((a, b) => {
-    if (!a.includes(b.servicioPrimerPiso) && b.servicioPrimerPiso != "") {
-      a.push(b.servicioPrimerPiso);
+    if (!a.includes(b.seatDescriptionFirst) && b.seatDescriptionFirst != "") {
+      a.push(b.seatDescriptionFirst);
     }
-    if (!a.includes(b.servicioSegundoPiso) && b.servicioSegundoPiso != "") {
-      a.push(b.servicioSegundoPiso);
+    if (!a.includes(b.seatDescriptionSecond) && b.seatDescriptionSecond != "") {
+      a.push(b.seatDescriptionSecond);
     }
     return a;
   }, []);
@@ -100,8 +100,6 @@ const StagePasajes = (props) => {
       }
       setOpenPane(parrilla[indexParrilla].id);
 
-      const token = generateToken();
-
       const request = CryptoJS.AES.encrypt(
         JSON.stringify(
           new BuscarPlanillaVerticalDTO(
@@ -115,20 +113,24 @@ const StagePasajes = (props) => {
         secret
       );
 
+      console.log("parrillaTemporal:", parrillaTemporal);
+      console.log("Request to service:", request.toString());
+
       const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
-        method: "POST",
+        method: "GET",
         body: JSON.stringify({ data: request.toString() }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       const data = await response.json();
 
+      console.log("Mapa de asientos:", data);
+
       parrillaModificada[indexParrilla].loadingAsientos = false;
-      parrillaModificada[indexParrilla].asientos1 = data[1];
+      // parrillaModificada[indexParrilla].asientos1 = data[1];
+      parrillaModificada[indexParrilla].asientos1 = parrilla.layout.floor1.seatMap;
       if (!!parrillaTemporal[indexParrilla].busPiso2) {
-        parrillaModificada[indexParrilla].asientos2 = data[2];
+        // parrillaModificada[indexParrilla].asientos2 = data[2];
+        parrillaModificada[indexParrilla].asientos2 = parrilla.layout.floor2.seatMap;
       }
       setParrilla(parrillaModificada);
     } catch ({ message }) {
@@ -179,12 +181,12 @@ const StagePasajes = (props) => {
 
       if (sort == "precio-up")
         return (
-          prevValue.tarifaPrimerPisoInternet - actValue.tarifaPrimerPisoInternet
+          prevValue.priceFirst - actValue.priceFirst
         );
 
       if (sort == "precio-down")
         return (
-          actValue.tarifaPrimerPisoInternet - prevValue.tarifaPrimerPisoInternet
+          actValue.priceFirst - prevValue.priceFirst
         );
 
       if (sort == "hora-up")
@@ -205,8 +207,8 @@ const StagePasajes = (props) => {
     returnSortedParrilla().map((mappedParrilla, indexParrilla) => {
       if (
         filter_tipo.length > 0 &&
-        !filter_tipo.includes(mappedParrilla.servicioPrimerPiso) &&
-        !filter_tipo.includes(mappedParrilla.servicioSegundoPiso)
+        !filter_tipo.includes(mappedParrilla.seatDescriptionFirst) &&
+        !filter_tipo.includes(mappedParrilla.seatDescriptionSecond)
       )
         return;
 

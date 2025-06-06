@@ -168,7 +168,7 @@ export default function Home(props) {
         parrilla.map((parrillaMapped, index) => {
           return {
             ...parrillaMapped,
-            id: index + 1,
+            idParrilla: index + 1,
           };
         })
       );
@@ -231,7 +231,7 @@ export default function Home(props) {
         parrilla.map((parrillaMapped, index) => {
           return {
             ...parrillaMapped,
-            id: index + 1,
+            idParrilla: index + 1,
           };
         })
       );
