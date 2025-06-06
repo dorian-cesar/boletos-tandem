@@ -259,6 +259,8 @@ const Parrilla = (props) => {
 
       console.log(`Recargando panel para el servicio ${parrillaTemporal[indexParrilla].idServicio}`);
 
+      
+
       let nuevaParrilla = { ...parrillaTemporal[indexParrilla] };
       nuevaParrilla.loadingAsientos = false;
       nuevaParrilla.asientos1 = data[1];
@@ -620,6 +622,8 @@ const Parrilla = (props) => {
       const data = await response.json();
 
       console.log(`Abriendo panel para el servicio ${parrillaTemporal[indexParrilla].idServicio} - Data: `, data);
+
+      // props.parrilla.layout
 
       parrillaModificada[indexParrilla].loadingAsientos = false;
       parrillaModificada[indexParrilla].asientos1 = data.floor1;

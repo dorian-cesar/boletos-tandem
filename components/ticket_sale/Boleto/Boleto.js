@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import styles from "./Boleto.module.css";
 import Parrilla from "../Parrilla/Parrilla";
+import { BuscarPlanillaVerticalOpenPaneDTO } from "dto/MapaAsientosDTO";
 
 import ServiceDetail from "@components/sale/ServiceDetail";
 
@@ -14,12 +15,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { format } from "@formkit/tempo";
 import { useSelector } from "react-redux";
+import CryptoJS from "crypto-js";
 
 import { decryptData } from "utils/encrypt-data";
 import LocalStorageEntities from "entities/LocalStorageEntities";
 
 var customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
+const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 const Boleto = (props) => {
   const buttonRef = useRef();
   const buttonCloseModal = useRef();
@@ -62,6 +65,18 @@ const Boleto = (props) => {
   useEffect(() => {
     const user = decryptData(LocalStorageEntities.user_auth);
     setUser(user);
+  }, []);
+
+  useEffect(() => {
+    const obtenerMapa = async () => {
+      try {
+        const data = await fetchAsientos(props);
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    obtenerMapa();
   }, []);
 
   // let duracion = dayjs(
@@ -120,10 +135,34 @@ const Boleto = (props) => {
   //   currency: "CLP",
   // });
 
-  const pygFormat = new Intl.NumberFormat("es-PY", {
-    style: "currency",
-    currency: "PYG",
-  });
+  const formatGuarani = (value) =>
+    new Intl.NumberFormat("es-PY", {
+      style: "currency",
+      currency: "PYG",
+      currencyDisplay: "symbol",
+    })
+      .format(value)
+      .replace(/Gs\.?|PYG/, "₲");
+
+  async function fetchAsientos(parrilla) {
+    const request = CryptoJS.AES.encrypt(
+      JSON.stringify(new BuscarPlanillaVerticalOpenPaneDTO(parrilla)),
+      secret
+    );
+
+    const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
+      method: "POST",
+      body: JSON.stringify({ data: request.toString() }),
+    });
+
+    const asientos = await response.json();
+    if (response.ok) {
+      console.log("Asientos obtenidos:", asientos);
+      return asientos;
+    } else {
+      throw new Error(data.message || "Error al obtener el mapa de asientos");
+    }
+  }
 
   async function showItinerary() {
     console.log("PROPS:::", props);
@@ -237,7 +276,7 @@ const Boleto = (props) => {
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 1 desde:{" "}
                   <b className="text-primary">
-                    {pygFormat.format(props.priceFirst)}
+                    {formatGuarani(props.priceFirst)}
                   </b>
                 </div>
               ) : (
@@ -251,7 +290,7 @@ const Boleto = (props) => {
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 2 desde:{" "}
                   <b className="text-primary">
-                    {pygFormat.format(props.priceSecond)}
+                    {formatGuarani(props.priceSecond)}
                   </b>
                 </div>
               ) : (
@@ -283,8 +322,8 @@ const Boleto = (props) => {
             isShowParrilla={isOpened}
             thisParrilla={props.thisParrilla}
             setIsShowParrilla={setIsOpened}
-            asientos1={props.layout}
-            asientos2={props.layout}
+            asientos1={props.asientos}
+            asientos2={props.asientos}
             k={props.k}
             parrilla={props}
             stage={props.stage}
@@ -329,8 +368,8 @@ const Boleto = (props) => {
                   isShowParrilla={isOpened}
                   thisParrilla={props.thisParrilla}
                   setIsShowParrilla={setIsOpened}
-                  asientos1={props.layout}
-                  asientos2={props.layout}
+                  asientos1={props.asientos}
+                  asientos2={props.asientos}
                   k={props.k}
                   parrilla={props}
                   stage={props.stage}
