@@ -32,6 +32,7 @@ const Boleto = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isShowItinerary, setIsShowItinerary] = useState(false);
   const [itinerario, setItinerario] = useState([]);
+  const [asientos, setAsientos] = useState([]);
   let { origen, destino } = useSelector((state) => state.compra);
   origen = origen?.toUpperCase();
   destino = destino?.toUpperCase();
@@ -68,15 +69,15 @@ const Boleto = (props) => {
   }, []);
 
   useEffect(() => {
-    const obtenerMapa = async () => {
+    const obtenerAsientos = async () => {
       try {
         const data = await fetchAsientos(props);
-        console.log(data);
+        setAsientos(data);
       } catch (error) {
         console.error(error);
       }
     };
-    obtenerMapa();
+    obtenerAsientos();
   }, []);
 
   // let duracion = dayjs(
@@ -157,7 +158,7 @@ const Boleto = (props) => {
 
     const asientos = await response.json();
     if (response.ok) {
-      console.log("Asientos obtenidos:", asientos);
+      // console.log("Asientos obtenidos:", asientos);
       return asientos;
     } else {
       throw new Error(data.message || "Error al obtener el mapa de asientos");
@@ -322,8 +323,8 @@ const Boleto = (props) => {
             isShowParrilla={isOpened}
             thisParrilla={props.thisParrilla}
             setIsShowParrilla={setIsOpened}
-            asientos1={props.asientos}
-            asientos2={props.asientos}
+            asientos1={asientos}
+            asientos2={asientos}
             k={props.k}
             parrilla={props}
             stage={props.stage}
@@ -368,8 +369,8 @@ const Boleto = (props) => {
                   isShowParrilla={isOpened}
                   thisParrilla={props.thisParrilla}
                   setIsShowParrilla={setIsOpened}
-                  asientos1={props.asientos}
-                  asientos2={props.asientos}
+                  asientos1={asientos}
+                  asientos2={asientos}
                   k={props.k}
                   parrilla={props}
                   stage={props.stage}

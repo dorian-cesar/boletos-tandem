@@ -609,26 +609,26 @@ const Parrilla = (props) => {
         return;
       }
 
-      const request = CryptoJS.AES.encrypt(
-        JSON.stringify(new BuscarPlanillaVerticalOpenPaneDTO(parrilla)),
-        secret
-      );
+      // const request = CryptoJS.AES.encrypt(
+      //   JSON.stringify(new BuscarPlanillaVerticalOpenPaneDTO(parrilla)),
+      //   secret
+      // );
 
-      const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
-        method: "POST",
-        body: JSON.stringify({ data: request.toString() }),
-      });
+      // const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
+      //   method: "POST",
+      //   body: JSON.stringify({ data: request.toString() }),
+      // });
 
-      const data = await response.json();
+      // const data = await response.json();
 
-      console.log(`Abriendo panel para el servicio ${parrillaTemporal[indexParrilla].idServicio} - Data: `, data);
+      // console.log(`Abriendo panel para el servicio ${parrillaTemporal[indexParrilla].idServicio} - Data: `, data);
 
       // props.parrilla.layout
 
       parrillaModificada[indexParrilla].loadingAsientos = false;
-      parrillaModificada[indexParrilla].asientos1 = data.floor1;
+      parrillaModificada[indexParrilla].asientos1 = props.asientos1;
       if (!!parrillaTemporal[indexParrilla].data.floor2) {
-        parrillaModificada[indexParrilla].asientos2 = data.floor2;
+        parrillaModificada[indexParrilla].asientos2 = data.asientos2;
       }
       setParrilla(parrillaModificada);
     } catch ({ message }) {
@@ -873,7 +873,7 @@ const Parrilla = (props) => {
                     <>
                       {rellenaEspaciosVacios(7, props.asientos1.length)}
                       {piso === 1 &&
-                        props.asientos1.floor1.seatMap.map(
+                        props.asientos1.map(
                           (asientosPiso1, indexAsientosPiso1) => {
                             return (
                               <div
