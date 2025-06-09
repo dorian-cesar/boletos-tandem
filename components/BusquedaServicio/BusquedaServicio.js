@@ -341,7 +341,7 @@ const BusquedaServicio = (props) => {
                 <img
                   src="img/repeat-outline.svg"
                   onClick={() => invertirDestinos()}
-                  className="pointer mx-auto mb-1 d-none d-md-block"
+                  className={`pointer mx-auto mb-1 d-none d-md-block ${styles.svgImage} ${styles.svgShadow}`}
                 />
               </div>
               <div className="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-2 col-xxl-2">

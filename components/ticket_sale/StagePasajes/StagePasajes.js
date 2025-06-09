@@ -40,6 +40,7 @@ const StagePasajes = (props) => {
   const [filter_tipo, setFilterTipo] = useState([]);
   const [filter_horas, setFilterHoras] = useState([]);
   const [filter_mascota, setFilterMascota] = useState([]);
+  const [filter_empresa, setFilterEmpresa] = useState([]);
   const [openPane, setOpenPane] = useState(false);
   const [sort, setSort] = useState(null);
   const [mascotaAllowed, setMascotaAllowed] = useState(mascota_allowed);
@@ -75,12 +76,32 @@ const StagePasajes = (props) => {
     [filter_horas]
   );
 
+  const toggleEmpresa = useCallback(
+    (empresa) => {
+      let listaEmpresaTemporal = [...filter_empresa];
+      if (filter_empresa.includes(empresa)) {
+        listaEmpresaTemporal = filter_empresa.filter((i) => i !== empresa);
+      } else {
+        listaEmpresaTemporal.push(empresa);
+      }
+      setFilterEmpresa(listaEmpresaTemporal);
+    },
+    [filter_empresa]
+  );
+
   const tipos_servicio = parrilla.reduce((a, b) => {
     if (!a.includes(b.seatDescriptionFirst) && b.seatDescriptionFirst != "") {
       a.push(b.seatDescriptionFirst);
     }
     if (!a.includes(b.seatDescriptionSecond) && b.seatDescriptionSecond != "") {
       a.push(b.seatDescriptionSecond);
+    }
+    return a;
+  }, []);
+
+  const nombres_empresas = parrilla.reduce((a, b) => {
+    if (!a.includes(b.company) && b.company != "") {
+      a.push(b.company);
     }
     return a;
   }, []);
@@ -117,7 +138,7 @@ const StagePasajes = (props) => {
       console.log("Request to service:", request.toString());
 
       const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
-        method: "GET",
+        method: "POST",
         body: JSON.stringify({ data: request.toString() }),
       });
 
@@ -127,10 +148,12 @@ const StagePasajes = (props) => {
 
       parrillaModificada[indexParrilla].loadingAsientos = false;
       // parrillaModificada[indexParrilla].asientos1 = data[1];
-      parrillaModificada[indexParrilla].asientos1 = parrilla.layout.floor1.seatMap;
+      parrillaModificada[indexParrilla].asientos1 =
+        parrilla.layout.floor1.seatMap;
       if (!!parrillaTemporal[indexParrilla].busPiso2) {
         // parrillaModificada[indexParrilla].asientos2 = data[2];
-        parrillaModificada[indexParrilla].asientos2 = parrilla.layout.floor2.seatMap;
+        parrillaModificada[indexParrilla].asientos2 =
+          parrilla.layout.floor2.seatMap;
       }
       setParrilla(parrillaModificada);
     } catch ({ message }) {
@@ -180,14 +203,10 @@ const StagePasajes = (props) => {
       if (!sort) return 1;
 
       if (sort == "precio-up")
-        return (
-          prevValue.priceFirst - actValue.priceFirst
-        );
+        return prevValue.priceFirst - actValue.priceFirst;
 
       if (sort == "precio-down")
-        return (
-          actValue.priceFirst - prevValue.priceFirst
-        );
+        return actValue.priceFirst - prevValue.priceFirst;
 
       if (sort == "hora-up")
         return (
@@ -209,6 +228,11 @@ const StagePasajes = (props) => {
         filter_tipo.length > 0 &&
         !filter_tipo.includes(mappedParrilla.seatDescriptionFirst) &&
         !filter_tipo.includes(mappedParrilla.seatDescriptionSecond)
+      )
+        return;
+
+      if (filter_empresa.length > 0 &&
+        !filter_empresa.includes(mappedParrilla.company)
       )
         return;
 
@@ -263,7 +287,7 @@ const StagePasajes = (props) => {
 
   useEffect(() => {
     returnMappedParrilla();
-  }, [toggleTipo, toggleHoras, mascotaAllowed, parrilla]);
+  }, [toggleTipo, toggleHoras, toggleEmpresa, mascotaAllowed, parrilla]);
 
   return (
     <div className="container py-2">
@@ -285,7 +309,7 @@ const StagePasajes = (props) => {
       </div>
       <div className="row justify-content-center gap-2">
         <div className="d-none d-lg-block d-xl-block d-xxl-block col-12 col-md-3 col-lg-3 col-xl-3">
-          <FiltroServicios
+          {/* <FiltroServicios
             tipos_servicio={tipos_servicio}
             filter_tipo={filter_tipo}
             filter_horas={filter_horas}
@@ -295,6 +319,20 @@ const StagePasajes = (props) => {
             toggleHoras={toggleHoras}
             mascota_allowed={mascotaAllowed}
             setMascota={setMascotaAllowed}
+          /> */}
+          <FiltroServicios
+            tipos_servicio={tipos_servicio}
+            filter_tipo={filter_tipo}
+            filter_horas={filter_horas}
+            filter_mascota={filter_mascota}
+            filter_empresa={filter_empresa}
+            stage={stage}
+            nombres_empresas={nombres_empresas}
+            toggleTipo={toggleTipo}
+            toggleHoras={toggleHoras}
+            toggleEmpresa={toggleEmpresa}
+            setMascota={setMascotaAllowed}
+            mascota_allowed={mascotaAllowed}
           />
         </div>
         <div className="col d-flex flex-col gap-3">
@@ -330,7 +368,7 @@ const StagePasajes = (props) => {
               ></button>
             </div>
             <div className="d-flex flex-col">
-              <FiltroServicios
+              {/* <FiltroServicios
                 tipos_servicio={tipos_servicio}
                 filter_tipo={filter_tipo}
                 filter_horas={filter_horas}
@@ -340,6 +378,20 @@ const StagePasajes = (props) => {
                 toggleHoras={toggleHoras}
                 mascota_allowed={mascotaAllowed}
                 setMascota={setMascotaAllowed}
+              /> */}
+              <FiltroServicios
+                tipos_servicio={tipos_servicio}
+                filter_tipo={filter_tipo}
+                filter_horas={filter_horas}
+                filter_mascota={filter_mascota}
+                filter_empresa={filter_empresa}
+                stage={stage}
+                nombres_empresas={nombres_empresas}
+                toggleTipo={toggleTipo}
+                toggleHoras={toggleHoras}
+                toggleEmpresa={toggleEmpresa}
+                setMascota={setMascotaAllowed}
+                mascota_allowed={mascotaAllowed}
               />
               <button
                 className="btn btn-primary w-75 my-3 mx-auto rounded-3 fw-bold"

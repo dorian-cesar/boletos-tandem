@@ -8,10 +8,12 @@ export const FiltroServicios = (props) => {
     filter_tipo = [],
     filter_horas = [],
     filter_mascota = [],
-    // filter_empresa = [],
+    filter_empresa = [],
+    nombres_empresas = [],
     stage,
     toggleTipo,
     toggleHoras,
+    toggleEmpresa,
     setMascota,
     mascota_allowed,
   } = props;
@@ -34,39 +36,31 @@ export const FiltroServicios = (props) => {
                     <label className={`form-check-label ms-1 ${styles['custom-form-check-label']}`} htmlFor="swirchCheckPetAllowedFilter">Mascota a Bordo</label>
                 </div>
             </div> */}
-      {/* <div id="companyType" className="d-flex flex-col mt-2">
+      <div id="companyType" className="d-flex flex-col mt-2">
         <span className="fw-bold">Empresa</span>
         <div className="d-flex flex-col gap-1 mt-1">
-          {filter_empresa.map((empresaMapped, indexEmpresa) => {
-            if (empresaMapped !== undefined && empresaMapped !== "") {
-              return (
-                <div
-                  key={`tipo-servicio-${indexEmpresa}`}
-                  className="custom-control custom-checkbox"
-                >
-                  <input
-                    key={`check-${empresaMapped}-key`}
-                    type="checkbox"
-                    className={styles["checkbox-round"]}
-                    id={"tipoCheck" + indexEmpresa}
-                    onClick={() => toggleTipo(empresaMapped)}
-                    defaultValue={empresaMapped}
-                    defaultChecked={filter_tipo.includes(empresaMapped)}
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor={"tipoCheck" + indexEmpresa}
-                  >
-                    {empresaMapped}
-                  </label>
-                </div>
-              );
-            } else {
-              return null;
-            }
-          })}
+          {nombres_empresas.map((empresa, index) => (
+            <div
+              key={`empresa-${index}`}
+              className="custom-control custom-checkbox"
+            >
+              <input
+                type="checkbox"
+                className={styles["checkbox-round"]}
+                id={`empresaCheck-${index}`}
+                onClick={() => toggleEmpresa(empresa)}
+                defaultChecked={filter_empresa.includes(empresa)}
+              />
+              <label
+                className="custom-control-label"
+                htmlFor={`empresaCheck-${index}`}
+              >
+                {empresa}
+              </label>
+            </div>
+          ))}
         </div>
-      </div> */}
+      </div>
       <div id="serviceType" className="d-flex flex-col mt-2">
         <span className="fw-bold">Tipo de servicio</span>
         <div className="d-flex flex-col gap-1 mt-1">
