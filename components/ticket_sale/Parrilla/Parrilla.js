@@ -673,7 +673,7 @@ const Parrilla = (props) => {
     if (sit.asiento === "B1" || sit.asiento === "B2") {
       return "img/a-bano.svg";
     }
-    if (sit.clase && sit.estado === "seleccion") {
+    if (sit.estado === "seleccion") {
       return "img/asiento_seleccionado.svg";
     }
     if (sit.estado === "available" && sit.valorAsiento > 0) {
@@ -707,21 +707,18 @@ const Parrilla = (props) => {
   function validarAsientosTomados() {
     if (stage === STAGE_BOLETO_IDA) {
       if (cantidadIda === 0) {
-        toast.warn(
-          `Seleccione al menos un asiento para continuar`,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-          }
-        );
+        toast.warn(`Seleccione al menos un asiento para continuar`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
         return false;
       }
     }
     if (stage === STAGE_BOLETO_VUELTA) {
       if (cantidadVuelta === 0) {
         toast.warn(
-          `Debe seleccionar al menos un asiento de vuelta para continuar`,
+          `Seleccione al menos un asiento para continuar`,
           {
             position: "top-right",
             autoClose: 5000,
@@ -1191,7 +1188,7 @@ const Parrilla = (props) => {
                 >
                   <span>#Piso 1</span>
                 </div>
-                {props.asientos2 ? (
+                {props.asientos2 && props.asientos2.length > 0 ? (
                   <div
                     className={`${styles["floor-button"]} ${
                       piso === 2 && styles["floor-button-selected"]
@@ -1200,9 +1197,7 @@ const Parrilla = (props) => {
                   >
                     <span>#Piso 2</span>
                   </div>
-                ) : (
-                  ""
-                )}
+                ) : null}
               </div>
             </div>
             <div className="container">

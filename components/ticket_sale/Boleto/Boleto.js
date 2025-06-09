@@ -55,9 +55,9 @@ const Boleto = (props) => {
 
     if (screenSize <= 425) {
       try {
-        if (isOpened) {
+        if (isOpened && sitMapButtonRef.current) {
           sitMapButtonRef.current.click();
-        } else {
+        } else if (buttonCloseModal.current) {
           buttonCloseModal.current.click();
         }
       } catch (error) {}
@@ -199,8 +199,7 @@ const Boleto = (props) => {
         type="button"
         className="d-none"
         data-bs-toggle="modal"
-        // data-bs-target={`#parrillaModal-${props.id}-${props.idTerminalOrigin}${props.idTerminalDestination}`}
-        data-bs-target={`#parrillaModal-${props.idParrilla}-${props.terminalOrigin}${props.terminalDestination}`}
+        data-bs-target={`#parrillaModal-${props.idParrilla}-${props.terminalOrigin.replace(/\s+/g, '')}${props.terminalDestination.replace(/\s+/g, '')}`}
       ></button>
       <div
         className={`row justify-content-evenly ${
@@ -343,7 +342,7 @@ const Boleto = (props) => {
       </LoadingOverlay>
       <div
         className="modal fade"
-        id={`parrillaModal-${props.idParrilla}-${props.terminalOrigin}${props.terminalDestination}`}
+        id={`parrillaModal-${props.idParrilla}-${props.terminalOrigin.replace(/\s+/g, '')}${props.terminalDestination.replace(/\s+/g, '')}`}
         tabIndex={-1}
         aria-labelledby="parrillaModalLabel"
         aria-hidden="true"
