@@ -47,7 +47,7 @@ export class BuscarPlanillaVerticalDTO {
     this.horaServicio = parrilla?.departureTime.replace(":", "") || "";
     this.clasePiso1 = parrilla?.idClaseBusPisoUno || "";
     this.clasePiso2 = parrilla?.idClaseBusPisoDos || "";
-    this.empresa = parrilla?.empresa || "";
+    this.empresa = parrilla?.company || "";
   }
 }
 
@@ -63,6 +63,6 @@ export class BuscarPlanillaVerticalOpenPaneDTO {
     this.horaServicio = parrilla?.departureTime.replace(":", "") || "";
     this.clasePiso1 = parrilla?.idClaseBusPisoUno || "";
     this.clasePiso2 = parrilla?.idClaseBusPisoDos || "";
-    this.empresa = parrilla?.empresa || "";
+    this.empresa = parrilla?.company || "";
   }
 }

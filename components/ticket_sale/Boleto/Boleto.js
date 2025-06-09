@@ -32,7 +32,8 @@ const Boleto = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isShowItinerary, setIsShowItinerary] = useState(false);
   const [itinerario, setItinerario] = useState([]);
-  const [asientos, setAsientos] = useState([]);
+  const [asientos1, setAsientos1] = useState([]);
+  const [asientos2, setAsientos2] = useState([]);
   let { origen, destino } = useSelector((state) => state.compra);
   origen = origen?.toUpperCase();
   destino = destino?.toUpperCase();
@@ -72,7 +73,9 @@ const Boleto = (props) => {
     const obtenerAsientos = async () => {
       try {
         const data = await fetchAsientos(props);
-        setAsientos(data);
+        setAsientos1(data.seats.firstFloor);
+        setAsientos2(data.seats.secondFloor);
+        console.log("Asientos obtenidos:", data);
       } catch (error) {
         console.error(error);
       }
@@ -156,10 +159,9 @@ const Boleto = (props) => {
       body: JSON.stringify({ data: request.toString() }),
     });
 
-    const asientos = await response.json();
+    const data = await response.json();
     if (response.ok) {
-      // console.log("Asientos obtenidos:", asientos);
-      return asientos;
+      return data;
     } else {
       throw new Error(data.message || "Error al obtener el mapa de asientos");
     }
@@ -323,8 +325,8 @@ const Boleto = (props) => {
             isShowParrilla={isOpened}
             thisParrilla={props.thisParrilla}
             setIsShowParrilla={setIsOpened}
-            asientos1={props.asientos1}
-            asientos2={props.asientos2}
+            asientos1={asientos1}
+            asientos2={asientos2}
             k={props.k}
             parrilla={props}
             stage={props.stage}
@@ -369,8 +371,8 @@ const Boleto = (props) => {
                   isShowParrilla={isOpened}
                   thisParrilla={props.thisParrilla}
                   setIsShowParrilla={setIsOpened}
-                  asientos1={props.asientos1}
-                  asientos2={props.asientos2}
+                  asientos1={asientos1}
+                  asientos2={asientos2}
                   k={props.k}
                   parrilla={props}
                   stage={props.stage}

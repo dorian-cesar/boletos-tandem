@@ -27,13 +27,13 @@ import Image from "next/image";
 
 const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
-const ASIENTO_LIBRE = "libre";
+const ASIENTO_LIBRE = "available";
 const ASIENTO_LIBRE_MASCOTA = "pet-free";
 const STAGE_BOLETO_IDA = 0;
 const STAGE_BOLETO_VUELTA = 1;
 const ASIENTO_TIPO_MASCOTA = "pet";
 const ASIENTO_TIPO_ASOCIADO = "asociado";
-const ASIENTO_OCUPADO = "ocupado";
+const ASIENTO_OCUPADO = "hols";
 const ASIENTO_OCUPADO_MASCOTA = "pet-busy";
 const MAXIMO_COMPRA_ASIENTO = 4;
 
@@ -61,132 +61,12 @@ const Parrilla = (props) => {
   const [cantidadIda, setCantidadIda] = useState(0);
   const [cantidadVuelta, setCantidadVuelta] = useState(0);
 
-  // para dataSimulada
-  const [asientos1, setAsientos1] = useState([]); 
-  const [asientos2, setAsientos2] = useState([]);
-
   const [validationCheckInfo, setValidationCheckInfo] = useState(false);
   const [user, setUser] = useState();
 
   useEffect(() => {
     const user = decryptData(LocalStorageEntities.user_auth);
     setUser(user);
-  }, []);
-
-  useEffect(() => {
-    const dataSimulada = {
-      asientos1: [
-        [
-          {
-            asiento: "1A",
-            estado: "libre",
-            valorAsiento: 15000,
-            clase: "semi-cama",
-          },
-          {
-            asiento: "1B",
-            estado: "ocupado",
-            valorAsiento: 15000,
-            clase: "semi-cama",
-          },
-          {
-            asiento: "B1",
-            estado: "libre",
-            valorAsiento: 15000,
-            tipo: "bano",
-          },
-          {
-            asiento: "1C",
-            estado: "seleccion",
-            valorAsiento: 15000,
-            clase: "semi-cama",
-          },
-        ],
-        [
-          {
-            asiento: "2A",
-            estado: "pet-free",
-            tipo: "pet",
-            valorAsiento: 10000,
-          },
-          {
-            asiento: "2B",
-            estado: "pet-busy",
-            tipo: "pet",
-            valorAsiento: 10000,
-          },
-          {
-            asiento: "2C",
-            estado: "pet-free",
-            tipo: "pet",
-            valorAsiento: 10000,
-          },
-          {
-            asiento: "2D",
-            estado: "libre",
-            valorAsiento: 15000,
-            clase: "semi-cama",
-          },
-        ],
-      ],
-      asientos2: [
-        [
-          {
-            asiento: "10A",
-            estado: "libre",
-            valorAsiento: 18000,
-            clase: "salon-cama",
-          },
-          {
-            asiento: "10B",
-            estado: "seleccion",
-            valorAsiento: 18000,
-            clase: "salon-cama",
-          },
-          {
-            asiento: "10C",
-            estado: "ocupado",
-            valorAsiento: 18000,
-            clase: "salon-cama",
-          },
-          {
-            asiento: "10D",
-            estado: "libre",
-            valorAsiento: 20000,
-            clase: "sin-clase",
-          },
-        ],
-        [
-          {
-            asiento: "11A",
-            estado: "seleccion-mascota",
-            tipo: "pet",
-            valorAsiento: 10000,
-          },
-          {
-            asiento: "11B",
-            estado: "pet-free",
-            tipo: "pet",
-            valorAsiento: 10000,
-          },
-          {
-            asiento: "11C",
-            estado: "pet-busy",
-            tipo: "pet",
-            valorAsiento: 10000,
-          },
-          {
-            asiento: "11D",
-            estado: "libre",
-            valorAsiento: 18000,
-            clase: "salon-cama",
-          },
-        ],
-      ],
-    };
-
-    setAsientos1(dataSimulada.asientos1);
-    setAsientos2(dataSimulada.asientos2);
   }, []);
 
   // const clpFormat = new Intl.NumberFormat("es-CL", {
@@ -327,28 +207,30 @@ const Parrilla = (props) => {
         classes += styles["seleccion"] + " ";
       }
 
-      if (asiento.estado === "seleccion-mascota") {
-        classes += styles["m-seleccion"] + " ";
-      }
+      // if (asiento.estado === "seleccion-mascota") {
+      //   classes += styles["m-seleccion"] + " ";
+      // }
 
-      if (asiento.tipo === "pet" && asiento.estado === "ocupado") {
-        classes += styles["m-disponible"] + " ";
-      }
+      // if (asiento.tipo === "pet" && asiento.estado === "hold") {
+      //   classes += styles["m-disponible"] + " ";
+      // }
 
-      if (asiento.tipo === "pet" && asiento.estado === "pet-free") {
-        classes += styles["m-disponible"] + " ";
-      }
+      // if (asiento.tipo === "pet" && asiento.estado === "pet-free") {
+      //   classes += styles["m-disponible"] + " ";
+      // }
 
-      if (
-        asiento.estado === "pet-busy" &&
-        !asientosSeleccionados.find((i) => i.asiento === asiento.asiento)
-      ) {
-        classes += styles["m-reservado"] + " ";
-      }
-      if (asiento.estado === "ocupado") {
+      // if (
+      //   asiento.estado === "pet-busy" &&
+      //   !asientosSeleccionados.find((i) => i.asiento === asiento.asiento)
+      // ) {
+      //   classes += styles["m-reservado"] + " ";
+      // }
+
+      if (asiento.estado === "hold") {
         classes += styles["reservado"] + " ";
       }
-      if (asiento.estado === "libre") {
+
+      if (asiento.estado === "available") {
         classes += styles["disponible"] + " ";
       }
 
@@ -478,8 +360,8 @@ const Parrilla = (props) => {
       asiento["piso"] = piso;
       asiento["claseBus"] =
         piso === 1
-          ? props.thisParrilla.idClaseBusPisoUno
-          : props.thisParrilla.idClaseBusPisoDos;
+          ? props.thisParrilla.seatDescriptionFirst
+          : props.thisParrilla.seatDescriptionSecond;
       asiento["idaVuelta"] = stage ? true : false;
       asiento["tipoMascota"] = false;
       asiento["relacionAsiento"] = asiento.asientoAsociado
@@ -566,8 +448,8 @@ const Parrilla = (props) => {
             piso,
             claseBus:
               piso === 1
-                ? props.thisParrilla.idClaseBusPisoUno
-                : props.thisParrilla.idClaseBusPisoDos,
+                ? props.thisParrilla.seatDescriptionFirst
+                : props.thisParrilla.seatDescriptionSecond,
             tipoMascota: true,
           };
 
@@ -738,27 +620,40 @@ const Parrilla = (props) => {
         return;
       }
 
-      // const request = CryptoJS.AES.encrypt(
-      //   JSON.stringify(new BuscarPlanillaVerticalOpenPaneDTO(parrilla)),
-      //   secret
-      // );
+      const request = CryptoJS.AES.encrypt(
+        JSON.stringify(new BuscarPlanillaVerticalOpenPaneDTO(parrilla)),
+        secret
+      );
 
-      // const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
-      //   method: "POST",
-      //   body: JSON.stringify({ data: request.toString() }),
-      // });
+      const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
+        method: "POST",
+        body: JSON.stringify({ data: request.toString() }),
+      });
 
-      // const data = await response.json();
+      const data = await response.json();
+      const dataAsientos1 = data.seats.firstFloor;
+      const dataAsientos2 = data.seats.secondFloor;
 
-      // console.log(`Abriendo panel para el servicio ${parrillaTemporal[indexParrilla].idServicio} - Data: `, data);
+      console.log("asientos1: ", dataAsientos1);
+      console.log("asientos2: ", dataAsientos2);
 
-      // props.parrilla.layout
+      console.log(
+        `Abriendo panel para el servicio ${parrillaTemporal[indexParrilla].idServicio} - Data: `,
+        data
+      );
 
       parrillaModificada[indexParrilla].loadingAsientos = false;
-      parrillaModificada[indexParrilla].asientos1 = asientos1;
-      if (!!parrillaTemporal[indexParrilla].data.floor2) {
-        parrillaModificada[indexParrilla].asientos2 = asientos2;
-      }
+      parrillaModificada[indexParrilla].asientos1 = dataAsientos1;
+      parrillaModificada[indexParrilla].asientos2 = dataAsientos2;
+      // if (!!parrillaTemporal[indexParrilla].props.asientos2) {
+      //   parrillaModificada[indexParrilla].asientos2 = dataAsientos2;
+      // }
+      // if (
+      //   Array.isArray(parrillaTemporal[indexParrilla].props.asientos2) &&
+      //   parrillaTemporal[indexParrilla].props.asientos2.length > 0
+      // ) {
+      //   parrillaModificada[indexParrilla].asientos2 = dataAsientos2;
+      // }
       setParrilla(parrillaModificada);
     } catch ({ message }) {
       console.error(`Error al abrir el panel [${message}]`);
@@ -781,10 +676,10 @@ const Parrilla = (props) => {
     if (sit.clase && sit.estado === "seleccion") {
       return "img/asiento_seleccionado.svg";
     }
-    if (sit.estado === "libre" && sit.valorAsiento > 0) {
+    if (sit.estado === "available" && sit.valorAsiento > 0) {
       return "img/asiento_disponible.svg";
     }
-    if (sit.clase && sit.estado === "ocupado") {
+    if (sit.estado === "hold") {
       return "img/asiento_ocupado.svg";
     }
     if (sit.tipo === "pet" && sit.estado === "pet-free") {
@@ -796,7 +691,7 @@ const Parrilla = (props) => {
     if (sit.tipo === "pet" && sit.estado === "seleccion-mascota") {
       return "img/a-pet-seleccionado.svg";
     }
-    if (sit.estado === "libre" && sit.valorAsiento === 0) {
+    if (sit.estado === "available" && sit.valorAsiento === 0) {
       return "img/asiento_disponible.svg";
     }
   }
@@ -813,7 +708,7 @@ const Parrilla = (props) => {
     if (stage === STAGE_BOLETO_IDA) {
       if (cantidadIda === 0) {
         toast.warn(
-          `Debe seleccionar al menos un asiento de ida para continuar`,
+          `Seleccione al menos un asiento para continuar`,
           {
             position: "top-right",
             autoClose: 5000,
@@ -882,12 +777,12 @@ const Parrilla = (props) => {
     ) {
       return "text-secondary";
     } else if (
-      asiento?.estado.includes("libre") ||
+      asiento?.estado.includes("available") ||
       asiento?.estado.includes("free")
     ) {
       return "text-primary";
     } else if (
-      asiento?.estado.includes("ocupado") ||
+      asiento?.estado.includes("hold") ||
       asiento?.estado.includes("busy")
     ) {
       return "text-info";
@@ -966,19 +861,19 @@ const Parrilla = (props) => {
               </ul>
               {/* TODO: Habilitar a futuro para cuando sea MAB */}
               {/* <ul className="list-group">
-                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
-                      <Image src="img/ui/service-availability/radio-button-mab-available-outline.svg" alt="Logo asiento mascota disponible" width={ 16 } height={ 16 }/>
-                      <span>Disponible</span>
-                  </li>
-                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
-                      <Image src="img/ui/service-availability/radio-button-mab-selected-outline.svg" alt="Logo asiento mascota seleccionado" width={ 16 } height={ 16 }/>
-                      <span>Seleccionado</span>
-                  </li>
-                  <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
-                      <Image src="img/ui/service-availability/radio-button-mab-unavailable-outline.svg" alt="Logo asiento mascota no disponible" width={ 16 } height={ 16 }/>
-                      <span>Reservado</span>
-                  </li>
-              </ul> */}
+                    <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                        <Image src="img/ui/service-availability/radio-button-mab-available-outline.svg" alt="Logo asiento mascota disponible" width={ 16 } height={ 16 }/>
+                        <span>Disponible</span>
+                    </li>
+                    <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                        <Image src="img/ui/service-availability/radio-button-mab-selected-outline.svg" alt="Logo asiento mascota seleccionado" width={ 16 } height={ 16 }/>
+                        <span>Seleccionado</span>
+                    </li>
+                    <li className="list-group-item d-flex gap-2 align-items-center border-0 py-1">
+                        <Image src="img/ui/service-availability/radio-button-mab-unavailable-outline.svg" alt="Logo asiento mascota no disponible" width={ 16 } height={ 16 }/>
+                        <span>Reservado</span>
+                    </li>
+                </ul> */}
             </div>
             <div className="col-12 bg-bus rounded py-3 mh-4 p-0 w-50">
               <div className="container">
@@ -998,112 +893,116 @@ const Parrilla = (props) => {
                     <div className="col-3 empty-seat"></div>
                     <div className="col-3 empty-seat"></div>
                   </div>
-                  {/* {props.asientos1 && piso === 1 && ( */}
-                  {asientos1 && piso === 1 && (
+                  {props.asientos1 && piso === 1 && (
                     <>
-                      {/* {rellenaEspaciosVacios(7, props.asientos1.length)} */}
-                      {rellenaEspaciosVacios(7, asientos1.length)}
+                      {rellenaEspaciosVacios(7, props.asientos1.length)}
                       {piso === 1 &&
-                        // props.asientos1.map(
-                        asientos1.map((asientosPiso1, indexAsientosPiso1) => {
-                          return (
-                            <div
-                              key={`${indexAsientosPiso1}-fila-asientos-piso-1`}
-                              className="col-12 row justify-content-evenly flex-row-reverse"
-                            >
-                              {asientosPiso1.map(
-                                (asientoPiso1, indexAsientoPiso1) => {
-                                  return (
-                                    <div
-                                      key={`${indexAsientoPiso1}-asiento-piso-1`}
-                                      className="col-2 p-0 py-1 d-flex justify-content-center position-relative"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        tomarAsiento(
-                                          asientoPiso1,
-                                          props,
-                                          props.k,
-                                          1
-                                        );
-                                      }}
-                                    >
-                                      <span
-                                        className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${colorTexto(
-                                          asientoPiso1 || ""
-                                        )}`}
+                        props.asientos1.map(
+                          (asientosPiso1, indexAsientosPiso1) => {
+                            return (
+                              <div
+                                key={`${indexAsientosPiso1}-fila-asientos-piso-1`}
+                                className="col-12 row justify-content-evenly flex-row-reverse"
+                              >
+                                {asientosPiso1.map(
+                                  (asientoPiso1, indexAsientoPiso1) => {
+                                    return (
+                                      <div
+                                        key={`${indexAsientoPiso1}-asiento-piso-1`}
+                                        className="col-2 p-0 py-1 d-flex justify-content-center position-relative"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          tomarAsiento(
+                                            asientoPiso1,
+                                            props,
+                                            props.k,
+                                            1
+                                          );
+                                        }}
                                       >
-                                        {asientoPiso1?.asiento &&
-                                          asientoPiso1.estado !==
-                                            "sinasiento" &&
-                                          asientoPiso1?.asiento}
-                                      </span>
-                                      {asientoPiso1.asiento && (
-                                        <img
-                                          className="img-fluid rotate-90"
-                                          src={getImage(asientoPiso1, props.k)}
-                                        />
-                                      )}
-                                    </div>
-                                  );
-                                }
-                              )}
-                            </div>
-                          );
-                        })}
-                      {/* {rellenaEspaciosVacios(7, props.asientos1.length)} */}
-                      {rellenaEspaciosVacios(7, asientos1.length)}
+                                        <span
+                                          className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${colorTexto(
+                                            asientoPiso1 || ""
+                                          )}`}
+                                        >
+                                          {asientoPiso1?.asiento &&
+                                            asientoPiso1.estado !==
+                                              "sinasiento" &&
+                                            asientoPiso1?.asiento}
+                                        </span>
+                                        {asientoPiso1.asiento && (
+                                          <img
+                                            className="img-fluid rotate-90"
+                                            src={getImage(
+                                              asientoPiso1,
+                                              props.k
+                                            )}
+                                          />
+                                        )}
+                                      </div>
+                                    );
+                                  }
+                                )}
+                              </div>
+                            );
+                          }
+                        )}
+                      {rellenaEspaciosVacios(7, props.asientos1.length)}
                     </>
                   )}
-                  {/* {props.asientos2 && piso === 2 && ( */}
-                  {asientos2 && piso === 2 && (
+                  {props.asientos2 && piso === 2 && (
                     <>
                       {piso === 2 &&
-                        // props.asientos2.map(
-                        asientos2.map((asientosPiso2, indexAsientosPiso2) => {
-                          return (
-                            <div
-                              key={`${indexAsientosPiso2}-fila-asientos-piso-2`}
-                              className="col-12 row justify-content-evenly flex-row-reverse"
-                            >
-                              {asientosPiso2.map(
-                                (asientoPiso2, indexAsientoPiso2) => {
-                                  return (
-                                    <div
-                                      key={`${indexAsientoPiso2}-asiento-piso-2`}
-                                      className="col-2 p-0 py-1 d-flex justify-content-center position-relative"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        tomarAsiento(
-                                          asientoPiso2,
-                                          props,
-                                          props.k,
-                                          2
-                                        );
-                                      }}
-                                    >
-                                      <span
-                                        className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${colorTexto(
-                                          asientoPiso2 || ""
-                                        )}`}
+                        props.asientos2.map(
+                          (asientosPiso2, indexAsientosPiso2) => {
+                            return (
+                              <div
+                                key={`${indexAsientosPiso2}-fila-asientos-piso-2`}
+                                className="col-12 row justify-content-evenly flex-row-reverse"
+                              >
+                                {asientosPiso2.map(
+                                  (asientoPiso2, indexAsientoPiso2) => {
+                                    return (
+                                      <div
+                                        key={`${indexAsientoPiso2}-asiento-piso-2`}
+                                        className="col-2 p-0 py-1 d-flex justify-content-center position-relative"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          tomarAsiento(
+                                            asientoPiso2,
+                                            props,
+                                            props.k,
+                                            2
+                                          );
+                                        }}
                                       >
-                                        {asientoPiso2?.asiento &&
-                                          asientoPiso2.estado !==
-                                            "sinasiento" &&
-                                          asientoPiso2?.asiento}
-                                      </span>
-                                      {asientoPiso2.asiento && (
-                                        <img
-                                          className="img-fluid rotate-90"
-                                          src={getImage(asientoPiso2, props.k)}
-                                        />
-                                      )}
-                                    </div>
-                                  );
-                                }
-                              )}
-                            </div>
-                          );
-                        })}
+                                        <span
+                                          className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${colorTexto(
+                                            asientoPiso2 || ""
+                                          )}`}
+                                        >
+                                          {asientoPiso2?.asiento &&
+                                            asientoPiso2.estado !==
+                                              "sinasiento" &&
+                                            asientoPiso2?.asiento}
+                                        </span>
+                                        {asientoPiso2.asiento && (
+                                          <img
+                                            className="img-fluid rotate-90"
+                                            src={getImage(
+                                              asientoPiso2,
+                                              props.k
+                                            )}
+                                          />
+                                        )}
+                                      </div>
+                                    );
+                                  }
+                                )}
+                              </div>
+                            );
+                          }
+                        )}
                     </>
                   )}
                 </div>
@@ -1139,13 +1038,11 @@ const Parrilla = (props) => {
                   <div className={styles["columna"]}></div>
                   <div className={styles["columna"]}></div>
                 </div>
-                {/* {props.asientos1 */}
-                {asientos1
+                {props.asientos1
                   ? piso === 1 && (
                       <>
                         {function () {
-                          // let max = 7 - props.asientos1.length;
-                          let max = 7 - asientos1.length;
+                          let max = 7 - props.asientos1.length;
                           let n = 0;
                           let liens = [];
                           while (n < max) {
@@ -1159,8 +1056,7 @@ const Parrilla = (props) => {
                           }
                           return liens;
                         }.call(this)}
-                        {/* {props.asientos1.map((i, k) => { */}
-                        {asientos1.map((i, k) => {
+                        {props.asientos1.map((i, k) => {
                           return (
                             <div
                               key={`fila-asiento-${k}`}
@@ -1195,8 +1091,7 @@ const Parrilla = (props) => {
                           );
                         })}
                         {function () {
-                          // let max = 7 - props.asientos1.length;
-                          let max = 7 - asientos1.length;
+                          let max = 7 - props.asientos1.length;
                           let n = 0;
                           let liens = [];
                           while (n < max) {
@@ -1213,12 +1108,10 @@ const Parrilla = (props) => {
                       </>
                     )
                   : ""}
-                {/* {props.asientos2 */}
-                {asientos2
+                {props.asientos2
                   ? piso === 2 && (
                       <>
-                        {/* {props.asientos2.map((i, k) => { */}
-                        {asientos2.map((i, k) => {
+                        {props.asientos2.map((i, k) => {
                           return (
                             <div
                               key={`fila-asiento-${k}`}
@@ -1253,8 +1146,7 @@ const Parrilla = (props) => {
                           );
                         })}
                         {function () {
-                          // let max = 10 - props.asientos2.length;
-                          let max = 10 - asientos2.length;
+                          let max = 10 - props.asientos2.length;
                           let n = 0;
                           let liens = [];
                           while (n < max) {
@@ -1299,8 +1191,7 @@ const Parrilla = (props) => {
                 >
                   <span>#Piso 1</span>
                 </div>
-                {/* {props.asientos2 ? ( */}
-                {asientos2 ? (
+                {props.asientos2 ? (
                   <div
                     className={`${styles["floor-button"]} ${
                       piso === 2 && styles["floor-button-selected"]

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./FiltroServicios.module.css";
 
 export const FiltroServicios = (props) => {
-  console.log("FiltroServicios props", props);
   const {
     tipos_servicio = [],
     filter_tipo = [],

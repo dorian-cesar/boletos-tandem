@@ -8,46 +8,26 @@ import { authMiddleware } from "../auth-middleware";
 
 import CryptoJS from "crypto-js";
 
-// async function handleMapaAsientos(req, res) {
+// export default async (req, res) => {
 //   try {
-//     let token = await doLogin();
-
 //     const { data } = JSON.parse(req.body);
 
 //     const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 //     const decrypted = CryptoJS.AES.decrypt(data, secret);
 //     const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 
-//     const serviceResponse = await axios.post(
-//       config.service_url + `/integracion/buscarPlantillaVertical`,
-//       {
-//         idServicio: serviceRequest.idServicio,
-//         tipoBusPiso1: serviceRequest.tipoBusPiso1,
-//         tipoBusPiso2: serviceRequest.tipoBusPiso2,
-//         fechaServicio: serviceRequest.fechaServicio,
-//         idOrigen: serviceRequest.idOrigen,
-//         idDestino: serviceRequest.idDestino,
-//         integrador: serviceRequest.integrador,
-//         horaServicio: serviceRequest.horaServicio,
-//         clasePiso1: serviceRequest.clasePiso1,
-//         clasePiso2: serviceRequest.clasePiso2,
-//         empresa: serviceRequest.empresa,
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token.token}`,
-//         },
-//       }
-//     );
+//     const serviceId = serviceRequest.idServicio
+//     console.log("url:", config.url_api + `/services/${serviceId}/seats-detail`);
 
+//     const serviceResponse = await axios.get(
+//       config.url_api + `/services/${serviceId}/seats-detail`
+//     );
+//     console.log("serviceResponse:", serviceResponse.data);
 //     res.status(200).json(serviceResponse.data);
-//     // res.status(200).json(asientosSimulados);
 //   } catch (e) {
 //     res.status(400).json(e.response.data);
 //   }
-// }
-
-// export default authMiddleware(handleMapaAsientos);
+// };
 
 export default async (req, res) => {
   try {
@@ -57,13 +37,35 @@ export default async (req, res) => {
     const decrypted = CryptoJS.AES.decrypt(data, secret);
     const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 
-    const serviceId = serviceRequest.idServicio
-    console.log("url:", config.url_api + `/seats/${serviceRequest.idServicio}`);
+    const serviceId = serviceRequest.idServicio;
+    console.log("url:", config.url_api + `/services/${serviceId}/seats-detail`);
 
     const serviceResponse = await axios.get(
-      config.url_api + `/seats/${serviceId}`
+      config.url_api + `/services/${serviceId}/seats-detail`
     );
-    res.status(200).json(serviceResponse.data);
+
+    function transformarAsientos(data) {
+      const transformar = (seatsArray) => {
+        return seatsArray.map((row) =>
+          row.map(({ number, status, price, ...rest }) => ({
+            ...rest,
+            asiento: number,
+            estado: status,
+            valorAsiento: price + 5000, // Se suma 5000 al valor del asiento para simular
+          }))
+        );
+      };
+      const nuevaData = { ...data };
+      if (nuevaData.seats.firstFloor) {
+        nuevaData.seats.firstFloor = transformar(nuevaData.seats.firstFloor);
+      }
+      if (nuevaData.seats.secondFloor) {
+        nuevaData.seats.secondFloor = transformar(nuevaData.seats.secondFloor);
+      }
+      return nuevaData;
+    }
+    const dataTransformada = transformarAsientos(serviceResponse.data);
+    res.status(200).json(dataTransformada);
   } catch (e) {
     res.status(400).json(e.response.data);
   }
