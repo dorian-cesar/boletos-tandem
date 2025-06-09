@@ -61,6 +61,10 @@ const Parrilla = (props) => {
   const [cantidadIda, setCantidadIda] = useState(0);
   const [cantidadVuelta, setCantidadVuelta] = useState(0);
 
+  // para dataSimulada
+  const [asientos1, setAsientos1] = useState([]); 
+  const [asientos2, setAsientos2] = useState([]);
+
   const [validationCheckInfo, setValidationCheckInfo] = useState(false);
   const [user, setUser] = useState();
 
@@ -69,10 +73,135 @@ const Parrilla = (props) => {
     setUser(user);
   }, []);
 
-  const clpFormat = new Intl.NumberFormat("es-CL", {
-    style: "currency",
-    currency: "CLP",
-  });
+  useEffect(() => {
+    const dataSimulada = {
+      asientos1: [
+        [
+          {
+            asiento: "1A",
+            estado: "libre",
+            valorAsiento: 15000,
+            clase: "semi-cama",
+          },
+          {
+            asiento: "1B",
+            estado: "ocupado",
+            valorAsiento: 15000,
+            clase: "semi-cama",
+          },
+          {
+            asiento: "B1",
+            estado: "libre",
+            valorAsiento: 15000,
+            tipo: "bano",
+          },
+          {
+            asiento: "1C",
+            estado: "seleccion",
+            valorAsiento: 15000,
+            clase: "semi-cama",
+          },
+        ],
+        [
+          {
+            asiento: "2A",
+            estado: "pet-free",
+            tipo: "pet",
+            valorAsiento: 10000,
+          },
+          {
+            asiento: "2B",
+            estado: "pet-busy",
+            tipo: "pet",
+            valorAsiento: 10000,
+          },
+          {
+            asiento: "2C",
+            estado: "pet-free",
+            tipo: "pet",
+            valorAsiento: 10000,
+          },
+          {
+            asiento: "2D",
+            estado: "libre",
+            valorAsiento: 15000,
+            clase: "semi-cama",
+          },
+        ],
+      ],
+      asientos2: [
+        [
+          {
+            asiento: "10A",
+            estado: "libre",
+            valorAsiento: 18000,
+            clase: "salon-cama",
+          },
+          {
+            asiento: "10B",
+            estado: "seleccion",
+            valorAsiento: 18000,
+            clase: "salon-cama",
+          },
+          {
+            asiento: "10C",
+            estado: "ocupado",
+            valorAsiento: 18000,
+            clase: "salon-cama",
+          },
+          {
+            asiento: "10D",
+            estado: "libre",
+            valorAsiento: 20000,
+            clase: "sin-clase",
+          },
+        ],
+        [
+          {
+            asiento: "11A",
+            estado: "seleccion-mascota",
+            tipo: "pet",
+            valorAsiento: 10000,
+          },
+          {
+            asiento: "11B",
+            estado: "pet-free",
+            tipo: "pet",
+            valorAsiento: 10000,
+          },
+          {
+            asiento: "11C",
+            estado: "pet-busy",
+            tipo: "pet",
+            valorAsiento: 10000,
+          },
+          {
+            asiento: "11D",
+            estado: "libre",
+            valorAsiento: 18000,
+            clase: "salon-cama",
+          },
+        ],
+      ],
+    };
+
+    setAsientos1(dataSimulada.asientos1);
+    setAsientos2(dataSimulada.asientos2);
+  }, []);
+
+  // const clpFormat = new Intl.NumberFormat("es-CL", {
+  //   style: "currency",
+  //   currency: "CLP",
+  // });
+
+  const formatGuarani = (value) =>
+    new Intl.NumberFormat("es-PY", {
+      style: "currency",
+      currency: "PYG",
+      currencyDisplay: "symbol",
+    })
+      .format(value)
+      .replace(/Gs\.?|PYG/, "₲");
 
   useEffect(() => {
     if (isShowParrilla && !parrilla.length) {
@@ -257,9 +386,9 @@ const Parrilla = (props) => {
 
       const data = await response.json();
 
-      console.log(`Recargando panel para el servicio ${parrillaTemporal[indexParrilla].idServicio}`);
-
-      
+      console.log(
+        `Recargando panel para el servicio ${parrillaTemporal[indexParrilla].idServicio}`
+      );
 
       let nuevaParrilla = { ...parrillaTemporal[indexParrilla] };
       nuevaParrilla.loadingAsientos = false;
@@ -626,9 +755,9 @@ const Parrilla = (props) => {
       // props.parrilla.layout
 
       parrillaModificada[indexParrilla].loadingAsientos = false;
-      parrillaModificada[indexParrilla].asientos1 = props.asientos1;
+      parrillaModificada[indexParrilla].asientos1 = asientos1;
       if (!!parrillaTemporal[indexParrilla].data.floor2) {
-        parrillaModificada[indexParrilla].asientos2 = data.asientos2;
+        parrillaModificada[indexParrilla].asientos2 = asientos2;
       }
       setParrilla(parrillaModificada);
     } catch ({ message }) {
@@ -869,116 +998,112 @@ const Parrilla = (props) => {
                     <div className="col-3 empty-seat"></div>
                     <div className="col-3 empty-seat"></div>
                   </div>
-                  {props.asientos1 && piso === 1 && (
+                  {/* {props.asientos1 && piso === 1 && ( */}
+                  {asientos1 && piso === 1 && (
                     <>
-                      {rellenaEspaciosVacios(7, props.asientos1.length)}
+                      {/* {rellenaEspaciosVacios(7, props.asientos1.length)} */}
+                      {rellenaEspaciosVacios(7, asientos1.length)}
                       {piso === 1 &&
-                        props.asientos1.map(
-                          (asientosPiso1, indexAsientosPiso1) => {
-                            return (
-                              <div
-                                key={`${indexAsientosPiso1}-fila-asientos-piso-1`}
-                                className="col-12 row justify-content-evenly flex-row-reverse"
-                              >
-                                {asientosPiso1.map(
-                                  (asientoPiso1, indexAsientoPiso1) => {
-                                    return (
-                                      <div
-                                        key={`${indexAsientoPiso1}-asiento-piso-1`}
-                                        className="col-2 p-0 py-1 d-flex justify-content-center position-relative"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          tomarAsiento(
-                                            asientoPiso1,
-                                            props,
-                                            props.k,
-                                            1
-                                          );
-                                        }}
+                        // props.asientos1.map(
+                        asientos1.map((asientosPiso1, indexAsientosPiso1) => {
+                          return (
+                            <div
+                              key={`${indexAsientosPiso1}-fila-asientos-piso-1`}
+                              className="col-12 row justify-content-evenly flex-row-reverse"
+                            >
+                              {asientosPiso1.map(
+                                (asientoPiso1, indexAsientoPiso1) => {
+                                  return (
+                                    <div
+                                      key={`${indexAsientoPiso1}-asiento-piso-1`}
+                                      className="col-2 p-0 py-1 d-flex justify-content-center position-relative"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        tomarAsiento(
+                                          asientoPiso1,
+                                          props,
+                                          props.k,
+                                          1
+                                        );
+                                      }}
+                                    >
+                                      <span
+                                        className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${colorTexto(
+                                          asientoPiso1 || ""
+                                        )}`}
                                       >
-                                        <span
-                                          className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${colorTexto(
-                                            asientoPiso1 || ""
-                                          )}`}
-                                        >
-                                          {asientoPiso1?.asiento &&
-                                            asientoPiso1.estado !==
-                                              "sinasiento" &&
-                                            asientoPiso1?.asiento}
-                                        </span>
-                                        {asientoPiso1.asiento && (
-                                          <img
-                                            className="img-fluid rotate-90"
-                                            src={getImage(
-                                              asientoPiso1,
-                                              props.k
-                                            )}
-                                          />
-                                        )}
-                                      </div>
-                                    );
-                                  }
-                                )}
-                              </div>
-                            );
-                          }
-                        )}
-                      {rellenaEspaciosVacios(7, props.asientos1.length)}
+                                        {asientoPiso1?.asiento &&
+                                          asientoPiso1.estado !==
+                                            "sinasiento" &&
+                                          asientoPiso1?.asiento}
+                                      </span>
+                                      {asientoPiso1.asiento && (
+                                        <img
+                                          className="img-fluid rotate-90"
+                                          src={getImage(asientoPiso1, props.k)}
+                                        />
+                                      )}
+                                    </div>
+                                  );
+                                }
+                              )}
+                            </div>
+                          );
+                        })}
+                      {/* {rellenaEspaciosVacios(7, props.asientos1.length)} */}
+                      {rellenaEspaciosVacios(7, asientos1.length)}
                     </>
                   )}
-                  {props.asientos2 && piso === 2 && (
+                  {/* {props.asientos2 && piso === 2 && ( */}
+                  {asientos2 && piso === 2 && (
                     <>
                       {piso === 2 &&
-                        props.asientos2.map(
-                          (asientosPiso2, indexAsientosPiso2) => {
-                            return (
-                              <div
-                                key={`${indexAsientosPiso2}-fila-asientos-piso-2`}
-                                className="col-12 row justify-content-evenly flex-row-reverse"
-                              >
-                                {asientosPiso2.map(
-                                  (asientoPiso2, indexAsientoPiso2) => {
-                                    return (
-                                      <div
-                                        key={`${indexAsientoPiso2}-asiento-piso-2`}
-                                        className="col-2 p-0 py-1 d-flex justify-content-center position-relative"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          tomarAsiento(
-                                            asientoPiso2,
-                                            props,
-                                            props.k,
-                                            2
-                                          );
-                                        }}
+                        // props.asientos2.map(
+                        asientos2.map((asientosPiso2, indexAsientosPiso2) => {
+                          return (
+                            <div
+                              key={`${indexAsientosPiso2}-fila-asientos-piso-2`}
+                              className="col-12 row justify-content-evenly flex-row-reverse"
+                            >
+                              {asientosPiso2.map(
+                                (asientoPiso2, indexAsientoPiso2) => {
+                                  return (
+                                    <div
+                                      key={`${indexAsientoPiso2}-asiento-piso-2`}
+                                      className="col-2 p-0 py-1 d-flex justify-content-center position-relative"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        tomarAsiento(
+                                          asientoPiso2,
+                                          props,
+                                          props.k,
+                                          2
+                                        );
+                                      }}
+                                    >
+                                      <span
+                                        className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${colorTexto(
+                                          asientoPiso2 || ""
+                                        )}`}
                                       >
-                                        <span
-                                          className={`position-absolute top-50 start-50 translate-middle fs-7 fw-bold ${colorTexto(
-                                            asientoPiso2 || ""
-                                          )}`}
-                                        >
-                                          {asientoPiso2?.asiento &&
-                                            asientoPiso2.estado !==
-                                              "sinasiento" &&
-                                            asientoPiso2?.asiento}
-                                        </span>
-                                        {asientoPiso2.asiento && (
-                                          <img
-                                            className="img-fluid rotate-90"
-                                            src={getImage(
-                                              asientoPiso2,
-                                              props.k
-                                            )}
-                                          />
-                                        )}
-                                      </div>
-                                    );
-                                  }
-                                )}
-                              </div>
-                            );
-                          }
-                        )}
+                                        {asientoPiso2?.asiento &&
+                                          asientoPiso2.estado !==
+                                            "sinasiento" &&
+                                          asientoPiso2?.asiento}
+                                      </span>
+                                      {asientoPiso2.asiento && (
+                                        <img
+                                          className="img-fluid rotate-90"
+                                          src={getImage(asientoPiso2, props.k)}
+                                        />
+                                      )}
+                                    </div>
+                                  );
+                                }
+                              )}
+                            </div>
+                          );
+                        })}
                     </>
                   )}
                 </div>
@@ -1014,11 +1139,13 @@ const Parrilla = (props) => {
                   <div className={styles["columna"]}></div>
                   <div className={styles["columna"]}></div>
                 </div>
-                {props.asientos1
+                {/* {props.asientos1 */}
+                {asientos1
                   ? piso === 1 && (
                       <>
                         {function () {
-                          let max = 7 - props.asientos1.length;
+                          // let max = 7 - props.asientos1.length;
+                          let max = 7 - asientos1.length;
                           let n = 0;
                           let liens = [];
                           while (n < max) {
@@ -1032,7 +1159,8 @@ const Parrilla = (props) => {
                           }
                           return liens;
                         }.call(this)}
-                        {props.asientos1.map((i, k) => {
+                        {/* {props.asientos1.map((i, k) => { */}
+                        {asientos1.map((i, k) => {
                           return (
                             <div
                               key={`fila-asiento-${k}`}
@@ -1067,7 +1195,8 @@ const Parrilla = (props) => {
                           );
                         })}
                         {function () {
-                          let max = 7 - props.asientos1.length;
+                          // let max = 7 - props.asientos1.length;
+                          let max = 7 - asientos1.length;
                           let n = 0;
                           let liens = [];
                           while (n < max) {
@@ -1084,10 +1213,12 @@ const Parrilla = (props) => {
                       </>
                     )
                   : ""}
-                {props.asientos2
+                {/* {props.asientos2 */}
+                {asientos2
                   ? piso === 2 && (
                       <>
-                        {props.asientos2.map((i, k) => {
+                        {/* {props.asientos2.map((i, k) => { */}
+                        {asientos2.map((i, k) => {
                           return (
                             <div
                               key={`fila-asiento-${k}`}
@@ -1122,7 +1253,8 @@ const Parrilla = (props) => {
                           );
                         })}
                         {function () {
-                          let max = 10 - props.asientos2.length;
+                          // let max = 10 - props.asientos2.length;
+                          let max = 10 - asientos2.length;
                           let n = 0;
                           let liens = [];
                           while (n < max) {
@@ -1167,7 +1299,8 @@ const Parrilla = (props) => {
                 >
                   <span>#Piso 1</span>
                 </div>
-                {props.asientos2 ? (
+                {/* {props.asientos2 ? ( */}
+                {asientos2 ? (
                   <div
                     className={`${styles["floor-button"]} ${
                       piso === 2 && styles["floor-button-selected"]
@@ -1190,7 +1323,7 @@ const Parrilla = (props) => {
                       className="btn btn-primary border-0 rounded-3"
                       onClick={handleNextStep}
                     >
-                      Continuar: {clpFormat.format(totalPagar)}
+                      Continuar: {formatGuarani(totalPagar)}
                     </button>
                   </div>
                   <div className={styles["texto-cantidad-asientos"]}>

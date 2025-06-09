@@ -323,8 +323,8 @@ const Boleto = (props) => {
             isShowParrilla={isOpened}
             thisParrilla={props.thisParrilla}
             setIsShowParrilla={setIsOpened}
-            asientos1={asientos}
-            asientos2={asientos}
+            asientos1={props.asientos1}
+            asientos2={props.asientos2}
             k={props.k}
             parrilla={props}
             stage={props.stage}
@@ -369,8 +369,8 @@ const Boleto = (props) => {
                   isShowParrilla={isOpened}
                   thisParrilla={props.thisParrilla}
                   setIsShowParrilla={setIsOpened}
-                  asientos1={asientos}
-                  asientos2={asientos}
+                  asientos1={props.asientos1}
+                  asientos2={props.asientos2}
                   k={props.k}
                   parrilla={props}
                   stage={props.stage}
