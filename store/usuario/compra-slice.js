@@ -34,9 +34,9 @@ export const compraSlice = createSlice({
     reducers: {
         agregarServicio: (state, action) => {
             const { payload } = action;
+            console.log("payload store: ", payload)
             let key = '';
-            
-            key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}`;
+            key = `${payload.servicio.terminalOrigin.replace(/\s+/g, '')}-${payload.servicio.terminalDestination.replace(/\s+/g, '')}`
             // if( payload.tipoServicio === 'ida' ) { 
             // } else {
             //     key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
@@ -45,7 +45,7 @@ export const compraSlice = createSlice({
             if( Object.keys(state.listaCarrito).length === 0 ) {
                 state.listaCarrito[key] = {};
                 const listaServicios = state.listaCarrito[key][payload.tipoServicio] || [];
-                let servicio = listaServicios.find((servicio) => servicio.idServicio === payload.servicio.idServicio);
+                let servicio = listaServicios.find((servicio) => servicio.id === payload.servicio.id);
                 if( servicio ) {
                     servicio.asientos.push(payload.asiento);
                 } else {
@@ -63,7 +63,7 @@ export const compraSlice = createSlice({
                     listaServicios = state.listaCarrito[key][payload.tipoServicio];
                 }
 
-                let servicio = listaServicios.find((servicio) => servicio.idServicio === payload.servicio.idServicio);
+                let servicio = listaServicios.find((servicio) => servicio.id === payload.servicio.id);
                 if( servicio ) {
                     servicio.asientos.push(payload.asiento);
                 } else {
@@ -94,7 +94,7 @@ export const compraSlice = createSlice({
             const { payload } = action;
             let key = '';
             
-            key = `${payload.servicio.idTerminalOrigen}-${payload.servicio.idTerminalDestino}`;
+            key = `${payload.servicio.terminalOrigin.replace(/\s+/g, '')}-${payload.servicio.terminalDestination.replace(/\s+/g, '')}`
             // if( payload.tipoServicio === 'ida' ) { 
             // } else {
             //     key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
@@ -102,15 +102,15 @@ export const compraSlice = createSlice({
 
             if( state.listaCarrito[key] ) {
                 if( state.listaCarrito[key][payload.tipoServicio] ) {
-                    const previewService = state.listaCarrito[key][payload.tipoServicio].find((servicio) => servicio.idServicio === payload.servicio.idServicio);
+                    const previewService = state.listaCarrito[key][payload.tipoServicio].find((servicio) => servicio.id === payload.servicio.id);
                     const newAsientos = previewService.asientos.filter((asiento) => asiento.asiento !== payload.asiento.asiento);
                     if( newAsientos.length === 0 ) {
-                        state.listaCarrito[key][payload.tipoServicio] = state.listaCarrito[key][payload.tipoServicio].filter((servicio) => servicio.idServicio !== payload.servicio.idServicio);
+                        state.listaCarrito[key][payload.tipoServicio] = state.listaCarrito[key][payload.tipoServicio].filter((servicio) => servicio.id !== payload.servicio.id);
                         delete state.live_time;
                         encryptDataNoTime(state, LocalStorageEntities.car);
                     } else {
                         previewService.asientos = newAsientos;
-                        const newArray = state.listaCarrito[key][payload.tipoServicio].filter((servicio) => servicio.idServicio !== payload.servicio.idServicio);
+                        const newArray = state.listaCarrito[key][payload.tipoServicio].filter((servicio) => servicio.id !== payload.servicio.id);
                         newArray.push(previewService)
                         state.listaCarrito[key][payload.tipoServicio] = newArray;
                         encryptDataNoTime(state, LocalStorageEntities.car); 
@@ -125,7 +125,7 @@ export const compraSlice = createSlice({
         agregarInformacionAsiento: (state, action) => {
             const { payload } = action;
             state.informacionAgrupada = state.informacionAgrupada.map((servicio) => {
-                if( servicio.idServicio === payload.servicio.idServicio ) {
+                if( servicio.id === payload.servicio.id ) {
                     servicio.asientos = servicio.asientos.map((asiento) => {
                         if( asiento.asiento === payload.asiento.asiento ) {
                             asiento = payload.asiento;
@@ -168,14 +168,14 @@ export const compraSlice = createSlice({
                         servicio.forEach((servicioSeleccionado) => {
                             servicioSeleccionado.asientos.forEach(async ( element ) => {
                                 let liberarAsiento = {
-                                    servicio: servicioSeleccionado?.idServicio,
+                                    servicio: servicioSeleccionado?.id,
                                     codigoReserva: 1,
-                                    fecha: servicioSeleccionado?.fechaServicio,
-                                    origen: servicioSeleccionado?.idTerminalOrigen,
-                                    destino: servicioSeleccionado?.idTerminalDestino,
+                                    fecha: servicioSeleccionado?.date,
+                                    origen: servicioSeleccionado?.terminalOrigin,
+                                    destino: servicioSeleccionado?.terminalDestination,
                                     integrador: 1000,
                                     asiento: element?.asiento,
-                                    tarifa: element?.tarifa,
+                                    tarifa: element?.valorAsiento,
                                 }
                                 try {
                                     const { data } = await axios.post("/api/ticket_sale/liberar-asiento", liberarAsiento);
@@ -203,14 +203,14 @@ export const compraSlice = createSlice({
                     value.ida.forEach(servicioIda => {
                         servicioIda.asientos.forEach(async (elemento) =>{
                             let liberarAsiento = {
-                                servicio: servicioIda?.idServicio,
+                                servicio: servicioIda?.id,
                                 codigoReserva: 1,
-                                fecha: servicioIda?.fechaServicio,
-                                origen: servicioIda?.idTerminalOrigen,
-                                destino: servicioIda?.idTerminalDestino,
+                                fecha: servicioIda?.date,
+                                origen: servicioIda?.terminalOrigin,
+                                destino: servicioIda?.terminalDestination,
                                 integrador: 1000,
                                 asiento: elemento?.asiento,
-                                tarifa: elemento?.tarifa,
+                                tarifa: elemento?.valorAsiento,
                             }
                             try {
                                 const { data } = await axios.post("/api/ticket_sale/liberar-asiento", liberarAsiento);
@@ -222,14 +222,14 @@ export const compraSlice = createSlice({
                     value.vuelta.forEach(servicioVuelta => {
                         servicioVuelta.asientos.forEach(async (elemento) =>{
                             let liberarAsiento = {
-                                servicio: servicioVuelta?.idServicio,
+                                servicio: servicioVuelta?.id,
                                 codigoReserva: 1,
-                                fecha: servicioVuelta?.fechaServicio,
-                                origen: servicioVuelta?.idTerminalOrigen,
-                                destino: servicioVuelta?.idTerminalDestino,
+                                fecha: servicioVuelta?.date,
+                                origen: servicioVuelta?.terminalOrigin,
+                                destino: servicioVuelta?.terminalDestination,
                                 integrador: 1000,
                                 asiento: elemento?.asiento,
-                                tarifa: elemento?.tarifa,
+                                tarifa: elemento?.valorAsiento,
                             }
                             try {
                                 const { data } = await axios.post("/api/ticket_sale/liberar-asiento", liberarAsiento);

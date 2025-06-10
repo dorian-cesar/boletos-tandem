@@ -124,14 +124,14 @@ const Parrilla = (props) => {
   useEffect(() => {
     setKey(
       // `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
-      `${props?.thisParrilla?.terminalOrigin.replace(/\s+/g, '')}${props?.thisParrilla?.terminalDestination.replace(/\s+/g, '')}`
+      `${props?.thisParrilla?.terminalOrigin.replace(/\s+/g, '')}-${props?.thisParrilla?.terminalDestination.replace(/\s+/g, '')}`
     );
   }, []);
 
   useEffect(() => {
     setKey(
       // `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
-      `${props?.thisParrilla?.terminalOrigin.replace(/\s+/g, '')}${props?.thisParrilla?.terminalDestination.replace(/\s+/g, '')}`
+      `${props?.thisParrilla?.terminalOrigin.replace(/\s+/g, '')}-${props?.thisParrilla?.terminalDestination.replace(/\s+/g, '')}`
     );
   }, [stage, parrilla]);
 
@@ -174,7 +174,6 @@ const Parrilla = (props) => {
 
   function obtenerAsientosSeleccionados() {
     const returnedArray = [];
-    console.log("key: ", key)
     if (carroCompras[key]) {
       if (carroCompras[key][stage === 0 ? "ida" : "vuelta"]) {
         carroCompras[key][stage === 0 ? "ida" : "vuelta"].filter((carro) => {
