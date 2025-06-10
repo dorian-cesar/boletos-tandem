@@ -38,7 +38,7 @@ export default async (req, res) => {
     const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 
     const serviceId = serviceRequest.idServicio;
-    console.log("url:", config.url_api + `/services/${serviceId}/seats-detail`);
+    // console.log("url:", config.url_api + `/services/${serviceId}/seats-detail`);
 
     const serviceResponse = await axios.get(
       config.url_api + `/services/${serviceId}/seats-detail`

@@ -122,7 +122,7 @@ export const ResumenViaje = (props) => {
       Object.keys(carroCompras).forEach((key) => {
         const compra = carroCompras[key];
         if (compra.ida && compra.ida.length > 0) {
-          const fechaIdaFormateada = compra.ida[0].fechaSalida.split("/");
+          const fechaIdaFormateada = compra.ida[0].date.split("/");
           const fechaIda = new Date(
             `${fechaIdaFormateada[1]}/${fechaIdaFormateada[0]}/${fechaIdaFormateada[2]}`
           );

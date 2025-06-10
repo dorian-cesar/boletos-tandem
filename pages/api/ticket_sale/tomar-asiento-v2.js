@@ -2,6 +2,7 @@ import doLogin from '../../../utils/oauth-token';
 import getConfig from 'next/config'
 import axios from "axios"
 
+import { generateToken } from "utils/jwt-auth";
 import { authMiddleware } from '../auth-middleware';
 
 import CryptoJS from "crypto-js";
@@ -50,7 +51,9 @@ async function handleTomarAsiento(req, res) {
         const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
         const serviceId = serviceRequest.servicio;
        
-        let token = await doLogin();
+        // let token = await doLogin();
+        const token = generateToken();
+        console.log("TOKEN:::", token);
         let postData = {
             // "servicio": serviceRequest.servicio,
             // "fecha": serviceRequest.fecha,
@@ -59,13 +62,13 @@ async function handleTomarAsiento(req, res) {
             // "integrador": serviceRequest.integrador,
             // "tarifa": serviceRequest.tarifa
             "seatNumber": serviceRequest.asiento,
-            "userId": serviceRequest.integrador,
+            "userId": serviceRequest.servicio,
         }
 
-        const serviceResponse = await axios.post(config.service_url + `/seats/${serviceId}/reserve`,
+        const serviceResponse = await axios.post(config.url_api + `/seats/${serviceId}/reserve`,
             postData,{
             headers: {
-                'Authorization': `Bearer ${token.token}`
+                'Authorization': `Bearer ${token}`
             }
         })
         res.status(200).json(serviceResponse.data);

@@ -328,9 +328,11 @@ const Parrilla = (props) => {
 
       const data = await response.json();
 
+      console.log(`Respuesta del servicio tomar asiento: `, data);
+
       const reserva = data;
 
-      if (!reserva.estadoReserva) {
+      if (!reserva.success || reserva.success === false) {
         toast.error("El asiento seleccionado ya se encuentra ocupado", {
           position: "top-right",
           autoClose: 5000,
@@ -339,7 +341,7 @@ const Parrilla = (props) => {
         throw new Error("Asiento tomado");
       }
 
-      if (reserva.estadoReserva) {
+      if (reserva.success === true) {
         if (isMascota) setModalMab(true);
         asientosTemporal.push(
           new AsientoDTO(reserva, parrillaServicio, asiento, piso)
@@ -380,9 +382,9 @@ const Parrilla = (props) => {
           : props.thisParrilla.seatDescriptionSecond;
       asiento["idaVuelta"] = stage ? true : false;
       asiento["tipoMascota"] = false;
-      asiento["relacionAsiento"] = asiento.asientoAsociado
-        ? asiento.asientoAsociado
-        : "";
+      // asiento["relacionAsiento"] = asiento.asientoAsociado
+      //   ? asiento.asientoAsociado
+      //   : "";
 
       const carrito = {
         servicio: parrilla.parrilla[indexParrilla],
