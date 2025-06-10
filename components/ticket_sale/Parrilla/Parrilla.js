@@ -275,21 +275,24 @@ const Parrilla = (props) => {
       );
 
       const response = await fetch(`/api/ticket_sale/mapa-asientos`, {
-        method: "GET",
+        method: "POST",
         body: JSON.stringify({ data: request.toString() }),
       });
 
       const data = await response.json();
+      const dataAsientos1 = data.seats.firstFloor;
+      const dataAsientos2 = data.seats.secondFloor;
 
       console.log(
-        `Recargando panel para el servicio ${parrillaTemporal[indexParrilla].idServicio}`
+        `Recargando panel para el servicio ${parrillaTemporal[indexParrilla].id} -  Data: `,
+        data
       );
 
       let nuevaParrilla = { ...parrillaTemporal[indexParrilla] };
       nuevaParrilla.loadingAsientos = false;
-      nuevaParrilla.asientos1 = data[1];
+      nuevaParrilla.asientos1 = dataAsientos1;
       if (!!parrillaTemporal[indexParrilla].busPiso2) {
-        nuevaParrilla.asientos2 = data[2];
+        nuevaParrilla.asientos2 = dataAsientos2;
       }
       parrillaTemporal[indexParrilla] = nuevaParrilla;
       setParrilla(parrillaTemporal);
