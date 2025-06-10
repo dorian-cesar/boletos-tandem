@@ -3,7 +3,7 @@
   width: 500px;
   padding: 16px;
   border-radius: 16px;
-  z-index: 99999;
+  z-index: 9999;
   position: relative;
   /* border: 1px solid var(--gris-50, #7F7F7F); */
 }

@@ -39,7 +39,7 @@ const Boleto = (props) => {
   destino = destino?.toUpperCase();
   const [user, setUser] = useState();
 
-  console.log("Boleto props:::", props);
+  // console.log("Boleto props:::", props);
 
   const handleOpenPane = () => {
     if (!user) {
@@ -75,7 +75,7 @@ const Boleto = (props) => {
         const data = await fetchAsientos(props);
         setAsientos1(data.seats.firstFloor);
         setAsientos2(data.seats.secondFloor);
-        console.log("Asientos obtenidos:", data);
+        // console.log("Asientos obtenidos:", data);
       } catch (error) {
         console.error(error);
       }

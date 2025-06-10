@@ -41,6 +41,7 @@ const Parrilla = (props) => {
   const buttonRef = useRef();
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
+  console.log("carroCompras: ", carroCompras)
   const dispatch = useDispatch();
 
   const {
@@ -52,7 +53,7 @@ const Parrilla = (props) => {
     setModalMab,
   } = props;
 
-  console.log(`Parrilla props: `, props);
+  // console.log(`Parrilla props: `, props);
 
   const [openPane, setOpenPane] = useState(false);
   const [key, setKey] = useState(null);
@@ -173,6 +174,7 @@ const Parrilla = (props) => {
 
   function obtenerAsientosSeleccionados() {
     const returnedArray = [];
+    console.log("key: ", key)
     if (carroCompras[key]) {
       if (carroCompras[key][stage === 0 ? "ida" : "vuelta"]) {
         carroCompras[key][stage === 0 ? "ida" : "vuelta"].filter((carro) => {
@@ -329,7 +331,7 @@ const Parrilla = (props) => {
 
       const data = await response.json();
 
-      console.log(`Respuesta del servicio tomar asiento: `, data);
+      // console.log(`Respuesta del servicio tomar asiento: `, data);
 
       const reserva = data;
 
@@ -653,11 +655,11 @@ const Parrilla = (props) => {
       const dataAsientos1 = data.seats.firstFloor;
       const dataAsientos2 = data.seats.secondFloor;
 
-      console.log("asientos1: ", dataAsientos1);
-      console.log("asientos2: ", dataAsientos2);
+      // console.log("asientos1: ", dataAsientos1);
+      // console.log("asientos2: ", dataAsientos2);
 
       console.log(
-        `Abriendo panel para el servicio ${parrillaTemporal[indexParrilla].idServicio} - Data: `,
+        `Abriendo panel para el servicio ${parrillaTemporal[indexParrilla].id} - Data: `,
         data
       );
 

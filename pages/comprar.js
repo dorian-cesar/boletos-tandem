@@ -161,7 +161,7 @@ export default function Home(props) {
         stage_active,
       }));
 
-      console.log("parrilla: ", parrilla);
+      // console.log("parrilla: ", parrilla);
 
       // const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
       setParrilla(
