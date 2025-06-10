@@ -72,9 +72,9 @@ export const ResumenViaje = (props) => {
     setUser(localUser);
   }, []);
 
-  useEffect(() => {
-    actualizarSaldoWallet().then();
-  }, [user]);
+  // useEffect(() => {
+  //   actualizarSaldoWallet().then();
+  // }, [user]);
 
   const agregarEventoTagManager = () => {
     try {
@@ -90,20 +90,20 @@ export const ResumenViaje = (props) => {
     } catch (error) {}
   }
 
-  async function actualizarSaldoWallet() {
-    if (!!user) {
-      try {
-        const response = await axios.post(
-          "/api/user/consulta-saldo-wallet",
-          user
-        );
-        const saldo = response.data.object.saldoContable || 0;
-        setSaldoMonederoVirtual(saldo);
-      } catch (error) {
-        // console.error("Error al actualizar el saldo de la billetera:", error);
-      }
-    }
-  }
+  // async function actualizarSaldoWallet() {
+  //   if (!!user) {
+  //     try {
+  //       const response = await axios.post(
+  //         "/api/user/consulta-saldo-wallet",
+  //         user
+  //       );
+  //       const saldo = response.data.object.saldoContable || 0;
+  //       setSaldoMonederoVirtual(saldo);
+  //     } catch (error) {
+  //       // console.error("Error al actualizar el saldo de la billetera:", error);
+  //     }
+  //   }
+  // }
 
   const obtenerInformacion = () => {
     {
@@ -122,17 +122,14 @@ export const ResumenViaje = (props) => {
       Object.keys(carroCompras).forEach((key) => {
         const compra = carroCompras[key];
         if (compra.ida && compra.ida.length > 0) {
-          const fechaIdaFormateada = compra.ida[0].date.split("/");
-          const fechaIda = new Date(
-            `${fechaIdaFormateada[1]}/${fechaIdaFormateada[0]}/${fechaIdaFormateada[2]}`
-          );
+          const fechaIda = new Date(compra.ida[0].date);
           const idaList = compra.ida;
           idaList.forEach((value) => {
             const datos = {
-              origen: `${origen?.nombre} (${value.terminalOrigen})`,
-              destino: `${destino?.nombre} (${value.terminalDestino})`,
-              hora: value.horaSalida,
-              horaLlegada: value.horaLlegada,
+              origen: `${origen} (${value.terminalOrigin})`,
+              destino: `${destino} (${value.terminalDestination})`,
+              hora: value.departureTime,
+              horaLlegada: value.arrivalTime,
               cantidadAsientos: 0,
               total: 0,
               asientosEquipaje: []
@@ -167,10 +164,7 @@ export const ResumenViaje = (props) => {
         }
 
         if (compra.vuelta && compra.vuelta.length > 0) {
-          const fechaVueltaFormateada = compra.vuelta[0].fechaSalida.split("/");
-          const fechaVuelta = new Date(
-            `${fechaVueltaFormateada[1]}/${fechaVueltaFormateada[0]}/${fechaVueltaFormateada[2]}`
-          );
+          const fechaVuelta = new Date(compra.vuelta[0].date);
           const vueltaList = compra.vuelta;
           vueltaList.forEach((value) => {
             const datos = {

@@ -122,13 +122,15 @@ const Parrilla = (props) => {
 
   useEffect(() => {
     setKey(
-      `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
+      // `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
+      `${props?.thisParrilla?.terminalOrigin.replace(/\s+/g, '')}${props?.thisParrilla?.terminalDestination.replace(/\s+/g, '')}`
     );
   }, []);
 
   useEffect(() => {
     setKey(
-      `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
+      // `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
+      `${props?.thisParrilla?.terminalOrigin.replace(/\s+/g, '')}${props?.thisParrilla?.terminalDestination.replace(/\s+/g, '')}`
     );
   }, [stage, parrilla]);
 
@@ -181,8 +183,7 @@ const Parrilla = (props) => {
             carro.asientos.forEach((carro) => {
               returnedArray.push({
                 ...carro,
-                estado:
-                  carro.estado !== "pet" ? "seleccion" : "seleccion-mascota",
+                estado: "seleccion",
               });
             });
           }

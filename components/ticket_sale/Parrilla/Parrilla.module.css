@@ -60,6 +60,7 @@
   min-width: 24px;
   display: flex;
   flex-direction: column;
+  padding: 2px;
 }
 
 .bus .fila .imagen-volante {
