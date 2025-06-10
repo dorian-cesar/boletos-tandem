@@ -40,10 +40,10 @@ module.exports = {
   },
   env: {
     PROJECT_DIRNAME: __dirname,
-    site_url: "https://boletos-com.netlify.app/",
+    site_url: "https://boletos.dev-wit.com/api",
   },
   publicRuntimeConfig: {
-    site_url: "https://boletos-com.netlify.app/",
+    site_url: "https://boletos.dev-wit.com/api",
   },
   // serverRuntimeConfig: {
   //   site_url: "https://boletosparaguay.com",

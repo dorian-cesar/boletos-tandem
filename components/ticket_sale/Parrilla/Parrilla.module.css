@@ -214,7 +214,7 @@
 }
 
 .bus .fila .reservado {
-  cursor: pointer;
+  /* cursor: pointer; */
   color: #9a9a9a;
 }
 

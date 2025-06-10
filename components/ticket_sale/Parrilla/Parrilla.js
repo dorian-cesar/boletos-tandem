@@ -175,14 +175,14 @@ const Parrilla = (props) => {
       if (carroCompras[key][stage === 0 ? "ida" : "vuelta"]) {
         carroCompras[key][stage === 0 ? "ida" : "vuelta"].filter((carro) => {
           if (
-            carro.idServicio === props.thisParrilla.id &&
-            carro.fechaServicio === props.thisParrilla.date
+            carro.id === props.thisParrilla.id &&
+            carro.date === props.thisParrilla.date
           ) {
             carro.asientos.forEach((carro) => {
               returnedArray.push({
                 ...carro,
                 estado:
-                  carro.tipo !== "pet" ? "seleccion" : "seleccion-mascota",
+                  carro.estado !== "pet" ? "seleccion" : "seleccion-mascota",
               });
             });
           }
