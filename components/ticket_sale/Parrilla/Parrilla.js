@@ -63,6 +63,7 @@ const Parrilla = (props) => {
 
   const [validationCheckInfo, setValidationCheckInfo] = useState(false);
   const [user, setUser] = useState();
+  const [shouldRender, setShouldRender] = useState(isShowParrilla);
 
   useEffect(() => {
     const user = decryptData(LocalStorageEntities.user_auth);
@@ -132,6 +133,18 @@ const Parrilla = (props) => {
   }, [stage, parrilla]);
 
   useEffect(() => actualizarTotalPagar(), [carroCompras]);
+
+  useEffect(() => {
+    if (isShowParrilla) {
+      setShouldRender(true);
+    }
+  }, [isShowParrilla]);
+
+  const onAnimationEnd = () => {
+    if (!isShowParrilla) {
+      setShouldRender(false);
+    }
+  };
 
   let asientosPorServicio = [];
 
@@ -717,14 +730,11 @@ const Parrilla = (props) => {
     }
     if (stage === STAGE_BOLETO_VUELTA) {
       if (cantidadVuelta === 0) {
-        toast.warn(
-          `Seleccione al menos un asiento para continuar`,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-          }
-        );
+        toast.warn(`Seleccione al menos un asiento para continuar`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
         return false;
       }
       if (cantidadIda > cantidadVuelta) {
@@ -805,9 +815,14 @@ const Parrilla = (props) => {
   };
 
   return (
-    isShowParrilla && (
-      <>
-        <section className={styles["grill-detail"]}>
+    <>
+      {shouldRender && (
+        <section
+          className={`${styles["grill-detail"]} ${
+            isShowParrilla ? styles.show : ""
+          }`}
+          onAnimationEnd={onAnimationEnd}
+        >
           <div className="d-none">
             <input
               type="checkbox"
@@ -1229,8 +1244,8 @@ const Parrilla = (props) => {
             </div>
           </div>
         </section>
-      </>
-    )
+      )}
+    </>
   );
 };
 
