@@ -329,7 +329,7 @@ const DatosPasajero = (props) => {
                     />
                   </div>
                 </div>
-                <div className={"col-12 col-md-6"}>
+                {/* <div className={"col-12 col-md-6"}>
                   <div className={"grupo-campos"}>
                     <label className={ `${styles["label"]} mb-2` }>Nacionalidad</label>
                     {
@@ -360,7 +360,7 @@ const DatosPasajero = (props) => {
                       )
                     }
                   </div>
-                </div>
+                </div> */}
                 <div className={"col-12 col-md-6"}>
                   <div className={"grupo-campos"}>
                     <label className={styles["label"]}>Nombres</label>

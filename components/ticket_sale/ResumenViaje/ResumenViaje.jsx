@@ -43,10 +43,19 @@ export const ResumenViaje = (props) => {
 
   const router = useRouter();
 
-  const clpFormat = new Intl.NumberFormat("es-CL", {
-    style: "currency",
-    currency: "CLP",
-  });
+  // const clpFormat = new Intl.NumberFormat("es-CL", {
+  //   style: "currency",
+  //   currency: "CLP",
+  // });
+
+   const formatGuarani = (value) =>
+    new Intl.NumberFormat("es-PY", {
+      style: "currency",
+      currency: "PYG",
+      currencyDisplay: "symbol",
+    })
+      .format(value)
+      .replace(/Gs\.?|PYG/, "₲");
 
   const [saldoMonederoVirtual, setSaldoMonederoVirtual] = useState(0);
 
@@ -177,7 +186,7 @@ export const ResumenViaje = (props) => {
             });
 
             idaNombre = `Salida, ${format(fechaIda, "ddd D MMM", "es")}`;
-            datos.total = clpFormat.format(datos.total);
+            datos.total = formatGuarani(datos.total);
             carritoIda.detalle.push(datos);
           });
         }
@@ -228,7 +237,7 @@ export const ResumenViaje = (props) => {
               datos.total += element.valorAsiento;
             });
 
-            datos.total = clpFormat.format(datos.total);
+            datos.total = formatGuarani(datos.total);
             carritoVuelta.detalle.push(datos);
             vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM", "es")}`;
           });
@@ -704,7 +713,8 @@ export const ResumenViaje = (props) => {
                         </div>
                         {detalleItem.asientosEquipaje &&
                           detalleItem.asientosEquipaje.length > 0 && (
-                            <div className={`row mb-3 dotted-bottom mx-1 pb-3`}>
+                            // <div className={`row mb-3 dotted-bottom mx-1 pb-3`}>
+                            <div className={`row mb-3 mx-1 pb-3`}>
                               <span className="col-12 fw-bold text-black fs-6 p-0">
                                 Equipaje
                               </span>
@@ -722,7 +732,7 @@ export const ResumenViaje = (props) => {
             ))}
         </div>
         <div className={styles["total-container"]}>
-          {!soloLectura && (
+          {/* {!soloLectura && (
             <div
               className={`form-check form-switch ${styles["utiliza-monedero-virtual"]}`}
             >
@@ -752,8 +762,8 @@ export const ResumenViaje = (props) => {
                 Sólo se puede pagar con el monedero cuando inicies sesión.
               </span>
             </div>
-          )}
-          {descuentoConvenio ? (
+          )} */}
+          {/* {descuentoConvenio ? (
             descuentoConvenio?.id === "COPEC" ? (
               <div>
                 <div className={styles["contanedor-puntaje"]}>
@@ -775,12 +785,12 @@ export const ResumenViaje = (props) => {
             )
           ) : (
             ""
-          )}
+          )} */}
           <div className={styles["contanedor-total-pagar"]}>
             {descuentoConvenio ? (
-              <span>Total a pagar: {clpFormat.format(totalPagar)} </span>
+              <span>Total a pagar: {formatGuarani(totalPagar)} </span>
             ) : (
-              <span>Total a pagar: {clpFormat.format(totalOriginal)}</span>
+              <span>Total a pagar: {formatGuarani(totalOriginal)}</span>
             )}
           </div>
           {!soloLectura && (
@@ -797,7 +807,7 @@ export const ResumenViaje = (props) => {
                   Acepto los términos y condiciones de la compra
                 </label>
               </div>
-              <div className="form-check">
+              {/* <div className="form-check">
                 <input
                   className="form-check-input"
                   type="checkbox"
@@ -809,7 +819,7 @@ export const ResumenViaje = (props) => {
                   Me gustaría recibir noticias, actualizaciones o información de
                   Pullman Bus
                 </label>
-              </div>
+              </div> */}
             </div>
           )}
         </div>

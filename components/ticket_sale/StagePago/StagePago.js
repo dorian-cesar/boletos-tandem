@@ -148,9 +148,9 @@ const StagePago = (props) => {
     (async () => await obtenerMediosPagos())();
   }, []);
 
-  useEffect(() => {
-    (async () => await getConvenio())();
-  }, []);
+  // useEffect(() => {
+  //   (async () => await getConvenio())();
+  // }, []);
 
   return (
     <main className={ `${ styles["main-content"] } pt-2` }>
@@ -172,7 +172,7 @@ const StagePago = (props) => {
           </div>
           <DatosPasajero asiento={datosComprador} usuario={ usuario }/>
         </Acordeon>
-        <Acordeon title="Convenios" open={true}>
+        {/* <Acordeon title="Convenios" open={true}>
             <Convenio
               convenioActivos={convenioActivos}
               descuentoConvenio={descuentoConvenio}
@@ -182,7 +182,7 @@ const StagePago = (props) => {
               requestConvenio={requestConvenio}
               setRequestConvenio={setRequestConvenio}
             />
-        </Acordeon>
+        </Acordeon> */}
         <Acordeon title="Medio de pago" open={true}>
           <MediosPago
             setMediosPago={setMediosPago}

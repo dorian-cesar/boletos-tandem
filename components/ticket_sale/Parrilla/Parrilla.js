@@ -228,9 +228,9 @@ const Parrilla = (props) => {
         classes += styles["seleccion"] + " ";
       }
 
-      // if (asiento.estado === "seleccion-mascota") {
-      //   classes += styles["m-seleccion"] + " ";
-      // }
+      if (asiento.estado === "seleccion-mascota") {
+        classes += styles["m-seleccion"] + " ";
+      }
 
       // if (asiento.tipo === "pet" && asiento.estado === "hold") {
       //   classes += styles["m-disponible"] + " ";
@@ -371,7 +371,7 @@ const Parrilla = (props) => {
   async function tomarAsiento(asiento, viaje, indexParrilla, piso) {
     try {
       if (asiento.valorAsiento === 0) {
-        toast.error("No puede seleccionar asiento con valor 0", {
+        toast.error("No puede seleccionar asiento sin valor", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -390,13 +390,13 @@ const Parrilla = (props) => {
 
       if (asiento.estado === "sinasiento" || !asiento.asiento) return;
 
-      asiento["piso"] = piso;
-      asiento["claseBus"] =
-        piso === 1
-          ? props.thisParrilla.seatDescriptionFirst
-          : props.thisParrilla.seatDescriptionSecond;
-      asiento["idaVuelta"] = stage ? true : false;
-      asiento["tipoMascota"] = false;
+      // asiento["piso"] = piso;
+      // asiento["claseBus"] =
+      //   piso === 1
+      //     ? props.thisParrilla.seatDescriptionFirst
+      //     : props.thisParrilla.seatDescriptionSecond;
+      // asiento["idaVuelta"] = stage ? true : false;
+      // asiento["tipoMascota"] = false;
       // asiento["relacionAsiento"] = asiento.asientoAsociado
       //   ? asiento.asientoAsociado
       //   : "";
@@ -415,9 +415,13 @@ const Parrilla = (props) => {
         (asientoBusqueda) => asiento.asiento == asientoBusqueda?.asiento
       );
 
+      const className = asientoClass(asiento);
+
       if (
-        asiento.estado == ASIENTO_LIBRE ||
-        asiento.estado == ASIENTO_LIBRE_MASCOTA
+        asiento.estado === ASIENTO_LIBRE &&
+        // asiento.estado === ASIENTO_LIBRE_MASCOTA ||
+        className.includes(styles["disponible"])
+        // asiento.style === styles["m-disponible"]
       ) {
         if (asiento.tipo === ASIENTO_TIPO_MASCOTA) {
           setModalMab(true);
@@ -495,7 +499,9 @@ const Parrilla = (props) => {
 
       if (
         asiento.estado == ASIENTO_OCUPADO ||
-        asiento.estado == ASIENTO_OCUPADO_MASCOTA
+        // asiento.estado == ASIENTO_OCUPADO_MASCOTA ||
+        className.includes(styles["seleccion"])
+        // asiento.style === styles["m-seleccion"]
       ) {
         if (asientoSeleccionado) {
           await servicioLiberarAsiento(carrito, asiento.asiento, 1, piso);

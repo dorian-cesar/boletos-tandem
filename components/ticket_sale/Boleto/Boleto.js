@@ -39,7 +39,7 @@ const Boleto = (props) => {
   destino = destino?.toUpperCase();
   const [user, setUser] = useState();
 
-  // console.log("Boleto props:::", props);
+  console.log("Boleto props:::", props);
 
   const handleOpenPane = () => {
     if (!user) {
@@ -168,7 +168,6 @@ const Boleto = (props) => {
   }
 
   async function showItinerary() {
-    console.log("PROPS:::", props);
     if (itinerario.length === 0) {
       try {
         const { data } = await axios.post("/api/itinerario", {
@@ -316,7 +315,7 @@ const Boleto = (props) => {
       <LoadingOverlay
         active={isLoading}
         spinner
-        text="Tomando asiento..."
+        text="Espere un momento..."
         className={`${styles["grill-detail"]}`}
       >
         <div className={`${styles["grill-detail"]}`}>
@@ -362,7 +361,7 @@ const Boleto = (props) => {
             <LoadingOverlay
               active={isLoading}
               spinner
-              text="Tomando asiento..."
+              text="Espere un momento..."
               className={styles["grill-detail"]}
             >
               <div className={styles["grill-detail"]}>
