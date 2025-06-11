@@ -113,7 +113,7 @@ export const compraSlice = createSlice({
                         const newArray = state.listaCarrito[key][payload.tipoServicio].filter((servicio) => servicio.id !== payload.servicio.id);
                         newArray.push(previewService)
                         state.listaCarrito[key][payload.tipoServicio] = newArray;
-                        encryptDataNoTime(state, LocalStorageEntities.car); 
+                        encryptDataNoTime(state, LocalStorageEntities.car);
                     }
                 }
             }

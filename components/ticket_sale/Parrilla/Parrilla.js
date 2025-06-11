@@ -33,7 +33,7 @@ const STAGE_BOLETO_IDA = 0;
 const STAGE_BOLETO_VUELTA = 1;
 const ASIENTO_TIPO_MASCOTA = "pet";
 const ASIENTO_TIPO_ASOCIADO = "asociado";
-const ASIENTO_OCUPADO = "hols";
+const ASIENTO_OCUPADO = "hold";
 const ASIENTO_OCUPADO_MASCOTA = "pet-busy";
 const MAXIMO_COMPRA_ASIENTO = 4;
 
@@ -41,7 +41,7 @@ const Parrilla = (props) => {
   const buttonRef = useRef();
 
   const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
-  console.log("carroCompras: ", carroCompras)
+  console.log("carroCompras: ", carroCompras);
   const dispatch = useDispatch();
 
   const {
@@ -124,14 +124,20 @@ const Parrilla = (props) => {
   useEffect(() => {
     setKey(
       // `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
-      `${props?.thisParrilla?.terminalOrigin.replace(/\s+/g, '')}-${props?.thisParrilla?.terminalDestination.replace(/\s+/g, '')}`
+      `${props?.thisParrilla?.terminalOrigin.replace(
+        /\s+/g,
+        ""
+      )}-${props?.thisParrilla?.terminalDestination.replace(/\s+/g, "")}`
     );
   }, []);
 
   useEffect(() => {
     setKey(
       // `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
-      `${props?.thisParrilla?.terminalOrigin.replace(/\s+/g, '')}-${props?.thisParrilla?.terminalDestination.replace(/\s+/g, '')}`
+      `${props?.thisParrilla?.terminalOrigin.replace(
+        /\s+/g,
+        ""
+      )}-${props?.thisParrilla?.terminalDestination.replace(/\s+/g, "")}`
     );
   }, [stage, parrilla]);
 
@@ -293,9 +299,16 @@ const Parrilla = (props) => {
       let nuevaParrilla = { ...parrillaTemporal[indexParrilla] };
       nuevaParrilla.loadingAsientos = false;
       nuevaParrilla.asientos1 = dataAsientos1;
-      if (!!parrillaTemporal[indexParrilla].busPiso2) {
-        nuevaParrilla.asientos2 = dataAsientos2;
-      }
+      nuevaParrilla.asientos2 = dataAsientos2;
+      // if (!!parrillaTemporal[indexParrilla].seats.secondFloor) {
+      //   nuevaParrilla.asientos2 = dataAsientos2;
+      // }
+      // if (
+      //   Array.isArray(parrillaTemporal[indexParrilla].seats.secondFloor) &&
+      //   parrillaTemporal[indexParrilla].seats.secondFloor.length > 0
+      // ) {
+      //   nuevaParrilla.asientos2 = dataAsientos2;
+      // }
       parrillaTemporal[indexParrilla] = nuevaParrilla;
       setParrilla(parrillaTemporal);
     } catch ({ message }) {

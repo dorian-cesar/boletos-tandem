@@ -19,15 +19,24 @@ import { decryptData, encryptData } from "utils/encrypt-data";
 
 import CryptoJS from "crypto-js";
 
-import { generateToken } from 'utils/jwt-auth';
+import { generateToken } from "utils/jwt-auth";
 
 import { sendGTMEvent } from "@next/third-parties/google";
 
 const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
 
 export const ResumenViaje = (props) => {
-  const { origen, destino,  } = useSelector((state) => state.compra);
-  const { codigoCuponera, setCodigoCuponera , descuentoConvenio, setDescuentoConvenio, convenio, setConvenio, requestConvenio, setRequestConvenio} = props;
+  const { origen, destino } = useSelector((state) => state.compra);
+  const {
+    codigoCuponera,
+    setCodigoCuponera,
+    descuentoConvenio,
+    setDescuentoConvenio,
+    convenio,
+    setConvenio,
+    requestConvenio,
+    setRequestConvenio,
+  } = props;
   const [resumen, setResumen] = useState({
     carro: {},
   });
@@ -85,10 +94,10 @@ export const ResumenViaje = (props) => {
           value: totalPagar,
           coupon: descuentoConvenio ? descuentoConvenio.id : null,
           payment_type: medioPago,
-        }
-      })
+        },
+      });
     } catch (error) {}
-  }
+  };
 
   // async function actualizarSaldoWallet() {
   //   if (!!user) {
@@ -115,14 +124,15 @@ export const ResumenViaje = (props) => {
         titulo: "",
         detalle: [],
       };
-      
+
       let idaNombre;
       let vueltaNombre;
 
       Object.keys(carroCompras).forEach((key) => {
         const compra = carroCompras[key];
         if (compra.ida && compra.ida.length > 0) {
-          const fechaIda = new Date(compra.ida[0].date);
+          const [year, month, day] = compra.ida[0].date.split("-").map(Number);
+          const fechaIda = new Date(year, month - 1, day);
           const idaList = compra.ida;
           idaList.forEach((value) => {
             const datos = {
@@ -132,23 +142,32 @@ export const ResumenViaje = (props) => {
               horaLlegada: value.arrivalTime,
               cantidadAsientos: 0,
               total: 0,
-              asientosEquipaje: []
+              asientosEquipaje: [],
             };
 
-            const informacionPasajeros = informacionAgrupada.find(servicio => 
-              servicio?.idServicio === value?.idServicio && 
-              servicio?.idTerminalOrigen === value?.idTerminalOrigen && 
-              servicio?.idTerminalDestino === value?.idTerminalDestino && 
-              servicio?.horaSalida === value?.horaSalida)
-            
-            if( informacionPasajeros ) {
+            const informacionPasajeros = informacionAgrupada.find(
+              (servicio) =>
+                servicio?.idServicio === value?.idServicio &&
+                servicio?.idTerminalOrigen === value?.idTerminalOrigen &&
+                servicio?.idTerminalDestino === value?.idTerminalDestino &&
+                servicio?.horaSalida === value?.horaSalida
+            );
+
+            if (informacionPasajeros) {
               const asientos = informacionPasajeros?.asientos;
-              if( asientos && asientos.length > 0 ) {
+              if (asientos && asientos.length > 0) {
                 asientos.forEach((asiento, indexAsiento) => {
-                  if( asiento?.cantidadEquipaje && asiento.cantidadEquipaje > 0 ) {
-                    datos.asientosEquipaje.push(`Pasajero ${ indexAsiento + 1 } - Asiento ${ asiento?.asiento } x ${ asiento?.cantidadEquipaje }`)
+                  if (
+                    asiento?.cantidadEquipaje &&
+                    asiento.cantidadEquipaje > 0
+                  ) {
+                    datos.asientosEquipaje.push(
+                      `Pasajero ${indexAsiento + 1} - Asiento ${
+                        asiento?.asiento
+                      } x ${asiento?.cantidadEquipaje}`
+                    );
                   }
-                })
+                });
               }
             }
 
@@ -164,7 +183,8 @@ export const ResumenViaje = (props) => {
         }
 
         if (compra.vuelta && compra.vuelta.length > 0) {
-          const fechaVuelta = new Date(compra.vuelta[0].date);
+          const [year, month, day] = compra.vuelta[0].date.split("-").map(Number);
+          const fechaVuelta = new Date(year, month - 1, day);
           const vueltaList = compra.vuelta;
           vueltaList.forEach((value) => {
             const datos = {
@@ -174,21 +194,30 @@ export const ResumenViaje = (props) => {
               horaLlegada: value.horaLlegada,
               cantidadAsientos: 0,
               total: 0,
-              asientosEquipaje: []
+              asientosEquipaje: [],
             };
 
-            const informacionPasajeros = informacionAgrupada.find(servicio => 
-              servicio?.idServicio === value?.idServicio && 
-              servicio?.idTerminalOrigen === value?.idTerminalOrigen && 
-              servicio?.idTerminalDestino === value?.idTerminalDestino && 
-              servicio?.horaSalida === value?.horaSalida)
-            
-            if( informacionPasajeros ) {
+            const informacionPasajeros = informacionAgrupada.find(
+              (servicio) =>
+                servicio?.idServicio === value?.idServicio &&
+                servicio?.idTerminalOrigen === value?.idTerminalOrigen &&
+                servicio?.idTerminalDestino === value?.idTerminalDestino &&
+                servicio?.horaSalida === value?.horaSalida
+            );
+
+            if (informacionPasajeros) {
               const asientos = informacionPasajeros?.asientos;
-              if( asientos && asientos.length > 0 ) {
+              if (asientos && asientos.length > 0) {
                 asientos.forEach((asiento, indexAsiento) => {
-                  if( asiento?.cantidadEquipaje && asiento.cantidadEquipaje > 0 ) {
-                    datos.asientosEquipaje.push(`Pasajero ${ indexAsiento + 1 } - Asiento ${ asiento?.asiento } x ${ asiento?.cantidadEquipaje }`)
+                  if (
+                    asiento?.cantidadEquipaje &&
+                    asiento.cantidadEquipaje > 0
+                  ) {
+                    datos.asientosEquipaje.push(
+                      `Pasajero ${indexAsiento + 1} - Asiento ${
+                        asiento?.asiento
+                      } x ${asiento?.cantidadEquipaje}`
+                    );
                   }
                 });
               }
@@ -271,13 +300,15 @@ export const ResumenViaje = (props) => {
         montoUsoWallet = valorNuevo < 0 ? totalPagar : saldoMonederoVirtual;
       }
 
-
       let resumenCompra = {
         medioDePago: medioPago,
         montoTotal: totalPagar - montoUsoWallet,
         idSistema: 1,
         idIntegrador: 1000,
-        datosComprador: {...datosComprador, usaConvenio: descuentoConvenio ? true : false},
+        datosComprador: {
+          ...datosComprador,
+          usaConvenio: descuentoConvenio ? true : false,
+        },
         montoUsoWallet,
         listaCarrito: [],
       };
@@ -299,16 +330,20 @@ export const ResumenViaje = (props) => {
           }
 
           if (descuentoConvenio) {
-              const montoDescuento = Math.round((nuevoAsiento.tarifa * descuentoConvenio.descuento) / 100);
-              const montoUsar = Math.round(montoDescuento, nuevoAsiento.tarifa);
-              nuevoAsiento.precio = Math.round(Math.max(nuevoAsiento.tarifa - montoUsar, 0));
-              nuevoAsiento.descuento = Math.round(montoDescuento);
-              nuevoAsiento.convenio = convenio;
-              nuevoAsiento.datoConvenio = requestConvenio?.atributo
+            const montoDescuento = Math.round(
+              (nuevoAsiento.tarifa * descuentoConvenio.descuento) / 100
+            );
+            const montoUsar = Math.round(montoDescuento, nuevoAsiento.tarifa);
+            nuevoAsiento.precio = Math.round(
+              Math.max(nuevoAsiento.tarifa - montoUsar, 0)
+            );
+            nuevoAsiento.descuento = Math.round(montoDescuento);
+            nuevoAsiento.convenio = convenio;
+            nuevoAsiento.datoConvenio = requestConvenio?.atributo;
           }
 
-          if (   descuentoConvenio?.id === 'COPEC') {
-              nuevoAsiento.datoConvenio = requestConvenio?.atributo
+          if (descuentoConvenio?.id === "COPEC") {
+            nuevoAsiento.datoConvenio = requestConvenio?.atributo;
           }
 
           carrito.pasajeros.push(new PasajeroListaCarritoDTO(nuevoAsiento));
@@ -318,7 +353,7 @@ export const ResumenViaje = (props) => {
       });
 
       agregarEventoTagManager();
-       
+
       if (medioPago === "CUP") {
         if (resumenCompra.listaCarrito.length > 1) {
           toast.error(
@@ -372,7 +407,7 @@ export const ResumenViaje = (props) => {
           }
         });
 
-        if( masAsientoSeleccionado || existeAsientoVuelta ) {
+        if (masAsientoSeleccionado || existeAsientoVuelta) {
           setIsLoading(false);
           return;
         }
@@ -429,12 +464,17 @@ export const ResumenViaje = (props) => {
                   .replace(".", "")
                   .replace(".", ""),
                 tipoDocumento: datosComprador.tipoDocumento,
-                cantidadEquipaje: resumenCompra.listaCarrito[0].pasajeros[0]?.cantidadEquipaje || 0
+                cantidadEquipaje:
+                  resumenCompra.listaCarrito[0].pasajeros[0]
+                    ?.cantidadEquipaje || 0,
               },
             };
             let data;
             try {
-              sessionStorage.setItem('purchase_info', JSON.stringify(informacionAgrupada));
+              sessionStorage.setItem(
+                "purchase_info",
+                JSON.stringify(informacionAgrupada)
+              );
 
               const response = await axios.post(
                 "/api/coupon/canjear-cuponera",
@@ -458,7 +498,7 @@ export const ResumenViaje = (props) => {
             }
           }
         } catch (error) {
-          setIsLoading(false)
+          setIsLoading(false);
           toast.error("Ocurrio un error al canjear la cuponera", {
             position: "top-right",
             autoClose: 5000,
@@ -474,27 +514,27 @@ export const ResumenViaje = (props) => {
           secret
         );
 
-        sessionStorage.setItem('purchase_info', JSON.stringify(informacionAgrupada));
+        sessionStorage.setItem(
+          "purchase_info",
+          JSON.stringify(informacionAgrupada)
+        );
 
         const response = await fetch(`/api/ticket_sale/guardar-multi-carro`, {
           method: "POST",
           body: JSON.stringify({ data: request.toString() }),
           headers: {
-              Authorization: `Bearer ${ token }`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         const data = await response.json();
 
         if (Boolean(data.error)) {
-          toast.error(
-            "Error al completar la transacción",
-            {
-              position: "bottom-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-            }
-          );
+          toast.error("Error al completar la transacción", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+          });
           return;
         }
 
@@ -537,7 +577,7 @@ export const ResumenViaje = (props) => {
       });
       return validator;
     } catch ({ message }) {
-      setIsLoading(false)
+      setIsLoading(false);
       console.error(`Error al validar el pago [${message}]`);
     }
   }
@@ -577,18 +617,19 @@ export const ResumenViaje = (props) => {
 
     setTotalPagar(total);
     setTotalOriginal(total);
-
   }, [resumen]);
 
   useEffect(() => {
     if (descuentoConvenio) {
       let totalConDescuento = totalOriginal;
-  
+
       if (descuentoConvenio.tipoDescuento === "POR") {
-        const montoDescuento = Math.round((totalOriginal * descuentoConvenio.descuento) / 100);
+        const montoDescuento = Math.round(
+          (totalOriginal * descuentoConvenio.descuento) / 100
+        );
         totalConDescuento = totalOriginal - Math.round(montoDescuento);
       }
-     
+
       setTotalOriginal(totalOriginal);
       setTotalPagar(totalConDescuento);
       setUsaWallet(false);
@@ -611,18 +652,17 @@ export const ResumenViaje = (props) => {
         });
       });
 
-    setTotalPagar(Math.round(total));
+      setTotalPagar(Math.round(total));
     }
   }, [descuentoConvenio]);
 
-
-  function calcularPuntos(valor, porcentaje){
+  function calcularPuntos(valor, porcentaje) {
     const valorPorcentaje = (valor * porcentaje) / 100;
     return Math.floor(valorPorcentaje);
   }
 
   useEffect(() => {
-    if(medioPago === 'CUP'){
+    if (medioPago === "CUP") {
       setRequestConvenio(null);
       setDescuentoConvenio(null);
       setConvenio(null);
@@ -637,7 +677,11 @@ export const ResumenViaje = (props) => {
           {Array.isArray(resumen.carro.lista) &&
             resumen.carro.lista.map((element) => (
               <div className={styles["servicio-ida"]} key={element.titulo}>
-                <span className={ `${styles["titulo-servicio"]} fw-bold text-black fs-6`}>{element.titulo}</span>
+                <span
+                  className={`${styles["titulo-servicio"]} fw-bold text-black fs-6`}
+                >
+                  {element.titulo}
+                </span>
                 <div className={styles["detalle-container"]}>
                   {Array.isArray(element.detalle) &&
                     element.detalle.map((detalleItem, index) => (
@@ -658,22 +702,19 @@ export const ResumenViaje = (props) => {
                           </span>
                           <b>{detalleItem.total}</b>
                         </div>
-                        {
-                          detalleItem.asientosEquipaje && detalleItem.asientosEquipaje.length > 0 && (
-                            <div className={ `row mb-3 dotted-bottom mx-1 pb-3` }>
-                              <span className="col-12 fw-bold text-black fs-6 p-0">Equipaje</span>
-                              {
-                                detalleItem.asientosEquipaje.map((asiento) => {
-                                  return (
-                                    <div className="col-12 p-0">
-                                      { asiento }
-                                    </div>
-                                  )
-                                })
-                              }
+                        {detalleItem.asientosEquipaje &&
+                          detalleItem.asientosEquipaje.length > 0 && (
+                            <div className={`row mb-3 dotted-bottom mx-1 pb-3`}>
+                              <span className="col-12 fw-bold text-black fs-6 p-0">
+                                Equipaje
+                              </span>
+                              {detalleItem.asientosEquipaje.map((asiento) => {
+                                return (
+                                  <div className="col-12 p-0">{asiento}</div>
+                                );
+                              })}
                             </div>
-                          )
-                        }
+                          )}
                       </div>
                     ))}
                 </div>
@@ -711,30 +752,36 @@ export const ResumenViaje = (props) => {
                 Sólo se puede pagar con el monedero cuando inicies sesión.
               </span>
             </div>
-          )}  
-            { descuentoConvenio ?        
-                descuentoConvenio?.id === 'COPEC' ?
-                <div>
+          )}
+          {descuentoConvenio ? (
+            descuentoConvenio?.id === "COPEC" ? (
+              <div>
                 <div className={styles["contanedor-puntaje"]}>
-                <span>Puntos para acumular COPEC: {calcularPuntos(descuentoConvenio.tarifa,totalPagar) } </span> 
+                  <span>
+                    Puntos para acumular COPEC:{" "}
+                    {calcularPuntos(descuentoConvenio.tarifa, totalPagar)}{" "}
+                  </span>
+                </div>
+                <div className={styles["contanedor-total-pagar-descuento"]}>
+                  <span>
+                    Total anterior: {clpFormat.format(totalOriginal)}{" "}
+                  </span>
+                </div>
               </div>
-              <div className={styles["contanedor-total-pagar-descuento"]}>
-              <span>Total anterior: {clpFormat.format(totalOriginal)} </span>
-            </div>
-            </div>
-              :
+            ) : (
               <div className={styles["contanedor-total-pagar-descuento"]}>
                 <span>Total anterior: {clpFormat.format(totalOriginal)} </span>
-              </div> 
-              : '' 
-            }
+              </div>
+            )
+          ) : (
+            ""
+          )}
           <div className={styles["contanedor-total-pagar"]}>
-          { descuentoConvenio ?           
-              <span>Total a pagar: {clpFormat.format(totalPagar)} </span>          
-              :  
-              <span>Total a pagar: {clpFormat.format(totalOriginal)}</span>   
-             
-            }
+            {descuentoConvenio ? (
+              <span>Total a pagar: {clpFormat.format(totalPagar)} </span>
+            ) : (
+              <span>Total a pagar: {clpFormat.format(totalOriginal)}</span>
+            )}
           </div>
           {!soloLectura && (
             <div className={styles["contenedor-checks"]}>
@@ -766,12 +813,15 @@ export const ResumenViaje = (props) => {
             </div>
           )}
         </div>
-        {!soloLectura && (
-          !isLoading ? (
+        {!soloLectura &&
+          (!isLoading ? (
             <div className={styles["contenedor-boton-pagar"]}>
               <button
                 className={styles["boton-pagar"]}
-                onClick={() => { setIsLoading(true); sendToPayment(); }}
+                onClick={() => {
+                  setIsLoading(true);
+                  sendToPayment();
+                }}
               >
                 Pagar
               </button>
@@ -785,10 +835,15 @@ export const ResumenViaje = (props) => {
               </form>
             </div>
           ) : (
-            <img src="/img/loading.gif" width={150} height={150} alt="Perro caminando" style={{ display: 'flex', margin: 'auto' }}/>
+            <img
+              src="/img/loading.gif"
+              width={150}
+              height={150}
+              alt="Perro caminando"
+              style={{ display: "flex", margin: "auto" }}
+            />
             // <div className={styles["loader"]}></div>
-          )
-        )}
+          ))}
       </div>
     </div>
   );

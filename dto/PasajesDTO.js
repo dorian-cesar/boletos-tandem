@@ -20,20 +20,20 @@ export class PasajeConvenioDTO {
 
 export class PasajeDTO {
     constructor(pasaje, asiento, isOpen = true) {
-        this.idServicio = pasaje?.idServicio || '';
+        this.idServicio = pasaje?.id || '';
         this.fechaServicio = pasaje?.fechaServicio || '';
-        this.fechaSalida = pasaje?.fechaSalida || '';
-        this.fechaLlegada = pasaje?.fechaLlegada || '';
+        this.fechaSalida = pasaje?.date || '';
+        this.fechaLlegada = pasaje?.arrivalDate || '';
         this.integrador = pasaje?.integrador || 0;
-        this.horaSalida = pasaje?.horaSalida || '';
+        this.horaSalida = pasaje?.departureTime || '';
         this.empresa = pasaje?.empresa || '';
         this.bus = asiento?.piso == 1 ? pasaje?.busPiso1 : pasaje?.busPiso2;
-        this.origen = pasaje?.idTerminalOrigen || '';
-        this.destino = pasaje?.idTerminalDestino || '';
+        this.origen = pasaje?.terminalOrigin || '';
+        this.destino = pasaje?.terminalDestination || '';
         this.codigoReserva = 1;
         this.clase = pasaje?.idClaseBusPisoUno || '';
-        this.tarifa = asiento?.piso == 1 ? pasaje?.tarifaPrimerPisoInternet : pasaje?.tarifaSegundoPisoInternet;
-        this.servicio = asiento?.piso == 1 ? pasaje?.servicioPrimerPiso : pasaje?.servicioSegundoPiso; 
+        this.tarifa = asiento?.piso == 1 ? pasaje?.priceFirst : pasaje?.priceSecond;
+        this.servicio = asiento?.piso == 1 ? pasaje?.seatDescriptionFirst : pasaje?.seatDescriptionSecond; 
         this.piso = asiento?.piso || 1;
         this.pet = asiento?.pet || '';
         this.asiento = asiento || '';
@@ -49,9 +49,9 @@ export class PasajeDTO {
 
 export class PasajePagoDTO {
     constructor(pasaje, pasajero, extras, convenioActivo, precio, datoConvenio) {
-        this.servicio = pasaje?.idServicio || '';
+        this.servicio = pasaje?.id || '';
         this.fechaServicio = extras?.fechaServicio || '';
-        this.fechaPasada = extras?.fechaSalida || '';
+        this.fechaPasada = extras?.date || '';
         this.fechaLlegada = extras?.fechaLlegada || '';
         this.horaSalida = pasaje?.horaSalida || '';
         this.horaLlegada = extras?.horaLlegada || '';
