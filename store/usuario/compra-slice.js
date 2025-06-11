@@ -153,6 +153,7 @@ export const compraSlice = createSlice({
         },
         limpiarListaCarritoCambioFecha: (state, action) => {
             const { stage } = action.payload;
+            console.log("stage: ", stage)
             if( state.listaCarrito ) {
                 const parOrigenDestino = Object.entries(state.listaCarrito);
 
@@ -198,6 +199,7 @@ export const compraSlice = createSlice({
             }
         },
         liberarAsientos: (state, action) => {
+            console.log("state.listacarrito: ", state.listaCarrito)
             Object.entries(state.listaCarrito).map(([key, value]) => {
                 if(value.ida){
                     value.ida.forEach(servicioIda => {
@@ -214,6 +216,7 @@ export const compraSlice = createSlice({
                             }
                             try {
                                 const { data } = await axios.post("/api/ticket_sale/liberar-asiento", liberarAsiento);
+                                console.log("Asiento liberado: ", liberarAsiento.asiento)
                               } catch (e) {}
                         })
                     })

@@ -22,7 +22,6 @@ export function generateToken() {
         const token = JWT.sign({ username: user}, secret, {
             expiresIn: '1m'
         });
-    
         return token;
     } catch (error) {
         console.error('ERROR:::', error);

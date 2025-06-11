@@ -443,9 +443,9 @@ export const getServerSideProps = withIronSessionSsr(async function ({
       ],
       // nacionalidades: nationalities.data,
       nacionalidades: [
-        { codigo: "CL", nombre: "Chile" },
-        { codigo: "AR", nombre: "Argentina" },
-        { codigo: "BR", nombre: "Brasil" },
+        { value: "CL", label: "Chile" },
+        { value: "AR", label: "Argentina" },
+        { value: "BR", label: "Brasil" },
       ],
     },
   };

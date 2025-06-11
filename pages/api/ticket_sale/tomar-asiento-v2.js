@@ -53,7 +53,7 @@ async function handleTomarAsiento(req, res) {
        
         // let token = await doLogin();
         const token = generateToken();
-        console.log("TOKEN:::", token);
+        // console.log("TOKEN:::", token);
         let postData = {
             // "servicio": serviceRequest.servicio,
             // "fecha": serviceRequest.fecha,

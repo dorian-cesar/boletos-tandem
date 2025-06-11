@@ -4,6 +4,8 @@ import axios from "axios";
 const { serverRuntimeConfig } = getConfig();
 const config = serverRuntimeConfig;
 
+import { generateToken } from "utils/jwt-auth";
+
 // export default async (req, res) => {
 
 //     try {
@@ -29,23 +31,25 @@ const config = serverRuntimeConfig;
 // }
 
 export default async (req, res) => {
+//   console.log("req: ", req);
+  const token = generateToken();
+//   console.log("TOKEN:::", token);
   try {
-    let token = await doLogin();
-    let data = await axios.post(
-      config.url_api + `/integracion/liberarAsiento`,
+    let data = await axios.patch(
+      config.url_api + `/services/revert-seat`,
       {
-        servicio: req.body.servicio,
-        fecha: req.body.fecha,
-        origen: req.body.origen,
-        destino: req.body.destino,
-        integrador: req.body.integrador,
-        asiento: req.body.asiento,
-        tarifa: req.body.tarifa,
-        codigoReserva: req.body.codigoReserva,
+        serviceId: req.body.servicio,
+        // fecha: req.body.fecha,
+        // origen: req.body.origen,
+        // destino: req.body.destino,
+        // integrador: req.body.integrador,
+        seatNumber: req.body.asiento,
+        // tarifa: req.body.tarifa,
+        // codigoReserva: req.body.codigoReserva,
       },
       {
         headers: {
-          Authorization: `Bearer ${token.token}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
