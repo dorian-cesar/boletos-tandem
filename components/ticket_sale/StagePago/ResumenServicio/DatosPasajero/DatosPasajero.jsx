@@ -48,11 +48,11 @@ const DatosPasajero = (props) => {
 
   function retornarDatosCompradorUsuario() {
     let asientoTemporal = { ...informacionAsiento };
-    asientoTemporal['nombre'] = usuario?.nombres;
-    asientoTemporal['apellido'] = usuario?.apellidoPaterno;
+    asientoTemporal['nombre'] = usuario?.nombres || "";
+    asientoTemporal['apellido'] = usuario?.apellidoPaterno || "";
     asientoTemporal['tipoDocumento'] = usuario?.tipoDocumento || 'R';
-    asientoTemporal['rut'] = usuario?.rut;
-    asientoTemporal['email'] = usuario?.mail;
+    asientoTemporal['rut'] = usuario?.rut || ""
+    asientoTemporal['email'] = usuario?.mail || "";
     asientoTemporal['cantidadEquipaje'] = usuario?.cantidadEquipaje || 0;
     return asientoTemporal;
   }
@@ -192,7 +192,6 @@ const DatosPasajero = (props) => {
         label: nacionalidad.descripcion,
       })
     });
-
     return nacionalidadesArray;
   }
 

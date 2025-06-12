@@ -158,11 +158,11 @@ export function newIsValidPasajeroCompra(pasajero) {
       }
     }
 
-    if (!pasajero.nacionalidad || pasajero.nacionalidad == "") {
-      validator.valid = false;
-      validator.error = `Debe ingresar una nacionalidad para pasajero del asiento ${pasajero.asiento}`;
-      return validator;
-    }
+    // if (!pasajero.nacionalidad || pasajero.nacionalidad == "") {
+    //   validator.valid = false;
+    //   validator.error = `Debe ingresar una nacionalidad para pasajero del asiento ${pasajero.asiento}`;
+    //   return validator;
+    // }
 
     if (!pasajero.nombre || pasajero.nombre == "") {
       validator.valid = false;

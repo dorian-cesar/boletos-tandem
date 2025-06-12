@@ -144,9 +144,9 @@ const StagePago = (props) => {
   }
 
 
-  useEffect(() => {
-    (async () => await obtenerMediosPagos())();
-  }, []);
+  // useEffect(() => {
+  //   (async () => await obtenerMediosPagos())();
+  // }, []);
 
   // useEffect(() => {
   //   (async () => await getConvenio())();
