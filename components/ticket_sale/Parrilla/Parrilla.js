@@ -228,9 +228,9 @@ const Parrilla = (props) => {
         classes += styles["seleccion"] + " ";
       }
 
-      if (asiento.estado === "seleccion-mascota") {
-        classes += styles["m-seleccion"] + " ";
-      }
+      // if (asiento.estado === "seleccion-mascota") {
+      //   classes += styles["m-seleccion"] + " ";
+      // }
 
       // if (asiento.tipo === "pet" && asiento.estado === "hold") {
       //   classes += styles["m-disponible"] + " ";
@@ -247,7 +247,7 @@ const Parrilla = (props) => {
       //   classes += styles["m-reservado"] + " ";
       // }
 
-      if (asiento.estado === "hold") {
+      if (asiento.estado === "hold" || asiento.paid === true) {
         classes += styles["reservado"] + " ";
       }
 
