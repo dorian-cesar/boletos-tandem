@@ -278,57 +278,7 @@ const DatosPasajero = (props) => {
           {
             pasajero ? (
               <>
-                <div className={"col-12 col-md-6 mt-1"}>
-                  <div className="container">
-                    <div className={"row"}>
-                      <div className={"col-4 p-0"}>
-                        <label className={"contenedor"}>
-                          <label className={styles["label"]}>RUT</label>
-                          <input
-                            type="checkbox"
-                            checked={asiento["tipoDocumento"] === "R" ? true : false}
-                            value="R"
-                            name="tipoDocumento"
-                            disabled={ usuario }
-                            onChange={(e) => setDataComprador(e.target)}
-                          />
-                          <span className="checkmark"></span>
-                        </label>
-                      </div>
-                      <div className={"col-6 p-0"}>
-                        <label className={"contenedor"}>
-                          <label className={styles["label"]}>DNI/Pasaporte</label>
-                          <input
-                            type="checkbox"
-                            checked={asiento["tipoDocumento"] === "P" ? true : false}
-                            value="P"
-                            name="tipoDocumento"
-                            disabled={ usuario }
-                            onChange={(e) => setDataComprador(e.target)}
-                          />
-                          <span className={"checkmark"}></span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={"grupo-campos"}>
-                    <input
-                      type="text"
-                      value={asiento["rut"]}
-                      name="rut"
-                      placeholder="Ej: 111111111"
-                      className={`${
-                        Array.isArray(asiento.errors) &&
-                        asiento.errors.includes("rut")
-                          ? "is-invalid"
-                          : ""
-                      } ${styles["input"]}`}
-                      disabled={ usuario }
-                      onChange={(e) => setDataComprador(e.target)}
-                      onBlur={obtenerDatosPasajero}
-                    />
-                  </div>
-                </div>
+                
                 {/* <div className={"col-12 col-md-6"}>
                   <div className={"grupo-campos"}>
                     <label className={ `${styles["label"]} mb-2` }>Nacionalidad</label>
@@ -386,6 +336,57 @@ const DatosPasajero = (props) => {
                       className={styles["input"]}
                       disabled={ usuario }
                       onChange={(e) => setDataComprador(e.target)}
+                    />
+                  </div>
+                </div>
+                <div className={"col-12 col-md-6 mt-1"}>
+                  <div className="container">
+                    <div className={"row"}>
+                      <div className={"col-4 p-0"}>
+                        <label className={"contenedor"}>
+                          <label className={styles["label"]}>RUT</label>
+                          <input
+                            type="checkbox"
+                            checked={asiento["tipoDocumento"] === "R" ? true : false}
+                            value="R"
+                            name="tipoDocumento"
+                            disabled={ usuario }
+                            onChange={(e) => setDataComprador(e.target)}
+                          />
+                          <span className="checkmark"></span>
+                        </label>
+                      </div>
+                      <div className={"col-6 p-0"}>
+                        <label className={"contenedor"}>
+                          <label className={styles["label"]}>DNI/Pasaporte</label>
+                          <input
+                            type="checkbox"
+                            checked={asiento["tipoDocumento"] === "P" ? true : false}
+                            value="P"
+                            name="tipoDocumento"
+                            disabled={ usuario }
+                            onChange={(e) => setDataComprador(e.target)}
+                          />
+                          <span className={"checkmark"}></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={"grupo-campos"}>
+                    <input
+                      type="text"
+                      value={asiento["rut"]}
+                      name="rut"
+                      placeholder="Ej: 111111111"
+                      className={`${
+                        Array.isArray(asiento.errors) &&
+                        asiento.errors.includes("rut")
+                          ? "is-invalid"
+                          : ""
+                      } ${styles["input"]}`}
+                      disabled={ usuario }
+                      onChange={(e) => setDataComprador(e.target)}
+                      onBlur={obtenerDatosPasajero}
                     />
                   </div>
                 </div>
