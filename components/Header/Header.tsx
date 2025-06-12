@@ -120,7 +120,6 @@ export default function Header({ openNav, isBuyStage = false }: { openNav: any, 
 
   function timeEnd() {
     setIsShowModalEndTime(false);
-    dispatch(liberarAsientos(null));
     router.push("/");
   }
 

@@ -247,7 +247,7 @@ const Parrilla = (props) => {
       //   classes += styles["m-reservado"] + " ";
       // }
 
-      if (asiento.estado === "hold" || asiento.paid === true) {
+      if (asiento.estado === "hold" || asiento.estado === "paid") {
         classes += styles["reservado"] + " ";
       }
 
@@ -718,7 +718,7 @@ const Parrilla = (props) => {
     if (sit.estado === "available" && sit.valorAsiento > 0) {
       return "img/asiento_disponible.svg";
     }
-    if (sit.estado === "hold") {
+    if (sit.estado === "hold" || sit.estado === "paid") {
       return "img/asiento_ocupado.svg";
     }
     if (sit.tipo === "pet" && sit.estado === "pet-free") {

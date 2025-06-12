@@ -143,18 +143,19 @@ const StagePasajes = (props) => {
       });
 
       const data = await response.json();
+      const dataAsientos1 = data.seats.firstFloor;
+      const dataAsientos2 = data.seats.secondFloor;
 
       console.log("Mapa de asientos:", data);
 
       parrillaModificada[indexParrilla].loadingAsientos = false;
-      // parrillaModificada[indexParrilla].asientos1 = data[1];
-      parrillaModificada[indexParrilla].asientos1 =
-        parrilla.layout.floor1.seatMap;
-      if (!!parrillaTemporal[indexParrilla].busPiso2) {
-        // parrillaModificada[indexParrilla].asientos2 = data[2];
-        parrillaModificada[indexParrilla].asientos2 =
-          parrilla.layout.floor2.seatMap;
-      }
+
+      parrillaModificada[indexParrilla].asientos1 = dataAsientos1
+      parrillaModificada[indexParrilla].asientos2 = dataAsientos2
+      // if (!!parrillaTemporal[indexParrilla].busPiso2) {
+      //   parrillaModificada[indexParrilla].asientos2 =
+      //     parrilla.layout.floor2.seatMap;
+      // }
       setParrilla(parrillaModificada);
     } catch ({ message }) {
       console.error(`Error al abrir el panel [${message}]`);

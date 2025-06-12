@@ -60,7 +60,7 @@
   min-width: 24px;
   display: flex;
   flex-direction: column;
-  padding: 2px;
+  padding: 3px;
 }
 
 .bus .fila .imagen-volante {
@@ -89,8 +89,8 @@
 
 .bus .fila .columna img {
   position: absolute;
-  width: 24px;
-  height: 24px;
+  width: 25px;
+  height: auto;
   transform: rotate(90deg);
   color: var(--naranjo);
 }
