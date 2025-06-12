@@ -22,7 +22,7 @@ import {
 import styles from "./Header.module.css";
 
 import { ResumenViaje } from "components/ticket_sale/ResumenViaje/ResumenViaje";
-import { limpiarListaCarrito } from "store/usuario/compra-slice";
+import { liberarAsientos, limpiarListaCarrito } from "store/usuario/compra-slice";
 import Popup from "components/Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
 import LocalStorageEntities from "entities/LocalStorageEntities";
@@ -120,6 +120,7 @@ export default function Header({ openNav, isBuyStage = false }: { openNav: any, 
 
   function timeEnd() {
     setIsShowModalEndTime(false);
+    dispatch(liberarAsientos(null));
     router.push("/");
   }
 
