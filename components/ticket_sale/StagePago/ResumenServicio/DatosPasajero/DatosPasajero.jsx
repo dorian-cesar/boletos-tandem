@@ -36,7 +36,8 @@ const customStyles = {
 };
 
 const DatosPasajero = (props) => {
-  const { servicio, asiento, usuario, pasajero = false, nacionalidades = [] } = props;
+  // const { servicio, asiento, usuario, pasajero = false, nacionalidades = [] } = props;
+  const { servicio, asiento, usuario, pasajero = false } = props;
   const { datosComprador } = useSelector((state) => state.compra);
 
   const dispatch = useDispatch();
@@ -215,10 +216,10 @@ const DatosPasajero = (props) => {
   
         asientoTemporal['nombre'] = nombres;
         asientoTemporal['apellido'] = apellidos;
-        asientoTemporal['nacionalidad'] = nacionalidad;
+        // asientoTemporal['nacionalidad'] = nacionalidad;
         asientoTemporal['cantidadEquipaje'] = 0;
 
-        const nacionalidadEncontrada = returnNationalitiesArray().find(nationality => nationality.value === nacionalidad);
+        // const nacionalidadEncontrada = returnNationalitiesArray().find(nationality => nationality.value === nacionalidad);
 
         if( nacionalidadEncontrada ) {
           setNationalitySelected(nacionalidadEncontrada);

@@ -123,7 +123,7 @@ export default function Home(props) {
       const stage_active = in_stage ?? stage;
       setLoadingParrilla(true);
 
-      const token = generateToken();
+      // const token = generateToken();
 
       const request = CryptoJS.AES.encrypt(
         JSON.stringify(
@@ -183,7 +183,7 @@ export default function Home(props) {
     try {
       setLoadingParrilla(true);
 
-      const token = generateToken();
+      // const token = generateToken();
 
       const request = CryptoJS.AES.encrypt(
         JSON.stringify(

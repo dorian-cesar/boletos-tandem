@@ -38,7 +38,7 @@ export const compraSlice = createSlice({
   reducers: {
     agregarServicio: (state, action) => {
       const { payload } = action;
-      // console.log("payload store: ", payload)
+      console.log("payload agregar servicio: ", payload)
       let key = "";
       key = `${payload.servicio.terminalOrigin.replace(
         /\s+/g,
@@ -189,7 +189,7 @@ export const compraSlice = createSlice({
     },
     limpiarListaCarritoCambioFecha: (state, action) => {
       const { stage } = action.payload;
-      console.log("stage: ", stage);
+      // console.log("stage: ", stage);
       if (state.listaCarrito) {
         const parOrigenDestino = Object.entries(state.listaCarrito);
 
@@ -256,7 +256,7 @@ export const compraSlice = createSlice({
                   "/api/ticket_sale/liberar-asiento",
                   liberarAsiento
                 );
-                console.log("Asiento liberado: ", liberarAsiento.asiento);
+                console.log("Asiento liberado (ida): ", liberarAsiento.asiento);
               } catch (e) {}
             });
           });
@@ -279,6 +279,7 @@ export const compraSlice = createSlice({
                   "/api/ticket_sale/liberar-asiento",
                   liberarAsiento
                 );
+                console.log("Asiento liberado (vuelta): ", liberarAsiento.asiento)
               } catch (e) {}
             });
           });

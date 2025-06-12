@@ -198,7 +198,12 @@ const Boleto = (props) => {
         type="button"
         className="d-none"
         data-bs-toggle="modal"
-        data-bs-target={`#parrillaModal-${props.idParrilla}-${props.terminalOrigin.replace(/\s+/g, '')}${props.terminalDestination.replace(/\s+/g, '')}`}
+        data-bs-target={`#parrillaModal-${
+          props.idParrilla
+        }-${props.terminalOrigin.replace(
+          /\s+/g,
+          ""
+        )}${props.terminalDestination.replace(/\s+/g, "")}`}
       ></button>
       <div
         className={`row justify-content-evenly ${
@@ -232,7 +237,9 @@ const Boleto = (props) => {
                   {props.stage === 0 ? origen : destino}
                 </span>
                 <span className={`${styles["travel-terminal-subtitle"]}`}>
-                  {props.terminalOrigin}
+                  {props.stage === 0
+                    ? props.terminalOrigin
+                    : props.terminalDestination}
                 </span>
                 {/* <span>{props.fechaSalida}</span> */}
               </div>
@@ -259,7 +266,9 @@ const Boleto = (props) => {
                   {props.stage === 0 ? destino : origen}
                 </span>
                 <span className={`${styles["travel-terminal-subtitle"]}`}>
-                  {props.terminalDestination}
+                  {props.stage === 0
+                    ? props.terminalDestination
+                    : props.terminalOrigin}
                 </span>
                 {/* <span>{props.fechaLlegada}</span> */}
               </div>
@@ -341,7 +350,10 @@ const Boleto = (props) => {
       </LoadingOverlay>
       <div
         className="modal fade"
-        id={`parrillaModal-${props.idParrilla}-${props.terminalOrigin.replace(/\s+/g, '')}${props.terminalDestination.replace(/\s+/g, '')}`}
+        id={`parrillaModal-${props.idParrilla}-${props.terminalOrigin.replace(
+          /\s+/g,
+          ""
+        )}${props.terminalDestination.replace(/\s+/g, "")}`}
         tabIndex={-1}
         aria-labelledby="parrillaModalLabel"
         aria-hidden="true"

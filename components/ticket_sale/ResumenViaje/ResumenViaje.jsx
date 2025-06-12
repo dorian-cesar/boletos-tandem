@@ -48,7 +48,7 @@ export const ResumenViaje = (props) => {
   //   currency: "CLP",
   // });
 
-   const formatGuarani = (value) =>
+  const formatGuarani = (value) =>
     new Intl.NumberFormat("es-PY", {
       style: "currency",
       currency: "PYG",
@@ -192,15 +192,17 @@ export const ResumenViaje = (props) => {
         }
 
         if (compra.vuelta && compra.vuelta.length > 0) {
-          const [year, month, day] = compra.vuelta[0].date.split("-").map(Number);
+          const [year, month, day] = compra.vuelta[0].date
+            .split("-")
+            .map(Number);
           const fechaVuelta = new Date(year, month - 1, day);
           const vueltaList = compra.vuelta;
           vueltaList.forEach((value) => {
             const datos = {
-              origen: `${destino?.nombre} (${value.terminalOrigen})`,
-              destino: `${origen?.nombre} (${value.terminalDestino})`,
-              hora: value.horaSalida,
-              horaLlegada: value.horaLlegada,
+              origen: `${destino} (${value.terminalDestination})`,
+              destino: `${origen} (${value.terminalOrigin})`,
+              hora: value.departureTime,
+              horaLlegada: value.arrivalTime,
               cantidadAsientos: 0,
               total: 0,
               asientosEquipaje: [],
@@ -694,7 +696,10 @@ export const ResumenViaje = (props) => {
                 <div className={styles["detalle-container"]}>
                   {Array.isArray(element.detalle) &&
                     element.detalle.map((detalleItem) => (
-                      <div key={`${detalleItem.origen}-${detalleItem.destino}-${detalleItem.hora}`} className={styles["detalle-item"]}>
+                      <div
+                        key={`${detalleItem.origen}-${detalleItem.destino}-${detalleItem.hora}`}
+                        className={styles["detalle-item"]}
+                      >
                         <ul>
                           <li>
                             <div>{detalleItem.origen}</div>
@@ -713,16 +718,22 @@ export const ResumenViaje = (props) => {
                         </div>
                         {detalleItem.asientosEquipaje &&
                           detalleItem.asientosEquipaje.length > 0 && (
-                            // <div className={`row mb-3 dotted-bottom mx-1 pb-3`}>
-                            <div className="row mb-3 mx-1 pb-3">
-                              <span className="col-12 fw-bold text-black fs-6 p-0">
-                                Equipaje
-                              </span>
-                              {detalleItem.asientosEquipaje.map((asiento) => {
-                                return (
-                                  <div key={`${asiento}-${index}`} className="col-12 p-0">{asiento}</div>
-                                );
-                              })}
+                            <div className={`row mb-3 dotted-bottom mx-1 pb-3`}>
+                              <div className="row mb-3 mx-1 pb-3">
+                                <span className="col-12 fw-bold text-black fs-6 p-0">
+                                  Equipaje
+                                </span>
+                                {detalleItem.asientosEquipaje.map((asiento) => {
+                                  return (
+                                    <div
+                                      key={`${asiento}-${index}`}
+                                      className="col-12 p-0"
+                                    >
+                                      {asiento}
+                                    </div>
+                                  );
+                                })}
+                              </div>
                             </div>
                           )}
                       </div>
