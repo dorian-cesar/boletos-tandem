@@ -199,7 +199,7 @@ const Boleto = (props) => {
         className="d-none"
         data-bs-toggle="modal"
         data-bs-target={`#parrillaModal-${
-          props.idParrilla
+          props.id
         }-${props.terminalOrigin.replace(
           /\s+/g,
           ""
@@ -350,7 +350,7 @@ const Boleto = (props) => {
       </LoadingOverlay>
       <div
         className="modal fade"
-        id={`parrillaModal-${props.idParrilla}-${props.terminalOrigin.replace(
+        id={`parrillaModal-${props.id}-${props.terminalOrigin.replace(
           /\s+/g,
           ""
         )}${props.terminalDestination.replace(/\s+/g, "")}`}

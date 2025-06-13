@@ -149,6 +149,7 @@ export const ResumenViaje = (props) => {
               destino: `${destino} (${value.terminalDestination})`,
               hora: value.departureTime,
               horaLlegada: value.arrivalTime,
+              valorAsientos: [],
               cantidadAsientos: 0,
               total: 0,
               asientosEquipaje: [],
@@ -179,6 +180,11 @@ export const ResumenViaje = (props) => {
                 });
               }
             }
+
+            datos.valorAsientos = value.asientos.map((a) => ({
+              num: a.asiento,
+              valorAsiento: formatGuarani(a.valorAsiento),
+            }));
 
             value.asientos.forEach((element) => {
               datos.cantidadAsientos += 1;
@@ -203,6 +209,7 @@ export const ResumenViaje = (props) => {
               destino: `${origen} (${value.terminalOrigin})`,
               hora: value.departureTime,
               horaLlegada: value.arrivalTime,
+              valorAsientos: [],
               cantidadAsientos: 0,
               total: 0,
               asientosEquipaje: [],
@@ -233,6 +240,11 @@ export const ResumenViaje = (props) => {
                 });
               }
             }
+
+            datos.valorAsientos = value.asientos.map((a) => ({
+              num: a.asiento,
+              valorAsiento: formatGuarani(a.valorAsiento),
+            }));
 
             value.asientos.forEach((element) => {
               datos.cantidadAsientos += 1;
@@ -710,13 +722,20 @@ export const ResumenViaje = (props) => {
                             <div>{detalleItem.horaLlegada}</div>
                           </li>
                         </ul>
-                        <div className={styles["resumen-servicio"]}>
+                        <div
+                          className={`flex-column ${styles["resumen-servicio"]}`}
+                        >
+                          {detalleItem.valorAsientos?.map((asiento) => (
+                            <span key={asiento.num}>
+                              Asiento {asiento.num}: <b>{asiento.valorAsiento}</b>
+                            </span>
+                          ))}
                           <span>
                             Cantidad de Asientos: {detalleItem.cantidadAsientos}
                           </span>
-                          <b>{detalleItem.total}</b>
+                          <b>Total: {detalleItem.total}</b>
                         </div>
-                        {detalleItem.asientosEquipaje &&
+                        {/* {detalleItem.asientosEquipaje &&
                           detalleItem.asientosEquipaje.length > 0 && (
                             <div className={`row mb-3 dotted-bottom mx-1 pb-3`}>
                               <div className="row mb-3 mx-1 pb-3">
@@ -735,7 +754,7 @@ export const ResumenViaje = (props) => {
                                 })}
                               </div>
                             </div>
-                          )}
+                          )} */}
                       </div>
                     ))}
                 </div>
