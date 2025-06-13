@@ -38,12 +38,13 @@ export const compraSlice = createSlice({
   reducers: {
     agregarServicio: (state, action) => {
       const { payload } = action;
-      console.log("payload agregar servicio: ", payload)
-      let key = "";
-      key = `${payload.servicio.terminalOrigin.replace(
-        /\s+/g,
-        ""
-      )}-${payload.servicio.terminalDestination.replace(/\s+/g, "")}`;
+      console.log("payload agregar servicio: ", payload);
+      let key = payload.servicio.id;
+      // const key = `${payload.servicio.terminalOrigin.replace(
+      //   /\s+/g,
+      //   ""
+      // )}-${payload.servicio.terminalDestination.replace(/\s+/g, "")}`;
+
       // if( payload.tipoServicio === 'ida' ) {
       // } else {
       //     key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
@@ -83,14 +84,14 @@ export const compraSlice = createSlice({
         let servicio = listaServicios.find(
           (servicio) => servicio.id === payload.servicio.id
         );
-        if( servicio ) {
-            servicio.asientos.push(payload.asiento);
+        if (servicio) {
+          servicio.asientos.push(payload.asiento);
         } else {
-            delete payload.servicio.logo;
-            listaServicios.push({
-                ...payload.servicio,
-                asientos: [payload.asiento]
-            });
+          delete payload.servicio.logo;
+          listaServicios.push({
+            ...payload.servicio,
+            asientos: [payload.asiento],
+          });
         }
 
         // Verificar si la clave `key` existe en state.listaCarrito
@@ -115,12 +116,11 @@ export const compraSlice = createSlice({
     },
     eliminarServicio: (state, action) => {
       const { payload } = action;
-      let key = "";
-
-      key = `${payload.servicio.terminalOrigin.replace(
-        /\s+/g,
-        ""
-      )}-${payload.servicio.terminalDestination.replace(/\s+/g, "")}`;
+      let key = payload.servicio.id;
+      // const key = `${payload.servicio.terminalOrigin.replace(
+      //   /\s+/g,
+      //   ""
+      // )}-${payload.servicio.terminalDestination.replace(/\s+/g, "")}`;
       // if( payload.tipoServicio === 'ida' ) {
       // } else {
       //     key = `${payload.servicio.idTerminalDestino}-${payload.servicio.idTerminalOrigen}`;
@@ -279,7 +279,10 @@ export const compraSlice = createSlice({
                   "/api/ticket_sale/liberar-asiento",
                   liberarAsiento
                 );
-                console.log("Asiento liberado (vuelta): ", liberarAsiento.asiento)
+                console.log(
+                  "Asiento liberado (vuelta): ",
+                  liberarAsiento.asiento
+                );
               } catch (e) {}
             });
           });

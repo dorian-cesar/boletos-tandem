@@ -152,6 +152,8 @@ const StagePasajes = (props) => {
 
       parrillaModificada[indexParrilla].asientos1 = dataAsientos1
       parrillaModificada[indexParrilla].asientos2 = dataAsientos2
+      parrillaTemporal[indexParrilla].asientos1 = dataAsientos1;
+      parrillaTemporal[indexParrilla].asientos2 = dataAsientos2;
       // if (!!parrillaTemporal[indexParrilla].busPiso2) {
       //   parrillaModificada[indexParrilla].asientos2 =
       //     parrilla.layout.floor2.seatMap;

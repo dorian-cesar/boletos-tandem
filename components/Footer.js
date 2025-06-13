@@ -72,7 +72,7 @@ const Footer = () => (
                         </div>
                     </div>
                     <div className="col-md-3 col-sm-6 ">
-                        <div className="d-flex flex-column  justify-content-start  justify-content-sm-start text-start">
+                        <div className="d-flex flex-column  justify-content-start  justify-content-sm-start text-center">
 
                             <h3>
                                 <img src="../img/icon/chat/Group.svg" className="img-fluid" alt="" />

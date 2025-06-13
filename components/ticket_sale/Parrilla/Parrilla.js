@@ -92,6 +92,26 @@ const Parrilla = (props) => {
   }, [isShowParrilla]);
 
   useEffect(() => {
+    // setKey(
+    //   `${props?.thisParrilla?.terminalOrigin.replace(
+    //     /\s+/g,
+    //     ""
+    //   )}-${props?.thisParrilla?.terminalDestination.replace(/\s+/g, "")}`
+    // );
+    setKey(props?.thisParrilla?.id);
+  }, []);
+
+  useEffect(() => {
+    // setKey(
+    //   `${props?.thisParrilla?.terminalOrigin.replace(
+    //     /\s+/g,
+    //     ""
+    //   )}-${props?.thisParrilla?.terminalDestination.replace(/\s+/g, "")}`
+    // );
+    setKey(props?.thisParrilla?.id);
+  }, [stage, parrilla]);
+
+  useEffect(() => {
     let dataIda = [];
     let dataVuelta = [];
 
@@ -120,26 +140,6 @@ const Parrilla = (props) => {
     }
     setCantidadVuelta(cantidadAsientosVuelta);
   }, [carroCompras]);
-
-  useEffect(() => {
-    setKey(
-      // `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
-      `${props?.thisParrilla?.terminalOrigin.replace(
-        /\s+/g,
-        ""
-      )}-${props?.thisParrilla?.terminalDestination.replace(/\s+/g, "")}`
-    );
-  }, []);
-
-  useEffect(() => {
-    setKey(
-      // `${props?.thisParrilla?.terminalOrigin}-${props?.thisParrilla?.terminalDestination}`
-      `${props?.thisParrilla?.terminalOrigin.replace(
-        /\s+/g,
-        ""
-      )}-${props?.thisParrilla?.terminalDestination.replace(/\s+/g, "")}`
-    );
-  }, [stage, parrilla]);
 
   useEffect(() => actualizarTotalPagar(), [carroCompras]);
 
@@ -343,9 +343,8 @@ const Parrilla = (props) => {
 
       const data = await response.json();
 
-      // console.log(`Respuesta del servicio tomar asiento: `, data);
-
       const reserva = data;
+      console.log("reserva data: ", reserva)
 
       if (!reserva.success || reserva.success === false) {
         toast.error("El asiento seleccionado ya se encuentra ocupado", {
@@ -684,6 +683,8 @@ const Parrilla = (props) => {
       parrillaModificada[indexParrilla].loadingAsientos = false;
       parrillaModificada[indexParrilla].asientos1 = dataAsientos1;
       parrillaModificada[indexParrilla].asientos2 = dataAsientos2;
+      parrillaTemporal[indexParrilla].asientos1 = dataAsientos1;
+      parrillaTemporal[indexParrilla].asientos2 = dataAsientos2;
       // if (!!parrillaTemporal[indexParrilla].props.asientos2) {
       //   parrillaModificada[indexParrilla].asientos2 = dataAsientos2;
       // }

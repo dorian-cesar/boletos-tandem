@@ -37,7 +37,6 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
 
 const BusquedaServicio = (props) => {
   const router = useRouter();
-
   const dispatch = useDispatch();
 
   const { dias, isShowMascota = false, isHomeComponent = true } = props;
@@ -101,6 +100,8 @@ const BusquedaServicio = (props) => {
   useEffect(() => {
     setDatePickerKey((prevKey) => prevKey + 1);
   }, [startDate]);
+
+  const buscarBtnRef = useRef();
 
   async function redireccionarBuscarServicio() {
     if (isLoading) return;
@@ -405,7 +406,14 @@ const BusquedaServicio = (props) => {
                 </label>
                 <DatePicker
                   selected={endDate}
-                  onChange={(date) => setEndDate(date)}
+                  onChange={(date) => {
+                    setEndDate(date);
+                    if (date && buscarBtnRef.current) {
+                      setTimeout(() => {
+                        buscarBtnRef.current.click();
+                      }, 100);
+                    }
+                  }}
                   filterDate={isValidAfter}
                   locale={"es"}
                   minDate={startDate}
@@ -417,13 +425,18 @@ const BusquedaServicio = (props) => {
               </div>
               <div className="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-2 col-xxl-2">
                 <button
+                  ref={buscarBtnRef}
                   className={`mx-auto mt-4 mt-md-0 ${
                     styles["button-busqueda-servicio"]
                   } ${isLoading ? styles["loading-button"] : ""}`}
                   onClick={redireccionarBuscarServicio}
                   disabled={!origen || !destino}
                 >
-                  <img src="img/icon-buscar-blanco.svg" style={{ width: '15px' }}/> Buscar
+                  <img
+                    src="img/icon-buscar-blanco.svg"
+                    style={{ width: "15px" }}
+                  />{" "}
+                  Buscar
                 </button>
               </div>
             </div>
