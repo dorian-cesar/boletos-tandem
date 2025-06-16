@@ -292,7 +292,7 @@ const Parrilla = (props) => {
       const dataAsientos2 = data.seats.secondFloor;
 
       console.log(
-        `Recargando panel para el servicio ${parrillaTemporal[indexParrilla].id} -  Data: `,
+        `Recargando panel para el servicio ${parrillaTemporal[indexParrilla].idParrilla} -  Data: `,
         data
       );
 
@@ -653,8 +653,10 @@ const Parrilla = (props) => {
     try {
       const parrillaTemporal = [...parrilla.parrilla];
       const parrillaModificada = [...parrilla.parrilla];
+      // console.log("parrillaTemporal", parrillaTemporal)
+      // console.log("parrillaModificada", parrillaModificada)
 
-      if (parrilla.parrilla[indexParrilla].id == openPane) {
+      if (parrilla.parrilla[indexParrilla].idParrilla == openPane) {
         return;
       }
 
@@ -676,7 +678,7 @@ const Parrilla = (props) => {
       // console.log("asientos2: ", dataAsientos2);
 
       console.log(
-        `Abriendo panel para el servicio ${parrillaTemporal[indexParrilla].id} - Data: `,
+        `Abriendo panel para el servicio ${parrillaTemporal[indexParrilla].idParrilla} - Data: `,
         data
       );
 
@@ -766,7 +768,8 @@ const Parrilla = (props) => {
       }
       if (cantidadIda > cantidadVuelta) {
         toast.warn(
-          `La cantidad de asientos de regreso debe coincidir con la cantidad de asientos seleccionados para el viaje de ida.`,
+          // `La cantidad de asientos de regreso debe coincidir con la cantidad de asientos seleccionados para el viaje de ida.`,
+          `Los asientos de regreso deben coincidir con la cantidad de asientos de ida`,
           {
             position: "top-right",
             autoClose: 5000,

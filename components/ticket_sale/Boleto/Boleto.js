@@ -72,16 +72,19 @@ const Boleto = (props) => {
   useEffect(() => {
     const obtenerAsientos = async () => {
       try {
+        setIsLoading(true);
         const data = await fetchAsientos(props);
         setAsientos1(data.seats.firstFloor);
         setAsientos2(data.seats.secondFloor);
         // console.log("Asientos obtenidos:", data);
+        setIsLoading(false);
       } catch (error) {
         console.error(error);
+        setIsLoading(false);
       }
     };
     obtenerAsientos();
-  }, []);
+  }, [isOpened]);
 
   // let duracion = dayjs(
   //   props.arrivalDate + " " + props.arrivalTime,

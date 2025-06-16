@@ -57,6 +57,8 @@ const DatosPasajero = (props) => {
     return asientoTemporal;
   }
 
+  console.log ("datos pasajero:", props)
+
   useEffect(() => {
     let asientoTemporal = { ...asiento };
     asientoTemporal["tipoDocumento"] = "R";
