@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const imagenDeRespaldo = {
   key: "banner_01",
-  url: "/",
+  // url: "/",
   image: "https://pullman.cl/imagenes/fenix/banner/banner-1.jpg",
 };
 
@@ -72,11 +72,19 @@ const Banner = (props) => {
           ) : (
             images.map(({ url, image }, index) => (
               <SwiperSlide className="swiper-slide" key={index}>
-                <Link href={url} legacyBehavior>
-                  <a href="#" target="_blank">
-                    <img className="w-100" src={image} />
-                  </a>
-                </Link>
+                {url ? (
+                  <Link href={url} legacyBehavior>
+                    <a target={url.startsWith("/") ? "_self" : "_blank"}>
+                      <img
+                        className="w-100"
+                        src={image}
+                        alt={`Banner ${index}`}
+                      />
+                    </a>
+                  </Link>
+                ) : (
+                  <img className="w-100" style={{ cursor: 'default' }} src={image} alt={`Banner ${index}`} />
+                )}
               </SwiperSlide>
             ))
           )}

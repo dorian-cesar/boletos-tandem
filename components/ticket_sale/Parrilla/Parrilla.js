@@ -1084,7 +1084,7 @@ const Parrilla = (props) => {
                       className={styles["imagen-volante"]}
                       src="img/volante.svg"
                       alt="Volante conductor"
-                      onClick={() => console.log(totalCompra)}
+                      // onClick={() => console.log(totalCompra)}
                     />
                   </div>
                 )}
