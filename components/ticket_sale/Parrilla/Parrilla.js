@@ -1167,28 +1167,10 @@ const Parrilla = (props) => {
                             key={`fila-asiento-${k}`}
                             className={styles["fila"]}
                           >
-                            {i.map((ii, kk) => (
-                              <Tippy
-                                key={`columna-asiento-${kk}`}
-                                content={
-                                  <div>
-                                    <strong>Asiento:</strong> {ii.asiento}{" "}
-                                    <br />
-                                    <strong>Estado:</strong> {ii.estado} <br />
-                                    <strong>Precio:</strong>{" "}
-                                    {ii.valorAsiento
-                                      ? formatGuarani(ii.valorAsiento)
-                                      : "N/A"}
-                                  </div>
-                                }
-                                placement="top"
-                                animation="shift-away-subtle"
-                                arrow={roundArrow}
-                                theme="custom-bus"
-                                offset={[0, 15]}
-                                // duration={0}
-                              >
+                            {i.map((ii, kk) =>
+                              ii.estado === "hold" || ii.estado === "paid" ? (
                                 <div
+                                  key={`columna-asiento-${kk}`}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     tomarAsiento(ii, props, props.k, 1);
@@ -1208,8 +1190,50 @@ const Parrilla = (props) => {
                                       : ""}
                                   </span>
                                 </div>
-                              </Tippy>
-                            ))}
+                              ) : (
+                                <Tippy
+                                  key={`columna-asiento-${kk}`}
+                                  content={
+                                    <div>
+                                      <strong>Asiento:</strong> {ii.asiento}{" "}
+                                      <br />
+                                      <strong>Estado:</strong> {ii.estado}{" "}
+                                      <br />
+                                      <strong>Precio:</strong>{" "}
+                                      {ii.valorAsiento
+                                        ? formatGuarani(ii.valorAsiento)
+                                        : "N/A"}
+                                    </div>
+                                  }
+                                  placement="top"
+                                  animation="shift-away-subtle"
+                                  arrow={roundArrow}
+                                  theme="custom-bus"
+                                  offset={[0, 15]}
+                                >
+                                  <div
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      tomarAsiento(ii, props, props.k, 1);
+                                    }}
+                                    className={`${
+                                      styles["columna"]
+                                    } ${asientoClass(ii, props.k)}`}
+                                  >
+                                    {ii.asiento && (
+                                      <img src={getImage(ii, props.k)} />
+                                    )}
+                                    <span>
+                                      {ii.asiento !== "B1" &&
+                                      ii.asiento !== "B2" &&
+                                      ii.estado !== "sinasiento"
+                                        ? ii.asiento
+                                        : ""}
+                                    </span>
+                                  </div>
+                                </Tippy>
+                              )
+                            )}
                           </div>
                         ))}
                       </>
@@ -1272,28 +1296,10 @@ const Parrilla = (props) => {
                             key={`fila-asiento-${k}`}
                             className={styles["fila"]}
                           >
-                            {i.map((ii, kk) => (
-                              <Tippy
-                                key={`columna-asiento-${kk}`}
-                                content={
-                                  <div>
-                                    <strong>Asiento:</strong> {ii.asiento}{" "}
-                                    <br />
-                                    <strong>Estado:</strong> {ii.estado} <br />
-                                    <strong>Precio:</strong>{" "}
-                                    {ii.valorAsiento
-                                      ? formatGuarani(ii.valorAsiento)
-                                      : "N/A"}
-                                  </div>
-                                }
-                                placement="top"
-                                animation="shift-away-subtle"
-                                arrow={roundArrow}
-                                theme="custom-bus"
-                                offset={[0, 15]}
-                                // duration={0}
-                              >
+                            {i.map((ii, kk) =>
+                              ii.estado === "hold" || ii.estado === "paid" ? (
                                 <div
+                                  key={`columna-asiento-${kk}`}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     tomarAsiento(ii, props, props.k, 2);
@@ -1313,8 +1319,50 @@ const Parrilla = (props) => {
                                       : ""}
                                   </span>
                                 </div>
-                              </Tippy>
-                            ))}
+                              ) : (
+                                <Tippy
+                                  key={`columna-asiento-${kk}`}
+                                  content={
+                                    <div>
+                                      <strong>Asiento:</strong> {ii.asiento}{" "}
+                                      <br />
+                                      <strong>Estado:</strong> {ii.estado}{" "}
+                                      <br />
+                                      <strong>Precio:</strong>{" "}
+                                      {ii.valorAsiento
+                                        ? formatGuarani(ii.valorAsiento)
+                                        : "N/A"}
+                                    </div>
+                                  }
+                                  placement="top"
+                                  animation="shift-away-subtle"
+                                  arrow={roundArrow}
+                                  theme="custom-bus"
+                                  offset={[0, 15]}
+                                >
+                                  <div
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      tomarAsiento(ii, props, props.k, 2);
+                                    }}
+                                    className={`${
+                                      styles["columna"]
+                                    } ${asientoClass(ii, props.k)}`}
+                                  >
+                                    {ii.asiento && (
+                                      <img src={getImage(ii, props.k)} />
+                                    )}
+                                    <span>
+                                      {ii.asiento !== "B1" &&
+                                      ii.asiento !== "B2" &&
+                                      ii.estado !== "sinasiento"
+                                        ? ii.asiento
+                                        : ""}
+                                    </span>
+                                  </div>
+                                </Tippy>
+                              )
+                            )}
                           </div>
                         ))}
                       </>
