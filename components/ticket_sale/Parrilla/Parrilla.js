@@ -56,6 +56,7 @@ const Parrilla = (props) => {
     setParrilla,
     setIsLoading,
     setModalMab,
+    setIsOpened,
   } = props;
 
   // console.log(`Parrilla props: `, props);
@@ -64,6 +65,8 @@ const Parrilla = (props) => {
   const [key, setKey] = useState(null);
   const [totalPagar, setTotalPagar] = useState(0);
   const [piso, setPiso] = useState(1);
+  const [asientos1, setAsientos1] = useState([]);
+  const [asientos2, setAsientos2] = useState([]);
   const [cantidadIda, setCantidadIda] = useState(0);
   const [cantidadVuelta, setCantidadVuelta] = useState(0);
 
@@ -350,13 +353,20 @@ const Parrilla = (props) => {
 
       const reserva = data;
       console.log("reserva data: ", reserva);
+      console.log("parrillaServicio", parrillaServicio);
 
-      if (!reserva.success || reserva.success === false) {
-        toast.error("El asiento seleccionado ya se encuentra ocupado", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-        });
+      if (!reserva.success || reserva.success === false || reserva.error) {
+        toast.error(
+          "El asiento seleccionado ya se encuentra reservado. Porfavor seleccione otro asiento",
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+          }
+        );
+        await reloadPane(parrillaServicio.idParrilla - 1);
+        setIsOpened(false);
+        setTimeout(() => setIsOpened(true), 0);
         throw new Error("Asiento tomado");
       }
 
