@@ -194,7 +194,7 @@ const Boleto = (props) => {
 
   return (
     <section
-      className={`container bg-white shadow-sm rounded-3 ${styles["info-container"]}`}
+      className={`container bg-white shadow-sm rounded-4 ${styles["info-container"]}`}
     >
       <button
         ref={sitMapButtonRef}

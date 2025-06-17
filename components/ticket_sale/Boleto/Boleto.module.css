@@ -872,5 +872,6 @@
     color: var(--naranjo-100, #FF6500);
     font-weight: 400;
     line-height: normal;
-    text-decoration-line: underline;
+    /* text-decoration-line: underline; */
+    font-style: italic;
 }
