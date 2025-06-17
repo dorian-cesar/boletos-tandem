@@ -47,12 +47,14 @@ export default async (req, res) => {
     function transformarAsientos(data) {
       const transformar = (seatsArray) => {
         return seatsArray.map((row) =>
-          row.map(({ number, status, price, ...rest }) => ({
-            ...rest,
-            asiento: number,
-            estado: status,
-            valorAsiento: price + 5000, // Se suma 5000 al valor del asiento para simular
-          }))
+          row
+            .map(({ number, status, price, ...rest }) => ({
+              ...rest,
+              asiento: number,
+              estado: status,
+              valorAsiento: price + 5000, // Se suma 5000 al valor del asiento para simular
+            }))
+            .reverse()
         );
       };
       const nuevaData = { ...data };
