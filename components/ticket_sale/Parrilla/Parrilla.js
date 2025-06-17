@@ -16,6 +16,11 @@ import {
 } from "store/usuario/compra-slice";
 import { toast } from "react-toastify";
 
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/svg-arrow.css";
+import "tippy.js/animations/shift-away-subtle.css";
+import { roundArrow } from "tippy.js";
+
 import CryptoJS from "crypto-js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -344,7 +349,7 @@ const Parrilla = (props) => {
       const data = await response.json();
 
       const reserva = data;
-      console.log("reserva data: ", reserva)
+      console.log("reserva data: ", reserva);
 
       if (!reserva.success || reserva.success === false) {
         toast.error("El asiento seleccionado ya se encuentra ocupado", {
@@ -1083,7 +1088,7 @@ const Parrilla = (props) => {
                 {props.asientos1
                   ? piso === 1 && (
                       <>
-                        {function () {
+                        {/* {function () {
                           let max = 7 - props.asientos1.length;
                           let n = 0;
                           let liens = [];
@@ -1146,14 +1151,64 @@ const Parrilla = (props) => {
                             n++;
                           }
                           return liens;
-                        }.call(this)}
+                        }.call(this)} */}
+                        {props.asientos1.map((i, k) => (
+                          <div
+                            key={`fila-asiento-${k}`}
+                            className={styles["fila"]}
+                          >
+                            {i.map((ii, kk) => (
+                              <Tippy
+                                key={`columna-asiento-${kk}`}
+                                content={
+                                  <div>
+                                    <strong>Asiento:</strong> {ii.asiento}{" "}
+                                    <br />
+                                    <strong>Estado:</strong> {ii.estado} <br />
+                                    <strong>Precio:</strong>{" "}
+                                    {ii.valorAsiento
+                                      ? formatGuarani(ii.valorAsiento)
+                                      : "N/A"}
+                                  </div>
+                                }
+                                placement="top"
+                                animation="shift-away-subtle"
+                                arrow={roundArrow}
+                                theme="custom-bus"
+                                offset={[0, 15]}
+                                // duration={0}
+                              >
+                                <div
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    tomarAsiento(ii, props, props.k, 1);
+                                  }}
+                                  className={`${
+                                    styles["columna"]
+                                  } ${asientoClass(ii, props.k)}`}
+                                >
+                                  {ii.asiento && (
+                                    <img src={getImage(ii, props.k)} />
+                                  )}
+                                  <span>
+                                    {ii.asiento !== "B1" &&
+                                    ii.asiento !== "B2" &&
+                                    ii.estado !== "sinasiento"
+                                      ? ii.asiento
+                                      : ""}
+                                  </span>
+                                </div>
+                              </Tippy>
+                            ))}
+                          </div>
+                        ))}
                       </>
                     )
                   : ""}
                 {props.asientos2
                   ? piso === 2 && (
                       <>
-                        {props.asientos2.map((i, k) => {
+                        {/* {props.asientos2.map((i, k) => {
                           return (
                             <div
                               key={`fila-asiento-${k}`}
@@ -1201,7 +1256,57 @@ const Parrilla = (props) => {
                             n++;
                           }
                           return liens;
-                        }.call(this)}
+                        }.call(this)} */}
+                        {props.asientos2.map((i, k) => (
+                          <div
+                            key={`fila-asiento-${k}`}
+                            className={styles["fila"]}
+                          >
+                            {i.map((ii, kk) => (
+                              <Tippy
+                                key={`columna-asiento-${kk}`}
+                                content={
+                                  <div>
+                                    <strong>Asiento:</strong> {ii.asiento}{" "}
+                                    <br />
+                                    <strong>Estado:</strong> {ii.estado} <br />
+                                    <strong>Precio:</strong>{" "}
+                                    {ii.valorAsiento
+                                      ? formatGuarani(ii.valorAsiento)
+                                      : "N/A"}
+                                  </div>
+                                }
+                                placement="top"
+                                animation="shift-away-subtle"
+                                arrow={roundArrow}
+                                theme="custom-bus"
+                                offset={[0, 15]}
+                                // duration={0}
+                              >
+                                <div
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    tomarAsiento(ii, props, props.k, 2);
+                                  }}
+                                  className={`${
+                                    styles["columna"]
+                                  } ${asientoClass(ii, props.k)}`}
+                                >
+                                  {ii.asiento && (
+                                    <img src={getImage(ii, props.k)} />
+                                  )}
+                                  <span>
+                                    {ii.asiento !== "B1" &&
+                                    ii.asiento !== "B2" &&
+                                    ii.estado !== "sinasiento"
+                                      ? ii.asiento
+                                      : ""}
+                                  </span>
+                                </div>
+                              </Tippy>
+                            ))}
+                          </div>
+                        ))}
                       </>
                     )
                   : ""}

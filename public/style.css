@@ -2730,3 +2730,16 @@ line-height: normal;
   position: relative;
   z-index: 10;
 }
+
+.tippy-box[data-theme~='custom-bus'] {
+  background-color: #fd682d;
+  color: #fff;
+  border-radius: 6px;
+  padding: 2px;
+  font-size: 14px;
+  border: 1px solid #ffffff;
+}
+
+.tippy-box[data-theme~='custom-bus'] .tippy-svg-arrow {
+  fill: #fd682d !important;
+}

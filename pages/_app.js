@@ -14,6 +14,7 @@ import "../public/custom.css";
 import "../public/modal.css";
 import { useEffect } from "react";
 import { Titillium_Web } from "next/font/google";
+import 'tippy.js/dist/tippy.css';
 
 const titillium = Titillium_Web({
   weight: ["400", "600", "700"],

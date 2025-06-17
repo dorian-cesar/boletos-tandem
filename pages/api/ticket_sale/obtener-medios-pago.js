@@ -21,7 +21,7 @@ const config = serverRuntimeConfig;
 
 export default async (req, res) => {
     try {
-        let data = await axios.post(config.service_url + `/parametros/obtenerMediosDePago`)
+        let data = await axios.post(config.url_api + `/parametros/obtenerMediosDePago`)
         res.status(200).json(data.data);
     } catch(e){
         res.status(400).json(e.response.data)
