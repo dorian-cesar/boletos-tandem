@@ -43,7 +43,7 @@
   display: flex;
   padding: 8px 16px;
   height: 40px;
-  width: 485px;
+  width: auto;
   padding: 24px;
   gap: 32px;
   justify-content: center;

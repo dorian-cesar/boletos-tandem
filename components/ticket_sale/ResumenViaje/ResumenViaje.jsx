@@ -684,13 +684,13 @@ export const ResumenViaje = (props) => {
     return Math.floor(valorPorcentaje);
   }
 
-  useEffect(() => {
-    if (medioPago === "CUP") {
-      setRequestConvenio(null);
-      setDescuentoConvenio(null);
-      setConvenio(null);
-    }
-  }, [medioPago]);
+  // useEffect(() => {
+  //   if (medioPago === "CUP") {
+  //     setRequestConvenio(null);
+  //     setDescuentoConvenio(null);
+  //     setConvenio(null);
+  //   }
+  // }, [medioPago]);
 
   return (
     <div className={styles["resumen-container"]}>
