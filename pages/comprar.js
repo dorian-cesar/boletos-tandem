@@ -156,12 +156,20 @@ export default function Home(props) {
 
       const res = await response.json();
 
-      const parrilla = res.map((item) => ({
+      const now = new Date();
+      const futuros = res.filter((item) => {
+        const salida = new Date(
+          `${item.date}T${item.departureTime.padStart(5, "0")}`
+        );
+        return salida > now;
+      });
+
+      const parrilla = futuros.map((item) => ({
         ...item,
         stage_active,
       }));
 
-      // console.log("parrilla: ", parrilla);
+      console.log("parrilla: ", parrilla);
 
       // const parrilla = await axios.post("/api/parrilla", new ObtenerParrillaServicioDTO(stage_active, origen, destino, startDate, endDate));
       setParrilla(
@@ -219,7 +227,15 @@ export default function Home(props) {
 
       const res = await response.json();
 
-      const parrilla = res.map((item) => ({
+      const now = new Date();
+      const futuros = res.filter((item) => {
+        const salida = new Date(
+          `${item.date}T${item.departureTime.padStart(5, "0")}`
+        );
+        return salida > now;
+      });
+
+      const parrilla = futuros.map((item) => ({
         ...item,
         stage,
       }));
