@@ -336,10 +336,13 @@ export const ResumenViaje = (props) => {
         listaCarrito: [],
       };
 
+      console.log("resumen compra:", resumenCompra)
+
       let restoUsoWallet = montoUsoWallet;
 
       informacionAgrupada.forEach((servicio) => {
         const carrito = new ListaCarritoDTO(servicio, servicio.asientos[0]);
+        console.log("carrito", carrito)
         servicio.asientos.forEach((asiento, index) => {
           const nuevoAsiento = {
             ...asiento,
@@ -536,6 +539,8 @@ export const ResumenViaje = (props) => {
           JSON.stringify(resumenCompra),
           secret
         );
+
+        console.log("info compra:", informacionAgrupada)
 
         sessionStorage.setItem(
           "purchase_info",

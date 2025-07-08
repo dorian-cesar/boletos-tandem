@@ -165,6 +165,7 @@ const StagePasajes = (props) => {
   }
 
   function setPasaje(pasaje) {
+    console.log("pasaje:", pasaje)
     try {
       let carroTemporal = { ...carro };
       if (stage == STAGE_BOLETO_IDA) {

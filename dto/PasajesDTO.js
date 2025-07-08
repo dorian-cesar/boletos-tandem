@@ -8,8 +8,8 @@ export class PasajeConvenioDTO {
         this.descuento = data?.descuento || '0';
         this.destino = data?.destino || '';
         this.fechaSalida = dayjs(data?.fechaSalida, 'DD/MM/YYYY').format('YYYYMMDD');
-        this.horaSalida = data?.horaSalida || '';
-        this.idServicio = data?.idServicio || '';
+        this.horaSalida = data?.departureTime || '';
+        this.idServicio = data?.id || '';
         this.origen = data?.origen || '';
         this.pago = data?.tarifa || '';
         this.valor = Math.round(data?.tarifa.replace('.', '') * 1.1);
@@ -20,20 +20,20 @@ export class PasajeConvenioDTO {
 
 export class PasajeDTO {
     constructor(pasaje, asiento, isOpen = true) {
-        this.idServicio = pasaje?.id || '';
-        this.fechaServicio = pasaje?.fechaServicio || '';
-        this.fechaSalida = pasaje?.date || '';
-        this.fechaLlegada = pasaje?.arrivalDate || '';
-        this.integrador = pasaje?.integrador || 0;
-        this.horaSalida = pasaje?.departureTime || '';
-        this.empresa = pasaje?.empresa || '';
-        this.bus = asiento?.piso == 1 ? pasaje?.busPiso1 : pasaje?.busPiso2;
-        this.origen = pasaje?.terminalOrigin || '';
-        this.destino = pasaje?.terminalDestination || '';
+        this.idServicio = pasaje?.parrilla.id || '';
+        this.fechaServicio = pasaje?.parrilla.date || '';
+        this.fechaSalida = pasaje?.parrilla.date || '';
+        this.fechaLlegada = pasaje?.parrilla.arrivalDate || '';
+        this.integrador = pasaje?.parrilla.idParrilla|| 0;
+        this.horaSalida = pasaje?.parrilla.departureTime || '';
+        this.empresa = pasaje?.parrilla.company || '';
+        this.bus = asiento?.piso == 1 ? pasaje?.parrilla.asientos1 : pasaje?.parrilla.asientos2;
+        this.origen = pasaje?.parrilla.terminalOrigin || '';
+        this.destino = pasaje?.parrilla.terminalDestination || '';
         this.codigoReserva = 1;
-        this.clase = pasaje?.idClaseBusPisoUno || '';
-        this.tarifa = asiento?.piso == 1 ? pasaje?.priceFirst : pasaje?.priceSecond;
-        this.servicio = asiento?.piso == 1 ? pasaje?.seatDescriptionFirst : pasaje?.seatDescriptionSecond; 
+        this.clase = pasaje?.parrilla.seatDescriptionFirst || '';
+        this.tarifa = asiento?.piso == 1 ? pasaje?.parrilla.priceFirst : pasaje?.parrilla.priceSecond;
+        this.servicio = asiento?.piso == 1 ? pasaje?.parrilla.seatDescriptionFirst : pasaje?.parrilla.seatDescriptionSecond; 
         this.piso = asiento?.piso || 1;
         this.pet = asiento?.pet || '';
         this.asiento = asiento || '';
@@ -52,7 +52,7 @@ export class PasajePagoDTO {
         this.servicio = pasaje?.id || '';
         this.fechaServicio = extras?.fechaServicio || '';
         this.fechaPasada = extras?.date || '';
-        this.fechaLlegada = extras?.fechaLlegada || '';
+        this.fechaLlegada = extras?.arrivalDate || '';
         this.horaSalida = pasaje?.horaSalida || '';
         this.horaLlegada = extras?.horaLlegada || '';
         this.origen = pasaje?.origen || '';
@@ -90,15 +90,15 @@ export class PasajePagoDTO {
 
 export class ListaCarritoDTO {
     constructor(servicio, asiento) {
-        this.servicio = servicio?.idServicio || '';
+        this.servicio = servicio?.id || '';
         this.fechaServicio = servicio?.fechaServicio || '';
         // TODO: REVISAR FECHA PASADA EN ALGUN FUTURO
-        this.fechaPasada = servicio?.fechaSalida || '';
-        this.fechaLlegada = servicio?.fechaLlegada || '';
-        this.horaSalida = servicio?.horaSalida || '';
-        this.horaLlegada = servicio?.horaLlegada || '';
-        this.origen = servicio?.idTerminalOrigen || '';
-        this.destino = servicio?.idTerminalDestino || '';
+        this.fechaPasada = servicio?.date || '';
+        this.fechaLlegada = servicio?.arrivalDate || '';
+        this.horaSalida = servicio?.d || '';
+        this.horaLlegada = servicio?.departureTime || '';
+        this.origen = servicio?.terminalOrigin || '';
+        this.destino = servicio?.terminalDestination || '';
         this.codigoReserva = '1'
         this.descuento = servicio?.descuento ? servicio.descuento : 0;
         this.empresa = servicio?.empresa || '';
