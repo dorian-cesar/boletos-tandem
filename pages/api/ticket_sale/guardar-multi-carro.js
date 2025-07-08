@@ -97,12 +97,12 @@ const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 const config = serverRuntimeConfig;
 import { WebpayPlus, Environment, Options } from "transbank-sdk";
 const crypto = require("node:crypto");
-const axios = require("axios");
 const querystring = require("node:querystring");
 
 import { authMiddleware } from "../auth-middleware";
 
 import CryptoJS from "crypto-js";
+import { isPropertyAccessChain } from "typescript";
 
 async function handleGuardarMultiCarro(req, res) {
   try {
@@ -114,19 +114,23 @@ async function handleGuardarMultiCarro(req, res) {
     const decrypted = CryptoJS.AES.decrypt(data, secret);
     const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 
-    console.log("data:", data)
+    console.log("serviceRequest:", serviceRequest)
+
+    const apiKey = process.env.FLOW_API_KEY;
+    console.log("apiKey", apiKey)
 
     const params = {
-      apiKey: config.apiKey,
+      apiKey: apiKey,
       commerceOrder: crypto.randomUUID(),
-      urlConfirmation: "",
-      urlReturn: "",
-      email: "",
+      urlConfirmation: "https://www.google.com/",
+      urlReturn: "https://www.google.cl/",
+      email: serviceRequest.datosComprador.email,
       subject: "Compra de pasajes de bus",
-      amount: "",
+      amount: serviceRequest.montoTotal,
     };
 
-    const secretKey = config.secretKey;
+    const secretKey = process.env.FLOW_SECRET_KEY
+
     const keys = Object.keys(params);
     keys.sort();
     let toSign = "";
@@ -145,14 +149,17 @@ async function handleGuardarMultiCarro(req, res) {
     };
 
     const encodedBody = querystring.stringify(body);
+    const url = process.env.FLOW_API_URL_PROD
 
     axios
-      .post(`${config.apiPay}/payment/create`, encodedBody)
-      .then((response) =>
+      .post(`${url}/payment/create`, encodedBody)
+      .then((response) => {
         console.log(
           "checkout url",
           `${response.data.url}?token=${response.data.token}`
         )
+        res.status(200).json(response.data);
+      }
       )
       .catch((error) => console.error(error));
   } catch (e) {

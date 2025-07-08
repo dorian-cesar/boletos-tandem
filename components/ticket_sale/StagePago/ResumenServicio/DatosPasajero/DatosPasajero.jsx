@@ -197,68 +197,68 @@ const DatosPasajero = (props) => {
     return nacionalidadesArray;
   }
 
-  async function obtenerDatosPasajero() {
-    let asientoTemporal = {
-      ...informacionAsiento,
-    }
+  // async function obtenerDatosPasajero() {
+  //   let asientoTemporal = {
+  //     ...informacionAsiento,
+  //   }
 
-    if( asientoTemporal['rut'] && asientoTemporal['tipoDocumento'] === 'R' && asientoTemporal['rut'].length >= 11 ||
-      asientoTemporal['rut'] && asientoTemporal['tipoDocumento'] === 'P' && asientoTemporal['rut'].length >= 6
-    ) {
-      try {
-        const response = await axios.post(`/api/obtener-datos-pasajero`,{
-          documento: asientoTemporal['rut'],
-          tipodoc: asientoTemporal['tipoDocumento']
-        });
+  //   if( asientoTemporal['rut'] && asientoTemporal['tipoDocumento'] === 'R' && asientoTemporal['rut'].length >= 11 ||
+  //     asientoTemporal['rut'] && asientoTemporal['tipoDocumento'] === 'P' && asientoTemporal['rut'].length >= 6
+  //   ) {
+  //     try {
+  //       const response = await axios.post(`/api/obtener-datos-pasajero`,{
+  //         documento: asientoTemporal['rut'],
+  //         tipodoc: asientoTemporal['tipoDocumento']
+  //       });
 
-        setCantidadEquipaje(0);
+  //       setCantidadEquipaje(0);
 
-        const { nombres, apellidos, nacionalidad } = response.data;
+  //       const { nombres, apellidos, nacionalidad } = response.data;
   
-        asientoTemporal['nombre'] = nombres;
-        asientoTemporal['apellido'] = apellidos;
-        // asientoTemporal['nacionalidad'] = nacionalidad;
-        asientoTemporal['cantidadEquipaje'] = 0;
+  //       asientoTemporal['nombre'] = nombres;
+  //       asientoTemporal['apellido'] = apellidos;
+  //       // asientoTemporal['nacionalidad'] = nacionalidad;
+  //       asientoTemporal['cantidadEquipaje'] = 0;
 
-        // const nacionalidadEncontrada = returnNationalitiesArray().find(nationality => nationality.value === nacionalidad);
+  //       // const nacionalidadEncontrada = returnNationalitiesArray().find(nationality => nationality.value === nacionalidad);
 
-        if( nacionalidadEncontrada ) {
-          setNationalitySelected(nacionalidadEncontrada);
-        }
+  //       if( nacionalidadEncontrada ) {
+  //         setNationalitySelected(nacionalidadEncontrada);
+  //       }
         
-        const infoToDispatch = {
-          servicio,
-          asiento: asientoTemporal,
-        };
+  //       const infoToDispatch = {
+  //         servicio,
+  //         asiento: asientoTemporal,
+  //       };
   
-        if (servicio) {
-          dispatch(agregarInformacionAsiento(infoToDispatch));
+  //       if (servicio) {
+  //         dispatch(agregarInformacionAsiento(infoToDispatch));
 
-          if( asiento.asientoAsociado ) {
-            let asientoMab = { ...servicio.asientos.find((asientoMab) => asientoMab.asiento === asiento.asientoAsociado) };
+  //         if( asiento.asientoAsociado ) {
+  //           let asientoMab = { ...servicio.asientos.find((asientoMab) => asientoMab.asiento === asiento.asientoAsociado) };
 
-            asientoMab = {
-              ...asientoMab,
-              rut: asientoTemporal?.rut,
-              tipoDocumento: asientoTemporal?.tipoDocumento,
-              nombre: asientoTemporal?.nombre,
-              apellido: asientoTemporal?.apellido,
-              nacionalidad: asientoTemporal?.nacionalidad
-            }
+  //           asientoMab = {
+  //             ...asientoMab,
+  //             rut: asientoTemporal?.rut,
+  //             tipoDocumento: asientoTemporal?.tipoDocumento,
+  //             nombre: asientoTemporal?.nombre,
+  //             apellido: asientoTemporal?.apellido,
+  //             nacionalidad: asientoTemporal?.nacionalidad
+  //           }
   
-            dispatch(agregarInformacionAsiento({
-              servicio,
-              asiento: asientoMab
-            }));
-          }
-        }
+  //           dispatch(agregarInformacionAsiento({
+  //             servicio,
+  //             asiento: asientoMab
+  //           }));
+  //         }
+  //       }
 
-        setInformacionAsiento(asientoTemporal);
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }
+  //       setInformacionAsiento(asientoTemporal);
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  // }
 
   const handleDisabledButtonBagagge = () => {
     if( 
@@ -388,7 +388,7 @@ const DatosPasajero = (props) => {
                       } ${styles["input"]}`}
                       disabled={ usuario }
                       onChange={(e) => setDataComprador(e.target)}
-                      onBlur={obtenerDatosPasajero}
+                      // onBlur={obtenerDatosPasajero}
                     />
                   </div>
                 </div>

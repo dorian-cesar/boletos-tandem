@@ -91,19 +91,19 @@ export class PasajePagoDTO {
 export class ListaCarritoDTO {
     constructor(servicio, asiento) {
         this.servicio = servicio?.id || '';
-        this.fechaServicio = servicio?.fechaServicio || '';
+        this.fechaServicio = servicio?.date || '';
         // TODO: REVISAR FECHA PASADA EN ALGUN FUTURO
         this.fechaPasada = servicio?.date || '';
         this.fechaLlegada = servicio?.arrivalDate || '';
-        this.horaSalida = servicio?.d || '';
-        this.horaLlegada = servicio?.departureTime || '';
+        this.horaSalida = servicio?.departureTime || '';
+        this.horaLlegada = servicio?.arrivalTime || '';
         this.origen = servicio?.terminalOrigin || '';
         this.destino = servicio?.terminalDestination || '';
         this.codigoReserva = '1'
         this.descuento = servicio?.descuento ? servicio.descuento : 0;
-        this.empresa = servicio?.empresa || '';
-        this.clase = asiento?.claseBus || '';
-        this.bus = servicio?.busPiso1 || '';
+        this.empresa = servicio?.company || '';
+        this.clase = asiento?.busTypeDescription || '';
+        this.bus = servicio?.layout || '';
         this.integrador = servicio?.integrador || 1000;
         this.datoConvenio = servicio?.datoConvenio ? servicio.datoConvenio : '';
         this.convenio = servicio?.convenioActivo ? servicio.convenioActivo : '';
@@ -115,8 +115,8 @@ export class ListaCarritoDTO {
 
 export class PasajeroListaCarritoDTO {
     constructor(asiento) {
-        this.monto = asiento?.tarifa.toString() || '0';
-        this.precio = asiento?.precio.toString() || asiento?.tarifa.toString() || '0';
+        this.monto = asiento?.valorAsiento.toString() || '0';
+        this.precio = asiento?.precio.toString() || asiento?.valorAsiento.toString() || '0';
         this.idaVuelta = asiento?.idaVuelta || false;
         this.piso = asiento?.piso || 1;
         this.asiento = asiento?.asiento || '';

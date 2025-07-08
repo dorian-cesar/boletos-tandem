@@ -336,32 +336,35 @@ export const ResumenViaje = (props) => {
         listaCarrito: [],
       };
 
-      console.log("resumen compra:", resumenCompra)
+      console.log("resumen compra:", resumenCompra);
 
       let restoUsoWallet = montoUsoWallet;
 
       informacionAgrupada.forEach((servicio) => {
         const carrito = new ListaCarritoDTO(servicio, servicio.asientos[0]);
-        console.log("carrito", carrito)
+        console.log("carrito", carrito);
+        console.log("servicio:", servicio);
+        console.log("servicio.asientos[0]:", servicio.asientos[0]);
+
         servicio.asientos.forEach((asiento, index) => {
           const nuevoAsiento = {
             ...asiento,
-            precio: asiento.tarifa,
+            precio: asiento.valorAsiento,
           };
 
           if (medioPago !== "CUP" && usaWallet && restoUsoWallet > 0) {
-            const montoUsar = Math.min(restoUsoWallet, nuevoAsiento.tarifa);
-            nuevoAsiento.precio = Math.max(nuevoAsiento.tarifa - montoUsar, 0);
+            const montoUsar = Math.min(restoUsoWallet, nuevoAsiento.valorAsiento);
+            nuevoAsiento.precio = Math.max(nuevoAsiento.valorAsiento - montoUsar, 0);
             restoUsoWallet -= montoUsar;
           }
 
           if (descuentoConvenio) {
             const montoDescuento = Math.round(
-              (nuevoAsiento.tarifa * descuentoConvenio.descuento) / 100
+              (nuevoAsiento.valorAsiento * descuentoConvenio.descuento) / 100
             );
-            const montoUsar = Math.round(montoDescuento, nuevoAsiento.tarifa);
+            const montoUsar = Math.round(montoDescuento, nuevoAsiento.valorAsiento);
             nuevoAsiento.precio = Math.round(
-              Math.max(nuevoAsiento.tarifa - montoUsar, 0)
+              Math.max(nuevoAsiento.valorAsiento - montoUsar, 0)
             );
             nuevoAsiento.descuento = Math.round(montoDescuento);
             nuevoAsiento.convenio = convenio;
@@ -371,209 +374,211 @@ export const ResumenViaje = (props) => {
           if (descuentoConvenio?.id === "COPEC") {
             nuevoAsiento.datoConvenio = requestConvenio?.atributo;
           }
-
+          console.log("nuevoAsiento:", nuevoAsiento);
           carrito.pasajeros.push(new PasajeroListaCarritoDTO(nuevoAsiento));
+          console.log("carrito.pasajeros:", carrito.pasajeros);
         });
 
         resumenCompra.listaCarrito.push(carrito);
+        console.log("resumenCompra.listaCarrito:", resumenCompra.listaCarrito);
       });
 
       agregarEventoTagManager();
 
-      if (medioPago === "CUP") {
-        if (resumenCompra.listaCarrito.length > 1) {
-          toast.error(
-            "No puede usar código cuponera cuando tiene más de un servicio en el carro",
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-            }
-          );
-          setCodigoCuponera("");
-          return;
-        }
+      // if (medioPago === "CUP") {
+      //   if (resumenCompra.listaCarrito.length > 1) {
+      //     toast.error(
+      //       "No puede usar código cuponera cuando tiene más de un servicio en el carro",
+      //       {
+      //         position: "top-right",
+      //         autoClose: 5000,
+      //         hideProgressBar: false,
+      //       }
+      //     );
+      //     setCodigoCuponera("");
+      //     return;
+      //   }
 
-        let masAsientoSeleccionado = false;
-        let existeAsientoVuelta = false;
+      //   let masAsientoSeleccionado = false;
+      //   let existeAsientoVuelta = false;
 
-        Object.entries(carroCompras).map(([key, value]) => {
-          if (value.ida) {
-            value.ida.forEach((servicioIda) => {
-              if (servicioIda.asientos.length > 1) {
-                toast.error(
-                  "No puede usar código cuponera cuando tiene más de un asiento seleccionado",
-                  {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                  }
-                );
-                setCodigoCuponera("");
-                masAsientoSeleccionado = true;
-                setIsLoading(false);
-                return;
-              }
-            });
-          }
+      //   Object.entries(carroCompras).map(([key, value]) => {
+      //     if (value.ida) {
+      //       value.ida.forEach((servicioIda) => {
+      //         if (servicioIda.asientos.length > 1) {
+      //           toast.error(
+      //             "No puede usar código cuponera cuando tiene más de un asiento seleccionado",
+      //             {
+      //               position: "top-right",
+      //               autoClose: 5000,
+      //               hideProgressBar: false,
+      //             }
+      //           );
+      //           setCodigoCuponera("");
+      //           masAsientoSeleccionado = true;
+      //           setIsLoading(false);
+      //           return;
+      //         }
+      //       });
+      //     }
 
-          if (value.vuelta) {
-            toast.error(
-              "No puede usar código cuponera cuando un tiene un servicio con vuelta incluido en el carro",
-              {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-              }
-            );
-            setCodigoCuponera("");
-            existeAsientoVuelta = true;
-            setIsLoading(false);
-            return;
-          }
+      //     if (value.vuelta) {
+      //       toast.error(
+      //         "No puede usar código cuponera cuando un tiene un servicio con vuelta incluido en el carro",
+      //         {
+      //           position: "top-right",
+      //           autoClose: 5000,
+      //           hideProgressBar: false,
+      //         }
+      //       );
+      //       setCodigoCuponera("");
+      //       existeAsientoVuelta = true;
+      //       setIsLoading(false);
+      //       return;
+      //     }
+      //   });
+
+      //   if (masAsientoSeleccionado || existeAsientoVuelta) {
+      //     setIsLoading(false);
+      //     return;
+      //   }
+
+      //   let validaCuponera = {
+      //     origen: resumenCompra.listaCarrito[0].origen,
+      //     destino: resumenCompra.listaCarrito[0].destino,
+      //     fechaServicio: resumenCompra.listaCarrito[0].fechaServicio
+      //       .replace("/", "-")
+      //       .replace("/", "-"),
+      //     idServicio: resumenCompra.listaCarrito[0].servicio,
+      //     codigoCuponera: codigoCuponera,
+      //     rutComprador: resumenCompra.datosComprador.rut
+      //       .replace(".", "")
+      //       .replace(".", ""),
+      //     idSistema: resumenCompra.idSistema,
+      //     idIntegrador: resumenCompra.idIntegrador,
+      //   };
+
+      //   try {
+      //     let response = await axios.post(
+      //       "/api/coupon/validar-cuponera",
+      //       validaCuponera
+      //     );
+
+      //     if (response && response.data && response.data.status) {
+      //       let fechaServicioParse = formatearFecha(
+      //         resumenCompra.listaCarrito[0].fechaServicio
+      //       );
+      //       let fechaServicioSalidarParse =
+      //         formatearFecha(resumenCompra.listaCarrito[0].fechaServicio) +
+      //         resumenCompra.listaCarrito[0].horaSalida.replace(":", "");
+
+      //       let canjearCuponera = {
+      //         idSistema: resumenCompra.idSistema,
+      //         idIntegrador: resumenCompra.idIntegrador,
+      //         codigoCuponera: codigoCuponera,
+      //         boleto: {
+      //           fechaLlegada: resumenCompra.listaCarrito[0].fechaLlegada,
+      //           horaLlegada: resumenCompra.listaCarrito[0].horaLlegada,
+      //           nombre: datosComprador?.nombre,
+      //           apellido: datosComprador?.apellido,
+      //           asiento: resumenCompra.listaCarrito[0].pasajeros[0].asiento,
+      //           clase: resumenCompra.listaCarrito[0].pasajeros[0].clase,
+      //           idServicio: resumenCompra.listaCarrito[0].servicio,
+      //           fechaServicio: fechaServicioParse,
+      //           fechaSalida: fechaServicioSalidarParse,
+      //           piso: resumenCompra.listaCarrito[0].pasajeros[0].piso,
+      //           email: datosComprador?.email,
+      //           destino: resumenCompra.listaCarrito[0].destino,
+      //           idOrigen: resumenCompra.listaCarrito[0].origen,
+      //           idDestino: resumenCompra.listaCarrito[0].destino,
+      //           rut: resumenCompra.listaCarrito[0].pasajeros[0]?.documento
+      //             .replace(".", "")
+      //             .replace(".", ""),
+      //           tipoDocumento: datosComprador.tipoDocumento,
+      //           cantidadEquipaje:
+      //             resumenCompra.listaCarrito[0].pasajeros[0]
+      //               ?.cantidadEquipaje || 0,
+      //         },
+      //       };
+      //       let data;
+      //       try {
+      //         sessionStorage.setItem(
+      //           "purchase_info",
+      //           JSON.stringify(informacionAgrupada)
+      //         );
+
+      //         const response = await axios.post(
+      //           "/api/coupon/canjear-cuponera",
+      //           canjearCuponera
+      //         );
+      //         data = response.data;
+      //       } catch (error) {
+      //         // Esto hace que pase igual a la pagina de /respuesta-transaccion-canje
+      //         // data = error.response.data;
+      //       }
+      //       if (data) {
+      //         dispatch(agregarCompraCuponera(data));
+      //         const url = `/respuesta-transaccion-canje/${data?.voucher?.boleto}`;
+      //         router.push(url);
+      //       } else {
+      //         toast.warn("Ocurrio un error al canjear la cuponera", {
+      //           position: "top-right",
+      //           autoClose: 5000,
+      //           hideProgressBar: false,
+      //         });
+      //       }
+      //     }
+      //   } catch (error) {
+      //     setIsLoading(false);
+      //     toast.error("Ocurrio un error al canjear la cuponera", {
+      //       position: "top-right",
+      //       autoClose: 5000,
+      //       hideProgressBar: false,
+      //     });
+      //     return false;
+      //   }
+      // } else {
+      const token = generateToken();
+
+      const request = CryptoJS.AES.encrypt(
+        JSON.stringify(resumenCompra),
+        secret
+      );
+
+      console.log("info compra:", informacionAgrupada);
+
+      sessionStorage.setItem(
+        "purchase_info",
+        JSON.stringify(informacionAgrupada)
+      );
+
+      const response = await fetch(`/api/ticket_sale/guardar-multi-carro`, {
+        method: "POST",
+        body: JSON.stringify({ data: request.toString() }),
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (Boolean(data.error)) {
+        toast.error("Error al completar la transacción", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
         });
-
-        if (masAsientoSeleccionado || existeAsientoVuelta) {
-          setIsLoading(false);
-          return;
-        }
-
-        let validaCuponera = {
-          origen: resumenCompra.listaCarrito[0].origen,
-          destino: resumenCompra.listaCarrito[0].destino,
-          fechaServicio: resumenCompra.listaCarrito[0].fechaServicio
-            .replace("/", "-")
-            .replace("/", "-"),
-          idServicio: resumenCompra.listaCarrito[0].servicio,
-          codigoCuponera: codigoCuponera,
-          rutComprador: resumenCompra.datosComprador.rut
-            .replace(".", "")
-            .replace(".", ""),
-          idSistema: resumenCompra.idSistema,
-          idIntegrador: resumenCompra.idIntegrador,
-        };
-
-        try {
-          let response = await axios.post(
-            "/api/coupon/validar-cuponera",
-            validaCuponera
-          );
-
-          if (response && response.data && response.data.status) {
-            let fechaServicioParse = formatearFecha(
-              resumenCompra.listaCarrito[0].fechaServicio
-            );
-            let fechaServicioSalidarParse =
-              formatearFecha(resumenCompra.listaCarrito[0].fechaServicio) +
-              resumenCompra.listaCarrito[0].horaSalida.replace(":", "");
-
-            let canjearCuponera = {
-              idSistema: resumenCompra.idSistema,
-              idIntegrador: resumenCompra.idIntegrador,
-              codigoCuponera: codigoCuponera,
-              boleto: {
-                fechaLlegada: resumenCompra.listaCarrito[0].fechaLlegada,
-                horaLlegada: resumenCompra.listaCarrito[0].horaLlegada,
-                nombre: datosComprador?.nombre,
-                apellido: datosComprador?.apellido,
-                asiento: resumenCompra.listaCarrito[0].pasajeros[0].asiento,
-                clase: resumenCompra.listaCarrito[0].pasajeros[0].clase,
-                idServicio: resumenCompra.listaCarrito[0].servicio,
-                fechaServicio: fechaServicioParse,
-                fechaSalida: fechaServicioSalidarParse,
-                piso: resumenCompra.listaCarrito[0].pasajeros[0].piso,
-                email: datosComprador?.email,
-                destino: resumenCompra.listaCarrito[0].destino,
-                idOrigen: resumenCompra.listaCarrito[0].origen,
-                idDestino: resumenCompra.listaCarrito[0].destino,
-                rut: resumenCompra.listaCarrito[0].pasajeros[0]?.documento
-                  .replace(".", "")
-                  .replace(".", ""),
-                tipoDocumento: datosComprador.tipoDocumento,
-                cantidadEquipaje:
-                  resumenCompra.listaCarrito[0].pasajeros[0]
-                    ?.cantidadEquipaje || 0,
-              },
-            };
-            let data;
-            try {
-              sessionStorage.setItem(
-                "purchase_info",
-                JSON.stringify(informacionAgrupada)
-              );
-
-              const response = await axios.post(
-                "/api/coupon/canjear-cuponera",
-                canjearCuponera
-              );
-              data = response.data;
-            } catch (error) {
-              // Esto hace que pase igual a la pagina de /respuesta-transaccion-canje
-              // data = error.response.data;
-            }
-            if (data) {
-              dispatch(agregarCompraCuponera(data));
-              const url = `/respuesta-transaccion-canje/${data?.voucher?.boleto}`;
-              router.push(url);
-            } else {
-              toast.warn("Ocurrio un error al canjear la cuponera", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-              });
-            }
-          }
-        } catch (error) {
-          setIsLoading(false);
-          toast.error("Ocurrio un error al canjear la cuponera", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-          });
-          return false;
-        }
-      } else {
-        const token = generateToken();
-
-        const request = CryptoJS.AES.encrypt(
-          JSON.stringify(resumenCompra),
-          secret
-        );
-
-        console.log("info compra:", informacionAgrupada)
-
-        sessionStorage.setItem(
-          "purchase_info",
-          JSON.stringify(informacionAgrupada)
-        );
-
-        const response = await fetch(`/api/ticket_sale/guardar-multi-carro`, {
-          method: "POST",
-          body: JSON.stringify({ data: request.toString() }),
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await response.json();
-
-        if (Boolean(data.error)) {
-          toast.error("Error al completar la transacción", {
-            position: "bottom-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-          });
-          return;
-        }
-
-        setIsLoading(false);
-
-        setPayment({
-          ...payment,
-          url: data.url,
-          token: data.token,
-        });
+        return;
       }
+
+      setIsLoading(false);
+
+      setPayment({
+        ...payment,
+        url: data.url,
+        token: data.token,
+      });
+      // }
     } catch (error) {
       setIsLoading(false);
       console.error(`Error al completar la transacción [${error.message}]`);
@@ -732,7 +737,8 @@ export const ResumenViaje = (props) => {
                         >
                           {detalleItem.valorAsientos?.map((asiento) => (
                             <span key={asiento.num}>
-                              Asiento {asiento.num}: <b>{asiento.valorAsiento}</b>
+                              Asiento {asiento.num}:{" "}
+                              <b>{asiento.valorAsiento}</b>
                             </span>
                           ))}
                           <span>
@@ -874,7 +880,8 @@ export const ResumenViaje = (props) => {
                 ref={payment_form}
                 style={{ display: "none" }}
                 method="POST"
-                action={payment.url}
+                // action={payment.url}
+                action={`${payment.url}?token=${payment.token}`}
               >
                 <input name="TBK_TOKEN" value={payment.token} />
               </form>
