@@ -122,6 +122,8 @@ async function handleGuardarMultiCarro(req, res) {
     const params = {
       apiKey: apiKey,
       commerceOrder: crypto.randomUUID(),
+      currency: "CLP",
+      // paymentMethod: 9,
       urlConfirmation: "https://www.google.com/",
       urlReturn: "https://www.google.cl/",
       email: serviceRequest.datosComprador.email,

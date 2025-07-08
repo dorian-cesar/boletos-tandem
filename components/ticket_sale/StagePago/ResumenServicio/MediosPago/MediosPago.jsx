@@ -60,7 +60,15 @@ const MediosPago = (props) => {
               onChange={(e) => setDataMedioPago(e.target)}
             />
             {element.valor2 === "WBPAY" ? (
-              <img src="/img/icon/cuponera/Logo-webpay.svg" />
+              <img
+                src="/img/icon/cuponera/logo-flow.png"
+                style={{
+                  maxWidth: "100px",
+                  width: "100%",
+                  height: "auto",
+                  objectFit: "contain",
+                }}
+              />
             ) : (
               <div
                 className={
@@ -96,7 +104,6 @@ const MediosPago = (props) => {
 
 export default MediosPago;
 
-
 // import { useEffect, useRef, useState } from "react";
 // import styles from "./MediosPago.module.css";
 // import axios from "axios";
@@ -105,7 +112,7 @@ export default MediosPago;
 
 // const MediosPago = (props) => {
 //   const {mediosPago, setMediosPago, codigoCuponera, setCodigoCuponera} = props;
-//   const [selectedMedioPago, setSelectedMedioPago] = useState(null); 
+//   const [selectedMedioPago, setSelectedMedioPago] = useState(null);
 //   const [validar, setValidar] =useState(false);
 
 //   const dispatch = useDispatch();
@@ -126,7 +133,7 @@ export default MediosPago;
 //       console.error(`Error al agregar informacion del comprador [${message}]`);
 //     }
 //   }
-  
+
 //   return (
 //     <>
 //       <div className={styles["container"]}>
