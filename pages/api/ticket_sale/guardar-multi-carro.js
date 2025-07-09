@@ -113,7 +113,7 @@ async function handleGuardarMultiCarro(req, res) {
     const decrypted = CryptoJS.AES.decrypt(data, secret);
     const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 
-    console.log("serviceRequest:", serviceRequest)
+    // console.log("serviceRequest:", serviceRequest)
 
     const apiKey = process.env.FLOW_API_KEY;
     console.log("apiKey", apiKey)
@@ -124,8 +124,8 @@ async function handleGuardarMultiCarro(req, res) {
       currency: "CLP",
       // paymentMethod: 9,
       timeout: 1800,
-      urlConfirmation: "https://www.google.com/",
-      urlReturn: "https://www.google.cl/",
+      urlConfirmation: "https://www.google.com/", // llamada POST api/endpoint
+      urlReturn: "",
       email: serviceRequest.datosComprador.email,
       subject: "Compra de pasajes de bus",
       amount: serviceRequest.montoTotal,

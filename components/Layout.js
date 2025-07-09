@@ -75,14 +75,14 @@ export default function Layout({ children, isBuyStage = false }) {
                 </a>
               </Link>
             </div>
-            <div className="w-100">
+            {/* <div className="w-100">
               <Link href="/cuponera" legacyBehavior>
                 <a href="/Cuponera" className="cuponeras">
                   Cuponera
                 </a>
               </Link>
-            </div>
-            <div className="w-100">
+            </div> */}
+            {/* <div className="w-100">
               <Link href="/confirmacionBoleto" legacyBehavior>
                 <a href="" className="confirmacions">
                   Confirmación
@@ -109,15 +109,15 @@ export default function Layout({ children, isBuyStage = false }) {
                   Viajes especiales
                 </a>
               </Link>
-            </div>
-            <div className="w-100">
+            </div> */}
+            {/* <div className="w-100">
               <a
                 href="https://pullmanempresas.cl/#/sessions/signin?return=%2Fempresa%2Fhome"
                 className="cliente-empresa"
               >
                 Cliente Empresas
               </a>
-            </div>
+            </div> */}
             
             <div className="w-100">
               <Link href="/teAyudamos" legacyBehavior>
@@ -126,13 +126,13 @@ export default function Layout({ children, isBuyStage = false }) {
                 </a>
               </Link>
             </div>
-            <div className="w-100">
+            {/* <div className="w-100">
               <Link href="https://api.pullman.cl/stuWAR/#/marketplace" legacyBehavior>
                 <a className="venta-vehiculos">
                   Venta vehículos usados
                 </a>
               </Link>
-            </div>
+            </div> */}
           </div>
           <div className="contactanos-menu">
             <span>Síguenos :</span>
