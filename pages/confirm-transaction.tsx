@@ -56,7 +56,7 @@ export default function ConfrimTransaction({ serviceResponse }:ConfirmTransactio
         if( serviceResponse && serviceResponse.cerrar && serviceResponse.cerrar.estado && !hasPushed ) {
             const token = JWT.sign(serviceResponse, SECRET);
             sessionStorage.setItem('transactionInformation', token);
-            router.push('/respuesta-transaccion-v2', );
+            router.push('/respuesta-transaccion-v2');
             setHasPushed(true);
             return;
         }
