@@ -94,8 +94,8 @@ import doLogin from "../../../utils/oauth-token";
 import getConfig from "next/config";
 import axios from "axios";
 import { WebpayPlus, Environment, Options } from "transbank-sdk";
-import * as crypto from "node:crypto";
-import * as querystring from "node:querystring";
+import crypto from "crypto";
+import { stringify } from "querystring";
 import CryptoJS from "crypto-js";
 import { isPropertyAccessChain } from "typescript";
 import { authMiddleware } from "../auth-middleware";
@@ -150,7 +150,7 @@ async function handleGuardarMultiCarro(req, res) {
       s: signature,
     };
 
-    const encodedBody = querystring.stringify(body);
+    const encodedBody = stringify(body);
     const url = process.env.FLOW_API_URL_PROD
 
     axios
