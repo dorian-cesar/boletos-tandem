@@ -125,7 +125,7 @@ async function handleGuardarMultiCarro(req, res) {
       // paymentMethod: 9,
       timeout: 1800,
       urlConfirmation: "https://www.google.com/", // llamada POST api/endpoint
-      urlReturn: "",
+      urlReturn: "http://localhost:3000/respuesta-transaccion-v2",
       email: serviceRequest.datosComprador.email,
       subject: "Compra de pasajes de bus",
       amount: serviceRequest.montoTotal,

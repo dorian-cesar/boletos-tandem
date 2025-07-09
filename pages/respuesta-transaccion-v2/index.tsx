@@ -42,24 +42,24 @@ export default function Home(props: HomeProps) {
 
   const router = useRouter();
 
-  useEffect(() => {
-    try {
-      const data = sessionStorage.getItem('transactionInformation');
-      if( data ) {
-        const decoded:any = JWT.verify(data, SECRET);
-        if( decoded && decoded.carro ) {
-          setCarro(decoded.carro);
-        }
-        if( decoded && decoded.cerrar ) {
-          setCodigo(decoded.cerrar.orden);
-        }
-      } else {
-        router.push('/');
-      }
-    } catch (error) {
-      router.push('/');
-    }
-  }, [])
+  // useEffect(() => {
+  //   try {
+  //     const data = sessionStorage.getItem('transactionInformation');
+  //     if( data ) {
+  //       const decoded:any = JWT.verify(data, SECRET);
+  //       if( decoded && decoded.carro ) {
+  //         setCarro(decoded.carro);
+  //       }
+  //       if( decoded && decoded.cerrar ) {
+  //         setCodigo(decoded.cerrar.orden);
+  //       }
+  //     } else {
+  //       router.push('/');
+  //     }
+  //   } catch (error) {
+  //     router.push('/');
+  //   }
+  // }, [])
 
   useEffect(() => {
     try {
