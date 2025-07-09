@@ -116,7 +116,15 @@ async function handleGuardarMultiCarro(req, res) {
     // console.log("serviceRequest:", serviceRequest)
 
     const apiKey = process.env.FLOW_API_KEY;
-    console.log("apiKey", apiKey)
+    console.log("apiKey", apiKey);
+
+    let urlReturn;
+
+    if (process.env.NODE_ENV_FLOW !== "production") {
+      urlReturn = "https://boletos-com.netlify.app/respuesta-transaccion-v2";
+    } else {
+      urlReturn = "http://localhost:3000/respuesta-transaccion-v2";
+    }
 
     const params = {
       apiKey: apiKey,
@@ -125,13 +133,13 @@ async function handleGuardarMultiCarro(req, res) {
       // paymentMethod: 9,
       timeout: 1800,
       urlConfirmation: "https://www.google.com/", // llamada POST api/endpoint
-      urlReturn: "http://localhost:3000/respuesta-transaccion-v2",
+      urlReturn: urlReturn,
       email: serviceRequest.datosComprador.email,
       subject: "Compra de pasajes de bus",
       amount: serviceRequest.montoTotal,
     };
 
-    const secretKey = process.env.FLOW_SECRET_KEY
+    const secretKey = process.env.FLOW_SECRET_KEY;
 
     const keys = Object.keys(params);
     keys.sort();
@@ -151,7 +159,7 @@ async function handleGuardarMultiCarro(req, res) {
     };
 
     const encodedBody = stringify(body);
-    const url = process.env.FLOW_API_URL_PROD
+    const url = process.env.FLOW_API_URL_PROD;
 
     axios
       .post(`${url}/payment/create`, encodedBody)
@@ -159,10 +167,9 @@ async function handleGuardarMultiCarro(req, res) {
         console.log(
           "checkout url",
           `${response.data.url}?token=${response.data.token}`
-        )
+        );
         res.status(200).json(response.data);
-      }
-      )
+      })
       .catch((error) => console.error(error));
   } catch (e) {
     console.log(e.message);
