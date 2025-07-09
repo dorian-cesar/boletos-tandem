@@ -93,16 +93,15 @@
 import doLogin from "../../../utils/oauth-token";
 import getConfig from "next/config";
 import axios from "axios";
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
-const config = serverRuntimeConfig;
 import { WebpayPlus, Environment, Options } from "transbank-sdk";
-const crypto = require("node:crypto");
-const querystring = require("node:querystring");
-
-import { authMiddleware } from "../auth-middleware";
-
+import * as crypto from "node:crypto";
+import * as querystring from "node:querystring";
 import CryptoJS from "crypto-js";
 import { isPropertyAccessChain } from "typescript";
+import { authMiddleware } from "../auth-middleware";
+
+const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+const config = serverRuntimeConfig;
 
 async function handleGuardarMultiCarro(req, res) {
   try {
@@ -124,6 +123,7 @@ async function handleGuardarMultiCarro(req, res) {
       commerceOrder: crypto.randomUUID(),
       currency: "CLP",
       // paymentMethod: 9,
+      timeout: 1800,
       urlConfirmation: "https://www.google.com/",
       urlReturn: "https://www.google.cl/",
       email: serviceRequest.datosComprador.email,
