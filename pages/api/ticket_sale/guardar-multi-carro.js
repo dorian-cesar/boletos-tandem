@@ -116,11 +116,11 @@ async function handleGuardarMultiCarro(req, res) {
     // console.log("serviceRequest:", serviceRequest)
 
     const apiKey = process.env.FLOW_API_KEY;
-    console.log("apiKey", apiKey);
+    // console.log("apiKey", apiKey);
 
     const isProd = process.env.NODE_ENV === "production";
     const urlReturn = isProd
-      ? "https://boletos-com.netlify.app/respuesta-transaccion-v2"
+      ? "https://boletos-com.netlify.app/confirm-transaction"
       : "http://localhost:3000/respuesta-transaccion-v2";
 
     const params = {
