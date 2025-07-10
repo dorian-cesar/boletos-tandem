@@ -121,7 +121,7 @@ async function handleGuardarMultiCarro(req, res) {
     const isProd = process.env.NODE_ENV === "production";
     const urlReturn = isProd
       ? "https://boletos-com.netlify.app/confirm-transaction"
-      : "http://localhost:3000/respuesta-transaccion-v2";
+      : "http://localhost:3000/confirm-transaction";
 
     const params = {
       apiKey: apiKey,
@@ -156,7 +156,7 @@ async function handleGuardarMultiCarro(req, res) {
     };
 
     const encodedBody = stringify(body);
-    const url = process.env.FLOW_API_URL_PROD;
+    const url = process.env.FLOW_API_URL;
 
     axios
       .post(`${url}/payment/create`, encodedBody)
