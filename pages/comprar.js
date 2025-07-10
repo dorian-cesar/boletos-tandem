@@ -157,11 +157,13 @@ export default function Home(props) {
       const res = await response.json();
 
       const now = new Date();
+      const nowPlus15 = new Date(now.getTime() + 15 * 60 * 1000);
+
       const futuros = res.filter((item) => {
         const salida = new Date(
           `${item.date}T${item.departureTime.padStart(5, "0")}`
         );
-        return salida > now;
+        return salida > nowPlus15;
       });
 
       const parrilla = futuros.map((item) => ({
@@ -225,14 +227,14 @@ export default function Home(props) {
         // },
       });
 
-      const res = await response.json();
-
       const now = new Date();
+      const nowPlus15 = new Date(now.getTime() + 15 * 60 * 1000);
+
       const futuros = res.filter((item) => {
         const salida = new Date(
           `${item.date}T${item.departureTime.padStart(5, "0")}`
         );
-        return salida > now;
+        return salida > nowPlus15;
       });
 
       const parrilla = futuros.map((item) => ({

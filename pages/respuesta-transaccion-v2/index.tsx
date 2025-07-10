@@ -301,7 +301,7 @@ export default function Home(props: HomeProps) {
           {
             resumen ? (
               <div className="card text-center border-0 shadow-sm rounded-4">
-                <div className="card-header bg-white border-0">
+                <div className="card-header bg-white border-0 mt-2">
                   <img src="/img/ui/transaction/transaction-success.svg" alt="confirmado"/>
                 </div>
                 <div className="card-body">
@@ -316,7 +316,7 @@ export default function Home(props: HomeProps) {
                   <div className="container">
                     <div className="row justify-content-center">
                       <div className="col-12 col-md-6">
-                        <div className="bg-secondary p-3 rounded-4 shadow-s">
+                        <div className="bg-secondary p-2 rounded-4 shadow-s">
                           <h5 className="text-white fw-bold m-0">Orden de compra: {resumen?.transaction}</h5>
                         </div>
                       </div>
