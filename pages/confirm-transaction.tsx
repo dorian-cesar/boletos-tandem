@@ -129,13 +129,38 @@
 
 import Footer from "components/Footer";
 import Layout from "components/Layout";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { generateToken } from "utils/jwt-auth";
+import JWT from "jsonwebtoken";
+import { useSelector } from "react-redux";
 
-export default function ConfirmTransaction() {
+const SECRET = "xWL!96JRaWi2lT0jG";
+
+export default function ConfrimTransaction() {
   const router = useRouter();
+  const [carroCompras, setCarroCompras] = useState([]);
+  const [hasPushed, setHasPushed] = useState(false);
+
+  const selector =
+    useSelector((state: any) => state.compra?.listaCarrito) || [];
+
+  useEffect(() => {
+    let keys = 0;
+
+    if (selector) {
+      keys = Object.keys(selector).length;
+    }
+
+    if (keys > 0) {
+      const token = JWT.sign(selector, SECRET);
+      sessionStorage.setItem("transactionBasketInfo", token);
+      setCarroCompras(selector);
+    } else {
+      setCarroCompras([]);
+    }
+  }, []);
 
   useEffect(() => {
     const runCheck = async () => {

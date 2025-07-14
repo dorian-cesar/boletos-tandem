@@ -42,24 +42,24 @@ export default function Home(props: HomeProps) {
 
   const router = useRouter();
 
-  // useEffect(() => {
-  //   try {
-  //     const data = sessionStorage.getItem('transactionInformation');
-  //     if( data ) {
-  //       const decoded:any = JWT.verify(data, SECRET);
-  //       if( decoded && decoded.carro ) {
-  //         setCarro(decoded.carro);
-  //       }
-  //       if( decoded && decoded.cerrar ) {
-  //         setCodigo(decoded.cerrar.orden);
-  //       }
-  //     } else {
-  //       router.push('/');
-  //     }
-  //   } catch (error) {
-  //     router.push('/');
-  //   }
-  // }, [])
+  useEffect(() => {
+    try {
+      const data = sessionStorage.getItem('transactionInformation');
+      if( data ) {
+        const decoded:any = JWT.verify(data, SECRET);
+        if( decoded && decoded.carro ) {
+          setCarro(decoded.carro);
+        }
+        if( decoded && decoded.cerrar ) {
+          setCodigo(decoded.cerrar.orden);
+        }
+      } else {
+        // router.push('/');
+      }
+    } catch (error) {
+      // router.push('/');
+    }
+  }, [])
 
   useEffect(() => {
     try {
@@ -68,6 +68,7 @@ export default function Home(props: HomeProps) {
         const decoded:any = JWT.verify(data, SECRET);
         if( decoded ) {
           setCarroCompras(decoded);
+          console.log('carroCompras', decoded);
         }
       }
     } catch (error) {}
@@ -120,17 +121,18 @@ export default function Home(props: HomeProps) {
     Object.keys(carroCompras).forEach((key) => {
       const compra = carroCompras[key];
       if (compra.ida && compra.ida.length > 0) {
-        const fechaIdaFormateada = compra.ida[0].fechaSalida.split("/");
+        const fechaIdaFormateada = compra.ida[0].date.split("/");
         const fechaIda = new Date(
           `${fechaIdaFormateada[1]}/${fechaIdaFormateada[0]}/${fechaIdaFormateada[2]}`
         );
         const idaList = compra.ida;
+        console.log(idaList);
         idaList.forEach((value:any) => {
           const datos = {
-            origen: `${value.terminalOrigen}`,
-            destino: `${value.terminalDestino}`,
-            hora: value.horaSalida,
-            horaLlegada: value.horaLlegada,
+            origen: `${value.terminalOrigin}`,
+            destino: `${value.terminalDestination}`,
+            hora: value.departureTime,
+            horaLlegada: value.arrivalTime,
             cantidadAsientos: 0,
             total: 0,
             totalFormateado: ''
@@ -146,17 +148,17 @@ export default function Home(props: HomeProps) {
       }
 
       if (compra.vuelta && compra.vuelta.length > 0) {
-        const fechaVueltaFormateada = compra.vuelta[0].fechaSalida.split("/");
+        const fechaVueltaFormateada = compra.vuelta[0].date.split("/");
         const fechaVuelta = new Date(
           `${fechaVueltaFormateada[1]}/${fechaVueltaFormateada[0]}/${fechaVueltaFormateada[2]}`
         );
         const vueltaList = compra.vuelta;
         vueltaList.forEach((value:any) => {
           const datos = {
-            origen: `${value.terminalOrigen}`,
-            destino: `${value.terminalDestino}`,
-            hora: value.horaSalida,
-            horaLlegada: value.horaLlegada,
+            origen: `${value.terminalOrigin}`,
+            destino: `${value.terminalDestination}`,
+            hora: value.departureTime,
+            horaLlegada: value.arrivalTime,
             cantidadAsientos: 0,
             total: 0,
             totalFormateado: ''
@@ -230,7 +232,6 @@ export default function Home(props: HomeProps) {
   useEffect(() => agregarEventoTagManager(), [totalPagar, codigo, carro]);
 
   const descargarBoletos = () =>{
-    console.log(props);
     carro.boletos.forEach( async (element:any) => {
       let boleto = {
         codigo: element.codigo,
@@ -353,12 +354,12 @@ export default function Home(props: HomeProps) {
                                       <div key={index} className={ `my-5 ${styles["detalle-item"]}` }>
                                         <ul>
                                           <li>
-                                            <div>{detalle.origen}</div>
-                                            <div>{detalle.hora}</div>
+                                            <div>{detalle.origin}</div>
+                                            <div>{detalle.departureTime}</div>
                                           </li>
                                           <li>
-                                            <div>{detalle.destino}</div>
-                                            <div>{detalle.horaLlegada}</div>
+                                            <div>{detalle.destination}</div>
+                                            <div>{detalle.arrivalTime}</div>
                                           </li>
                                         </ul>
                                         <div className={styles['resumen-servicio']}>

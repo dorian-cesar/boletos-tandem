@@ -744,12 +744,12 @@ export const ResumenViaje = (props) => {
                       >
                         <ul>
                           <li>
-                            <div>{detalleItem.origen}</div>
-                            <div>{detalleItem.hora}</div>
+                            <div>{detalleItem.origin}</div>
+                            <div>{detalleItem.departureTime}</div>
                           </li>
                           <li>
-                            <div>{detalleItem.destino}</div>
-                            <div>{detalleItem.horaLlegada}</div>
+                            <div>{detalleItem.destination}</div>
+                            <div>{detalleItem.arrivalTime}</div>
                           </li>
                         </ul>
                         <div

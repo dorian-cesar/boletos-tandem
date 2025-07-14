@@ -81,7 +81,7 @@ const ResumenServicio = (props) => {
               }
             });
           } else {
-            const viaje = `${servicio.destination}-${servicio.origin}`;
+            const viaje = `${servicioVuelta.destination}-${servicioVuelta.origin}`;
             const fecha = servicioVuelta.date;
             const hora = servicioVuelta.departureTime;
             const asientos = [];
