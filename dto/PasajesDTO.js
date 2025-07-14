@@ -31,7 +31,7 @@ export class PasajeDTO {
         this.origen = pasaje?.parrilla.terminalOrigin || '';
         this.destino = pasaje?.parrilla.terminalDestination || '';
         this.codigoReserva = 1;
-        this.clase = pasaje?.parrilla.seatDescriptionFirst || '';
+        this.clase = pasaje?.parrilla.busTypeDescription|| '';
         this.tarifa = asiento?.piso == 1 ? pasaje?.parrilla.priceFirst : pasaje?.parrilla.priceSecond;
         this.servicio = asiento?.piso == 1 ? pasaje?.parrilla.seatDescriptionFirst : pasaje?.parrilla.seatDescriptionSecond; 
         this.piso = asiento?.piso || 1;
@@ -60,7 +60,7 @@ export class PasajePagoDTO {
         this.codigoReserva = '1';
         this.descuento = 0;
         this.empresa = extras?.empresa || '';
-        this.clase = pasaje?.clase || '';
+        this.clase = pasaje?.busTypeDescription || '';
         this.bus = pasaje?.bus || '';
         this.integrador = 1000;
         this.monto = pasaje?.tarifa.replace(',', '') || '';
@@ -120,7 +120,7 @@ export class PasajeroListaCarritoDTO {
         this.idaVuelta = asiento?.idaVuelta || false;
         this.piso = asiento?.piso || 1;
         this.asiento = asiento?.asiento || '';
-        this.clase = asiento?.claseBus || '';
+        this.clase = asiento?.busTypeDescription || '';
         this.documento = asiento?.rut || '';
         this.email = asiento?.email || '';
         this.nacionalidad = asiento?.nacionalidad || '';

@@ -277,7 +277,7 @@ export default function Home(props: HomeProps) {
 
   const getPassagersInfo = () => {
     let groupPassagers = {}
-    const purchaseInfo = JSON.parse(sessionStorage.getItem('purchase_info'));
+    const purchaseInfo = JSON.parse(localStorage.getItem('purchase_info'));
     if( purchaseInfo && purchaseInfo.length > 0 ) {
       purchaseInfo.forEach((purchase) => {
         purchase.asientos.forEach((seat) => {

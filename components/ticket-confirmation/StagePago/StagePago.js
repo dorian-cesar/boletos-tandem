@@ -279,7 +279,7 @@ const StagePago = (props) => {
     //             }
     //         </div>
 
-    //         <InformacionComprador setCarro={ setCarro } carro={ carro } validarFormatoRut={ validarFormatoRut }/>
+            // <InformacionComprador setCarro={ setCarro } carro={ carro } validarFormatoRut={ validarFormatoRut }/>
 
     //         <div className='d-flex'>
     //             <div className='col-12 col-md-12 m-1'>

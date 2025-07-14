@@ -157,10 +157,10 @@ export const ResumenViaje = (props) => {
 
             const informacionPasajeros = informacionAgrupada.find(
               (servicio) =>
-                servicio?.idServicio === value?.idServicio &&
-                servicio?.idTerminalOrigen === value?.idTerminalOrigen &&
-                servicio?.idTerminalDestino === value?.idTerminalDestino &&
-                servicio?.horaSalida === value?.horaSalida
+                servicio?.id === value?.id &&
+                servicio?.terminalOrigin === value?.terminalOrigin &&
+                servicio?.terminalDestination === value?.terminalDestination &&
+                servicio?.departureTime === value?.departureTime
             );
 
             if (informacionPasajeros) {
@@ -217,10 +217,10 @@ export const ResumenViaje = (props) => {
 
             const informacionPasajeros = informacionAgrupada.find(
               (servicio) =>
-                servicio?.idServicio === value?.idServicio &&
-                servicio?.idTerminalOrigen === value?.idTerminalOrigen &&
-                servicio?.idTerminalDestino === value?.idTerminalDestino &&
-                servicio?.horaSalida === value?.horaSalida
+                servicio?.id === value?.id &&
+                servicio?.terminalOrigin === value?.terminalOrigin &&
+                servicio?.terminalDestination === value?.terminalDestination &&
+                servicio?.departureTime === value?.departureTime
             );
 
             if (informacionPasajeros) {
@@ -345,16 +345,24 @@ export const ResumenViaje = (props) => {
         console.log("carrito", carrito);
         console.log("servicio:", servicio);
         console.log("servicio.asientos[0]:", servicio.asientos[0]);
+        console.log("aca se agregan props para enviar, como email")
 
         servicio.asientos.forEach((asiento, index) => {
           const nuevoAsiento = {
             ...asiento,
             precio: asiento.valorAsiento,
+            email: datosComprador?.email || "",
           };
 
           if (medioPago !== "CUP" && usaWallet && restoUsoWallet > 0) {
-            const montoUsar = Math.min(restoUsoWallet, nuevoAsiento.valorAsiento);
-            nuevoAsiento.precio = Math.max(nuevoAsiento.valorAsiento - montoUsar, 0);
+            const montoUsar = Math.min(
+              restoUsoWallet,
+              nuevoAsiento.valorAsiento
+            );
+            nuevoAsiento.precio = Math.max(
+              nuevoAsiento.valorAsiento - montoUsar,
+              0
+            );
             restoUsoWallet -= montoUsar;
           }
 
@@ -362,7 +370,10 @@ export const ResumenViaje = (props) => {
             const montoDescuento = Math.round(
               (nuevoAsiento.valorAsiento * descuentoConvenio.descuento) / 100
             );
-            const montoUsar = Math.round(montoDescuento, nuevoAsiento.valorAsiento);
+            const montoUsar = Math.round(
+              montoDescuento,
+              nuevoAsiento.valorAsiento
+            );
             nuevoAsiento.precio = Math.round(
               Math.max(nuevoAsiento.valorAsiento - montoUsar, 0)
             );
@@ -502,7 +513,7 @@ export const ResumenViaje = (props) => {
             };
             let data;
             try {
-              sessionStorage.setItem(
+              localStorage.setItem(
                 "purchase_info",
                 JSON.stringify(informacionAgrupada)
               );
@@ -538,46 +549,55 @@ export const ResumenViaje = (props) => {
           return false;
         }
       } else {
-      const token = generateToken();
+        const token = generateToken();
 
-      const request = CryptoJS.AES.encrypt(
-        JSON.stringify(resumenCompra),
-        secret
-      );
+        const request = CryptoJS.AES.encrypt(
+          JSON.stringify(resumenCompra),
+          secret
+        );
 
-      console.log("info compra:", informacionAgrupada);
+        console.log("info compra:", informacionAgrupada);
+        console.log("datos comprador:", datosComprador);
 
-      sessionStorage.setItem(
-        "purchase_info",
-        JSON.stringify(informacionAgrupada)
-      );
+        localStorage.setItem(
+          "purchase_info",
+          JSON.stringify(informacionAgrupada)
+        );
 
-      const response = await fetch(`/api/ticket_sale/guardar-multi-carro`, {
-        method: "POST",
-        body: JSON.stringify({ data: request.toString() }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        localStorage.setItem(
+          "buyer_info",
+          JSON.stringify(datosComprador)
+        );
 
-      const data = await response.json();
-
-      if (Boolean(data.error)) {
-        toast.error("Error al completar la transacción", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
+        const response = await fetch(`/api/ticket_sale/guardar-multi-carro`, {
+          method: "POST",
+          body: JSON.stringify({ data: request.toString() }),
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-        return;
-      }
 
-      setIsLoading(false);
+        const data = await response.json();
 
-      setPayment({
-        ...payment,
-        url: data.url,
-        token: data.token,
-      });
+        if (Boolean(data.error)) {
+          toast.error("Error al completar la transacción", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+          });
+          return;
+        } else {
+          localStorage.setItem("tokenTemp", data.token);
+          localStorage.setItem("flowOrder", data.flowOrder);
+        }
+
+        setIsLoading(false);
+
+        setPayment({
+          ...payment,
+          url: data.url,
+          token: data.token,
+        });
       }
     } catch (error) {
       setIsLoading(false);
@@ -888,9 +908,9 @@ export const ResumenViaje = (props) => {
             </div>
           ) : (
             <img
-              src="/img/loading.gif"
+              src="/img/paraguay.gif"
               width={150}
-              height={150}
+              // height={100}
               alt="Perro caminando"
               style={{ display: "flex", margin: "auto" }}
             />

@@ -121,7 +121,7 @@ async function handleGuardarMultiCarro(req, res) {
     const isProd = process.env.NODE_ENV === "production";
     const urlReturn = isProd
       ? "https://boletos-com.netlify.app/confirm-transaction"
-      : "http://localhost:3000/confirm-transaction";
+      : `http://localhost:3000/confirm-transaction`;
 
     const params = {
       apiKey: apiKey,
@@ -129,7 +129,7 @@ async function handleGuardarMultiCarro(req, res) {
       currency: "CLP",
       // paymentMethod: 9,
       timeout: 1800,
-      urlConfirmation: "https://www.google.com/", // llamada POST api/endpoint
+      urlConfirmation: "http://sandbox.dev-wit.com/api/paymentConfirmation/", // llamada POST api/endpoint
       urlReturn: urlReturn,
       email: serviceRequest.datosComprador.email,
       subject: "Compra de pasajes de bus",

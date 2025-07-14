@@ -9,6 +9,7 @@ const InformacionComprador = (props) => {
             value = validarFormatoRut(name, value);
             carro_temp.datos[name] = value;
             setCarro(carro_temp);
+            console.log("setDataComprador:", carro_temp)
         } catch ({ message }) {
             console.error(`Error al agregar informacion del comprador [${message}]`);
         }
