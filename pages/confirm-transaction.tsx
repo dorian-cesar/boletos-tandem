@@ -240,11 +240,19 @@ export default function ConfirmTransaction() {
               // Todos confirmados con éxito
               if (router.pathname !== "/respuesta-transaccion-v2") {
                 router.push("/respuesta-transaccion-v2");
+                localStorage.removeItem("tokenTemp");
+                localStorage.removeItem("flowOrder");
+                localStorage.removeItem("purchase_info");
+                localStorage.removeItem("buyer_info");
               }
             } catch (error) {
               console.error("Error confirmando asientos:", error);
               if (router.pathname !== "/error-transaccion") {
                 router.push("/error-transaccion");
+                localStorage.removeItem("tokenTemp");
+                localStorage.removeItem("flowOrder");
+                localStorage.removeItem("purchase_info");
+                localStorage.removeItem("buyer_info");
               }
             }
             break;
@@ -254,8 +262,10 @@ export default function ConfirmTransaction() {
           default:
             if (router.pathname !== "/error-transaccion") {
               router.push("/error-transaccion");
-              // localStorage.removeItem("tokenTemp");
-              // localStorage.removeItem("flowOrder");
+              localStorage.removeItem("tokenTemp");
+              localStorage.removeItem("flowOrder");
+              localStorage.removeItem("purchase_info");
+              localStorage.removeItem("buyer_info");
             }
             break;
         }
@@ -263,8 +273,10 @@ export default function ConfirmTransaction() {
         console.error("Error al verificar estado del pago:", error);
         if (router.pathname !== "/error-transaccion") {
           router.push("/error-transaccion");
-          // localStorage.removeItem("tokenTemp");
-          // localStorage.removeItem("flowOrder");
+          localStorage.removeItem("tokenTemp");
+          localStorage.removeItem("flowOrder");
+          localStorage.removeItem("purchase_info");
+          localStorage.removeItem("buyer_info");
         }
       }
     };

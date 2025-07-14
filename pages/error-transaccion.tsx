@@ -5,36 +5,39 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function ErrorTransaccion() {
-    const [transactionCodeStr, setTransactionCodeStr] = useState<string>('');
+  const [transactionCodeStr, setTransactionCodeStr] = useState<string>('');
 
-    useEffect(() => {
-        try {
-            const cookies = cookie.parse(document.cookie || '');
-            const code = cookies.transactionCode || '';
-            setTransactionCodeStr(code);
-        } catch (error) {
-            console.error('Error parsing cookie:', error);
-        }
-    }, []);
+  useEffect(() => {
+    try {
+      const cookies = cookie.parse(document.cookie || '');
+      const code = cookies.transactionCode || '';
+      setTransactionCodeStr(code);
+    } catch (error) {
+      console.error('Error parsing cookie:', error);
+    }
+  }, []);
 
-    return (
-        <Layout>
-            <div className="container row d-flex justify-content-center mb-5 w-100 mx-auto">
-                <div className="text-center mt-5">
-                    <h1>Lo sentimos 😢,</h1>
-                    <h2>no se pudo llevar a cabo la transacción</h2>
-                    <h2>de tu compra.</h2>
-                </div>
-                <div className="text-center my-2">
-                    <h5>Por favor, intentelo nuevamente.</h5>
-                </div>
-                <div className="mt-5 mb-5 col-lg-4">
-                    <Link className="btn-outline" href="/">
-                        Salir
-                    </Link>
-                </div>
-            </div>
-            <Footer />
-        </Layout>
-    )
+  return (
+    <Layout>
+      <div className="container d-flex flex-column justify-content-center align-items-center min-vh-100 py-5">
+        <div className="text-center mb-2 p-4">
+          <h1 className="display-4">Lo sentimos 😢</h1>
+          <p className="h5">No se pudo completar la transacción de tu compra.</p>
+          <p className="text-muted">Por favor, inténtalo nuevamente.</p>
+        </div>
+
+        {transactionCodeStr && (
+          <div className="alert alert-secondary text-center w-100 w-md-50" role="alert">
+            <strong>Código de transacción:</strong> {transactionCodeStr}
+          </div>
+        )}
+
+        <Link href="/" className="btn btn-primary px-4 py-2 mt-3">
+          Volver al inicio
+        </Link>
+      </div>
+
+      <Footer />
+    </Layout>
+  );
 }
