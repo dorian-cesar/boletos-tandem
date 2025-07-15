@@ -2,21 +2,21 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import 'react-modern-drawer/dist/index.css'
+import "react-modern-drawer/dist/index.css";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
 import { liberarAsientos } from "store/usuario/compra-slice";
 import { limpiarCambio } from "store/usuario/cambio-boleto-slice";
 
-import { GoogleTagManager } from '@next/third-parties/google'
+import { GoogleTagManager } from "@next/third-parties/google";
 import dynamic from "next/dynamic";
 import Header from "./Header/Header";
 
 const googleTagManager = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER;
 
-const DynamicDrawerComponent = dynamic(() => import('react-modern-drawer'), {
-  ssr: false
+const DynamicDrawerComponent = dynamic(() => import("react-modern-drawer"), {
+  ssr: false,
 });
 
 export default function Layout({ children, isBuyStage = false }) {
@@ -33,34 +33,45 @@ export default function Layout({ children, isBuyStage = false }) {
   };
 
   useEffect(() => {
-    if( !router.pathname.includes('/respuesta-transaccion') && !router.pathname.includes('/confirm-transaction') && !router.pathname.includes('/respuesta-transaccion-v2') ) {
+    if (
+      !router.pathname.includes("/respuesta-transaccion") &&
+      !router.pathname.includes("/confirm-transaction") &&
+      !router.pathname.includes("/respuesta-transaccion-v2") &&
+      !router.pathname.includes("/comprar")
+    ) {
       dispatch(liberarAsientos());
       dispatch(limpiarCambio());
     }
-  }, [router.pathname])
+  }, [router.pathname]);
 
   return (
     <>
       <Head>
         <meta charSet="UTF-8" />
         <title>Pullman Bus</title>
-        <meta name="description" content="Empresa de Transporte Pullman Bus S.A San Francisco de Borja 235, Estación Central, Santiago de Chile.  Transporte de Viajes Interurbanos, Viajes Especiales" />
-        <meta name="keywords" content="Pasajes en bus, Transporte Urbano, buses pullman, Pullman, Pulman, PullmanBus, Pullman Bus, bus, viajes, viaje, viajes interurbanos, viaje en bus" />
+        <meta
+          name="description"
+          content="Empresa de Transporte Pullman Bus S.A San Francisco de Borja 235, Estación Central, Santiago de Chile.  Transporte de Viajes Interurbanos, Viajes Especiales"
+        />
+        <meta
+          name="keywords"
+          content="Pasajes en bus, Transporte Urbano, buses pullman, Pullman, Pulman, PullmanBus, Pullman Bus, bus, viajes, viaje, viajes interurbanos, viaje en bus"
+        />
       </Head>
 
       <Header isBuyStage={isBuyStage} openNav={openNav} />
 
-      <GoogleTagManager gtmId={ googleTagManager }/>
+      <GoogleTagManager gtmId={googleTagManager} />
       <main>{children}</main>
       <DynamicDrawerComponent
-        open={ open }
-        onClose={ () => setOpen(!open) }
+        open={open}
+        onClose={() => setOpen(!open)}
         direction="left"
         className="overlay"
         overlayColor="#3365B4"
-        overlayOpacity={ 0.25 }
-        zIndex={ 9999 }
-        lockBackgroundScroll={ true }
+        overlayOpacity={0.25}
+        zIndex={9999}
+        lockBackgroundScroll={true}
         size="43vh"
       >
         <a className="closebtn" onClick={closeNav}>
@@ -118,12 +129,10 @@ export default function Layout({ children, isBuyStage = false }) {
                 Cliente Empresas
               </a>
             </div> */}
-            
+
             <div className="w-100">
               <Link href="/teAyudamos" legacyBehavior>
-                <a className="ayuda">
-                  Te ayudamos
-                </a>
+                <a className="ayuda">Te ayudamos</a>
               </Link>
             </div>
             {/* <div className="w-100">

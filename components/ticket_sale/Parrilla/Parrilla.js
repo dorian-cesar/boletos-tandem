@@ -333,6 +333,7 @@ const Parrilla = (props) => {
   ) {
     try {
       const token = generateToken();
+      // console.log("token", token)
 
       const request = CryptoJS.AES.encrypt(
         JSON.stringify(
