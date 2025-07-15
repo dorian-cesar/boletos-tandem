@@ -1,14 +1,12 @@
 .sel-input{
     width:320px;
     margin-bottom: 25px;
-    
 }
 
 @media screen and (min-width: 320px) and (max-width: 395px) {
     .sel-input{
         width: 175px;
         margin-bottom: 5px;
-
     }
 }
 
@@ -17,7 +15,6 @@
     .sel-input{
         width: 190px;
         margin-bottom: 5px;
-
     }
 }
 
