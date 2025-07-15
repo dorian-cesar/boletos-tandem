@@ -304,9 +304,9 @@ export default function ConfrimTransaction() {
       <div className="container row d-flex justify-content-center mb-5 w-100 mx-auto">
         <div className="text-center mt-2">
           <Image
-            src="/img/paraguay.gif"
+            src="/img/loading.gif"
             width={300}
-            height={200}
+            height={300}
             alt="Loading"
           />
         </div>

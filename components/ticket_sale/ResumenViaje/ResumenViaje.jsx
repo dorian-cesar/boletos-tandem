@@ -906,9 +906,9 @@ export const ResumenViaje = (props) => {
             </div>
           ) : (
             <img
-              src="/img/paraguay.gif"
+              src="/img/loading.gif"
               width={150}
-              // height={100}
+              height={150}
               alt="Perro caminando"
               style={{ display: "flex", margin: "auto" }}
             />

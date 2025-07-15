@@ -127,7 +127,6 @@ export default function Home(props: HomeProps) {
 
     Object.keys(carroCompras).forEach((key) => {
       const compra = carroCompras[key];
-      console.log("compra", compra);
       if (compra.ida && compra.ida.length > 0) {
         const [year, month, day] = compra.ida[0].date.split("-").map(Number);
         const fechaIda = new Date(year, month - 1, day);
