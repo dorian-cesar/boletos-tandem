@@ -22,6 +22,7 @@ import StagePago from "../components/ticket_sale/StagePago/StagePago";
 import { decryptDataNoSaved } from "utils/encrypt-data";
 import { useDispatch, useSelector } from "react-redux";
 import { agregarOrigenDestino } from "store/usuario/compra-slice";
+import { limpiarListaCarrito } from "store/usuario/compra-slice";
 
 import CryptoJS from "crypto-js";
 
@@ -52,6 +53,11 @@ const stages = [
 
 export default function Home(props) {
   const router = useRouter();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(limpiarListaCarrito());
+  }, []);
+
   const decryptedData = router.query.search
     ? decryptDataNoSaved(router.query.search, "search")
     : null;
@@ -104,8 +110,6 @@ export default function Home(props) {
         break;
     }
   }, [stage]);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const origenDestino = {

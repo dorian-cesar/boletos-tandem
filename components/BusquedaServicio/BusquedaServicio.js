@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Popup from "../Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
-import { liberarAsientos } from "store/usuario/compra-slice";
+import { liberarAsientos, limpiarListaCarrito } from "store/usuario/compra-slice";
 import {
   decryptDataNoSaved,
   encryptDataNoSave,

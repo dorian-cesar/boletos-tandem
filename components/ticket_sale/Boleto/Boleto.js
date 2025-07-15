@@ -163,7 +163,7 @@ const Boleto = (props) => {
     });
 
     const data = await response.json();
-    console.log("data asientos:", data)
+    // console.log("data asientos:", data)
     if (response.ok) {
       return data;
     } else {

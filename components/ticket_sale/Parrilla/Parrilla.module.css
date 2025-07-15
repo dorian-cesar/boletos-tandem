@@ -219,6 +219,11 @@
   color: #9a9a9a;
 }
 
+.bus .fila .confirmado {
+  cursor: not-allowed;
+  color: #9a9a9a;
+}
+
 .bus .fila .seleccion {
   cursor: pointer;
   color: #3365b4;

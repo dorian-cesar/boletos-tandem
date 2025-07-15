@@ -12,7 +12,10 @@ import {
   ListaCarritoDTO,
   PasajeroListaCarritoDTO,
 } from "../../../dto/PasajesDTO";
-import { agregarCompraCuponera } from "store/usuario/compra-slice";
+import {
+  agregarCompraCuponera,
+  limpiarListaCarrito,
+} from "store/usuario/compra-slice";
 import { useRouter } from "next/router";
 import LocalStorageEntities from "entities/LocalStorageEntities";
 import { decryptData, encryptData } from "utils/encrypt-data";
@@ -42,6 +45,7 @@ export const ResumenViaje = (props) => {
   });
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
   // const clpFormat = new Intl.NumberFormat("es-CL", {
   //   style: "currency",
@@ -67,14 +71,12 @@ export const ResumenViaje = (props) => {
   const [user, setUser] = useState({});
   const [usaWallet, setUsaWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const carroCompras = useSelector((state) => state.compra?.listaCarrito) || [];
+  const carroCompras = useSelector((state) => state.compra?.listaCarrito) || {};
   const informacionAgrupada =
     useSelector((state) => state.compra?.informacionAgrupada) || [];
   const datosComprador =
     useSelector((state) => state.compra?.datosComprador) || {};
   const medioPago = useSelector((state) => state.compra.medioPago);
-  const dispatch = useDispatch();
   const [soloLectura, setSoloLectura] = useState(false);
   const [montoDescuentoConvenio, setMontoDescuentoConvenio] = useState(0);
   const [totalOriginal, setTotalOriginal] = useState(0);
@@ -155,31 +157,31 @@ export const ResumenViaje = (props) => {
               asientosEquipaje: [],
             };
 
-            const informacionPasajeros = informacionAgrupada.find(
-              (servicio) =>
-                servicio?.id === value?.id &&
-                servicio?.terminalOrigin === value?.terminalOrigin &&
-                servicio?.terminalDestination === value?.terminalDestination &&
-                servicio?.departureTime === value?.departureTime
-            );
+            // const informacionPasajeros = informacionAgrupada.find(
+            //   (servicio) =>
+            //     servicio?.idServicio === value?.idServicio &&
+            //     servicio?.idTerminalOrigen === value?.idTerminalOrigen &&
+            //     servicio?.idTerminalDestino === value?.idTerminalDestino &&
+            //     servicio?.horaSalida === value?.horaSalida
+            // );
 
-            if (informacionPasajeros) {
-              const asientos = informacionPasajeros?.asientos;
-              if (asientos && asientos.length > 0) {
-                asientos.forEach((asiento, indexAsiento) => {
-                  if (
-                    asiento?.cantidadEquipaje &&
-                    asiento.cantidadEquipaje > 0
-                  ) {
-                    datos.asientosEquipaje.push(
-                      `Pasajero ${indexAsiento + 1} - Asiento ${
-                        asiento?.asiento
-                      } x ${asiento?.cantidadEquipaje}`
-                    );
-                  }
-                });
-              }
-            }
+            // if (informacionPasajeros) {
+            //   const asientos = informacionPasajeros?.asientos;
+            //   if (asientos && asientos.length > 0) {
+            //     asientos.forEach((asiento, indexAsiento) => {
+            //       if (
+            //         asiento?.cantidadEquipaje &&
+            //         asiento.cantidadEquipaje > 0
+            //       ) {
+            //         datos.asientosEquipaje.push(
+            //           `Pasajero ${indexAsiento + 1} - Asiento ${
+            //             asiento?.asiento
+            //           } x ${asiento?.cantidadEquipaje}`
+            //         );
+            //       }
+            //     });
+            //   }
+            // }
 
             datos.valorAsientos = value.asientos.map((a) => ({
               num: a.asiento,
@@ -215,31 +217,31 @@ export const ResumenViaje = (props) => {
               asientosEquipaje: [],
             };
 
-            const informacionPasajeros = informacionAgrupada.find(
-              (servicio) =>
-                servicio?.id === value?.id &&
-                servicio?.terminalOrigin === value?.terminalOrigin &&
-                servicio?.terminalDestination === value?.terminalDestination &&
-                servicio?.departureTime === value?.departureTime
-            );
+            // const informacionPasajeros = informacionAgrupada.find(
+            //   (servicio) =>
+            //     servicio?.idServicio === value?.idServicio &&
+            //     servicio?.idTerminalOrigen === value?.idTerminalOrigen &&
+            //     servicio?.idTerminalDestino === value?.idTerminalDestino &&
+            //     servicio?.horaSalida === value?.horaSalida
+            // );
 
-            if (informacionPasajeros) {
-              const asientos = informacionPasajeros?.asientos;
-              if (asientos && asientos.length > 0) {
-                asientos.forEach((asiento, indexAsiento) => {
-                  if (
-                    asiento?.cantidadEquipaje &&
-                    asiento.cantidadEquipaje > 0
-                  ) {
-                    datos.asientosEquipaje.push(
-                      `Pasajero ${indexAsiento + 1} - Asiento ${
-                        asiento?.asiento
-                      } x ${asiento?.cantidadEquipaje}`
-                    );
-                  }
-                });
-              }
-            }
+            // if (informacionPasajeros) {
+            //   const asientos = informacionPasajeros?.asientos;
+            //   if (asientos && asientos.length > 0) {
+            //     asientos.forEach((asiento, indexAsiento) => {
+            //       if (
+            //         asiento?.cantidadEquipaje &&
+            //         asiento.cantidadEquipaje > 0
+            //       ) {
+            //         datos.asientosEquipaje.push(
+            //           `Pasajero ${indexAsiento + 1} - Asiento ${
+            //             asiento?.asiento
+            //           } x ${asiento?.cantidadEquipaje}`
+            //         );
+            //       }
+            //     });
+            //   }
+            // }
 
             datos.valorAsientos = value.asientos.map((a) => ({
               num: a.asiento,
@@ -336,16 +338,15 @@ export const ResumenViaje = (props) => {
         listaCarrito: [],
       };
 
-      console.log("resumen compra:", resumenCompra);
+      // console.log("resumen compra:", resumenCompra);
 
       let restoUsoWallet = montoUsoWallet;
 
       informacionAgrupada.forEach((servicio) => {
         const carrito = new ListaCarritoDTO(servicio, servicio.asientos[0]);
-        console.log("carrito", carrito);
-        console.log("servicio:", servicio);
-        console.log("servicio.asientos[0]:", servicio.asientos[0]);
-        console.log("aca se agregan props para enviar, como email")
+        // console.log("carrito", carrito);
+        // console.log("servicio:", servicio);
+        console.log("aca se agregan props para enviar, como email");
 
         servicio.asientos.forEach((asiento, index) => {
           const nuevoAsiento = {
@@ -385,13 +386,13 @@ export const ResumenViaje = (props) => {
           if (descuentoConvenio?.id === "COPEC") {
             nuevoAsiento.datoConvenio = requestConvenio?.atributo;
           }
-          console.log("nuevoAsiento:", nuevoAsiento);
+          // console.log("nuevoAsiento:", nuevoAsiento);
           carrito.pasajeros.push(new PasajeroListaCarritoDTO(nuevoAsiento));
-          console.log("carrito.pasajeros:", carrito.pasajeros);
+          // console.log("carrito.pasajeros:", carrito.pasajeros);
         });
 
         resumenCompra.listaCarrito.push(carrito);
-        console.log("resumenCompra.listaCarrito:", resumenCompra.listaCarrito);
+        // console.log("resumenCompra.listaCarrito:", resumenCompra.listaCarrito);
       });
 
       agregarEventoTagManager();
@@ -556,18 +557,15 @@ export const ResumenViaje = (props) => {
           secret
         );
 
-        console.log("info compra:", informacionAgrupada);
-        console.log("datos comprador:", datosComprador);
+        // console.log("info compra:", informacionAgrupada);
+        // console.log("datos comprador:", datosComprador);
 
         localStorage.setItem(
           "purchase_info",
           JSON.stringify(informacionAgrupada)
         );
 
-        localStorage.setItem(
-          "buyer_info",
-          JSON.stringify(datosComprador)
-        );
+        localStorage.setItem("buyer_info", JSON.stringify(datosComprador));
 
         const response = await fetch(`/api/ticket_sale/guardar-multi-carro`, {
           method: "POST",
@@ -744,12 +742,12 @@ export const ResumenViaje = (props) => {
                       >
                         <ul>
                           <li>
-                            <div>{detalleItem.origin}</div>
-                            <div>{detalleItem.departureTime}</div>
+                            <div>{detalleItem.origen}</div>
+                            <div>{detalleItem.hora}</div>
                           </li>
                           <li>
-                            <div>{detalleItem.destination}</div>
-                            <div>{detalleItem.arrivalTime}</div>
+                            <div>{detalleItem.destino}</div>
+                            <div>{detalleItem.horaLlegada}</div>
                           </li>
                         </ul>
                         <div

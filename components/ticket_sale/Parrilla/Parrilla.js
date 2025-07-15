@@ -255,8 +255,12 @@ const Parrilla = (props) => {
       //   classes += styles["m-reservado"] + " ";
       // }
 
-      if (asiento.estado === "hold" || asiento.estado === "paid") {
+      if (asiento.estado === "hold") {
         classes += styles["reservado"] + " ";
+      }
+
+      if (asiento.estado === "paid") {
+        classes += styles["confirmado"] + " ";
       }
 
       if (asiento.estado === "available") {
@@ -836,7 +840,7 @@ const Parrilla = (props) => {
       return "text-primary";
     } else if (
       asiento?.estado.includes("hold") ||
-      asiento?.estado.includes("busy")
+      asiento?.estado.includes("paid")
     ) {
       return "text-info";
     } else {
@@ -1104,7 +1108,11 @@ const Parrilla = (props) => {
                                   {ii.asiento && (
                                     <img src={getImage(ii, props.k)} />
                                   )}
-                                  <span>
+                                  <span
+                                    className={`top-50 start-50 fs-7 fw-bold ${colorTexto(
+                                      ii || ""
+                                    )}`}
+                                  >
                                     {ii.asiento !== "B1" &&
                                     ii.asiento !== "B2" &&
                                     ii.estado !== "sinasiento"
@@ -1145,7 +1153,11 @@ const Parrilla = (props) => {
                                     {ii.asiento && (
                                       <img src={getImage(ii, props.k)} />
                                     )}
-                                    <span>
+                                    <span
+                                      className={`top-50 start-50 fs-7 fw-bold ${colorTexto(
+                                        ii || ""
+                                      )}`}
+                                    >
                                       {ii.asiento !== "B1" &&
                                       ii.asiento !== "B2" &&
                                       ii.estado !== "sinasiento"
@@ -1184,7 +1196,11 @@ const Parrilla = (props) => {
                                   {ii.asiento && (
                                     <img src={getImage(ii, props.k)} />
                                   )}
-                                  <span>
+                                  <span
+                                    className={`top-50 start-50 fs-7 fw-bold ${colorTexto(
+                                      ii || ""
+                                    )}`}
+                                  >
                                     {ii.asiento !== "B1" &&
                                     ii.asiento !== "B2" &&
                                     ii.estado !== "sinasiento"
@@ -1225,7 +1241,11 @@ const Parrilla = (props) => {
                                     {ii.asiento && (
                                       <img src={getImage(ii, props.k)} />
                                     )}
-                                    <span>
+                                    <span
+                                      className={`top-50 start-50 fs-7 fw-bold ${colorTexto(
+                                        ii || ""
+                                      )}`}
+                                    >
                                       {ii.asiento !== "B1" &&
                                       ii.asiento !== "B2" &&
                                       ii.estado !== "sinasiento"

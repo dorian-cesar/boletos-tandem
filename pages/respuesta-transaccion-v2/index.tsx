@@ -45,11 +45,15 @@ export default function Home(props: HomeProps) {
 
   useEffect(() => {
     try {
-      const data = sessionStorage.getItem("transactionInformation");
+      // const data = sessionStorage.getItem("transactionInformation");
+      const data = sessionStorage.getItem("transactionBasketInfo");
       if (data) {
         const decoded: any = JWT.verify(data, SECRET);
-        if (decoded && decoded.carro) {
-          setCarro(decoded.carro);
+        // if (decoded && decoded.carro) {
+        if (decoded) {
+          // setCarro(decoded.carro);
+          setCarro(decoded);
+          console.log("carro", decoded);
         }
         if (decoded && decoded.cerrar) {
           setCodigo(decoded.cerrar.orden);
@@ -122,10 +126,8 @@ export default function Home(props: HomeProps) {
     Object.keys(carroCompras).forEach((key) => {
       const compra = carroCompras[key];
       if (compra.ida && compra.ida.length > 0) {
-        const fechaIdaFormateada = compra.ida[0].date.split("/");
-        const fechaIda = new Date(
-          `${fechaIdaFormateada[1]}/${fechaIdaFormateada[0]}/${fechaIdaFormateada[2]}`
-        );
+        const [year, month, day] = compra.ida[0].date.split("-").map(Number);
+        const fechaIda = new Date(year, month - 1, day);
         const idaList = compra.ida;
         console.log(idaList);
         idaList.forEach((value: any) => {
@@ -149,10 +151,8 @@ export default function Home(props: HomeProps) {
       }
 
       if (compra.vuelta && compra.vuelta.length > 0) {
-        const fechaVueltaFormateada = compra.vuelta[0].date.split("/");
-        const fechaVuelta = new Date(
-          `${fechaVueltaFormateada[1]}/${fechaVueltaFormateada[0]}/${fechaVueltaFormateada[2]}`
-        );
+        const [year, month, day] = compra.vuelta[0].date.split("-").map(Number);
+        const fechaVuelta = new Date(year, month - 1, day);
         const vueltaList = compra.vuelta;
         vueltaList.forEach((value: any) => {
           const datos = {
@@ -183,22 +183,28 @@ export default function Home(props: HomeProps) {
     const carro_temp = { ...resumen };
     carro_temp.carro["lista"] = datos;
 
+    console.log("carro", carro);
+
     if (carro) {
-      const paymentMethod = carro.medioPago;
+      // const paymentMethod = carro.medioPago;
+      const paymentMethod = "Flow";
       const amount = carro.monto;
-      const tickets = carro.boletos;
+      const tickets = carro.asientos;
 
       const transactionInfo = {
-        transaction: codigo,
+        // transaction: codigo,
         detail: carro_temp,
         paymentMethod: paymentMethod,
-        amount,
+        // amount,
         tickets,
       };
 
       setResumen(transactionInfo);
 
       sessionStorage.setItem("purchase", JSON.stringify(transactionInfo));
+      sessionStorage.removeItem("transactionBasketInfo");
+      localStorage.removeItem("purchase_info");
+      dispatch(limpiarListaCarrito(null));
     }
   };
 
@@ -227,15 +233,9 @@ export default function Home(props: HomeProps) {
     });
 
     setTotalPagar(total);
-    dispatch(limpiarListaCarrito(null));
   }, [resumen]);
 
-  const handleVolverInicio = () => {
-    dispatch(limpiarListaCarrito(null));
-    router.push("/");
-  };
-
-  useEffect(() => agregarEventoTagManager(), [totalPagar, codigo, carro]);
+  // useEffect(() => agregarEventoTagManager(), [totalPagar, codigo, carro]);
 
   const descargarBoletos = () => {
     carro.boletos.forEach(async (element: any) => {
@@ -442,21 +442,13 @@ export default function Home(props: HomeProps) {
                     </span>
                   </div>
                   <div className="col-12 col-md-5">
-                    {/* <Link href="/">
-                          <div className="d-grid">
-                            <button className="btn btn-primary rounded-4">
-                              Volver al inicio
-                            </button>
-                          </div>
-                        </Link> */}
-                    <div className="d-grid">
-                      <button
-                        className="btn btn-primary rounded-4"
-                        onClick={handleVolverInicio}
-                      >
-                        Volver al inicio
-                      </button>
-                    </div>
+                    <Link href="/">
+                      <div className="d-grid">
+                        <button className="btn btn-primary rounded-4">
+                          Volver al inicio
+                        </button>
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </div>
