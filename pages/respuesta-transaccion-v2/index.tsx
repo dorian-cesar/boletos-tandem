@@ -43,6 +43,8 @@ export default function Home(props: HomeProps) {
 
   const router = useRouter();
 
+  const flowOrder = localStorage.getItem("flowOrder");
+
   useEffect(() => {
     try {
       // const data = sessionStorage.getItem("transactionInformation");
@@ -193,7 +195,7 @@ export default function Home(props: HomeProps) {
       const tickets = carro.asientos;
 
       const transactionInfo = {
-        // transaction: codigo,
+        transaction: flowOrder,
         detail: carro_temp,
         paymentMethod: paymentMethod,
         amount,
@@ -434,7 +436,7 @@ export default function Home(props: HomeProps) {
                         />
                       </div>
                     </div>
-                    <div className="col-12 col-md-5 d-flex flex-row justify-content-center gap-3">
+                    <div className="col-12 col-md-5 d-flex flex-row justify-content-center align-items-center gap-3">
                       <strong className="fs-3">Total Pagado:</strong>
                       <span className="fs-3 text-primary fw-bold">
                         {/* {clpFormat.format(resumen.amount)} */}

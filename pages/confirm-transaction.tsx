@@ -266,14 +266,12 @@ export default function ConfrimTransaction() {
               if (router.pathname !== "/respuesta-transaccion-v2") {
                 router.push("/respuesta-transaccion-v2");
                 localStorage.removeItem("tokenTemp");
-                localStorage.removeItem("flowOrder");
               }
             } catch (error) {
               console.error("Error confirmando asientos:", error);
               if (router.pathname !== "/error-transaccion") {
                 router.push("/error-transaccion");
                 localStorage.removeItem("tokenTemp");
-                localStorage.removeItem("flowOrder");
               }
             }
             break;
@@ -284,7 +282,6 @@ export default function ConfrimTransaction() {
             if (router.pathname !== "/error-transaccion") {
               router.push("/error-transaccion");
               localStorage.removeItem("tokenTemp");
-              localStorage.removeItem("flowOrder");
             }
             break;
         }
@@ -293,7 +290,6 @@ export default function ConfrimTransaction() {
         if (router.pathname !== "/error-transaccion") {
           router.push("/error-transaccion");
           localStorage.removeItem("tokenTemp");
-          localStorage.removeItem("flowOrder");
         }
       }
     };
