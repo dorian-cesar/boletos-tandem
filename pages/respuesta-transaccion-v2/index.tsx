@@ -208,6 +208,15 @@ export default function Home(props: HomeProps) {
     }
   };
 
+  const formatGuarani = (value) =>
+    new Intl.NumberFormat("es-PY", {
+      style: "currency",
+      currency: "PYG",
+      currencyDisplay: "symbol",
+    })
+      .format(value)
+      .replace(/Gs\.?|PYG/, "₲");
+
   // useEffect(() => {
   //   obtenerInformacion();
   // }, [carro]);
@@ -428,7 +437,8 @@ export default function Home(props: HomeProps) {
                     <div className="col-12 col-md-5 d-flex flex-row justify-content-center gap-3">
                       <strong className="fs-3">Total Pagado:</strong>
                       <span className="fs-3 text-primary fw-bold">
-                        {clpFormat.format(resumen.amount)}
+                        {/* {clpFormat.format(resumen.amount)} */}
+                        {formatGuarani(resumen.amount)}
                       </span>
                     </div>
                   </div>
