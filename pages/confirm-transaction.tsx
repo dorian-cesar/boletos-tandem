@@ -267,8 +267,6 @@ export default function ConfrimTransaction() {
                 router.push("/respuesta-transaccion-v2");
                 localStorage.removeItem("tokenTemp");
                 localStorage.removeItem("flowOrder");
-                localStorage.removeItem("purchase_info");
-                localStorage.removeItem("buyer_info");
               }
             } catch (error) {
               console.error("Error confirmando asientos:", error);
@@ -276,8 +274,6 @@ export default function ConfrimTransaction() {
                 router.push("/error-transaccion");
                 localStorage.removeItem("tokenTemp");
                 localStorage.removeItem("flowOrder");
-                localStorage.removeItem("purchase_info");
-                localStorage.removeItem("buyer_info");
               }
             }
             break;
@@ -289,8 +285,6 @@ export default function ConfrimTransaction() {
               router.push("/error-transaccion");
               localStorage.removeItem("tokenTemp");
               localStorage.removeItem("flowOrder");
-              localStorage.removeItem("purchase_info");
-              localStorage.removeItem("buyer_info");
             }
             break;
         }
@@ -300,8 +294,6 @@ export default function ConfrimTransaction() {
           router.push("/error-transaccion");
           localStorage.removeItem("tokenTemp");
           localStorage.removeItem("flowOrder");
-          localStorage.removeItem("purchase_info");
-          localStorage.removeItem("buyer_info");
         }
       }
     };

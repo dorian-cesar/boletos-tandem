@@ -9,7 +9,7 @@ export default function Custom404() {
             <img src='img/not_found_error_image.png' width={ 306 } height={ 228 }/>
             <span>¡Oops! la página no fue encontrada, te suguerimos regresar.</span>
             <Link href={ '/' }>
-                <button className='btn'>
+                <button className='btn btn-primary'>
                     Regresar
                 </button>
             </Link>

@@ -125,6 +125,7 @@ export default function Home(props: HomeProps) {
 
     Object.keys(carroCompras).forEach((key) => {
       const compra = carroCompras[key];
+      console.log("compra", compra);
       if (compra.ida && compra.ida.length > 0) {
         const [year, month, day] = compra.ida[0].date.split("-").map(Number);
         const fechaIda = new Date(year, month - 1, day);
@@ -188,14 +189,14 @@ export default function Home(props: HomeProps) {
     if (carro) {
       // const paymentMethod = carro.medioPago;
       const paymentMethod = "Flow";
-      const amount = carro.monto;
+      const amount = totalPagar;
       const tickets = carro.asientos;
 
       const transactionInfo = {
         // transaction: codigo,
         detail: carro_temp,
         paymentMethod: paymentMethod,
-        // amount,
+        amount,
         tickets,
       };
 
@@ -203,14 +204,19 @@ export default function Home(props: HomeProps) {
 
       sessionStorage.setItem("purchase", JSON.stringify(transactionInfo));
       sessionStorage.removeItem("transactionBasketInfo");
-      localStorage.removeItem("purchase_info");
       dispatch(limpiarListaCarrito(null));
     }
   };
 
+  // useEffect(() => {
+  //   obtenerInformacion();
+  // }, [carro]);
+
   useEffect(() => {
-    obtenerInformacion();
-  }, [carro]);
+    if (carro && totalPagar > 0) {
+      obtenerInformacion();
+    }
+  }, [carro, totalPagar]);
 
   useEffect(() => {
     const carro = carroCompras || copiaCarro;
@@ -233,7 +239,7 @@ export default function Home(props: HomeProps) {
     });
 
     setTotalPagar(total);
-  }, [resumen]);
+  }, [carro]);
 
   // useEffect(() => agregarEventoTagManager(), [totalPagar, codigo, carro]);
 
@@ -370,12 +376,12 @@ export default function Home(props: HomeProps) {
                                 >
                                   <ul>
                                     <li>
-                                      <div>{detalle.origin}</div>
-                                      <div>{detalle.departureTime}</div>
+                                      <div>{detalle.origen}</div>
+                                      <div>{detalle.hora}</div>
                                     </li>
                                     <li>
-                                      <div>{detalle.destination}</div>
-                                      <div>{detalle.arrivalTime}</div>
+                                      <div>{detalle.destino}</div>
+                                      <div>{detalle.horaLlegada}</div>
                                     </li>
                                   </ul>
                                   <div className={styles["resumen-servicio"]}>
@@ -402,15 +408,17 @@ export default function Home(props: HomeProps) {
                         Pagado con:
                       </strong>
                       <div className="d-flex gap-3 justify-content-center">
-                        <span className="text-start text-md-center">
+                        {/* <span className="text-start text-md-center">
                           {mediosPago[resumen.paymentMethod]?.mensaje ||
                             "Pago electrónico"}
-                        </span>
+                        </span> */}
                         <img
-                          src={
-                            mediosPago[resumen.paymentMethod]?.imagen ||
-                            "generico"
-                          }
+                          // src={
+                          //   mediosPago[resumen.paymentMethod]?.imagen ||
+                          //   "generico"
+                          // }
+                          style={{ width: "80px" }}
+                          src="/img/icon/cuponera/logo-flow.png"
                           alt={`Icono ${
                             mediosPago[resumen.paymentMethod]?.nombre
                           }`}
