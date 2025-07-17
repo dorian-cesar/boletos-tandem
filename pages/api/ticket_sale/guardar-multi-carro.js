@@ -162,7 +162,11 @@ async function handleGuardarMultiCarro(req, res) {
     const url = process.env.FLOW_API_URL;
 
     try {
-      const response = await axios.post(`${url}/payment/create`, encodedBody);
+      const response = await axios.post(`${url}/payment/create`, encodedBody, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
       console.log(
         "checkout url",
         `${response.data.url}?token=${response.data.token}`
@@ -170,13 +174,11 @@ async function handleGuardarMultiCarro(req, res) {
       return res.status(200).json(response.data);
     } catch (error) {
       console.error("Error en llamada a Flow:", error.message);
-      res
-        .status(500)
-        .json({
-          error: "Error al crear el pago en Flow",
-          errorMessage: error.message,
-          bodyReq: body,
-        });
+      res.status(500).json({
+        error: "Error al crear el pago en Flow",
+        errorMessage: error.message,
+        bodyReq: body,
+      });
     }
   } catch (e) {
     console.log(e.message);
