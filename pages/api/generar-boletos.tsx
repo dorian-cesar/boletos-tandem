@@ -24,6 +24,9 @@ interface TicketResponse {
 interface EmailTicket {
   fileName: string;
   buffer: Buffer;
+  origin: string;
+  destination: string;
+  seat: string;
 }
 
 export default async (
@@ -62,6 +65,9 @@ export default async (
       tickets: generatedTickets.map((t) => ({
         fileName: t.fileName,
         buffer: t.buffer,
+        origin: t.origin,
+        destination: t.destination,
+        seat: t.seat,
       })),
       customerName,
       bookingReference,
@@ -100,6 +106,9 @@ async function generateAllTicketsPDF(ticketData: any): Promise<{
     fileName: string;
     base64: string;
     buffer: Buffer;
+    origin: string;
+    destination: string;
+    seat: string;
   }>;
 }> {
   const generatedTickets = [];
@@ -147,6 +156,9 @@ async function generateTicketPDF(
   fileName: string;
   base64: string;
   buffer: Buffer;
+  origin: string;
+  destination: string;
+  seat: string;
 }> {
   const doc = new jsPDF();
 
@@ -224,7 +236,14 @@ async function generateTicketPDF(
   const base64 = doc.output("datauristring");
   const buffer = Buffer.from(doc.output("arraybuffer"));
 
-  return { fileName, base64, buffer };
+  return {
+    fileName,
+    base64,
+    buffer,
+    origin: trip.origin,
+    destination: trip.destination,
+    seat: seat.asiento,
+  };
 }
 
 // Función mejorada para enviar boletos por email
@@ -288,7 +307,7 @@ async function sendTicketsByEmail(options: {
               .map(
                 (t) => `
               <li style="margin-bottom: 8px;">
-                <strong>${t.fileName.replace(".pdf", "")}</strong>
+                <strong>${t.origin} a ${t.destination} - Asiento ${t.seat}</strong>
               </li>
             `
               )

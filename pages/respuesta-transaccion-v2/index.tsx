@@ -348,7 +348,7 @@ export default function Home(props: HomeProps) {
           }
         );
 
-        toast.success("Boletos generados y descargados correctamente", {
+        toast.success("Boletos generados y descargados correctamente!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
