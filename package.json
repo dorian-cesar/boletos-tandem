@@ -47,6 +47,7 @@
     "uuid": "^11.0.2"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.11.6",
     "@octokit/types": "^6.34.0",
     "@types/aws-lambda": "^8.10.149",
     "@types/react": "^17.0.34",
