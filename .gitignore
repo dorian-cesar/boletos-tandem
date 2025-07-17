@@ -41,7 +41,6 @@ result.txt
 view.json
 view.html
 view.js
-/pages/comprar backup.js
 /components/ticket_sale/Parrilla/Parrilla cambiodeprops.js
 /components/ticket_sale/Parrilla/Parrilla simulado.js
 /netlify copy.toml

@@ -44,10 +44,20 @@ export default function Home(props: HomeProps) {
   const [passagers, setPassagers] = useState({});
   const [generatedTickets, setGeneratedTickets] = useState([]);
   const [buyerInfo, setbuyerInfo] = useState<any>({});
+  const [flowOrder, setflowOrder] = useState<any>({});
 
   const router = useRouter();
 
-  const flowOrder = localStorage.getItem("flowOrder");
+  useEffect(() => {
+    try {
+      const data = localStorage.getItem("flowOrder");
+      const flowOrder = JSON.parse(data);
+      if (data && flowOrder) {
+        setflowOrder(flowOrder);
+        console.log("flowOrder", flowOrder);
+      }
+    } catch (error) {}
+  }, []);
 
   useEffect(() => {
     try {
@@ -307,7 +317,10 @@ export default function Home(props: HomeProps) {
       console.log("Iniciando descarga de boletos...");
       console.log("buyerInfo email", buyerInfo.email);
 
-      if (!carroCompras || Object.keys(carroCompras).length === 0 && !buyerInfo.email) {
+      if (
+        !carroCompras ||
+        (Object.keys(carroCompras).length === 0 && !buyerInfo.email)
+      ) {
         console.error("No hay datos de compras para generar boletos");
         return;
       }
