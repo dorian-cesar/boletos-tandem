@@ -106,6 +106,9 @@ const config = serverRuntimeConfig;
 async function handleGuardarMultiCarro(req, res) {
   try {
     // let token = await doLogin();
+    console.log("FLOW_API_KEY", process.env.FLOW_API_KEY);
+    console.log("FLOW_SECRET_KEY", process.env.FLOW_SECRET_KEY);
+    console.log("FLOW_API_URL", process.env.FLOW_API_URL);
 
     const { data } = JSON.parse(req.body);
 
@@ -158,19 +161,20 @@ async function handleGuardarMultiCarro(req, res) {
     const encodedBody = stringify(body);
     const url = process.env.FLOW_API_URL;
 
-    axios
-      .post(`${url}/payment/create`, encodedBody)
-      .then((response) => {
-        console.log(
-          "checkout url",
-          `${response.data.url}?token=${response.data.token}`
-        );
-        res.status(200).json(response.data);
-      })
-      .catch((error) => console.error(error));
+    try {
+      const response = await axios.post(`${url}/payment/create`, encodedBody);
+      console.log(
+        "checkout url",
+        `${response.data.url}?token=${response.data.token}`
+      );
+      return res.status(200).json(response.data);
+    } catch (error) {
+      console.error("Error en llamada a Flow:", error.message);
+      res.status(500).json({ error: "Error al crear el pago en Flow" });
+    }
   } catch (e) {
     console.log(e.message);
-    res.status(400).json(response.data);
+    res.status(400).json({ error: e.message });
   }
 }
 
