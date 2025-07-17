@@ -127,27 +127,22 @@ async function handleGuardarMultiCarro(req, res) {
       : `http://localhost:3000/confirm-transaction`;
 
     const params = {
-      apiKey: apiKey,
-      commerceOrder: crypto.randomUUID(),
+      apiKey: String(apiKey),
+      commerceOrder: crypto.randomUUID().replace(/-/g, ""),
       currency: "CLP",
       // paymentMethod: 9,
-      timeout: 1800,
+      timeout: "1800",
       urlConfirmation: "http://sandbox.dev-wit.com/api/paymentConfirmation/", // llamada POST api/endpoint
       urlReturn: urlReturn,
-      email: serviceRequest.datosComprador.email,
+      email: String(serviceRequest.datosComprador.email),
       subject: "Compra de pasajes de bus",
-      amount: serviceRequest.montoTotal,
+      amount: String(serviceRequest.montoTotal),
     };
 
     const secretKey = process.env.FLOW_SECRET_KEY;
 
-    const keys = Object.keys(params);
-    keys.sort();
-    let toSign = "";
-    for (let i = 0; i < keys.length; i++) {
-      let key = keys[i];
-      toSign += key + params[key];
-    }
+    const keys = Object.keys(params).sort();
+    const toSign = keys.map((k) => `${k}${params[k]}`).join("");
     const signature = crypto
       .createHmac("sha256", secretKey)
       .update(toSign)
