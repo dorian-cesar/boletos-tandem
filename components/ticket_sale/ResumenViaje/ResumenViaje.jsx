@@ -594,7 +594,7 @@ export const ResumenViaje = (props) => {
           url: data.url,
           token: data.token,
         });
-        
+
         setIsLoading(false);
       }
     } catch (error) {

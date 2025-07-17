@@ -7,6 +7,7 @@ import Mail from "nodemailer/lib/mailer";
 interface TicketData {
   ticketData: any;
   email: string;
+  authCode?: string;
   customerName?: string;
   bookingReference?: string;
 }
@@ -43,8 +44,13 @@ export default async (
   }
 
   try {
-    const { ticketData, email, customerName, bookingReference }: TicketData =
-      req.body;
+    const {
+      ticketData,
+      email,
+      authCode,
+      customerName,
+      bookingReference,
+    }: TicketData = req.body;
     console.log("Datos recibidos:", { ticketData, email });
 
     if (!ticketData || !email) {
@@ -57,7 +63,10 @@ export default async (
     }
 
     // 1. Generar los boletos en PDF
-    const { generatedTickets } = await generateAllTicketsPDF(ticketData);
+    const { generatedTickets } = await generateAllTicketsPDF(
+      ticketData,
+      authCode
+    );
 
     // 2. Enviar por email
     const emailResult = await sendTicketsByEmail({
@@ -101,7 +110,10 @@ export default async (
 };
 
 // Función para generar todos los boletos (retorna base64)
-async function generateAllTicketsPDF(ticketData: any): Promise<{
+async function generateAllTicketsPDF(
+  ticketData: any,
+  authCode?: string
+): Promise<{
   generatedTickets: Array<{
     fileName: string;
     base64: string;
@@ -113,18 +125,21 @@ async function generateAllTicketsPDF(ticketData: any): Promise<{
 }> {
   const generatedTickets = [];
 
-  // Iterar sobre cada propiedad del objeto principal
   for (const ticketId of Object.keys(ticketData)) {
     const ticketInfo = ticketData[ticketId];
     if (!ticketInfo) continue;
 
-    // Procesar ida y vuelta
     if (ticketInfo.ida) {
-      await processTrips(ticketInfo.ida, "ida", generatedTickets);
+      await processTrips(ticketInfo.ida, "ida", generatedTickets, authCode);
     }
 
     if (ticketInfo.vuelta) {
-      await processTrips(ticketInfo.vuelta, "vuelta", generatedTickets);
+      await processTrips(
+        ticketInfo.vuelta,
+        "vuelta",
+        generatedTickets,
+        authCode
+      );
     }
   }
 
@@ -135,13 +150,14 @@ async function generateAllTicketsPDF(ticketData: any): Promise<{
 async function processTrips(
   trips: any[],
   tripType: string,
-  generatedTickets: any[]
+  generatedTickets: any[],
+  authCode?: string
 ): Promise<void> {
   for (const trip of trips) {
     if (!trip?.asientos?.length) continue;
 
     for (const seat of trip.asientos) {
-      const ticket = await generateTicketPDF(trip, seat, tripType);
+      const ticket = await generateTicketPDF(trip, seat, tripType, authCode);
       generatedTickets.push(ticket);
     }
   }
@@ -151,7 +167,8 @@ async function processTrips(
 async function generateTicketPDF(
   trip: any,
   seat: any,
-  tripType: string
+  tripType: string,
+  authCode?: string
 ): Promise<{
   fileName: string;
   base64: string;
@@ -185,7 +202,7 @@ async function generateTicketPDF(
     destination: trip.destination,
     date: trip.date,
     seat: seat.asiento,
-    authCode: seat.authCode || "N/A",
+    authCode: seat.authCode || authCode || "N/A",
     price: seat.valorAsiento,
   });
 
@@ -219,7 +236,7 @@ async function generateTicketPDF(
       : trip.seatDescriptionSecond;
   doc.text(`Tipo: ${seatType}`, 20, 125);
   doc.text(`Precio: $${seat.valorAsiento}`, 20, 135);
-  doc.text(`Código: ${seat.authCode || "N/A"}`, 20, 145);
+  doc.text(`Código de Transacción: ${seat.authCode || authCode || "N/A"}`, 20, 145);
 
   // Pie de página
   doc.line(20, 150, 190, 150);

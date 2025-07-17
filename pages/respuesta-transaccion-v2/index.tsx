@@ -333,6 +333,7 @@ export default function Home(props: HomeProps) {
         body: JSON.stringify({
           ticketData: carroCompras,
           email: buyerInfo.email,
+          authCode: flowOrder,
         }),
       });
 
@@ -348,11 +349,11 @@ export default function Home(props: HomeProps) {
           }
         );
 
-        toast.success("Boletos generados y descargados correctamente!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-        });
+        // toast.success("Boletos generados y descargados correctamente!", {
+        //   position: "top-right",
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        // });
       } else {
         console.error("Error:", result);
         toast.error(`Error al generar boletos: ${result.message}`, {
