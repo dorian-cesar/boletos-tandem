@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo";
 import { limpiarListaCarrito } from "store/usuario/compra-slice";
 import cookie from "cookie";
+import { generateTicketsPDF } from "../../components/GenerarBoletos";
 
 import { sendGTMEvent } from "@next/third-parties/google";
 
@@ -253,24 +254,38 @@ export default function Home(props: HomeProps) {
 
   // useEffect(() => agregarEventoTagManager(), [totalPagar, codigo, carro]);
 
-  const descargarBoletos = () => {
-    carro.boletos.forEach(async (element: any) => {
-      let boleto = {
-        codigo: element.codigo,
-        boleto: element.boleto,
-      };
-      try {
-        const res = await axios.post("/api/voucher", boleto);
-        if (res.request.status) {
-          const linkSource = `data:application/pdf;base64,${res.data?.archivo}`;
-          const downloadLink = document.createElement("a");
-          const fileName = res.data.nombre;
-          downloadLink.href = linkSource;
-          downloadLink.download = fileName;
-          downloadLink.click();
-        }
-      } catch (e) {}
-    });
+  // const descargarBoletos = () => {
+  //   carro.boletos.forEach(async (element: any) => {
+  //     let boleto = {
+  //       codigo: element.codigo,
+  //       boleto: element.boleto,
+  //     };
+  //     try {
+  //       const res = await axios.post("/api/voucher", boleto);
+  //       if (res.request.status) {
+  //         const linkSource = `data:application/pdf;base64,${res.data?.archivo}`;
+  //         const downloadLink = document.createElement("a");
+  //         const fileName = res.data.nombre;
+  //         downloadLink.href = linkSource;
+  //         downloadLink.download = fileName;
+  //         downloadLink.click();
+  //       }
+  //     } catch (e) {}
+  //   });
+  // };
+
+  const descargarBoletos = async () => {
+    try {
+      console.log("Iniciando descarga de boletos...");
+      if (!carroCompras || Object.keys(carroCompras).length === 0) {
+        console.error("No hay datos de compras para generar boletos");
+        return;
+      }
+      await generateTicketsPDF(carroCompras);
+      console.log("Proceso de descarga completado");
+    } catch (error) {
+      console.error("Error en descargarBoletos:", error);
+    }
   };
 
   useEffect(() => {
