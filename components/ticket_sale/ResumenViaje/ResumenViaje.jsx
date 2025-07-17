@@ -589,13 +589,13 @@ export const ResumenViaje = (props) => {
           localStorage.setItem("flowOrder", data.flowOrder);
         }
 
-        setIsLoading(false);
-
         setPayment({
           ...payment,
           url: data.url,
           token: data.token,
         });
+        
+        setIsLoading(false);
       }
     } catch (error) {
       setIsLoading(false);

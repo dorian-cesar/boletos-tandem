@@ -11,6 +11,7 @@ import { format } from "@formkit/tempo";
 import { limpiarListaCarrito } from "store/usuario/compra-slice";
 import cookie from "cookie";
 import { generateTicketsPDF } from "../../components/GenerarBoletos";
+import { toast } from "react-toastify";
 
 import { sendGTMEvent } from "@next/third-parties/google";
 
@@ -41,6 +42,8 @@ export default function Home(props: HomeProps) {
   const [codigo, setCodigo] = useState<string>("");
   const [carroCompras, setCarroCompras] = useState<any>([]);
   const [passagers, setPassagers] = useState({});
+  const [generatedTickets, setGeneratedTickets] = useState([]);
+  const [buyerInfo, setbuyerInfo] = useState<any>({});
 
   const router = useRouter();
 
@@ -81,6 +84,17 @@ export default function Home(props: HomeProps) {
       }
     } catch (error) {}
   }, [carro]);
+
+  useEffect(() => {
+    try {
+      const data = localStorage.getItem("buyer_info");
+      const parsedData = JSON.parse(data);
+      if (data && parsedData) {
+        setbuyerInfo(parsedData);
+        console.log("buyerInfo", parsedData);
+      }
+    } catch (error) {}
+  }, []);
 
   const [totalPagar, setTotalPagar] = useState(0);
   const [copiaCarro, setCopiaCarro] = useState({});
@@ -274,18 +288,78 @@ export default function Home(props: HomeProps) {
   //   });
   // };
 
+  // const descargarBoletos = async () => {
+  //   try {
+  //     console.log("Iniciando descarga de boletos...");
+  //     if (!carroCompras || Object.keys(carroCompras).length === 0) {
+  //       console.error("No hay datos de compras para generar boletos");
+  //       return;
+  //     }
+  //     await generateTicketsPDF(carroCompras);
+  //     console.log("Proceso de descarga completado");
+  //   } catch (error) {
+  //     console.error("Error en descargarBoletos:", error);
+  //   }
+  // };
+
   const descargarBoletos = async () => {
     try {
       console.log("Iniciando descarga de boletos...");
-      if (!carroCompras || Object.keys(carroCompras).length === 0) {
+      console.log("buyerInfo email", buyerInfo.email);
+
+      if (!carroCompras || Object.keys(carroCompras).length === 0 && !buyerInfo.email) {
         console.error("No hay datos de compras para generar boletos");
         return;
       }
-      await generateTicketsPDF(carroCompras);
-      console.log("Proceso de descarga completado");
+
+      const response = await fetch("/api/generar-boletos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ticketData: carroCompras,
+          email: buyerInfo.email,
+        }),
+      });
+
+      const result = await response.json();
+      console.log("Resultado de la generación de boletos:", result);
+
+      if (response.ok) {
+        setGeneratedTickets(result.tickets);
+
+        result.tickets.forEach(
+          (ticket: { base64: string; fileName: string }) => {
+            downloadTicket(ticket.base64, ticket.fileName);
+          }
+        );
+
+        toast.success("Boletos generados y descargados correctamente", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+      } else {
+        console.error("Error:", result);
+        toast.error(`Error al generar boletos: ${result.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
+      }
     } catch (error) {
       console.error("Error en descargarBoletos:", error);
     }
+  };
+
+  const downloadTicket = (base64: string, fileName: string) => {
+    const link = document.createElement("a");
+    link.href = base64;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   useEffect(() => {
