@@ -57,19 +57,19 @@ export default async (
     const { generatedTickets } = await generateAllTicketsPDF(ticketData);
 
     // 2. Enviar por email
-    // const emailResult = await sendTicketsByEmail({
-    //   customerEmail: email,
-    //   tickets: generatedTickets.map((t) => ({
-    //     fileName: t.fileName,
-    //     buffer: t.buffer,
-    //   })),
-    //   customerName,
-    //   bookingReference,
-    // });
+    const emailResult = await sendTicketsByEmail({
+      customerEmail: email,
+      tickets: generatedTickets.map((t) => ({
+        fileName: t.fileName,
+        buffer: t.buffer,
+      })),
+      customerName,
+      bookingReference,
+    });
 
-    // if (!emailResult.success) {
-    //   throw new Error(emailResult.message);
-    // }
+    if (!emailResult.success) {
+      throw new Error(emailResult.message);
+    }
 
     // 3. Preparar respuesta para el frontend
     const frontendTickets = generatedTickets.map((ticket) => ({
