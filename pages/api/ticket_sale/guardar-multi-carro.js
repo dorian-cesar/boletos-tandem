@@ -178,7 +178,6 @@ async function handleGuardarMultiCarro(req, res) {
         error: "Error al crear el pago en Flow",
         errorMessage: error.message,
         bodyReq: body,
-        headers: headers,
       });
     }
   } catch (e) {
