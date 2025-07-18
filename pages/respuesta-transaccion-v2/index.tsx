@@ -60,6 +60,12 @@ export default function Home(props: HomeProps) {
 
   useEffect(() => {
     try {
+      generarBoletos();
+    } catch (error) {}
+  }, [flowOrder]);
+
+  useEffect(() => {
+    try {
       // const data = sessionStorage.getItem("transactionInformation");
       const data = sessionStorage.getItem("transactionBasketInfo");
       if (data) {
@@ -297,25 +303,9 @@ export default function Home(props: HomeProps) {
   //   });
   // };
 
-  // const descargarBoletos = async () => {
-  //   try {
-  //     console.log("Iniciando descarga de boletos...");
-  //     if (!carroCompras || Object.keys(carroCompras).length === 0) {
-  //       console.error("No hay datos de compras para generar boletos");
-  //       return;
-  //     }
-  //     await generateTicketsPDF(carroCompras);
-  //     console.log("Proceso de descarga completado");
-  //   } catch (error) {
-  //     console.error("Error en descargarBoletos:", error);
-  //   }
-  // };
-
-  const descargarBoletos = async () => {
+  const generarBoletos = async () => {
     try {
-      console.log("Iniciando descarga de boletos...");
-      console.log("buyerInfo email", buyerInfo.email);
-
+      console.log("Enviando boletos...");
       if (
         !carroCompras ||
         (Object.keys(carroCompras).length === 0 && !buyerInfo.email)
@@ -341,28 +331,29 @@ export default function Home(props: HomeProps) {
 
       if (response.ok) {
         setGeneratedTickets(result.tickets);
-
-        result.tickets.forEach(
-          (ticket: { base64: string; fileName: string }) => {
-            downloadTicket(ticket.base64, ticket.fileName);
-          }
-        );
-
-        // toast.success("Boletos generados y descargados correctamente!", {
-        //   position: "top-right",
-        //   autoClose: 5000,
-        //   hideProgressBar: false,
-        // });
+        console.log("Boletos generados y guardados", result.tickets);
       } else {
         console.error("Error:", result);
-        toast.error(`Error al generar boletos: ${result.message}`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-        });
       }
     } catch (error) {
-      console.error("Error en descargarBoletos:", error);
+      console.error("Error en generarBoletos:", error);
+    }
+  };
+
+  const descargarBoletos = () => {
+    try {
+      console.log("Descargando boletos...");
+      if (!generatedTickets || generatedTickets.length === 0) {
+        return;
+      }
+
+      generatedTickets.forEach(
+        (ticket: { base64: string; fileName: string }) => {
+          downloadTicket(ticket.base64, ticket.fileName);
+        }
+      );
+    } catch (error) {
+      console.error("Error al descargar los boletos:", error);
     }
   };
 
@@ -548,20 +539,42 @@ export default function Home(props: HomeProps) {
                 </div>
               )}
               <div className="container pb-3 pt-4">
-                <div className="row justify-content-evenly gap-5 gap-md-2">
+                <div className="row justify-content-center mb-4">
                   <div className="col-12 col-md-5 d-flex justify-content-center align-self-center">
                     <img
                       src="/img/icon/general/download-outline.svg"
-                      className="cursor-pointer"
-                      onClick={() => descargarBoletos()}
+                      className={`${
+                        generatedTickets.length === 0
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer"
+                      }`}
+                      onClick={() => {
+                        if (generatedTickets.length > 0) descargarBoletos();
+                      }}
+                      style={{
+                        pointerEvents:
+                          generatedTickets.length === 0 ? "none" : "auto",
+                      }}
                     />
                     <span
-                      className="fw-bold text-decoration-underline cursor-pointer"
-                      onClick={() => descargarBoletos()}
+                      className={`fw-bold text-decoration-underline ms-2 ${
+                        generatedTickets.length === 0
+                          ? "text-muted cursor-not-allowed"
+                          : "cursor-pointer"
+                      } fs-5`}
+                      onClick={() => {
+                        if (generatedTickets.length > 0) descargarBoletos();
+                      }}
+                      style={{
+                        pointerEvents:
+                          generatedTickets.length === 0 ? "none" : "auto",
+                      }}
                     >
                       Descarga tus boletos aquí
                     </span>
                   </div>
+                </div>
+                <div className="row justify-content-center">
                   <div className="col-12 col-md-5">
                     <Link href="/">
                       <div className="d-grid">
