@@ -123,10 +123,10 @@ async function handleGuardarMultiCarro(req, res) {
 
     const isProd = process.env.NODE_ENV === "production";
     const urlReturn = isProd
-    // ? "https://boletos-com.netlify.app/confirm-transaction"
-      ? "https://boletos-com.netlify.app/api/v2/confirm-transaction.js"
-      // : `http://localhost:3000/confirm-transaction`;
-      : `http://localhost:3000/api/v2/confirm-transaction.js`;
+    ? "https://boletos-com.netlify.app/confirm-transaction"
+      // ? "https://boletos-com.netlify.app/api/v2/confirm-transaction.js"
+      : `http://localhost:3000/confirm-transaction`;
+      // : `http://localhost:3000/api/v2/confirm-transaction.js`;
 
 
     const params = {
