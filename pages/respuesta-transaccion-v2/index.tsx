@@ -540,7 +540,7 @@ export default function Home(props: HomeProps) {
               )}
               <div className="container pb-3 pt-4">
                 <div className="row justify-content-center mb-4">
-                  <div className="col-12 col-md-5 d-flex justify-content-center align-self-center">
+                  <div className="col-12 col-md-5 d-flex justify-content-center align-self-center p-2">
                     <img
                       src="/img/icon/general/download-outline.svg"
                       className={`${
@@ -557,7 +557,7 @@ export default function Home(props: HomeProps) {
                       }}
                     />
                     <span
-                      className={`fw-bold text-decoration-underline ms-2 ${
+                      className={`fw-bold text-decoration-underline ${
                         generatedTickets.length === 0
                           ? "text-muted cursor-not-allowed"
                           : "cursor-pointer"
