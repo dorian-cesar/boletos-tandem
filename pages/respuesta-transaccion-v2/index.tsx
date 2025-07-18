@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { format } from "@formkit/tempo";
 import { limpiarListaCarrito } from "store/usuario/compra-slice";
 import cookie from "cookie";
-import { generateTicketsPDF } from "../../components/GenerarBoletos";
 import { toast } from "react-toastify";
 
 import { sendGTMEvent } from "@next/third-parties/google";

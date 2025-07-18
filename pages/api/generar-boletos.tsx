@@ -232,8 +232,8 @@ async function generateTicketPDF(
 
   const seatType =
     seat.floor === "floor1"
-      ? trip.seatDescriptionFirst
-      : trip.seatDescriptionSecond;
+      ? trip.seatLayout.tipo_Asiento_piso_1
+      : trip.seatLayout.tipo_Asiento_piso_2;
   doc.text(`Tipo: ${seatType}`, 20, 125);
   doc.text(`Precio: $${seat.valorAsiento}`, 20, 135);
   doc.text(`Código de Transacción: ${seat.authCode || authCode || "N/A"}`, 20, 145);

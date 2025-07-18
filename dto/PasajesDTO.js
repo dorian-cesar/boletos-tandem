@@ -33,7 +33,7 @@ export class PasajeDTO {
         this.codigoReserva = 1;
         this.clase = pasaje?.parrilla.busTypeDescription|| '';
         this.tarifa = asiento?.piso == 1 ? pasaje?.parrilla.priceFirst : pasaje?.parrilla.priceSecond;
-        this.servicio = asiento?.piso == 1 ? pasaje?.parrilla.seatDescriptionFirst : pasaje?.parrilla.seatDescriptionSecond; 
+        this.servicio = asiento?.piso == 1 ? pasaje?.thisParrilla.seatLayout.tipo_Asiento_piso_1 : pasaje?.thisParrilla.seatLayout.tipo_Asiento_piso_1; 
         this.piso = asiento?.piso || 1;
         this.pet = asiento?.pet || '';
         this.asiento = asiento || '';

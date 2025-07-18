@@ -36,8 +36,8 @@ import dayjs from "dayjs";
 export class BuscarPlanillaVerticalDTO {
   constructor(parrillaTemporal, stage, startDate, endDate, parrilla) {
     this.idServicio = parrillaTemporal?.id || "";
-    this.tipoBusPiso1 = parrilla?.seatDescriptionFirst || "";
-    this.tipoBusPiso2 = parrilla?.seatDescriptionSecond || "";
+    this.tipoBusPiso1 = parrilla?.seatLayout.tipo_Asiento_piso_1 || "";
+    this.tipoBusPiso2 = parrilla?.seatLayout.tipo_Asiento_piso_2 || "";
     this.fechaServicio = dayjs(stage == 0 ? startDate : endDate).format(
       "DD/MM/YYYY"
     );
@@ -54,8 +54,8 @@ export class BuscarPlanillaVerticalDTO {
 export class BuscarPlanillaVerticalOpenPaneDTO {
   constructor(parrilla) {
     this.idServicio = parrilla?.id || "";
-    this.tipoBusPiso1 = parrilla?.seatDescriptionFirst || "";
-    this.tipoBusPiso2 = parrilla?.seatDescriptionSecond || "";
+    this.tipoBusPiso1 = parrilla?.seatLayout.tipo_Asiento_piso_1 || "";
+    this.tipoBusPiso2 = parrilla?.seatLayout.tipo_Asiento_piso_2 || "";
     this.fechaServicio = parrilla?.date || "";
     this.idOrigen = parrilla?.terminalOrigin || "";
     this.idDestino = parrilla?.terminalDestination || "";

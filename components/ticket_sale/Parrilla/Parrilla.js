@@ -412,8 +412,8 @@ const Parrilla = (props) => {
       // asiento["piso"] = piso;
       // asiento["claseBus"] =
       //   piso === 1
-      //     ? props.thisParrilla.seatDescriptionFirst
-      //     : props.thisParrilla.seatDescriptionSecond;
+      //     ? props.thisParrilla.seatLayout.tipo_Asiento_piso_1
+      //     : props.thisParrilla.seatLayout.tipo_Asiento_piso_2;
       // asiento["idaVuelta"] = stage ? true : false;
       // asiento["tipoMascota"] = false;
       // asiento["relacionAsiento"] = asiento.asientoAsociado
@@ -504,8 +504,8 @@ const Parrilla = (props) => {
             piso,
             claseBus:
               piso === 1
-                ? props.thisParrilla.seatDescriptionFirst
-                : props.thisParrilla.seatDescriptionSecond,
+                ? props.thisParrilla.seatLayout.tipo_Asiento_piso_1
+                : props.thisParrilla.seatLayout.tipo_Asiento_piso_2,
             tipoMascota: true,
           };
 

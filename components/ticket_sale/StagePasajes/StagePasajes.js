@@ -90,11 +90,8 @@ const StagePasajes = (props) => {
   );
 
   const tipos_servicio = parrilla.reduce((a, b) => {
-    if (!a.includes(b.seatDescriptionFirst) && b.seatDescriptionFirst != "") {
-      a.push(b.seatDescriptionFirst);
-    }
-    if (!a.includes(b.seatDescriptionSecond) && b.seatDescriptionSecond != "") {
-      a.push(b.seatDescriptionSecond);
+    if (!a.includes(b.busTypeDescription) && b.busTypeDescription != "") {
+      a.push(b.busTypeDescription);
     }
     return a;
   }, []);
@@ -230,8 +227,7 @@ const StagePasajes = (props) => {
     returnSortedParrilla().map((mappedParrilla, indexParrilla) => {
       if (
         filter_tipo.length > 0 &&
-        !filter_tipo.includes(mappedParrilla.seatDescriptionFirst) &&
-        !filter_tipo.includes(mappedParrilla.seatDescriptionSecond)
+        !filter_tipo.includes(mappedParrilla.busTypeDescription)
       )
         return;
 

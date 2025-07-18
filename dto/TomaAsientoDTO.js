@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 export class TomaAsientoDTO {
     constructor(parrilla, startDate, endDate, asiento, piso, stage) {
         this.servicio = parrilla?.id;
-        this.bus = piso == 1 ? parrilla?.seatDescriptionFirst : parrilla?.seatDescriptionSecond,
+        this.bus = piso == 1 ? parrilla?.seatLayout.tipo_Asiento_piso_1 : parrilla?.seatLayout.tipo_Asiento_piso_2,
         this.fecha = parrilla?.date
         this.origen = parrilla?.terminalOrigin || '';
         this.destino = parrilla?.terminalDestination || '';
