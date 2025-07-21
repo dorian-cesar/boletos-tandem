@@ -14,7 +14,8 @@ export default function BoletoOperador() {
     if (data) {
       try {
         const base64 = data as string;
-        const jsonStr = Buffer.from(base64, "base64").toString("utf-8");
+        // const jsonStr = Buffer.from(base64, "base64").toString("utf-8");
+        const jsonStr = atob(base64);
         const decoded = JSON.parse(jsonStr);
         setBoleto(decoded);
       } catch (err) {
