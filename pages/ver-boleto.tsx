@@ -100,19 +100,20 @@ export default function BoletoOperador() {
             </div>
           </div>
         ) : (
-          <div className="row justify-content-center mb-5">
-            <div className="text-center mt-5">
-              <h1>Lo sentimos 😢,</h1>
-              <h2>No se pudo mostrar el boleto</h2>
+          <div
+            className="container d-flex flex-column justify-content-center align-items-center py-5"
+            style={{ minHeight: "75vh" }}
+          >
+            <div className="text-center mb-2 p-4">
+              <h1 className="display-4">Lo sentimos 😢</h1>
+              <p className="h5">No se pudo mostrar el boleto.</p>
+              <p className="text-muted">
+                Por favor, escanee el código QR nuevamente.
+              </p>
             </div>
-            <div className="text-center mt-5">
-              <h5>Por favor, escanee nuevamente el código QR.</h5>
-            </div>
-            <div className="mt-5 mb-5 col-lg-2">
-              <a className="btn btn-primary" href="/">
-                Salir
-              </a>
-            </div>
+            <a href="/" className="btn btn-primary px-4 py-2 mt-3">
+              Volver al inicio
+            </a>
           </div>
         )}
       </div>
