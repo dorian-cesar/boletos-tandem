@@ -14,7 +14,7 @@ export default function BoletoOperador() {
         const jsonStr = Buffer.from(base64, "base64").toString("utf-8");
         const decoded = JSON.parse(jsonStr);
         setBoleto(decoded);
-        console.log("Boleto:", decoded);
+        console.log("Boleto:", boleto);
       } catch (err) {
         console.error("Error al decodificar QR:", err);
       }
