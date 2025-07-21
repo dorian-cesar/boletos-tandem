@@ -538,54 +538,69 @@ export default function Home(props: HomeProps) {
                   </div>
                 </div>
               )}
-              <div className="container pb-3 pt-4">
-                <div className="row justify-content-center mb-4">
-                  <div className="col-12 col-md-5 d-flex justify-content-center align-self-center p-2">
-                    <img
-                      src="/img/icon/general/download-outline.svg"
-                      className={`${
-                        generatedTickets.length === 0
-                          ? "opacity-50 cursor-not-allowed"
-                          : "cursor-pointer"
-                      }`}
-                      onClick={() => {
-                        if (generatedTickets.length > 0) descargarBoletos();
-                      }}
-                      style={{
-                        pointerEvents:
-                          generatedTickets.length === 0 ? "none" : "auto",
-                      }}
-                    />
-                    <span
-                      className={`fw-bold text-decoration-underline ${
-                        generatedTickets.length === 0
-                          ? "text-muted cursor-not-allowed"
-                          : "cursor-pointer"
-                      } fs-5`}
-                      onClick={() => {
-                        if (generatedTickets.length > 0) descargarBoletos();
-                      }}
-                      style={{
-                        pointerEvents:
-                          generatedTickets.length === 0 ? "none" : "auto",
-                      }}
-                    >
-                      Descarga tus boletos aquí
-                    </span>
+              {generatedTickets.length === 0 ? (
+                <div
+                  className="d-flex flex-column justify-content-center align-items-center"
+                  style={{ minHeight: "20vh" }}
+                >
+                  <div
+                    className="spinner-border text-primary mb-3"
+                    role="status"
+                  />
+                  <span className="text-primary fw-semibold text-center">
+                    Espere mientras generamos sus boletos...
+                  </span>
+                </div>
+              ) : (
+                <div className="container pb-3 pt-4">
+                  <div className="row justify-content-center mb-4">
+                    <div className="col-12 col-md-5 d-flex justify-content-center align-self-center p-2">
+                      <img
+                        src="/img/icon/general/download-outline.svg"
+                        className={`${
+                          generatedTickets.length === 0
+                            ? "opacity-50 cursor-not-allowed"
+                            : "cursor-pointer"
+                        }`}
+                        onClick={() => {
+                          if (generatedTickets.length > 0) descargarBoletos();
+                        }}
+                        style={{
+                          pointerEvents:
+                            generatedTickets.length === 0 ? "none" : "auto",
+                        }}
+                      />
+                      <span
+                        className={`fw-bold text-decoration-underline ${
+                          generatedTickets.length === 0
+                            ? "text-muted cursor-not-allowed"
+                            : "cursor-pointer"
+                        } fs-5`}
+                        onClick={() => {
+                          if (generatedTickets.length > 0) descargarBoletos();
+                        }}
+                        style={{
+                          pointerEvents:
+                            generatedTickets.length === 0 ? "none" : "auto",
+                        }}
+                      >
+                        Descarga tus boletos aquí
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row justify-content-center">
+                    <div className="col-12 col-md-5">
+                      <Link href="/">
+                        <div className="d-grid">
+                          <button className="btn btn-primary rounded-4">
+                            Volver al inicio
+                          </button>
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-                <div className="row justify-content-center">
-                  <div className="col-12 col-md-5">
-                    <Link href="/">
-                      <div className="d-grid">
-                        <button className="btn btn-primary rounded-4">
-                          Volver al inicio
-                        </button>
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         ) : (
