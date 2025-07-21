@@ -134,6 +134,16 @@
     border-bottom: 1px dotted #000;
 }
 
+.resumen-servicio-ver-boleto {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-block: 16px;
+  border-top: 1px dotted #000;
+  border-bottom: 1px dotted #000;
+  gap: 4px;
+}
+
 .resumen-pago {
     display: flex;
     width: 100%;

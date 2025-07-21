@@ -126,13 +126,16 @@ export default function BoletoOperador() {
                             </div>
                           </li>
                         </ul>
-
-                        <div className={styles["resumen-servicio"]}>
-                          Asiento: <b>{boleto.seat}</b>
-                          <br />
-                          Piso: {boleto.floor === "floor1" ? "1" : "2"}
-                          {/* <br /> */}
-                          {/* <b>Precio: {formatGuarani(boleto.price)}</b> */}
+                        <div className={styles["resumen-servicio-ver-boleto"]}>
+                          <div>
+                            Asiento: <b>{boleto.seat}</b>
+                          </div>
+                          <div>
+                            Piso: <b>{boleto.floor === "floor1" ? "1" : "2"}</b>
+                          </div>
+                          <div>
+                            {/* <b>Precio: {formatGuarani(boleto.price)}</b> */}
+                          </div>
                         </div>
                       </div>
                     </div>
