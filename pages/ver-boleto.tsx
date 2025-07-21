@@ -118,6 +118,8 @@ export default function BoletoOperador() {
                               {formatDate(boleto.date)}
                             </div>
                           </li>
+                        </ul>
+                        <ul>
                           <li>
                             <div>Destino: {boleto.destination}</div>
                             <div>
