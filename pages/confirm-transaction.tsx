@@ -301,13 +301,14 @@ export default function ConfrimTransaction() {
 
   return (
     <Layout>
-      <div className="container row d-flex justify-content-center mb-5 w-100 mx-auto">
-        <div className="text-center mt-2">
-          <img src="/img/loading.gif" width={300} height={300} alt="Loading" />
-        </div>
-        <div className="text-center my-2">
-          <h5>Estamos completando su transacción, por favor espere.</h5>
-        </div>
+      <div
+        className="container d-flex flex-column align-items-center justify-content-center"
+        style={{ minHeight: "75vh" }}
+      >
+        <img src="/img/loading.gif" width={300} height={300} alt="Loading" />
+        <h5 className="text-center">
+          Estamos completando su transacción, por favor espere.
+        </h5>
       </div>
       <Footer />
     </Layout>
