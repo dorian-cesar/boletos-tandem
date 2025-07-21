@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "components/Layout";
 import Footer from "components/Footer";
+import styles from "./respuesta-transaccion-v2/RespuestaTransaccionV2.module.css";
 
 export default function BoletoOperador() {
   const router = useRouter();
@@ -98,7 +99,7 @@ export default function BoletoOperador() {
                     <div className="col-12 col-md-5">
                       <h6 className="fw-bold">Detalles del viaje</h6>
 
-                      <div className="my-5">
+                      <div className={`my-5 ${styles["detalle-item"]}`}>
                         <ul>
                           <li>
                             <div>Origen: {boleto.origin}</div>
@@ -115,7 +116,7 @@ export default function BoletoOperador() {
                           </li>
                         </ul>
 
-                        <div>
+                        <div className={styles["resumen-servicio"]}>
                           <span>Asiento: {boleto.seat}</span>
                           <br />
                           <span>
