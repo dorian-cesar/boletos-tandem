@@ -110,18 +110,20 @@ export default function BoletoOperador() {
                       <h6 className="fw-bold">Detalles del viaje</h6>
 
                       <div className={`my-5 ${styles["detalle-item"]}`}>
-                        <ul>
-                          <li>
-                            <div>Origen: {boleto.origin}</div>
+                        <ul className="list-unstyled">
+                          <li className="mb-3">
+                            <div className="fw-semibold">
+                              Origen: {boleto.origin}
+                            </div>
                             <div>
                               Salida: <b>{boleto.departureTime}</b> -{" "}
                               {formatDate(boleto.date)}
                             </div>
                           </li>
-                        </ul>
-                        <ul>
                           <li>
-                            <div>Destino: {boleto.destination}</div>
+                            <div className="fw-semibold">
+                              Destino: {boleto.destination}
+                            </div>
                             <div>
                               Llegada: <b>{boleto.arrivalTime}</b> -{" "}
                               {formatDate(boleto.arrivalDate)}
