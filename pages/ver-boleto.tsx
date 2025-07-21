@@ -10,14 +10,11 @@ export default function BoletoOperador() {
   useEffect(() => {
     if (query.data) {
       try {
-        const decoded = JSON.parse(
-          Buffer.from(
-            decodeURIComponent(query.data as string),
-            "base64"
-          ).toString()
-        );
+        const base64 = query.data as string;
+        const jsonStr = Buffer.from(base64, "base64").toString("utf-8");
+        const decoded = JSON.parse(jsonStr);
         setBoleto(decoded);
-        console.log("Boleto:", boleto);
+        console.log("Boleto:", decoded);
       } catch (err) {
         console.error("Error al decodificar QR:", err);
       }
