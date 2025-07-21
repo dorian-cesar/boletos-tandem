@@ -106,9 +106,9 @@ const config = serverRuntimeConfig;
 async function handleGuardarMultiCarro(req, res) {
   try {
     // let token = await doLogin();
-    console.log("FLOW_API_KEY", process.env.FLOW_API_KEY);
-    console.log("FLOW_SECRET_KEY", process.env.FLOW_SECRET_KEY);
-    console.log("FLOW_API_URL", process.env.FLOW_API_URL);
+    // console.log("FLOW_API_KEY", process.env.FLOW_API_KEY);
+    // console.log("FLOW_SECRET_KEY", process.env.FLOW_SECRET_KEY);
+    // console.log("FLOW_API_URL", process.env.FLOW_API_URL);
 
     const { data } = JSON.parse(req.body);
 
@@ -123,11 +123,10 @@ async function handleGuardarMultiCarro(req, res) {
 
     const isProd = process.env.NODE_ENV === "production";
     const urlReturn = isProd
-    ? "https://boletos-com.netlify.app/confirm-transaction"
-      // ? "https://boletos-com.netlify.app/api/v2/confirm-transaction.js"
-      : `http://localhost:3000/confirm-transaction`;
-      // : `http://localhost:3000/api/v2/confirm-transaction.js`;
-
+    // ? "https://boletos-com.netlify.app/confirm-transaction"
+      ? "https://boletos-com.netlify.app/api/v2/receive-transaction"
+      // : `http://localhost:3000/confirm-transaction`;
+      : `http://localhost:3000/api/v2/receive-transaction`;
 
     const params = {
       apiKey: apiKey,

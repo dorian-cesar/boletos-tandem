@@ -44,3 +44,5 @@ view.js
 /components/ticket_sale/Parrilla/Parrilla cambiodeprops.js
 /components/ticket_sale/Parrilla/Parrilla simulado.js
 /netlify copy.toml
+/confirm-transaction copy.js
+/confirm-transaction copy.tsx
