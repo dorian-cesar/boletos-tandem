@@ -303,12 +303,7 @@ export default function ConfrimTransaction() {
     <Layout>
       <div className="container row d-flex justify-content-center mb-5 w-100 mx-auto">
         <div className="text-center mt-2">
-          <Image
-            src="/img/loading.gif"
-            width={300}
-            height={300}
-            alt="Loading"
-          />
+          <img src="/img/loading.gif" width={300} height={300} alt="Loading" />
         </div>
         <div className="text-center my-2">
           <h5>Estamos completando su transacción, por favor espere.</h5>
