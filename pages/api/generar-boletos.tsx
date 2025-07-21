@@ -197,20 +197,26 @@ async function generateTicketPDF(
 
   // Generar QR
   const qrData = JSON.stringify({
-    id: trip.id,
     origin: trip.origin,
     destination: trip.destination,
     date: trip.date,
+    departureTime: trip.departureTime,
+    arrivalDate: trip.arrivalDate,
+    arrivalTime: trip.arrivalTime,
     seat: seat.asiento,
-    authCode: seat.authCode || authCode || "N/A",
+    floor: seat.floor,
+    tipo:
+      seat.floor === "floor1"
+        ? trip.seatLayout.tipo_Asiento_piso_1
+        : trip.seatLayout.tipo_Asiento_piso_2,
     price: seat.valorAsiento,
+    authCode: seat.authCode || authCode,
   });
 
-  const qrCodeDataURL = await QRCode.toDataURL(qrData, {
-    width: 80,
-    margin: 1,
-    color: { dark: "#000000", light: "#FFFFFF" },
-  });
+  const encoded = Buffer.from(JSON.stringify(qrData)).toString("base64");
+
+  const qrUrl = `https://boletos-com.netlify.app/ver-boleto?data=${encoded}`;
+  const qrCodeDataURL = await QRCode.toDataURL(qrUrl);
 
   // Añadir QR al PDF
   doc.addImage(qrCodeDataURL, "PNG", 140, 40, 50, 50);
@@ -236,7 +242,11 @@ async function generateTicketPDF(
       : trip.seatLayout.tipo_Asiento_piso_2;
   doc.text(`Tipo: ${seatType}`, 20, 125);
   doc.text(`Precio: $${seat.valorAsiento}`, 20, 135);
-  doc.text(`Código de Transacción: ${seat.authCode || authCode || "N/A"}`, 20, 145);
+  doc.text(
+    `Código de Transacción: ${seat.authCode || authCode || "N/A"}`,
+    20,
+    145
+  );
 
   // Pie de página
   doc.line(20, 150, 190, 150);
