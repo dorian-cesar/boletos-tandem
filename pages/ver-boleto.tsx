@@ -41,13 +41,11 @@ export default function BoletoOperador() {
   if (!boleto) {
     return (
       <div
-        className="d-flex justify-content-center align-items-center"
+        className="d-flex justify-content-center align-items-center flex-column"
         style={{ minHeight: "40vh" }}
       >
         <div className="spinner-border text-primary mb-3" role="status" />
-        <span className="ms-2 text-primary fw-semibold">
-          Cargando boleto...
-        </span>
+        <span className="text-primary fw-semibold">Cargando boleto...</span>
       </div>
     );
   }
