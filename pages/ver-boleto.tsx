@@ -11,10 +11,13 @@ export default function BoletoOperador() {
     if (query.data) {
       try {
         const decoded = JSON.parse(
-          Buffer.from(decodeURIComponent(query.data as string), "base64").toString()
+          Buffer.from(
+            decodeURIComponent(query.data as string),
+            "base64"
+          ).toString()
         );
         setBoleto(decoded);
-        console.log("Boleto decoded:", decoded);
+        console.log("Boleto:", boleto);
       } catch (err) {
         console.error("Error al decodificar QR:", err);
       }
@@ -37,7 +40,10 @@ export default function BoletoOperador() {
               <div className="container mt-3 mb-2">
                 <div className="row justify-content-center">
                   <p className="col-12 col-md-8">
-                    Este boleto ha sido validado correctamente. A continuación se muestran los detalles del viaje.
+                    Este boleto ha sido validado correctamente.
+                  </p>
+                  <p className="col-12 col-md-8">
+                    A continuación se muestran los detalles del viaje.
                   </p>
                 </div>
               </div>
@@ -63,17 +69,27 @@ export default function BoletoOperador() {
                         <ul>
                           <li>
                             <div>Origen: {boleto.origin}</div>
-                            <div>Salida: {boleto.date} - {boleto.departureTime}</div>
+                            <div>
+                              Salida: {boleto.date} - {boleto.departureTime}
+                            </div>
                           </li>
                           <li>
                             <div>Destino: {boleto.destination}</div>
-                            <div>Llegada: {boleto.arrivalDate} - {boleto.arrivalTime}</div>
+                            <div>
+                              Llegada: {boleto.arrivalDate} -{" "}
+                              {boleto.arrivalTime}
+                            </div>
                           </li>
                         </ul>
                         <div>
-                          <span>Asiento: {boleto.seat}</span><br/>
-                          <span>Piso: {boleto.floor === 'floor1' ? '1' : '2'}</span><br/>
-                          <span>Tipo de asiento: {boleto.tipo}</span><br/>
+                          <span>Asiento: {boleto.seat}</span>
+                          <br />
+                          <span>
+                            Piso: {boleto.floor === "floor1" ? "1" : "2"}
+                          </span>
+                          <br />
+                          <span>Tipo de asiento: {boleto.tipo}</span>
+                          <br />
                           <b>Precio: {boleto.price}</b>
                         </div>
                       </div>
@@ -93,7 +109,7 @@ export default function BoletoOperador() {
               <h5>Por favor, escanee nuevamente el código QR.</h5>
             </div>
             <div className="mt-5 mb-5 col-lg-2">
-              <a className="btn-outline" href="/">
+              <a className="btn btn-primary" href="/">
                 Salir
               </a>
             </div>

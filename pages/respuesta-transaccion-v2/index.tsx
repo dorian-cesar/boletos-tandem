@@ -614,7 +614,7 @@ export default function Home(props: HomeProps) {
               <h5>Por favor, intentelo nuevamente.</h5>
             </div>
             <div className="mt-5 mb-5 col-lg-2">
-              <Link className="btn-outline" href="/">
+              <Link className="btn btn-primary" href="/">
                 Salir
               </Link>
             </div>
