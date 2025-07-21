@@ -23,7 +23,7 @@ export default async function handler(
           <meta http-equiv="refresh" content="0; url=/confirm-transaction" />
         </head>
         <body>
-          Redirigiendo a la confirmación de transacción...
+          Cargando...
         </body>
       </html>
     `);
