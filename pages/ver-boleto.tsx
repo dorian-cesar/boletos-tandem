@@ -65,7 +65,7 @@ export default function BoletoOperador() {
               <h1 className="fw-bold text-secondary">Boleto de viaje</h1>
               <div className="container mt-3 mb-2">
                 <div className="row justify-content-center">
-                  <p className="col-12 col-md-8">
+                  <p className="col-12 col-md-8 mb-1">
                     Este boleto ha sido validado correctamente.
                   </p>
                   <p className="col-12 col-md-8">
