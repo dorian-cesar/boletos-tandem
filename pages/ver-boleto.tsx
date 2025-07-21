@@ -21,6 +21,20 @@ export default function BoletoOperador() {
     }
   }, [query.data]);
 
+  if (!boleto) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "40vh" }}
+      >
+        <div className="spinner-border text-primary mb-3" role="status" />
+        <span className="ms-2 text-primary fw-semibold">
+          Cargando boleto...
+        </span>
+      </div>
+    );
+  }
+
   return (
     <Layout>
       <div className="container my-4">
@@ -103,7 +117,7 @@ export default function BoletoOperador() {
           >
             <div className="text-center mb-2 p-4">
               <h1 className="display-4">Lo sentimos 😢</h1>
-              <p className="h5">No se pudo mostrar el boleto.</p>
+              <p className="h5">No se pudo mostrar el boleto</p>
               <p className="text-muted">
                 Por favor, escanee el código QR nuevamente.
               </p>
