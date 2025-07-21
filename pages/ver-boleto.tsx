@@ -21,6 +21,15 @@ export default function BoletoOperador() {
     }
   }, [query.data]);
 
+  const formatGuarani = (value) =>
+    new Intl.NumberFormat("es-PY", {
+      style: "currency",
+      currency: "PYG",
+      currencyDisplay: "symbol",
+    })
+      .format(value)
+      .replace(/Gs\.?|PYG/, "₲");
+
   if (!boleto) {
     return (
       <div
@@ -101,7 +110,7 @@ export default function BoletoOperador() {
                           <br />
                           <span>Tipo de asiento: {boleto.tipo}</span>
                           <br />
-                          <b>Precio: {boleto.price}</b>
+                          <b>Precio: {formatGuarani(boleto.price)}</b>
                         </div>
                       </div>
                     </div>
