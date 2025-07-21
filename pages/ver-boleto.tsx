@@ -43,6 +43,16 @@ export default function BoletoOperador() {
       .format(value)
       .replace(/Gs\.?|PYG/, "₲");
 
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    const date = new Date(dateStr);
+    return new Intl.DateTimeFormat("es-ES", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(date);
+  };
+
   if (!boleto) {
     return (
       <div
@@ -104,28 +114,25 @@ export default function BoletoOperador() {
                           <li>
                             <div>Origen: {boleto.origin}</div>
                             <div>
-                              Salida: {boleto.date} - {boleto.departureTime}
+                              Salida: <b>{boleto.departureTime}</b> -{" "}
+                              {formatDate(boleto.date)}
                             </div>
                           </li>
                           <li>
                             <div>Destino: {boleto.destination}</div>
                             <div>
-                              Llegada: {boleto.arrivalDate} -{" "}
-                              {boleto.arrivalTime}
+                              Llegada: <b>{boleto.arrivalTime}</b> -{" "}
+                              {formatDate(boleto.arrivalDate)}
                             </div>
                           </li>
                         </ul>
 
                         <div className={styles["resumen-servicio"]}>
-                          <span>Asiento: {boleto.seat}</span>
+                          Asiento: <b>{boleto.seat}</b>
                           <br />
-                          <span>
-                            Piso: {boleto.floor === "floor1" ? "1" : "2"}
-                          </span>
-                          <br />
-                          <span>Tipo de asiento: {boleto.tipo}</span>
-                          <br />
-                          <b>Precio: {formatGuarani(boleto.price)}</b>
+                          Piso: {boleto.floor === "floor1" ? "1" : "2"}
+                          {/* <br /> */}
+                          {/* <b>Precio: {formatGuarani(boleto.price)}</b> */}
                         </div>
                       </div>
                     </div>
