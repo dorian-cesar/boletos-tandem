@@ -14,6 +14,7 @@ export default function BoletoOperador() {
           Buffer.from(decodeURIComponent(query.data as string), "base64").toString()
         );
         setBoleto(decoded);
+        console.log("Boleto decoded:", decoded);
       } catch (err) {
         console.error("Error al decodificar QR:", err);
       }
