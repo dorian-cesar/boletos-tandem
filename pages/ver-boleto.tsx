@@ -42,7 +42,7 @@ export default function BoletoOperador() {
     return (
       <div
         className="d-flex justify-content-center align-items-center flex-column"
-        style={{ minHeight: "40vh" }}
+        style={{ minHeight: "75vh" }}
       >
         <div className="spinner-border text-primary mb-3" role="status" />
         <span className="text-primary fw-semibold">Cargando boleto...</span>
