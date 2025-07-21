@@ -25,9 +25,11 @@ export default function BoletoOperador() {
     }
   }, [router.isReady, router.query]);
 
+  // Logs para debug
   useEffect(() => {
     if (boleto) {
       console.log("Boleto actualizado:", boleto);
+      console.log("Tipo de boleto:", typeof boleto);
     }
   }, [boleto]);
 
