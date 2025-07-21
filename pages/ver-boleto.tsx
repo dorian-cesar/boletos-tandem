@@ -65,8 +65,10 @@ export default function BoletoOperador() {
                 alt="boleto confirmado"
               />
             </div>
+
             <div className="card-body">
               <h1 className="fw-bold text-secondary">Boleto de viaje</h1>
+
               <div className="container mt-3 mb-2">
                 <div className="row justify-content-center">
                   <p className="col-12 col-md-8 mb-1">
@@ -95,6 +97,7 @@ export default function BoletoOperador() {
                   <div className="row justify-content-center gap-4">
                     <div className="col-12 col-md-5">
                       <h6 className="fw-bold">Detalles del viaje</h6>
+
                       <div className="my-5">
                         <ul>
                           <li>
@@ -111,6 +114,7 @@ export default function BoletoOperador() {
                             </div>
                           </li>
                         </ul>
+
                         <div>
                           <span>Asiento: {boleto.seat}</span>
                           <br />
