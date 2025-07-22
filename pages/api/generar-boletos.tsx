@@ -68,7 +68,7 @@ export default async (
     const { generatedTickets } = await generateAllTicketsPDF(
       ticketData,
       authCode,
-      token,
+      token
     );
 
     // 2. Enviar por email
@@ -134,7 +134,13 @@ async function generateAllTicketsPDF(
     if (!ticketInfo) continue;
 
     if (ticketInfo.ida) {
-      await processTrips(ticketInfo.ida, "ida", generatedTickets, authCode, token);
+      await processTrips(
+        ticketInfo.ida,
+        "ida",
+        generatedTickets,
+        authCode,
+        token
+      );
     }
 
     if (ticketInfo.vuelta) {
@@ -163,7 +169,13 @@ async function processTrips(
     if (!trip?.asientos?.length) continue;
 
     for (const seat of trip.asientos) {
-      const ticket = await generateTicketPDF(trip, seat, tripType, authCode, token);
+      const ticket = await generateTicketPDF(
+        trip,
+        seat,
+        tripType,
+        authCode,
+        token
+      );
       generatedTickets.push(ticket);
     }
   }
@@ -185,6 +197,12 @@ async function generateTicketPDF(
   seat: string;
 }> {
   const doc = new jsPDF();
+
+  // const myFont = ""; // load the *.ttf font file as binary string
+  // // add the font to jsPDF
+  // doc.addFileToVFS("MyFont.ttf", myFont);
+  // doc.addFont("MyFont.ttf", "MyFont", "normal");
+  // doc.setFont("MyFont");
 
   // Configuración inicial
   doc.setFont("helvetica", "bold");
@@ -230,17 +248,16 @@ async function generateTicketPDF(
   doc.addImage(qrCodeDataURL, "PNG", 140, 40, 50, 50);
 
   // Información del viaje
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
-  doc.setFont("helvetica", "normal");
   doc.text(`Origen: ${trip.origin}`, 20, 45);
   doc.text(`Destino: ${trip.destination}`, 20, 55);
-  doc.text(`Fecha salida: ${trip.date}`, 20, 65);
-  doc.text(`Hora salida: ${trip.departureTime}`, 20, 75);
-  doc.text(`Fecha llegada: ${trip.arrivalDate}`, 20, 85);
-  doc.text(`Hora llegada: ${trip.arrivalTime}`, 20, 95);
+  doc.text(`Salida:`, 20, 65);
+  doc.text(`${trip.date} ${trip.departureTime}`, 20, 75);
+  doc.text(`Llegada:`, 20, 85);
+  doc.text(`${trip.arrivalDate} ${trip.arrivalTime}`, 20, 95);
 
   // Información del asiento
-  doc.setFont("helvetica", "bold");
   doc.text(`Asiento: ${seat.asiento}`, 20, 105);
   doc.text(`Piso: ${seat.floor === "floor1" ? "1" : "2"}`, 20, 115);
 
@@ -248,8 +265,9 @@ async function generateTicketPDF(
     seat.floor === "floor1"
       ? trip.seatLayout.tipo_Asiento_piso_1
       : trip.seatLayout.tipo_Asiento_piso_2;
+  doc.setFont("helvetica", "normal");
   doc.text(`Tipo: ${seatType}`, 20, 125);
-  doc.text(`Precio: $${seat.valorAsiento}`, 20, 135);
+  doc.text(`Precio: ${seat.valorAsiento} Gs.`, 20, 135);
   doc.text(
     `Código de Transacción: ${seat.authCode || authCode || "N/A"}`,
     20,
@@ -258,6 +276,7 @@ async function generateTicketPDF(
 
   // Pie de página
   doc.line(20, 150, 190, 150);
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
   doc.text("¡Gracias por viajar con nosotros!", 105, 160, { align: "center" });
   doc.text("Para consultas: contacto@empresa.com", 105, 170, {

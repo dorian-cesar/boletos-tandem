@@ -231,6 +231,8 @@ export default function Home(props) {
         // },
       });
 
+      const res = await response.json();
+
       const now = new Date();
       const nowPlus15 = new Date(now.getTime() + 15 * 60 * 1000);
 
