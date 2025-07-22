@@ -107,34 +107,49 @@ export default function BoletoOperador() {
                 <div className="container">
                   <div className="row justify-content-center gap-4">
                     <div className="col-12 col-md-5">
-                      <h6 className="fw-bold">Detalles del viaje</h6>
-
-                      <div className={`my-5 ${styles["detalle-item"]}`}>
-                        <ul>
-                          <li>
-                            <div>Origen: {boleto.origin}</div>
-                            <div>
-                              Salida: <b>{boleto.departureTime}</b> -{" "}
-                              {formatDate(boleto.date)}
-                            </div>
-                          </li>
-                          <li>
-                            <div>Destino: {boleto.destination}</div>
-                            <div>
-                              Llegada: <b>{boleto.arrivalTime}</b> -{" "}
+                      <h5 className="fw-bold mb-0">Detalles del viaje</h5>
+                      <div className="my-5">
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "0.75rem",
+                          }}
+                        >
+                          <div className={`${styles["detalle-item"]}`}>
+                            <ul>
+                              <li>
+                                Origen: <b>{boleto.origin}</b>
+                              </li>
+                              <li>
+                                Destino: <b>{boleto.destination}</b>
+                              </li>
+                            </ul>
+                          </div>
+                          <div>
+                            Salida:{" "}
+                            <b>
+                              {boleto.departureTime} - {formatDate(boleto.date)}
+                            </b>
+                          </div>
+                          <div>
+                            Llegada:{" "}
+                            <b>
+                              {boleto.arrivalTime} -{" "}
                               {formatDate(boleto.arrivalDate)}
-                            </div>
-                          </li>
-                        </ul>
-                        <div className={styles["resumen-servicio-ver-boleto"]}>
+                            </b>
+                          </div>
+                        </div>
+
+                        <div
+                          className={styles["resumen-servicio-ver-boleto"]}
+                          style={{ marginTop: "1rem" }}
+                        >
                           <div>
                             Asiento: <b>{boleto.seat}</b>
                           </div>
                           <div>
                             Piso: <b>{boleto.floor === "floor1" ? "1" : "2"}</b>
-                          </div>
-                          <div>
-                            {/* <b>Precio: {formatGuarani(boleto.price)}</b> */}
                           </div>
                         </div>
                       </div>
