@@ -307,6 +307,13 @@ export default function Home(props: HomeProps) {
     const token = localStorage.getItem("tokenTemp");
     try {
       console.log("Enviando boletos...");
+      if (
+        !carroCompras ||
+        (Object.keys(carroCompras).length === 0 && !buyerInfo.email)
+      ) {
+        console.error("No hay datos de compras para generar boletos");
+        return;
+      }
 
       const response = await fetch("/api/generar-boletos", {
         method: "POST",
