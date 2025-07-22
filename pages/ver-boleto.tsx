@@ -141,7 +141,6 @@ export default function BoletoOperador() {
 
   // isValid === true
   return (
-    <Layout>
       <div className="container my-4">
         <div className="card text-center border-0 shadow-sm rounded-4">
           <div className="card-header bg-white border-0 mt-2">
@@ -234,7 +233,5 @@ export default function BoletoOperador() {
           </div>
         </div>
       </div>
-      <Footer />
-    </Layout>
   );
 }
