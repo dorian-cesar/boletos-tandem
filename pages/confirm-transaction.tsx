@@ -216,7 +216,7 @@ export default function ConfrimTransaction() {
                 return;
               }
 
-              // REGISTRA USUARIO INVITADO
+              // Registra usuario invitado
               let userId = null;
               try {
                 const userRes = await fetch("https://boletos.dev-wit.com/api/users/register-guest", {
@@ -263,7 +263,7 @@ export default function ConfrimTransaction() {
                 return;
               }
 
-              // CONFIRMA ASIENTOS
+              // Confirmar asientos
               for (const servicio of purchaseInfo) {
                 const serviceId = servicio?.id;
                 const asientos = servicio?.asientos || [];

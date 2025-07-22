@@ -60,12 +60,6 @@ export default function Home(props: HomeProps) {
 
   useEffect(() => {
     try {
-      generarBoletos();
-    } catch (error) {}
-  }, [flowOrder]);
-
-  useEffect(() => {
-    try {
       // const data = sessionStorage.getItem("transactionInformation");
       const data = sessionStorage.getItem("transactionBasketInfo");
       if (data) {
@@ -303,17 +297,16 @@ export default function Home(props: HomeProps) {
   //   });
   // };
 
+  useEffect(() => {
+    try {
+      generarBoletos();
+    } catch (error) {}
+  }, [flowOrder]);
+
   const generarBoletos = async () => {
     const token = localStorage.getItem("tokenTemp");
     try {
       console.log("Enviando boletos...");
-      if (
-        !carroCompras ||
-        (Object.keys(carroCompras).length === 0 && !buyerInfo.email)
-      ) {
-        console.error("No hay datos de compras para generar boletos");
-        return;
-      }
 
       const response = await fetch("/api/generar-boletos", {
         method: "POST",
@@ -348,7 +341,6 @@ export default function Home(props: HomeProps) {
       if (!generatedTickets || generatedTickets.length === 0) {
         return;
       }
-
       generatedTickets.forEach(
         (ticket: { base64: string; fileName: string }) => {
           downloadTicket(ticket.base64, ticket.fileName);
