@@ -8,6 +8,7 @@ interface TicketData {
   ticketData: any;
   email: string;
   authCode?: string;
+  token?: string;
   customerName?: string;
   bookingReference?: string;
 }
@@ -48,6 +49,7 @@ export default async (
       ticketData,
       email,
       authCode,
+      token,
       customerName,
       bookingReference,
     }: TicketData = req.body;
@@ -65,7 +67,8 @@ export default async (
     // 1. Generar los boletos en PDF
     const { generatedTickets } = await generateAllTicketsPDF(
       ticketData,
-      authCode
+      authCode,
+      token,
     );
 
     // 2. Enviar por email
@@ -112,7 +115,8 @@ export default async (
 // Función para generar todos los boletos (retorna base64)
 async function generateAllTicketsPDF(
   ticketData: any,
-  authCode?: string
+  authCode?: string,
+  token?: string
 ): Promise<{
   generatedTickets: Array<{
     fileName: string;
@@ -130,7 +134,7 @@ async function generateAllTicketsPDF(
     if (!ticketInfo) continue;
 
     if (ticketInfo.ida) {
-      await processTrips(ticketInfo.ida, "ida", generatedTickets, authCode);
+      await processTrips(ticketInfo.ida, "ida", generatedTickets, authCode, token);
     }
 
     if (ticketInfo.vuelta) {
@@ -138,7 +142,8 @@ async function generateAllTicketsPDF(
         ticketInfo.vuelta,
         "vuelta",
         generatedTickets,
-        authCode
+        authCode,
+        token
       );
     }
   }
@@ -151,13 +156,14 @@ async function processTrips(
   trips: any[],
   tripType: string,
   generatedTickets: any[],
-  authCode?: string
+  authCode?: string,
+  token?: string
 ): Promise<void> {
   for (const trip of trips) {
     if (!trip?.asientos?.length) continue;
 
     for (const seat of trip.asientos) {
-      const ticket = await generateTicketPDF(trip, seat, tripType, authCode);
+      const ticket = await generateTicketPDF(trip, seat, tripType, authCode, token);
       generatedTickets.push(ticket);
     }
   }
@@ -168,7 +174,8 @@ async function generateTicketPDF(
   trip: any,
   seat: any,
   tripType: string,
-  authCode?: string
+  authCode?: string,
+  token?: string
 ): Promise<{
   fileName: string;
   base64: string;
@@ -211,6 +218,7 @@ async function generateTicketPDF(
         : trip.seatLayout.tipo_Asiento_piso_2,
     price: seat.valorAsiento,
     authCode: seat.authCode || authCode,
+    token: token,
   });
 
   const encoded = Buffer.from(JSON.stringify(qrData)).toString("base64");

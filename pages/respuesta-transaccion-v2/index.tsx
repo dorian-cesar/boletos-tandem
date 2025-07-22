@@ -304,6 +304,7 @@ export default function Home(props: HomeProps) {
   // };
 
   const generarBoletos = async () => {
+    const token = localStorage.getItem("tokenTemp");
     try {
       console.log("Enviando boletos...");
       if (
@@ -323,6 +324,7 @@ export default function Home(props: HomeProps) {
           ticketData: carroCompras,
           email: buyerInfo.email,
           authCode: flowOrder,
+          token: token,
         }),
       });
 
