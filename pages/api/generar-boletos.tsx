@@ -194,9 +194,9 @@ async function generateTicketPDF(
   // Encabezado
   doc.text(trip.company || "Bus-Express", 105, 20, { align: "center" });
   doc.setFontSize(16);
-  doc.text(`Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}`, 105, 30, {
-    align: "center",
-  });
+  // doc.text(`Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}`, 105, 30, {
+  //   align: "center",
+  // });
 
   // Línea divisoria
   doc.setDrawColor(200, 200, 200);
