@@ -59,7 +59,7 @@ const Parrilla = (props) => {
     setIsOpened,
   } = props;
 
-  // console.log(`Parrilla props: `, props);
+  console.log(`Parrilla props: `, props);
 
   const [openPane, setOpenPane] = useState(false);
   const [key, setKey] = useState(null);
@@ -1127,7 +1127,7 @@ const Parrilla = (props) => {
                                     <div>
                                       <strong>Asiento:</strong> {ii.asiento}{" "}
                                       <br />
-                                      <strong>Estado:</strong> {ii.estado}{" "}
+                                      <strong>Tipo:</strong> {props.thisParrilla.seatLayout.tipo_Asiento_piso_1}{" "}
                                       <br />
                                       <strong>Precio:</strong>{" "}
                                       {ii.valorAsiento
@@ -1215,7 +1215,7 @@ const Parrilla = (props) => {
                                     <div>
                                       <strong>Asiento:</strong> {ii.asiento}{" "}
                                       <br />
-                                      <strong>Estado:</strong> {ii.estado}{" "}
+                                      <strong>Tipo:</strong> {props.thisParrilla.seatLayout.tipo_Asiento_piso_2}{" "}
                                       <br />
                                       <strong>Precio:</strong>{" "}
                                       {ii.valorAsiento
