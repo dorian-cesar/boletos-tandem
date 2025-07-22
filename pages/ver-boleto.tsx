@@ -41,7 +41,7 @@ export default function BoletoOperador() {
         const res = await fetch("/api/v2/confirm-transaction", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token, authCode }),
+          body: JSON.stringify({ token, flowOrder: authCode }),
         });
 
         const response = await res.json();

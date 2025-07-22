@@ -265,13 +265,11 @@ export default function ConfrimTransaction() {
               // Todos confirmados con éxito
               if (router.pathname !== "/respuesta-transaccion-v2") {
                 router.push("/respuesta-transaccion-v2");
-                localStorage.removeItem("tokenTemp");
               }
             } catch (error) {
               console.error("Error confirmando asientos:", error);
               if (router.pathname !== "/error-transaccion") {
                 router.push("/error-transaccion");
-                localStorage.removeItem("tokenTemp");
               }
             }
             break;
@@ -281,7 +279,6 @@ export default function ConfrimTransaction() {
           default:
             if (router.pathname !== "/error-transaccion") {
               router.push("/error-transaccion");
-              localStorage.removeItem("tokenTemp");
             }
             break;
         }
@@ -289,7 +286,6 @@ export default function ConfrimTransaction() {
         console.error("Error al verificar estado del pago:", error);
         if (router.pathname !== "/error-transaccion") {
           router.push("/error-transaccion");
-          localStorage.removeItem("tokenTemp");
         }
       }
     };
