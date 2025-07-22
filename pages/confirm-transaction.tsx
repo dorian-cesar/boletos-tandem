@@ -197,8 +197,10 @@ export default function ConfrimTransaction() {
                 ? JSON.parse(rawPurchaseInfo)
                 : [];
 
+              const firstName = buyerInfo?.nombre?.trim() || "";
+              const lastName = buyerInfo?.apellido?.trim() || "";
+              const userName = `${firstName} ${lastName}`.trim() || "Invitado";
               const userEmail = buyerInfo?.email || null;
-
               const tokenAPI = generateToken();
 
               if (
@@ -214,6 +216,54 @@ export default function ConfrimTransaction() {
                 return;
               }
 
+              // REGISTRA USUARIO INVITADO
+              let userId = null;
+              try {
+                const userRes = await fetch("https://boletos.dev-wit.com/api/users/register-guest", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    name: userName,
+                    email: userEmail,
+                  }),
+                });
+
+                if (!userRes.ok) {
+                  const errorText = await userRes.text();
+                  console.error(
+                    "Error al registrar usuario invitado:",
+                    errorText
+                  );
+                  if (router.pathname !== "/error-transaccion") {
+                    router.push("/error-transaccion");
+                  }
+                  return;
+                }
+
+                const userData = await userRes.json();
+                userId = userData?.user_id;
+                console.log("Usuario registrado:", userData);
+
+                if (!userId) {
+                  console.error("No se obtuvo el ID del usuario creado");
+                  if (router.pathname !== "/error-transaccion") {
+                    router.push("/error-transaccion");
+                  }
+                  return;
+                }
+
+                console.log("Usuario registrado con éxito, ID:", userId);
+              } catch (err) {
+                console.error("Error durante el registro de usuario:", err);
+                if (router.pathname !== "/error-transaccion") {
+                  router.push("/error-transaccion");
+                }
+                return;
+              }
+
+              // CONFIRMA ASIENTOS
               for (const servicio of purchaseInfo) {
                 const serviceId = servicio?.id;
                 const asientos = servicio?.asientos || [];
@@ -241,7 +291,7 @@ export default function ConfrimTransaction() {
                       body: JSON.stringify({
                         seatNumber,
                         authCode: flowOrder,
-                        userId: userEmail,
+                        userId,
                       }),
                     }
                   );
@@ -262,7 +312,7 @@ export default function ConfrimTransaction() {
                 }
               }
 
-              // Todos confirmados con éxito
+              // Éxito total
               if (router.pathname !== "/respuesta-transaccion-v2") {
                 router.push("/respuesta-transaccion-v2");
               }
