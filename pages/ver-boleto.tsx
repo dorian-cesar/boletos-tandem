@@ -43,7 +43,6 @@ export default function BoletoOperador() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ token, flowOrder: authCode }),
         });
-
         const response = await res.json();
         setIsValid(response?.status === 2);
       } catch (error) {
@@ -51,7 +50,6 @@ export default function BoletoOperador() {
         setIsValid(false);
       }
     };
-
     validateBoleto();
   }, [boleto]);
 
