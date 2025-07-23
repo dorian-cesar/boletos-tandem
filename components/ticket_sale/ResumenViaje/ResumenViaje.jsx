@@ -344,8 +344,7 @@ export const ResumenViaje = (props) => {
 
       informacionAgrupada.forEach((servicio) => {
         const carrito = new ListaCarritoDTO(servicio, servicio.asientos[0]);
-        // console.log("carrito", carrito);
-        // console.log("servicio:", servicio);
+        console.log("ListaCarritoDTO", servicio);
         console.log("aca se agregan props para enviar, como email");
 
         servicio.asientos.forEach((asiento, index) => {

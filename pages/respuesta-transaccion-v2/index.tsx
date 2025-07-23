@@ -328,6 +328,13 @@ export default function Home(props: HomeProps) {
         }),
       });
 
+      console.log("Body para generar boletos:", {
+        ticketData: carroCompras,
+        email: buyerInfo.email,
+        authCode: flowOrder,
+        token: token,
+      });
+
       const result = await response.json();
       console.log("Resultado de la generación de boletos:", result);
 

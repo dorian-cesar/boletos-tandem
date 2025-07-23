@@ -250,8 +250,8 @@ async function generateTicketPDF(
   // Información del viaje
   doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
-  doc.text(`Origen: ${trip.origin}`, 20, 45);
-  doc.text(`Destino: ${trip.destination}`, 20, 55);
+  doc.text(`Origen: ${trip.origin} - ${trip.terminalOrigin}`, 20, 45);
+  doc.text(`Destino: ${trip.destination} - ${trip.terminalDestination}`, 20, 55);
   doc.text(`Salida:`, 20, 65);
   doc.text(`${trip.date} ${trip.departureTime}`, 20, 75);
   doc.text(`Llegada:`, 20, 85);
