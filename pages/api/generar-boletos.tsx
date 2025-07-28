@@ -238,431 +238,432 @@ export async function generateTicketPDF(
   const htmlContent = `
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
-    @page {
-      size: A4;
-      margin: 0;
-    }
+      @page {
+        size: A4;
+        margin: 0;
+      }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      background: white;
-    }
+      body {
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        background: white;
+      }
 
-    .ticket-container {
-      width: 794px;
-      height: 1123px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 30px 40px;
-    }
+      .ticket-container {
+        width: 794px;
+        /* height: 1123px; */
+        height: 920px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 30px 40px;
+      }
 
-    .ticket-header {
-      background: #1e293b;
-      padding: 25px;
-      color: white;
-      text-align: center;
-      border-radius: 8px;
-    }
+      .ticket-header {
+        background: #1e293b;
+        padding: 25px;
+        color: white;
+        text-align: center;
+        border-radius: 8px;
+      }
 
-    .company-name {
-      font-size: 30px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
+      .company-name {
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
 
-    .trip-type {
-      font-size: 14px;
-      text-transform: uppercase;
-      color: #cbd5e1;
-    }
+      .trip-type {
+        font-size: 14px;
+        text-transform: uppercase;
+        color: #cbd5e1;
+      }
 
-    .ticket-body {
-      flex: 1;
-      padding: 25px 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 24px;
-    }
+      .ticket-body {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
 
-    .route-section {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f1f5f9;
-      padding: 20px;
-      border-radius: 12px;
-      border: 1px solid #e2e8f0;
-    }
+      .route-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f1f5f9;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+      }
 
-    .route-point {
-      text-align: center;
-      flex: 1;
-    }
+      .route-point {
+        text-align: center;
+        flex: 1;
+      }
 
-    .route-connector {
-      flex: 0 0 100px;
-      height: 4px;
-      background: #334155;
-      margin: 0 20px;
-      position: relative;
-    }
+      .route-connector {
+        flex: 0 0 100px;
+        height: 4px;
+        background: #334155;
+        margin: 0 20px;
+        position: relative;
+      }
 
-    .route-connector::before {
-      content: "→";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      background: #1e293b;
-      padding: 8px 10px;
-      font-size: 16px;
-      border-radius: 50%;
-    }
+      .route-connector::before {
+        content: "→";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        background: #1e293b;
+        padding: 8px 10px;
+        font-size: 16px;
+        border-radius: 50%;
+      }
 
-    .location-label {
-      font-size: 11px;
-      color: #64748b;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
+      .location-label {
+        font-size: 11px;
+        color: #64748b;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+      }
 
-    .location-name {
-      font-size: 22px;
-      font-weight: 600;
-    }
+      .location-name {
+        font-size: 22px;
+        font-weight: 600;
+      }
 
-    .terminal-name {
-      font-size: 12px;
-      color: #64748b;
-    }
+      .terminal-name {
+        font-size: 12px;
+        color: #64748b;
+      }
 
-    .datetime-section {
-      display: flex;
-      gap: 20px;
-      flex-grow: 1;
-    }
+      .top-row {
+        display: flex;
+        gap: 20px;
+        justify-content: space-evenly;
+      }
 
-    .datetime-card {
-      flex: 1;
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid #e2e8f0;
-      text-align: center;
-      background: white;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+      .detail-item {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 600;
+        font-size: 1rem;
+        color: #333;
+      }
 
-    .datetime-label {
-      font-size: 12px;
-      color: #64748b;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-    }
+      .detail-label {
+        font-weight: 600;
+        color: #555;
+      }
 
-    .datetime-value {
-      font-size: 18px;
-      font-weight: 600;
-    }
+      .detail-value {
+        font-weight: 700;
+        color: #000;
+      }
 
-    .details-section {
-      display: flex;
-      justify-content: space-between;
-      gap: 25px;
-      flex-grow: 1;
-    }
+      .bottom-row {
+        display: flex;
+        gap: 20px;
+        justify-content: space-evenly;
+      }
 
-    .seat-details {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+      .details-section {
+        flex: 1;
+        max-width: 300px;
+        background: #fafafa;
+        padding: 12px;
+        border-radius: 6px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        gap: 12px;
+      }
 
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      flex-grow: 1;
-    }
+      .seat-details {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
 
-    .detail-item {
-      border: 1px solid #e2e8f0;
-      padding: 16px;
-      border-radius: 10px;
-      background: white;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+      .details-qr-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
 
-    .detail-label {
-      font-size: 11px;
-      color: #64748b;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
+      .details-section,
+      .qr-section {
+        flex: 1;
+        max-width: 330px;
+        min-height: 244px;
+        gap: 15px;
+        background: #fafafa;
+        padding: 20px;
+        border-radius: 6px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+      }
 
-    .detail-value {
-      font-size: 16px;
-      font-weight: 600;
-    }
+      .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px 20px;
+      }
 
-    .qr-section {
-      width: 180px;
-      padding: 20px;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+      .detail-item {
+        display: flex;
+        flex-direction: column;
+      }
 
-    .qr-label {
-      font-size: 12px;
-      color: #64748b;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
+      .detail-label {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #555;
+      }
 
-    .qr-code {
-      width: 180px;
-      height: 180px;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-    }
+      .detail-value {
+        font-size: 16px;
+        font-weight: 600;
+      }
 
-    .auth-section {
-      padding: 16px;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      background: #f8fafc;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+      .qr-section {
+        flex: 1;
+        max-width: 330px;
+        background: #fafafa;
+        padding: 12px;
+        border-radius: 6px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+        text-align: center;
+      }
 
-    .auth-label {
-      font-size: 12px;
-      color: #64748b;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-    }
+      .qr-label {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #333;
+      }
 
-    .auth-code {
-      font-family: 'Courier New', monospace;
-      font-size: 16px;
-      font-weight: 600;
-      padding: 10px 16px;
-      background: white;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      display: inline-block;
-    }
+      .qr-code {
+        max-width: 100%;
+        height: auto;
+        display: inline-block;
+      }
 
-    .footer {
-      padding: 20px;
-      border-radius: 10px;
-      background: #f1f5f9;
-      text-align: center;
-      margin-top: 25px;
-    }
+      .auth-section {
+        margin-top: 20px;
+        text-align: center;
+      }
 
-    .footer-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
+      .auth-label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #555;
+      }
 
-    .footer-instructions {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
+      .auth-code {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #000;
+      }
 
-    .instruction-item {
-      font-size: 13px;
-      padding: 6px 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 16px;
-      background: white;
-      color: #334155;
-    }
+      .footer-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
 
-    .instruction-item::before {
-      content: '✓';
-      margin-right: 6px;
-      background: #10b981;
-      color: white;
-      padding: 2px 5px;
-      border-radius: 50%;
-      font-size: 10px;
-    }
+      .footer {
+        padding: 20px;
+        border-radius: 10px;
+        background: #f1f5f9;
+        text-align: center;
+      }
 
-    .footer-note {
-      font-size: 11px;
-      color: #64748b;
-      font-style: italic;
-    }
+      .footer-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
 
-    .company-info {
-      background: #1e293b;
-      color: #cbd5e1;
-      font-size: 11px;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      border-radius: 6px;
-    }
+      .footer-instructions {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
 
-    .company-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+      .instruction-item {
+        font-size: 13px;
+        padding: 6px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 16px;
+        background: white;
+        color: #334155;
+      }
 
-    .company-logo {
-      width: 20px;
-      height: 20px;
-      background: #10b981;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 600;
-    }
+      .instruction-item::before {
+        content: "✓";
+        margin-right: 6px;
+        background: #10b981;
+        color: white;
+        padding: 2px 5px;
+        border-radius: 50%;
+        font-size: 10px;
+      }
 
-    .company-right {
-      opacity: 0.8;
-    }
-  </style>
-</head>
-<body>
-  <div class="ticket-container">
-    <div class="ticket-header">
-      <div class="company-name">${trip.company || "BusExpress"}</div>
-      <div class="trip-type">Boleto de ${
-        tripType === "ida" ? "Ida" : "Vuelta"
-      }</div>
-    </div>
-    
-    <div class="ticket-body">
-      <div class="route-section">
-        <div class="route-point">
-          <div class="location-label">Origen</div>
-          <div class="location-name">${trip.origin}</div>
-          <div class="terminal-name">${trip.terminalOrigin}</div>
-        </div>
-        <div class="route-connector"></div>
-        <div class="route-point">
-          <div class="location-label">Destino</div>
-          <div class="location-name">${trip.destination}</div>
-          <div class="terminal-name">${trip.terminalDestination}</div>
+      .footer-note {
+        font-size: 11px;
+        color: #64748b;
+        font-style: italic;
+      }
+
+      .company-info {
+        background: #1e293b;
+        color: #cbd5e1;
+        font-size: 11px;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        border-radius: 6px;
+      }
+
+      .company-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .company-logo {
+        width: 20px;
+        height: 20px;
+        background: #10b981;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .company-right {
+        display: flex;
+        align-items: center;
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ticket-container">
+      <div class="ticket-header">
+        <div class="company-name">${trip.company || "BusExpress"}</div>
+        <div class="trip-type">
+          Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}
         </div>
       </div>
-      
-      <div class="datetime-section">
-        <div class="datetime-card">
-          <div class="datetime-label">Salida</div>
-          <div class="datetime-value">${formatDate(trip.date)}<br>${
-      trip.departureTime
-     }hrs</div>
-        </div>
-        <div class="datetime-card">
-          <div class="datetime-label">Llegada</div>
-          <div class="datetime-value">${formatDate(trip.arrivalDate)}<br>${
-      trip.arrivalTime
-     }hrs</div>
-        </div>
-      </div>
-      
-      <div class="details-section">
-        <div class="seat-details">
-          <div class="detail-grid">
-            <div class="detail-item">
-              <div class="detail-label">Asiento</div>
-              <div class="detail-value">${seat.asiento}</div>
-            </div>
-            <div class="detail-item">
-              <div class="detail-label">Piso</div>
-              <div class="detail-value">${
-                seat.floor === "floor1" ? "1" : "2"
-              }</div>
-            </div>
-            <div class="detail-item">
-              <div class="detail-label">Tipo</div>
-              <div class="detail-value">${
-                seat.floor === "floor1"
-                  ? trip.seatLayout.tipo_Asiento_piso_1
-                  : trip.seatLayout.tipo_Asiento_piso_2
-              }</div>
-            </div>
-            <div class="detail-item">
-              <div class="detail-label">Precio</div>
-              <div class="detail-value">${seat.valorAsiento} Gs.</div>
-            </div>
+
+      <div class="ticket-body">
+        <div class="route-section">
+          <div class="route-point">
+            <div class="location-label">Origen</div>
+            <div class="location-name">${trip.origin}</div>
+            <div class="terminal-name">${trip.terminalOrigin}</div>
+          </div>
+          <div class="route-connector"></div>
+          <div class="route-point">
+            <div class="location-label">Destino</div>
+            <div class="location-name">${trip.destination}</div>
+            <div class="terminal-name">${trip.terminalDestination}</div>
           </div>
         </div>
-        
-        <div class="qr-section">
-          <div class="qr-label">Código QR</div>
-          <img src="${qrImage}" alt="QR Code" class="qr-code" />
+
+        <div class="bottom-row">
+          <div class="details-section">
+            <div class="seat-details">
+              <div class="detail-item">
+                <div class="detail-label">Asiento</div>
+                <div class="detail-value">${seat.asiento}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Piso</div>
+                <div class="detail-value">
+                  ${seat.floor === "floor1" ? "1" : "2"}
+                </div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Tipo</div>
+                <div class="detail-value">
+                  ${
+                    seat.floor === "floor1"
+                      ? trip.seatLayout.tipo_Asiento_piso_1
+                      : trip.seatLayout.tipo_Asiento_piso_2
+                  }
+                </div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Precio</div>
+                <div class="detail-value">${seat.valorAsiento} Gs.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="qr-section">
+            <div class="qr-label">Código QR</div>
+            <img src="${qrImage}" alt="QR Code" class="qr-code" />
+          </div>
+        </div>
+
+        <div class="auth-section">
+          <div class="auth-label">Código de Transacción</div>
+          <div class="auth-code">${seat.authCode || authCode || "N/A"}</div>
         </div>
       </div>
-      
-      <div class="auth-section">
-        <div class="auth-label">Código de Transacción</div>
-        <div class="auth-code">${seat.authCode || authCode || "N/A"}</div>
+
+      <div class="footer-container">
+        <div class="footer">
+          <div class="footer-title">¡Gracias por viajar con nosotros!</div>
+          <div class="footer-instructions">
+            <span class="instruction-item"
+              >Presenta este boleto al abordar</span
+            >
+            <span class="instruction-item">Lleva identificación válida</span>
+            <span class="instruction-item">Llega 30 minutos antes</span>
+          </div>
+          <div class="footer-note">
+            Este boleto es intransferible. Válido únicamente para la fecha y
+            horario especificados.
+          </div>
+        </div>
+
+        <div class="company-info">
+          <div class="company-left">
+            <div class="company-logo">B</div>
+            <span>Boleto generado electrónicamente</span>
+          </div>
+          <div class="company-right">
+            <span
+              >Sistema de reservas BusExpress © ${new Date().getFullYear()}</span
+            >
+          </div>
+        </div>
       </div>
     </div>
-    
-    <div class="footer">
-      <div class="footer-title">¡Gracias por viajar con nosotros!</div>
-      <div class="footer-instructions">
-        <span class="instruction-item">Presenta este boleto al abordar</span>
-        <span class="instruction-item">Lleva identificación válida</span>
-        <span class="instruction-item">Llega 30 minutos antes</span>
-      </div>
-      <div class="footer-note">
-        Este boleto es intransferible y válido únicamente para la fecha y horario especificados
-      </div>
-    </div>
-    
-    <div class="company-info">
-      <div class="company-left">
-        <div class="company-logo">B</div>
-        <span>Boleto generado electrónicamente</span>
-      </div>
-      <div class="company-right">
-        <span>Sistema de reservas BusExpress © ${new Date().getFullYear()}</span>
-      </div>
-    </div>
-  </div>
-</body>
+  </body>
 </html>
   `;
 
