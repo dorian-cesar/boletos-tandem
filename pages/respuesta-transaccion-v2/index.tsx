@@ -171,7 +171,7 @@ export default function Home(props: HomeProps) {
             datos.total += element.valorAsiento;
           });
           idaNombre = `Salida, ${format(fechaIda, "ddd D MMM", "es")}`;
-          datos.totalFormateado = clpFormat.format(datos.total);
+          datos.totalFormateado = formatGuarani(datos.total);
           carritoIda.detalle.push(datos);
         });
       }
@@ -194,7 +194,7 @@ export default function Home(props: HomeProps) {
             datos.cantidadAsientos += 1;
             datos.total += element.valorAsiento;
           });
-          datos.totalFormateado = clpFormat.format(datos.total);
+          datos.totalFormateado = formatGuarani(datos.total);
           carritoVuelta.detalle.push(datos);
           vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM", "es")}`;
         });
