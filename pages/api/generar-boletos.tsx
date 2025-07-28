@@ -198,29 +198,46 @@ async function generateTicketPDF(
 }> {
   const doc = new jsPDF();
 
-  // const myFont = ""; // load the *.ttf font file as binary string
-  // // add the font to jsPDF
-  // doc.addFileToVFS("MyFont.ttf", myFont);
-  // doc.addFont("MyFont.ttf", "MyFont", "normal");
-  // doc.setFont("MyFont");
+  // Colores modernos
+  const colors = {
+    primary: [41, 128, 185], // Azul moderno
+    secondary: [52, 73, 94], // Gris oscuro
+    accent: [231, 76, 60], // Rojo para destacar
+    success: [46, 204, 113], // Verde
+    light: [236, 240, 241], // Gris claro
+    white: [255, 255, 255],
+    text: [44, 62, 80],
+  };
 
-  // Configuración inicial
+  // Fondo con gradiente simulado
+  doc.setFillColor(colors.light[0], colors.light[1], colors.light[2]);
+  doc.rect(0, 0, 210, 297, "F");
+
+  // Header principal con fondo azul
+  doc.setFillColor(colors.primary[0], colors.primary[1], colors.primary[2]);
+  doc.roundedRect(10, 10, 190, 35, 3, 3, "F");
+
+  // Logo/Título principal
+  doc.setTextColor(colors.white[0], colors.white[1], colors.white[2]);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(20);
-  doc.setTextColor(40, 40, 40);
+  doc.setFontSize(24);
+  doc.text(trip.company || "BusExpress", 105, 25, { align: "center" });
 
-  // Encabezado
-  doc.text(trip.company || "Bus-Express", 105, 20, { align: "center" });
-  doc.setFontSize(16);
-  // doc.text(`Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}`, 105, 30, {
-  //   align: "center",
-  // });
+  doc.setFontSize(12);
+  doc.text(`Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}`, 105, 35, {
+    align: "center",
+  });
 
-  // Línea divisoria
+  // Sección de información principal
+  doc.setFillColor(colors.white[0], colors.white[1], colors.white[2]);
+  doc.roundedRect(10, 55, 190, 120, 3, 3, "F");
+
+  // Borde sutil
   doc.setDrawColor(200, 200, 200);
-  doc.line(20, 35, 190, 35);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(10, 55, 190, 120, 3, 3, "S");
 
-  // Generar QR
+  // Generar QR Code
   const qrData = JSON.stringify({
     origin: trip.origin,
     destination: trip.destination,
@@ -239,49 +256,201 @@ async function generateTicketPDF(
     token: token,
   });
 
-  const encoded = Buffer.from(JSON.stringify(qrData)).toString("base64");
-
+  const encoded = Buffer.from(qrData).toString("base64");
   const qrUrl = `https://boletos-com.netlify.app/ver-boleto?data=${encoded}`;
-  const qrCodeDataURL = await QRCode.toDataURL(qrUrl);
+  const qrCodeDataURL = await QRCode.toDataURL(qrUrl, {
+    width: 120,
+    margin: 1,
+    color: {
+      dark: "#2c3e50",
+      light: "#ffffff",
+    },
+  });
 
-  // Añadir QR al PDF
-  doc.addImage(qrCodeDataURL, "PNG", 140, 40, 50, 50);
+  // QR Code con marco
+  doc.setFillColor(colors.white[0], colors.white[1], colors.white[2]);
+  doc.roundedRect(140, 60, 55, 55, 2, 2, "F");
+  doc.setDrawColor(colors.primary[0], colors.primary[1], colors.primary[2]);
+  doc.setLineWidth(1);
+  doc.roundedRect(140, 60, 55, 55, 2, 2, "S");
+  doc.addImage(qrCodeDataURL, "PNG", 145, 65, 45, 45);
 
-  // Información del viaje
+  // Información del viaje con iconos simulados
+  doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
+  let yPos = 70;
+  const leftMargin = 20;
+  const iconSize = 4;
+
+  // Funciones utilitarias
+  const addIcon = (x, y, color) => {
+    doc.setFillColor(color[0], color[1], color[2]);
+    doc.circle(x, y - 2, iconSize / 2, "F");
+  };
+
+  // Origen
+  addIcon(leftMargin, yPos, colors.success);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.text("ORIGEN", leftMargin + 8, yPos);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text(`${trip.terminalOrigin}`, leftMargin + 8, yPos + 5);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
-  doc.text(`Origen: ${trip.origin} - ${trip.terminalOrigin}`, 20, 45);
-  doc.text(`Destino: ${trip.destination} - ${trip.terminalDestination}`, 20, 55);
-  doc.text(`Salida:`, 20, 65);
-  doc.text(`${trip.date} ${trip.departureTime}`, 20, 75);
-  doc.text(`Llegada:`, 20, 85);
-  doc.text(`${trip.arrivalDate} ${trip.arrivalTime}`, 20, 95);
+  doc.text(`${trip.origin}`, leftMargin + 8, yPos + 10);
 
-  // Información del asiento
-  doc.text(`Asiento: ${seat.asiento}`, 20, 105);
-  doc.text(`Piso: ${seat.floor === "floor1" ? "1" : "2"}`, 20, 115);
+  yPos += 20;
 
+  // Destino
+  addIcon(leftMargin, yPos, colors.accent);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.text("DESTINO", leftMargin + 8, yPos);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text(`${trip.terminalDestination}`, leftMargin + 8, yPos + 5);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.text(`${trip.destination}`, leftMargin + 8, yPos + 10);
+
+  yPos += 20;
+
+  // Fecha y hora
+  doc.setFillColor(248, 249, 250);
+  doc.roundedRect(15, yPos - 5, 115, 25, 2, 2, "F");
+
+  addIcon(leftMargin, yPos, colors.primary);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor(
+    colors.secondary[0],
+    colors.secondary[1],
+    colors.secondary[2]
+  );
+  doc.text("SALIDA", leftMargin + 8, yPos);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
+  doc.text(`${trip.departureTime}`, leftMargin + 8, yPos + 5);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.text(`${trip.date}`, leftMargin + 8, yPos + 10);
+
+  // Llegada
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor(
+    colors.secondary[0],
+    colors.secondary[1],
+    colors.secondary[2]
+  );
+  doc.text("LLEGADA", leftMargin + 60, yPos);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
+  doc.text(`${trip.arrivalTime}`, leftMargin + 60, yPos + 5);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.text(`${trip.arrivalDate}`, leftMargin + 60, yPos + 10);
+
+  // Detalles del asiento
+  doc.setFillColor(colors.white[0], colors.white[1], colors.white[2]);
+  doc.roundedRect(10, 185, 190, 50, 3, 3, "F");
+  doc.setDrawColor(colors.primary[0], colors.primary[1], colors.primary[2]);
+  doc.setLineWidth(1);
+  doc.roundedRect(10, 185, 190, 50, 3, 3, "S");
+
+  doc.setFillColor(colors.primary[0], colors.primary[1], colors.primary[2]);
+  doc.rect(10, 185, 190, 12, "F");
+  doc.setTextColor(colors.white[0], colors.white[1], colors.white[2]);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.text("DETALLES DEL ASIENTO", 105, 193, { align: "center" });
+
+  doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
+  const detailsY = 205;
+
+  // Columna 1
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.text("ASIENTO", 20, detailsY);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.setTextColor(colors.primary[0], colors.primary[1], colors.primary[2]);
+  doc.text(`${seat.asiento}`, 20, detailsY + 8);
+
+  // Columna 2
+  doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.text("PISO", 60, detailsY);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(12);
+  doc.text(`${seat.floor === "floor1" ? "1" : "2"}`, 60, detailsY + 8);
+
+  // Columna 3
   const seatType =
     seat.floor === "floor1"
       ? trip.seatLayout.tipo_Asiento_piso_1
       : trip.seatLayout.tipo_Asiento_piso_2;
-  doc.setFont("helvetica", "normal");
-  doc.text(`Tipo: ${seatType}`, 20, 125);
-  doc.text(`Precio: ${seat.valorAsiento} Gs.`, 20, 135);
-  doc.text(
-    `Código de Transacción: ${seat.authCode || authCode || "N/A"}`,
-    20,
-    145
-  );
 
-  // Pie de página
-  doc.line(20, 150, 190, 150);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
-  doc.text("¡Gracias por viajar con nosotros!", 105, 160, { align: "center" });
-  doc.text("Para consultas: contacto@empresa.com", 105, 170, {
+  doc.text("TIPO", 100, detailsY);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(12);
+  doc.text(`${seatType}`, 100, detailsY + 8);
+
+  // Columna 4 - Precio
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.text("PRECIO", 150, detailsY);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.setTextColor(colors.accent[0], colors.accent[1], colors.accent[2]);
+  doc.text(`${seat.valorAsiento} Gs.`, 150, detailsY + 8);
+
+  // Código de transacción
+  doc.setFillColor(248, 249, 250);
+  doc.roundedRect(10, 245, 190, 20, 2, 2, "F");
+  doc.setTextColor(
+    colors.secondary[0],
+    colors.secondary[1],
+    colors.secondary[2]
+  );
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9);
+  doc.text("CÓDIGO DE TRANSACCIÓN:", 20, 252);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text(`${seat.authCode || authCode || "N/A"}`, 20, 260);
+
+  // Footer
+  doc.setFillColor(
+    colors.secondary[0],
+    colors.secondary[1],
+    colors.secondary[2]
+  );
+  doc.roundedRect(10, 275, 190, 15, 2, 2, "F");
+  doc.setTextColor(colors.white[0], colors.white[1], colors.white[2]);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.text("\u00a1Gracias por viajar con nosotros!", 105, 283, {
     align: "center",
   });
+
+  // Instrucciones
+  doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.text(
+    "\u2022 Presenta este boleto al abordar \u2022 Lleva identificaci\u00f3n v\u00e1lida \u2022 Llega 30 minutos antes",
+    105,
+    292,
+    {
+      align: "center",
+    }
+  );
 
   // Generar nombre de archivo
   const fileName = `Boleto_${trip.origin}_${trip.destination}_${trip.date}_${seat.asiento}.pdf`;
@@ -340,7 +509,7 @@ async function sendTicketsByEmail(options: {
     }));
 
     // 4. Preparar contenido del correo
-    const emailSubject = `Tus boletos de viaje ${
+    const emailSubject = `Boletos.com - Tus boletos de viaje ${
       bookingReference ? `(Ref: ${bookingReference})` : ""
     }`;
 

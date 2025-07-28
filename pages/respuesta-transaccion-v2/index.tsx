@@ -436,9 +436,12 @@ export default function Home(props: HomeProps) {
               </h1>
               <div className="container mt-3 mb-2">
                 <div className="row justify-content-center">
+                  <p className="col-12 col-md-8 mb-1">
+                    Tú compra se ha realizado con éxito.
+                  </p>
                   <p className="col-12 col-md-8">
-                    Tú compra se ha realizado con éxito. Próximamente, recibirás
-                    un correo electronico con los boletos adquiridos.
+                    Próximamente, recibirás un correo electrónico con los
+                    boletos adquiridos.
                   </p>
                 </div>
               </div>
