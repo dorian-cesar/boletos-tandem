@@ -1,4 +1,3 @@
-import { jsPDF } from "jspdf";
 import pdf from "html-pdf-node";
 import { Buffer } from "buffer";
 import QRCode from "qrcode";
@@ -183,294 +182,6 @@ async function processTrips(
   }
 }
 
-// // Generar un solo boleto PDF (retorna base64)
-// async function generateTicketPDF(
-//   trip: any,
-//   seat: any,
-//   tripType: string,
-//   authCode?: string,
-//   token?: string
-// ): Promise<{
-//   fileName: string;
-//   base64: string;
-//   buffer: Buffer;
-//   origin: string;
-//   destination: string;
-//   seat: string;
-// }> {
-//   const doc = new jsPDF();
-
-//   // Colores modernos
-//   const colors = {
-//     primary: [41, 128, 185], // Azul moderno
-//     secondary: [52, 73, 94], // Gris oscuro
-//     accent: [231, 76, 60], // Rojo para destacar
-//     success: [46, 204, 113], // Verde
-//     light: [236, 240, 241], // Gris claro
-//     white: [255, 255, 255],
-//     text: [44, 62, 80],
-//   };
-
-//   // Fondo con gradiente simulado
-//   doc.setFillColor(colors.light[0], colors.light[1], colors.light[2]);
-//   doc.rect(0, 0, 210, 297, "F");
-
-//   // Header principal con fondo azul
-//   doc.setFillColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-//   doc.roundedRect(10, 10, 190, 35, 3, 3, "F");
-
-//   // Logo/Título principal
-//   doc.setTextColor(colors.white[0], colors.white[1], colors.white[2]);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(24);
-//   doc.text(trip.company || "BusExpress", 105, 25, { align: "center" });
-
-//   doc.setFontSize(12);
-//   doc.text(`Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}`, 105, 35, {
-//     align: "center",
-//   });
-
-//   // Sección de información principal
-//   doc.setFillColor(colors.white[0], colors.white[1], colors.white[2]);
-//   doc.roundedRect(10, 55, 190, 120, 3, 3, "F");
-
-//   // Borde sutil
-//   doc.setDrawColor(200, 200, 200);
-//   doc.setLineWidth(0.5);
-//   doc.roundedRect(10, 55, 190, 120, 3, 3, "S");
-
-//   // Generar QR Code
-//   const qrData = JSON.stringify({
-//     origin: trip.origin,
-//     destination: trip.destination,
-//     date: trip.date,
-//     departureTime: trip.departureTime,
-//     arrivalDate: trip.arrivalDate,
-//     arrivalTime: trip.arrivalTime,
-//     seat: seat.asiento,
-//     floor: seat.floor,
-//     tipo:
-//       seat.floor === "floor1"
-//         ? trip.seatLayout.tipo_Asiento_piso_1
-//         : trip.seatLayout.tipo_Asiento_piso_2,
-//     price: seat.valorAsiento,
-//     authCode: seat.authCode || authCode,
-//     token: token,
-//   });
-
-//   const encoded = Buffer.from(qrData).toString("base64");
-//   const qrUrl = `https://boletos-com.netlify.app/ver-boleto?data=${encoded}`;
-//   const qrCodeDataURL = await QRCode.toDataURL(qrUrl, {
-//     width: 120,
-//     margin: 1,
-//     color: {
-//       dark: "#2c3e50",
-//       light: "#ffffff",
-//     },
-//   });
-
-//   // QR Code con marco
-//   doc.setFillColor(colors.white[0], colors.white[1], colors.white[2]);
-//   doc.roundedRect(140, 60, 55, 55, 2, 2, "F");
-//   doc.setDrawColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-//   doc.setLineWidth(1);
-//   doc.roundedRect(140, 60, 55, 55, 2, 2, "S");
-//   doc.addImage(qrCodeDataURL, "PNG", 145, 65, 45, 45);
-
-//   // Información del viaje con iconos simulados
-//   doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
-//   let yPos = 70;
-//   const leftMargin = 20;
-//   const iconSize = 4;
-
-//   // Funciones utilitarias
-//   const addIcon = (x, y, color) => {
-//     doc.setFillColor(color[0], color[1], color[2]);
-//     doc.circle(x, y - 2, iconSize / 2, "F");
-//   };
-
-//   // Origen
-//   addIcon(leftMargin, yPos, colors.success);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(11);
-//   doc.text("ORIGEN", leftMargin + 8, yPos);
-//   doc.setFont("helvetica", "normal");
-//   doc.setFontSize(10);
-//   doc.text(`${trip.terminalOrigin}`, leftMargin + 8, yPos + 5);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(12);
-//   doc.text(`${trip.origin}`, leftMargin + 8, yPos + 10);
-
-//   yPos += 20;
-
-//   // Destino
-//   addIcon(leftMargin, yPos, colors.accent);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(11);
-//   doc.text("DESTINO", leftMargin + 8, yPos);
-//   doc.setFont("helvetica", "normal");
-//   doc.setFontSize(10);
-//   doc.text(`${trip.terminalDestination}`, leftMargin + 8, yPos + 5);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(12);
-//   doc.text(`${trip.destination}`, leftMargin + 8, yPos + 10);
-
-//   yPos += 20;
-
-//   // Fecha y hora
-//   doc.setFillColor(248, 249, 250);
-//   doc.roundedRect(15, yPos - 5, 115, 25, 2, 2, "F");
-
-//   addIcon(leftMargin, yPos, colors.primary);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(10);
-//   doc.setTextColor(
-//     colors.secondary[0],
-//     colors.secondary[1],
-//     colors.secondary[2]
-//   );
-//   doc.text("SALIDA", leftMargin + 8, yPos);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(11);
-//   doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
-//   doc.text(`${trip.departureTime}`, leftMargin + 8, yPos + 5);
-//   doc.setFont("helvetica", "normal");
-//   doc.setFontSize(9);
-//   doc.text(`${trip.date}`, leftMargin + 8, yPos + 10);
-
-//   // Llegada
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(10);
-//   doc.setTextColor(
-//     colors.secondary[0],
-//     colors.secondary[1],
-//     colors.secondary[2]
-//   );
-//   doc.text("LLEGADA", leftMargin + 60, yPos);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(11);
-//   doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
-//   doc.text(`${trip.arrivalTime}`, leftMargin + 60, yPos + 5);
-//   doc.setFont("helvetica", "normal");
-//   doc.setFontSize(9);
-//   doc.text(`${trip.arrivalDate}`, leftMargin + 60, yPos + 10);
-
-//   // Detalles del asiento
-//   doc.setFillColor(colors.white[0], colors.white[1], colors.white[2]);
-//   doc.roundedRect(10, 185, 190, 50, 3, 3, "F");
-//   doc.setDrawColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-//   doc.setLineWidth(1);
-//   doc.roundedRect(10, 185, 190, 50, 3, 3, "S");
-
-//   doc.setFillColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-//   doc.rect(10, 185, 190, 12, "F");
-//   doc.setTextColor(colors.white[0], colors.white[1], colors.white[2]);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(12);
-//   doc.text("DETALLES DEL ASIENTO", 105, 193, { align: "center" });
-
-//   doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
-//   const detailsY = 205;
-
-//   // Columna 1
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(10);
-//   doc.text("ASIENTO", 20, detailsY);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(16);
-//   doc.setTextColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-//   doc.text(`${seat.asiento}`, 20, detailsY + 8);
-
-//   // Columna 2
-//   doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(10);
-//   doc.text("PISO", 60, detailsY);
-//   doc.setFont("helvetica", "normal");
-//   doc.setFontSize(12);
-//   doc.text(`${seat.floor === "floor1" ? "1" : "2"}`, 60, detailsY + 8);
-
-//   // Columna 3
-//   const seatType =
-//     seat.floor === "floor1"
-//       ? trip.seatLayout.tipo_Asiento_piso_1
-//       : trip.seatLayout.tipo_Asiento_piso_2;
-
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(10);
-//   doc.text("TIPO", 100, detailsY);
-//   doc.setFont("helvetica", "normal");
-//   doc.setFontSize(12);
-//   doc.text(`${seatType}`, 100, detailsY + 8);
-
-//   // Columna 4 - Precio
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(10);
-//   doc.text("PRECIO", 150, detailsY);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(14);
-//   doc.setTextColor(colors.accent[0], colors.accent[1], colors.accent[2]);
-//   doc.text(`${seat.valorAsiento} Gs.`, 150, detailsY + 8);
-
-//   // Código de transacción
-//   doc.setFillColor(248, 249, 250);
-//   doc.roundedRect(10, 245, 190, 20, 2, 2, "F");
-//   doc.setTextColor(
-//     colors.secondary[0],
-//     colors.secondary[1],
-//     colors.secondary[2]
-//   );
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(9);
-//   doc.text("CÓDIGO DE TRANSACCIÓN:", 20, 252);
-//   doc.setFont("helvetica", "normal");
-//   doc.setFontSize(10);
-//   doc.text(`${seat.authCode || authCode || "N/A"}`, 20, 260);
-
-//   // Footer
-//   doc.setFillColor(
-//     colors.secondary[0],
-//     colors.secondary[1],
-//     colors.secondary[2]
-//   );
-//   doc.roundedRect(10, 275, 190, 15, 2, 2, "F");
-//   doc.setTextColor(colors.white[0], colors.white[1], colors.white[2]);
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(10);
-//   doc.text("\u00a1Gracias por viajar con nosotros!", 105, 283, {
-//     align: "center",
-//   });
-
-//   // Instrucciones
-//   doc.setTextColor(colors.text[0], colors.text[1], colors.text[2]);
-//   doc.setFont("helvetica", "normal");
-//   doc.setFontSize(8);
-//   doc.text(
-//     "\u2022 Presenta este boleto al abordar \u2022 Lleva identificaci\u00f3n v\u00e1lida \u2022 Llega 30 minutos antes",
-//     105,
-//     292,
-//     {
-//       align: "center",
-//     }
-//   );
-
-//   // Generar nombre de archivo
-//   const fileName = `Boleto_${trip.origin}_${trip.destination}_${trip.date}_${seat.asiento}.pdf`;
-
-//   // Convertir a base64 para el frontend y buffer para el email
-//   const base64 = doc.output("datauristring");
-//   const buffer = Buffer.from(doc.output("arraybuffer"));
-
-//   return {
-//     fileName,
-//     base64,
-//     buffer,
-//     origin: trip.origin,
-//     destination: trip.destination,
-//     seat: seat.asiento,
-//   };
-// }
-
 export async function generateTicketPDF(
   trip: any,
   seat: any,
@@ -514,387 +225,339 @@ export async function generateTicketPDF(
     },
   });
 
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    const date = new Date(dateStr);
+    return new Intl.DateTimeFormat("es-ES", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(date);
+  };
+
   const htmlContent = `
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    
+   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #ffffff;
-      padding: 0;
-      margin: 0;
-      height: 100vh;
-      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      background: white;
     }
-    
+
     .ticket-container {
-      width: 100%;
-      height: 100vh;
-      background: #ffffff;
-      position: relative;
+      width: 794px;
+      height: 1123px;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      padding: 30px 40px;
     }
-    
+
     .ticket-header {
       background: #1e293b;
-      padding: 25px 50px;
-      text-align: center;
+      padding: 25px;
       color: white;
-      border-bottom: 4px solid #334155;
-      position: relative;
+      text-align: center;
+      border-radius: 8px;
     }
-    
+
     .company-name {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 700;
-      margin-bottom: 8px;
-      letter-spacing: -0.5px;
+      margin-bottom: 6px;
     }
-    
+
     .trip-type {
-      font-size: 16px;
-      font-weight: 400;
-      opacity: 0.9;
+      font-size: 14px;
       text-transform: uppercase;
-      letter-spacing: 1px;
       color: #cbd5e1;
     }
-    
+
     .ticket-body {
-      padding: 30px 50px;
-      background: #ffffff;
       flex: 1;
+      padding: 25px 0;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      gap: 24px;
     }
-    
+
     .route-section {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      margin-bottom: 25px;
-      position: relative;
-      background: #f8fafc;
-      padding: 25px;
+      align-items: center;
+      background: #f1f5f9;
+      padding: 20px;
       border-radius: 12px;
-      border: 2px solid #e2e8f0;
+      border: 1px solid #e2e8f0;
     }
-    
+
     .route-point {
-      flex: 1;
       text-align: center;
+      flex: 1;
     }
-    
+
     .route-connector {
-      flex: 0 0 120px;
-      height: 3px;
+      flex: 0 0 100px;
+      height: 4px;
       background: #334155;
-      margin: 0 30px;
+      margin: 0 20px;
       position: relative;
     }
-    
+
     .route-connector::before {
-      content: '→';
+      content: "→";
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #1e293b;
       color: white;
-      padding: 10px 12px;
+      background: #1e293b;
+      padding: 8px 10px;
+      font-size: 16px;
       border-radius: 50%;
-      font-size: 18px;
-      font-weight: bold;
     }
-    
+
     .location-label {
-      font-size: 12px;
+      font-size: 11px;
       color: #64748b;
+      margin-bottom: 4px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
+    }
+
+    .location-name {
+      font-size: 22px;
       font-weight: 600;
     }
-    
-    .location-name {
-      font-size: 24px;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 6px;
-    }
-    
+
     .terminal-name {
-      font-size: 14px;
+      font-size: 12px;
       color: #64748b;
-      font-weight: 400;
     }
-    
+
     .datetime-section {
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 25px;
-      gap: 30px;
+      gap: 20px;
+      flex-grow: 1;
     }
-    
+
     .datetime-card {
       flex: 1;
-      background: #ffffff;
       padding: 20px;
-      border-radius: 12px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
       text-align: center;
-      border: 2px solid #e2e8f0;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      background: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-    
+
     .datetime-label {
       font-size: 12px;
       color: #64748b;
+      margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-      font-weight: 600;
     }
-    
+
     .datetime-value {
       font-size: 18px;
       font-weight: 600;
-      color: #1e293b;
-      line-height: 1.3;
     }
-    
+
     .details-section {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 40px;
-      margin-bottom: 20px;
+      gap: 25px;
+      flex-grow: 1;
     }
-    
+
     .seat-details {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    
+
     .detail-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 15px;
-      margin-bottom: 15px;
+      flex-grow: 1;
     }
-    
+
     .detail-item {
-      background: #ffffff;
-      padding: 15px;
-      border-radius: 12px;
-      border: 2px solid #e2e8f0;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+      padding: 16px;
+      border-radius: 10px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-    
+
     .detail-label {
       font-size: 11px;
       color: #64748b;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
-      font-weight: 600;
+      margin-bottom: 6px;
     }
-    
+
     .detail-value {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
-      color: #1e293b;
     }
-    
+
     .qr-section {
-      flex: 0 0 200px;
+      width: 180px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
       text-align: center;
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 12px;
-      border: 2px solid #e2e8f0;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-    
+
     .qr-label {
       font-size: 12px;
       color: #64748b;
-      margin-bottom: 20px;
-      font-weight: 600;
+      margin-bottom: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
-    
+
     .qr-code {
-      width: 140px;
-      height: 140px;
+      width: 180px;
+      height: 180px;
+      border: 1px solid #e2e8f0;
       border-radius: 8px;
-      border: 2px solid #e2e8f0;
     }
-    
+
     .auth-section {
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
       background: #f8fafc;
-      padding: 20px;
-      border-radius: 12px;
-      border: 2px solid #e2e8f0;
-      margin-bottom: 0;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-    
+
     .auth-label {
       font-size: 12px;
       color: #64748b;
+      margin-bottom: 8px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-      font-weight: 600;
     }
-    
+
     .auth-code {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1e293b;
       font-family: 'Courier New', monospace;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 10px 16px;
       background: white;
-      padding: 12px 16px;
-      border-radius: 8px;
-      border: 2px solid #d1d5db;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
       display: inline-block;
     }
-    
+
     .footer {
-      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      color: #1e293b;
-      padding: 30px 50px;
+      padding: 20px;
+      border-radius: 10px;
+      background: #f1f5f9;
       text-align: center;
-      border: 2px solid #cbd5e1;
-      border-radius: 16px;
-      margin: 0px 50px 15px 50px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      margin-top: 25px;
     }
 
     .footer-title {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
-      margin-bottom: 20px;
-      color: #1e293b;
-      letter-spacing: -0.5px;
+      margin-bottom: 12px;
     }
 
     .footer-instructions {
       display: flex;
       justify-content: space-around;
-      align-items: center;
-      margin-bottom: 15px;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
     .instruction-item {
-      display: flex;
-      align-items: center;
       font-size: 13px;
-      font-weight: 500;
-      color: #475569;
-      background: white;
-      padding: 8px 16px;
-      border-radius: 20px;
+      padding: 6px 12px;
       border: 1px solid #cbd5e1;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      white-space: nowrap;
+      border-radius: 16px;
+      background: white;
+      color: #334155;
     }
 
     .instruction-item::before {
       content: '✓';
-      display: inline-block;
-      width: 16px;
-      height: 16px;
+      margin-right: 6px;
       background: #10b981;
       color: white;
+      padding: 2px 5px;
       border-radius: 50%;
       font-size: 10px;
-      font-weight: bold;
-      text-align: center;
-      line-height: 16px;
-      margin-right: 8px;
-      flex-shrink: 0;
     }
 
     .footer-note {
       font-size: 11px;
       color: #64748b;
       font-style: italic;
-      margin-top: 10px;
-      opacity: 0.8;
     }
-    
+
     .company-info {
       background: #1e293b;
       color: #cbd5e1;
-      padding: 20px 50px;
-      text-align: center;
-      border-top: 3px solid #334155;
-      font-size: 12px;
-      font-weight: 400;
-      letter-spacing: 0.5px;
+      font-size: 11px;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
       flex-wrap: wrap;
-      gap: 15px;
+      border-radius: 6px;
     }
 
     .company-left {
       display: flex;
       align-items: center;
-      gap: 15px;
-    }
-
-    .company-right {
-      font-size: 11px;
-      opacity: 0.7;
+      gap: 10px;
     }
 
     .company-logo {
       width: 20px;
       height: 20px;
       background: #10b981;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
       color: white;
-      font-weight: bold;
-      font-size: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
     }
 
-    /* Bordes laterales del ticket */
-    .ticket-container::before,
-    .ticket-container::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: #1e293b;
-      z-index: 10;
-    }
-
-    .ticket-container::before {
-      left: 20px;
-    }
-
-    .ticket-container::after {
-      right: 20px;
+    .company-right {
+      opacity: 0.8;
     }
   </style>
 </head>
@@ -925,15 +588,15 @@ export async function generateTicketPDF(
       <div class="datetime-section">
         <div class="datetime-card">
           <div class="datetime-label">Salida</div>
-          <div class="datetime-value">${trip.date}<br>${
-    trip.departureTime
-  }</div>
+          <div class="datetime-value">${formatDate(trip.date)}<br>${
+      trip.departureTime
+     }hrs</div>
         </div>
         <div class="datetime-card">
           <div class="datetime-label">Llegada</div>
-          <div class="datetime-value">${trip.arrivalDate}<br>${
-    trip.arrivalTime
-  }</div>
+          <div class="datetime-value">${formatDate(trip.arrivalDate)}<br>${
+      trip.arrivalTime
+     }hrs</div>
         </div>
       </div>
       
@@ -995,7 +658,7 @@ export async function generateTicketPDF(
         <span>Boleto generado electrónicamente</span>
       </div>
       <div class="company-right">
-        Sistema de reservas BusExpress © ${new Date().getFullYear()}
+        <span>Sistema de reservas BusExpress © ${new Date().getFullYear()}</span>
       </div>
     </div>
   </div>
@@ -1017,7 +680,7 @@ export async function generateTicketPDF(
   const pdfBuffer = await pdf.generatePdf({ content: htmlContent }, options);
   const buffer = Buffer.from(pdfBuffer);
   const base64 = `data:application/pdf;base64,${buffer.toString("base64")}`;
-  const fileName = `Boleto_${trip.origin}_${trip.destination}_${trip.date}_Asiento:${seat.asiento}.pdf`;
+  const fileName = `Boleto_${trip.origin}-${trip.destination}_${trip.date}_Asiento:${seat.asiento}.pdf`;
 
   return {
     fileName,

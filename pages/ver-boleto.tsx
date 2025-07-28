@@ -61,15 +61,6 @@ export default function BoletoOperador() {
     }
   }, [boleto]);
 
-  const formatGuarani = (value) =>
-    new Intl.NumberFormat("es-PY", {
-      style: "currency",
-      currency: "PYG",
-      currencyDisplay: "symbol",
-    })
-      .format(value)
-      .replace(/Gs\.?|PYG/, "₲");
-
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
     const date = new Date(dateStr);
@@ -200,13 +191,13 @@ export default function BoletoOperador() {
                         <div>
                           Salida:{" "}
                           <b>
-                            {boleto.departureTime} - {formatDate(boleto.date)}
+                            {boleto.departureTime}hrs - {formatDate(boleto.date)}
                           </b>
                         </div>
                         <div>
                           Llegada:{" "}
                           <b>
-                            {boleto.arrivalTime} -{" "}
+                            {boleto.arrivalTime}hrs -{" "}
                             {formatDate(boleto.arrivalDate)}
                           </b>
                         </div>
