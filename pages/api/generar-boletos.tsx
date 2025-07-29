@@ -320,19 +320,6 @@ export async function generateTicketPDF(
         position: relative;
       }
 
-      .route-connector::before {
-        content: "→";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        background: #1e293b;
-        padding: 8px 10px;
-        font-size: 16px;
-        border-radius: 50%;
-      }
-
       .location-label {
         font-size: 11px;
         color: #64748b;
@@ -350,6 +337,13 @@ export async function generateTicketPDF(
         color: #64748b;
       }
 
+      .date-hour {
+        display: flex;
+        flex-direction: column;
+        font-weight: 500;
+        margin-top: 6px;
+      }
+
       .top-row {
         display: flex;
         gap: 20px;
@@ -358,26 +352,25 @@ export async function generateTicketPDF(
 
       .detail-item {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
         font-weight: 600;
         font-size: 1rem;
         color: #333;
       }
 
-      .detail-label {
-        font-weight: 600;
-        color: #555;
-      }
-
       .detail-value {
-        font-weight: 700;
+        font-size: 1.2rem;
+        font-weight: 600;
         color: #000;
+        margin-top: 3px;
       }
 
       .bottom-row {
         display: flex;
         gap: 20px;
         justify-content: space-evenly;
+        margin-top: 10px;
       }
 
       .details-section {
@@ -424,20 +417,10 @@ export async function generateTicketPDF(
         gap: 10px 20px;
       }
 
-      .detail-item {
-        display: flex;
-        flex-direction: column;
-      }
-
       .detail-label {
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: 1rem;
         color: #555;
-      }
-
-      .detail-value {
-        font-size: 16px;
-        font-weight: 600;
       }
 
       .qr-section {
@@ -452,6 +435,7 @@ export async function generateTicketPDF(
 
       .qr-label {
         font-weight: 600;
+        font-size: 1rem;
         margin-bottom: 10px;
         color: #333;
       }
@@ -515,16 +499,6 @@ export async function generateTicketPDF(
         color: #334155;
       }
 
-      .instruction-item::before {
-        content: "✓";
-        margin-right: 6px;
-        background: #10b981;
-        color: white;
-        padding: 2px 5px;
-        border-radius: 50%;
-        font-size: 10px;
-      }
-
       .footer-note {
         font-size: 11px;
         color: #64748b;
@@ -583,12 +557,20 @@ export async function generateTicketPDF(
             <div class="location-label">Origen</div>
             <div class="location-name">${trip.origin}</div>
             <div class="terminal-name">${trip.terminalOrigin}</div>
+            <div class="date-hour">
+              <div>${formatDate(trip.date)}</div>
+              <div>${trip.departureTime} hrs</div>
+            </div>
           </div>
           <div class="route-connector"></div>
           <div class="route-point">
             <div class="location-label">Destino</div>
             <div class="location-name">${trip.destination}</div>
             <div class="terminal-name">${trip.terminalDestination}</div>
+            <div class="date-hour">
+              <div>${formatDate(trip.arrivalDate)}</div>
+              <div>${trip.arrivalTime} hrs</div>
+            </div>
           </div>
         </div>
 
