@@ -196,6 +196,7 @@ const Login = (props) => {
                   type="button"
                   // className={styles["button-invitado"]}
                   className="btn btn-modal-secondary"
+                  style={{ marginTop: 0 }}
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 >
