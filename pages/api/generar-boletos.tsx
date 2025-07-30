@@ -495,9 +495,9 @@ export async function generateTicketPDF(
       .instruction-item {
         font-size: 13px;
         padding: 6px 12px;
-        border: 1px solid #cbd5e1;
+        border: 1px solid #9b9b9b;
         border-radius: 16px;
-        background: white;
+        background: rgb(246, 246, 255);
         color: #334155;
       }
 
