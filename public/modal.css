@@ -2,29 +2,6 @@
   text-align: center !important;
 }
 
-/* .btn-modal-primary {
-    width: 70%;
-    display: block;
-    margin: auto;
-    padding: 10px 10px;
-}
-
-.btn-modal-secondary {
-    width: 70%;
-    padding: 10px 10px;
-    color: #FF6500;
-    background-color: #fff;
-    display: block;
-    margin: auto;
-    margin-top: 10px;
-    border: #ff9952 solid 1px;
-}
-
-.btn-modal-secondary:hover {
-    color: #ff9952;
-    background-color: #fff;
-} */
-
 .btn-modal-primary {
   width: 70%;
   display: block;
@@ -34,7 +11,7 @@
   background-color: #ff6500;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
   font-weight: 600;
   transition: background-color 0.3s ease;
@@ -55,7 +32,7 @@
   margin: auto;
   margin-top: 10px;
   border: 1px solid #ff9952;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
   font-weight: 600;
   transition: color 0.3s ease, border-color 0.3s ease;

@@ -654,8 +654,7 @@ export async function generateTicketPDF(
   // Configuración de Puppeteer con Chromium
   const browser = await puppeteer.launch({
     args: chromium.args,
-    executablePath:
-      process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath()),
+    executablePath: await chromium.executablePath(),
     headless: chromium.headless,
   });
 
