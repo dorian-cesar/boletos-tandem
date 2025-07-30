@@ -52,7 +52,8 @@ export default async (req, res) => {
               ...rest,
               asiento: number,
               estado: status,
-              valorAsiento: price + 5000, // Se suma 5000 al valor del asiento para simular
+              // valorAsiento: price + 5000, // Se suma 5000 al valor del asiento para simular
+              valorAsiento: price,
             }))
             .reverse()
         );
