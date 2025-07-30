@@ -56,11 +56,11 @@ const Login = (props) => {
       const res = await axios.post("/api/user/validar-login", { ...login });
       const { token, usuario } = res.data.object;
 
-      console.log(usuario, typeof(usuario.fechaNacimiento));
+      console.log(usuario, typeof usuario.fechaNacimiento);
 
-      Object.assign(usuario.wallet, { last_update: new Date() })
+      Object.assign(usuario.wallet, { last_update: new Date() });
 
-      console.log('USUARIO:::', usuario);
+      console.log("USUARIO:::", usuario);
 
       encryptData(usuario, LocalStorageEntities.user_auth);
       encryptData(token, LocalStorageEntities.user_token);
@@ -107,9 +107,13 @@ const Login = (props) => {
           {mode == "0" ? (
             <div className="modal-content">
               <div className="modal-body">
-                <div className={ `${styles["index-login"]} "container" `}>
+                <div className={`${styles["index-login"]} "container" `}>
                   <div className="d-flex justify-content-center ">
-                    <img  className= {styles["foto-login"]} src="../../img/icon-foto.svg" width={65}></img>
+                    <img
+                      className={styles["foto-login"]}
+                      src="../../img/icon-foto.svg"
+                      width={65}
+                    ></img>
                   </div>
                   {/* <div className="d-flex justify-content-center mt-2">
                     <h4 className="titulo-azul">¡Hola!</h4>
@@ -117,14 +121,13 @@ const Login = (props) => {
                   {/* <p className="d-flex justify-content-center fw-bold mb-5">
                     Inicia sesión con tu correo electrónico
                   </p> */}
-                  <p className={ styles["viajemos-juntos"] }>
-                    ¡Viajemos juntos!
-                  </p>
-                  <p className={ styles["ingresa-sesion"] }>
+                  <p className={styles["viajemos-juntos"]}>¡Viajemos juntos!</p>
+                  <p className={styles["ingresa-sesion"]}>
                     Ingresa a tu sesión
                   </p>
-                  <p className={ styles["parrafo-registro"] }>
-                    Al registrarte o iniciar sesión, estás aceptando nuestros términos y condiciones de uso.
+                  <p className={styles["parrafo-registro"]}>
+                    Al registrarte o iniciar sesión, estás aceptando nuestros
+                    términos y condiciones de uso.
                   </p>
                   <div className="row">
                     {alert.visible ? (
@@ -150,17 +153,28 @@ const Login = (props) => {
                   {Object.keys(loginFormFields).map((key) => (
                     <div className="row mt-2" key={key}>
                       <div className="col-12">
-                        <label className="label-input">{key === "mail" ? "Correo electrónico" : "Contraseña"}</label>
+                        <label className="label-input">
+                          {key === "mail" ? "Correo electrónico" : "Contraseña"}
+                        </label>
                         <input
                           type={key === "password" ? "password" : "text"}
-                          placeholder={key === "mail" ? "Ej: example@example.com" : "Ej: ******"}
-                          className={"form-control" + (emptyFields[key] ? " is-invalid" : "")}
+                          placeholder={
+                            key === "mail"
+                              ? "Ej: example@example.com"
+                              : "Ej: ******"
+                          }
+                          className={
+                            "form-control" +
+                            (emptyFields[key] ? " is-invalid" : "")
+                          }
                           name={key}
                           value={login[key]}
                           onChange={onInputChange}
                         />
                         {emptyFields[key] && (
-                          <div className="invalid-feedback">Campo obligatorio</div>
+                          <div className="invalid-feedback">
+                            Campo obligatorio
+                          </div>
                         )}
                       </div>
                     </div>
@@ -222,6 +236,3 @@ const Login = (props) => {
 };
 
 export default Login;
-
-
-
