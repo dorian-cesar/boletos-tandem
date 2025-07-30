@@ -1,8 +1,8 @@
 .text-center {
-    text-align: center !important;
+  text-align: center !important;
 }
 
-.btn-modal-primary {
+/* .btn-modal-primary {
     width: 70%;
     display: block;
     margin: auto;
@@ -12,7 +12,7 @@
 .btn-modal-secondary {
     width: 70%;
     padding: 10px 10px;
-    color: var(--naranjo);
+    color: #FF6500;
     background-color: #fff;
     display: block;
     margin: auto;
@@ -23,47 +23,89 @@
 .btn-modal-secondary:hover {
     color: #ff9952;
     background-color: #fff;
+} */
+
+.btn-modal-primary {
+  width: 70%;
+  display: block;
+  margin: auto;
+  margin-top: 5px;
+  padding: 10px 10px;
+  background-color: #ff6500;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-modal-primary:hover {
+  background-color: #e55a00;
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-modal-secondary {
+  width: 70%;
+  padding: 10px 10px;
+  color: #ff6500;
+  background-color: #fff;
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+  border: 1px solid #ff9952;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-modal-secondary:hover {
+  color: #fff;
+  background-color: #ff9952;
+  border-color: #ff9952;
 }
 
 .btn-modal-link {
-    border: 0px !important;
-    background-color: #fff;
+  border: 0px !important;
+  background-color: #fff;
 }
 
 label.label-input-modal {
-    font-size: 12px;
-    padding-bottom: 10px;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 1px;
+  font-size: 12px;
+  padding-bottom: 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .form-control-modal {
-    font-size: 15px;
-    border: 1px solid var(--gris-claro);
-    border-radius: 10px;
-    padding: 15px 25px;
-    margin-bottom: 10px;
+  font-size: 15px;
+  border: 1px solid var(--gris-claro);
+  border-radius: 10px;
+  padding: 15px 25px;
+  margin-bottom: 10px;
 }
 
 .form-control-modal:focus {
-    /*outline: 1px solid var(--naranjo); !important;*/
-    box-shadow: 0 0 0 0;
-    border: 1px solid var(--naranjo);
+  /*outline: 1px solid var(--naranjo); !important;*/
+  box-shadow: 0 0 0 0;
+  border: 1px solid #ff6500;
 }
 
 select.form-control-modal,
 input.fecha-input-modal,
 .sel-input-modal {
-    background-image: url('img/icon/select/chevron-down-circle-outline.svg');
-    background-position: 14px center;
-    background-repeat: no-repeat;
-    padding-left: 40px;
-    background-size: 20px 20px;
-    color: black;
+  background-image: url("img/icon/select/chevron-down-circle-outline.svg");
+  background-position: 14px center;
+  background-repeat: no-repeat;
+  padding-left: 40px;
+  background-size: 20px 20px;
+  color: black;
 }
 
 select.form-control-modal.fecha,
 input.fecha-input-modal {
-    background-image: url(img/icon-select-fecha.svg);
+  background-image: url(img/icon-select-fecha.svg);
 }

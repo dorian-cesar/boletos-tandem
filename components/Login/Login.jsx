@@ -186,14 +186,16 @@ const Login = (props) => {
               <div className={styles["buttones"]}>
                 <button
                   type="button"
-                  className={styles["button-inicio"]}
+                  // className={styles["button-inicio"]}
+                  className="btn btn-modal-primary"
                   onClick={(e) => onLogin()}
                 >
                   Ingresar
                 </button>
                 <button
                   type="button"
-                  className={styles["button-invitado"]}
+                  // className={styles["button-invitado"]}
+                  className="btn btn-modal-secondary"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 >
