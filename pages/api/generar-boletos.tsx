@@ -1,9 +1,10 @@
-import pdf from "html-pdf-node";
 import { Buffer } from "buffer";
 import QRCode from "qrcode";
 import { createTransport } from "nodemailer";
 import { NextApiRequest, NextApiResponse } from "next";
 import Mail from "nodemailer/lib/mailer";
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium";
 
 interface TicketData {
   ticketData: any;
@@ -649,7 +650,23 @@ export async function generateTicketPDF(
 </html>
   `;
 
-  const options = {
+  // Configuración de Puppeteer con Chromium
+  const browser = await puppeteer.launch({
+    args: chromium.args,
+    executablePath:
+      process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath()),
+    headless: chromium.headless,
+  });
+
+  const page = await browser.newPage();
+
+  // Establecer el contenido HTML
+  await page.setContent(htmlContent, {
+    waitUntil: "networkidle0",
+  });
+
+  // Generar el PDF
+  const pdfBuffer = await page.pdf({
     format: "A4",
     printBackground: true,
     margin: {
@@ -658,9 +675,10 @@ export async function generateTicketPDF(
       bottom: "10mm",
       left: "10mm",
     },
-  };
+  });
 
-  const pdfBuffer = await pdf.generatePdf({ content: htmlContent }, options);
+  await browser.close();
+
   const buffer = Buffer.from(pdfBuffer);
   const base64 = `data:application/pdf;base64,${buffer.toString("base64")}`;
   const fileName = `Boleto_${trip.origin}-${trip.destination}_${trip.date}_Asiento:${seat.asiento}.pdf`;
@@ -675,7 +693,7 @@ export async function generateTicketPDF(
   };
 }
 
-// Función mejorada para enviar boletos por email
+// Función para enviar boletos por email
 async function sendTicketsByEmail(options: {
   customerEmail: string;
   tickets: EmailTicket[];
