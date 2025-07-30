@@ -462,6 +462,7 @@ export async function generateTicketPDF(
         font-weight: 700;
         font-size: 1.1rem;
         color: #000;
+        margin-bottom: 10px;
       }
 
       .footer-container {
