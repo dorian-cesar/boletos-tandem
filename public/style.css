@@ -2761,3 +2761,28 @@ footer .item a {
     transform: translate(-50%, -50%) !important;
   }
 }
+
+.custom-overlay {
+  position: fixed;
+  z-index: 1050;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.embedded-loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px; /* Ajusta según el tamaño del área */
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 8px;
+}

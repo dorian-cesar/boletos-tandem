@@ -11,6 +11,7 @@ import "swiper/css/effect-flip";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import LoadingOverlay from "react-loading-overlay";
+import Loader from "components/LoaderView";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { format } from "@formkit/tempo";
@@ -326,13 +327,10 @@ const Boleto = (props) => {
           </div>
         </div>
       </div>
-      <LoadingOverlay
-        active={isLoading}
-        spinner
-        text="Espere un momento..."
-        className={`${styles["grill-detail"]}`}
-      >
-        <div className={`${styles["grill-detail"]}`}>
+      <div className={styles["grill-detail"]} style={{ position: "relative" }}>
+        {isLoading ? (
+          <Loader loading={isLoading} text="Espere un momento..." />
+        ) : (
           <Parrilla
             isShowParrilla={isOpened}
             thisParrilla={props.thisParrilla}
@@ -351,8 +349,8 @@ const Boleto = (props) => {
             setModalMab={props.setModalMab}
             buttonCloseModalRef={buttonCloseModal}
           />
-        </div>
-      </LoadingOverlay>
+        )}
+      </div>
       <div
         className="modal fade"
         id={`parrillaModal-${props.id}-${props.terminalOrigin.replace(
@@ -375,13 +373,13 @@ const Boleto = (props) => {
                 onClick={handleCloseModal}
               ></button>
             </div>
-            <LoadingOverlay
-              active={isLoading}
-              spinner
-              text="Espere un momento..."
+            <div
               className={styles["grill-detail"]}
+              style={{ position: "relative" }}
             >
-              <div className={styles["grill-detail"]}>
+              {isLoading ? (
+                <Loader loading={isLoading} text="Espere un momento..." />
+              ) : (
                 <Parrilla
                   isShowParrilla={isOpened}
                   thisParrilla={props.thisParrilla}
@@ -400,8 +398,8 @@ const Boleto = (props) => {
                   setModalMab={props.setModalMab}
                   buttonCloseModalRef={buttonCloseModal}
                 />
-              </div>
-            </LoadingOverlay>
+              )}
+            </div>
           </div>
         </div>
       </div>
