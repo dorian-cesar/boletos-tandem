@@ -29,11 +29,11 @@ const Footer = () => (
                         </h3>
                         <div className="w-100" style={{ paddingLeft: "25px", borderLeft: "1px solid" }}>
                             <ul>
-                                <li>
+                                {/* <li>
                                     <Link href="/teAyudamos?page=preguntas" legacyBehavior>
                                         <a href="">Preguntas Frecuentes</a>
                                     </Link>
-                                </li>
+                                </li> */}
                                 <li>
                                     <Link href="/conoce-tus-derechos" legacyBehavior>
                                         <a href="/conoce-tus-derechos">
@@ -44,7 +44,14 @@ const Footer = () => (
                                 <li>
                                     <Link href="/politica-de-privacidad" legacyBehavior>
                                         <a href="/politica-de-privacidad">
-                                            Política de privacidad
+                                            Política de Privacidad
+                                        </a>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/politica-de-calidad" legacyBehavior>
+                                        <a href="/politica-de-calidad">
+                                            Política de Calidad
                                         </a>
                                     </Link>
                                 </li>
