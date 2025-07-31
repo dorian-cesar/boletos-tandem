@@ -547,7 +547,7 @@ export async function generateTicketPDF(
   <body>
     <div class="ticket-container">
       <div class="ticket-header">
-        <div class="company-name">"Tandem"</div>
+        <div class="company-name">Tandem</div>
         <div class="trip-type">
           Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}
         </div>
