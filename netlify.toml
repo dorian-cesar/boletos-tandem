@@ -4,6 +4,9 @@
   publish = ".next"
   functions = "netlify/functions"
 
+[build.environment]
+  NETLIFY_USE_YARN = "true"
+
   ## Uncomment to use this redirect for Single Page Applications like create-react-app.
   ## Not needed for static site generators.
 
