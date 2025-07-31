@@ -4,6 +4,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 
 const imagenDeRespaldo = {
   key: "banner_01",
@@ -12,7 +13,15 @@ const imagenDeRespaldo = {
   image: "./banner-tandem.webp",
 };
 
-const Banner = (props) => {
+const DynamicBusquedaServicioComponent = dynamic(
+  () => import("components/BusquedaServicio/BusquedaServicio"),
+  {
+    ssr: false,
+  }
+);
+
+// const Banner = (props) => {
+const Banner = ({ origenes, dias }) => {
   const [images, setImages] = useState([]);
 
   async function getBannerImages() {
@@ -84,17 +93,43 @@ const Banner = (props) => {
                     </a>
                   </Link>
                 ) : (
-                  <img className="w-100" style={{ cursor: 'default' }} src={image} alt={`Banner ${index}`} />
-                  // <img
-                  //   style={{
-                  //     width: "100%",
-                  //     height: "600px",
-                  //     objectFit: "contain",
-                  //     cursor: "default",
-                  //   }}
-                  //   src={image}
-                  //   alt={`Banner ${index}`}
-                  // />
+                  // <img className="w-100" style={{ cursor: 'default' }} src={image} alt={`Banner ${index}`} />
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: "600px",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {/* Imagen del banner */}
+                    <img
+                      src={image}
+                      alt={`Banner ${index}`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                        cursor: "default",
+                      }}
+                    />
+
+                    {/* Buscador centrado */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        zIndex: 2,
+                      }}
+                    >
+                      <DynamicBusquedaServicioComponent
+                        origenes={origenes}
+                        dias={dias}
+                      />
+                    </div>
+                  </div>
                 )}
               </SwiperSlide>
             ))
