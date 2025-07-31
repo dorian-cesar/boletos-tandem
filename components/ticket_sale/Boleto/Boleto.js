@@ -10,7 +10,6 @@ import "swiper/css";
 import "swiper/css/effect-flip";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import LoadingOverlay from "react-loading-overlay";
 import Loader from "components/LoaderView";
 import axios from "axios";
 import { toast } from "react-toastify";

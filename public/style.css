@@ -2762,21 +2762,6 @@ footer .item a {
   }
 }
 
-.custom-overlay {
-  position: fixed;
-  z-index: 1050;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(2px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .embedded-loader {
   display: flex;
   flex-direction: column;
