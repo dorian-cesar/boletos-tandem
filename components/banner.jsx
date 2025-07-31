@@ -111,6 +111,7 @@ const Banner = ({ origenes, dias }) => {
             )}
           </Swiper>
           <div
+            className="buscador-banner"
             style={{
               position: "absolute",
               top: "50%",
