@@ -472,7 +472,7 @@ input:checked + .slider:before,
 
 .boleto .barra {
   background-image: url("img/linea.svg");
-  background-repeat-y: no-repeat;
+  /* background-repeat-y: no-repeat; */
   background-position: center center;
   position: relative;
   height: 30px;
@@ -2381,7 +2381,7 @@ footer .item a {
 
 .cuponera .barra {
   background-image: url("img/linea.svg");
-  background-repeat-y: no-repeat;
+  /* background-repeat-y: no-repeat; */
   background-position: center center;
   position: relative;
   height: 30px;
