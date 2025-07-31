@@ -733,7 +733,7 @@ async function sendTicketsByEmail(options: {
     }));
 
     // 4. Preparar contenido del correo
-    const emailSubject = `Boletos.com - Tus boletos de viaje ${
+    const emailSubject = `Tandem.cl - Tus boletos de viaje ${
       bookingReference ? `(Ref: ${bookingReference})` : ""
     }`;
 
