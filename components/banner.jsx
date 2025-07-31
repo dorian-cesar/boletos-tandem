@@ -8,7 +8,8 @@ import Link from "next/link";
 const imagenDeRespaldo = {
   key: "banner_01",
   // url: "/",
-  image: "https://pullman.cl/imagenes/fenix/banner/banner-1.jpg",
+  // image: "https://pullman.cl/imagenes/fenix/banner/banner-1.jpg",
+  image: "./banner-tandem.webp",
 };
 
 const Banner = (props) => {

@@ -49,7 +49,7 @@ export default function Home(props) {
   return (
       <Layout>
           <Head>
-              <title>Pullman Bus | Inicio</title>
+              <title>Tandem | Inicio</title>
           </Head>
           <div className="home">
               <Banner/>

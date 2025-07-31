@@ -48,10 +48,10 @@ export default function Layout({ children, isBuyStage = false }) {
     <>
       <Head>
         <meta charSet="UTF-8" />
-        <title>Pullman Bus</title>
+        <title>Tandem</title>
         <meta
           name="description"
-          content="Empresa de Transporte Pullman Bus S.A San Francisco de Borja 235, Estación Central, Santiago de Chile.  Transporte de Viajes Interurbanos, Viajes Especiales"
+          content="Cotiza y compra pasajes de bus, tren, transfer y recarga bip! de la manera más fácil. Más de 200 empresas y todo el transporte terrestre en un solo lugar."
         />
         <meta
           name="keywords"
