@@ -85,6 +85,16 @@ const Banner = (props) => {
                   </Link>
                 ) : (
                   <img className="w-100" style={{ cursor: 'default' }} src={image} alt={`Banner ${index}`} />
+                  // <img
+                  //   style={{
+                  //     width: "100%",
+                  //     height: "600px",
+                  //     objectFit: "contain",
+                  //     cursor: "default",
+                  //   }}
+                  //   src={image}
+                  //   alt={`Banner ${index}`}
+                  // />
                 )}
               </SwiperSlide>
             ))

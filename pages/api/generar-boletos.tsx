@@ -547,7 +547,7 @@ export async function generateTicketPDF(
   <body>
     <div class="ticket-container">
       <div class="ticket-header">
-        <div class="company-name">${trip.company || "BusExpress"}</div>
+        <div class="company-name">${trip.company || "Tandem"}</div>
         <div class="trip-type">
           Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}
         </div>
@@ -641,7 +641,7 @@ export async function generateTicketPDF(
           </div>
           <div class="company-right">
             <span
-              >Sistema de reservas BusExpress © ${new Date().getFullYear()}</span
+              >Sistema de reservas Tandem © ${new Date().getFullYear()}</span
             >
           </div>
         </div>
@@ -739,7 +739,7 @@ async function sendTicketsByEmail(options: {
 
     const emailHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-        <h1 style="color: #2c3e50;">¡Gracias por viajar con BusExpress!</h1>
+        <h1 style="color: #2c3e50;">¡Gracias por viajar con Tandem!</h1>
         
         <p>Hola ${customerName},</p>
         
@@ -777,18 +777,18 @@ async function sendTicketsByEmail(options: {
         <div style="margin-top: 30px; padding: 15px; background-color: #e9f7fe; border-radius: 5px;">
           <h4 style="margin-top: 0;">¿Necesitas ayuda?</h4>
           <p style="margin-bottom: 0;">
-            Contáctanos en <a href="mailto:soporte@busexpress.com">soporte@busexpress.com</a> o al +56 2 2345 6789
+            Contáctanos en <a href="mailto:soporte@tandem.cl">soporte@tandem.cl</a> o al +56 2 2345 6789
           </p>
         </div>
         
         <p style="margin-top: 30px;">¡Te deseamos un excelente viaje!</p>
-        <p><strong>El equipo de BusExpress</strong></p>
+        <p><strong>El equipo de Tandem</strong></p>
       </div>
     `;
 
     // 5. Configurar opciones del correo
     const mailOptions: Mail.Options = {
-      from: process.env.EMAIL_FROM || "no-reply@busexpress.com",
+      from: process.env.EMAIL_FROM || "no-reply@tandem.cl",
       to: customerEmail,
       subject: emailSubject,
       html: emailHtml,
@@ -796,7 +796,7 @@ async function sendTicketsByEmail(options: {
         tickets.length
       } boleto(s) de viaje. Por favor presenta estos boletos al abordar el bus junto con tu identificación.\n\nReferencia: ${
         bookingReference || "N/A"
-      }\n\n¡Gracias por viajar con BusExpress!`,
+      }\n\n¡Gracias por viajar con Tandem!`,
       attachments,
     };
 
