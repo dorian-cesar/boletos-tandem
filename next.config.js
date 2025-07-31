@@ -40,10 +40,10 @@ module.exports = {
   },
   env: {
     PROJECT_DIRNAME: __dirname,
-    site_url: "https://boletos-com.netlify.app/",
+    site_url: "https://boletos-tandem.netlify.app/",
   },
   publicRuntimeConfig: {
-    site_url: "https://boletos-com.netlify.app/",
+    site_url: "https://boletos-tandem.netlify.app/",
     site_url_local: "http://localhost:3000",
   },
   // serverRuntimeConfig: {
@@ -53,7 +53,7 @@ module.exports = {
   //   clave: process.env.NODE_ENV == "production"?"":"xWL!96JRaWi2lT0jG"
   // },
   serverRuntimeConfig: {
-    site_url: "https://boletos-com.netlify.app",
+    site_url: "https://boletos-tandem.netlify.app/",
     service_url: "",
     url_api: "https://boletos.dev-wit.com/api",
     service_password: process.env.NODE_ENV == "production"?"":"INT0000002",
