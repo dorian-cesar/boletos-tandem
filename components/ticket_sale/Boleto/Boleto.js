@@ -137,19 +137,19 @@ const Boleto = (props) => {
   let formattedDeparture = formatTo24HourWithAmPm(props.departureTime);
   let formattedArrival = formatTo24HourWithAmPm(props.arrivalTime);
 
-  // const clpFormat = new Intl.NumberFormat("es-CL", {
-  //   style: "currency",
-  //   currency: "CLP",
-  // });
+  const clpFormat = new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  });
 
-  const formatGuarani = (value) =>
-    new Intl.NumberFormat("es-PY", {
-      style: "currency",
-      currency: "PYG",
-      currencyDisplay: "symbol",
-    })
-      .format(value)
-      .replace(/Gs\.?|PYG/, "₲");
+  // const formatGuarani = (value) =>
+  //   new Intl.NumberFormat("es-PY", {
+  //     style: "currency",
+  //     currency: "PYG",
+  //     currencyDisplay: "symbol",
+  //   })
+  //     .format(value)
+  //     .replace(/Gs\.?|PYG/, "₲");
 
   async function fetchAsientos(parrilla) {
     const request = CryptoJS.AES.encrypt(
@@ -291,7 +291,7 @@ const Boleto = (props) => {
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 1 desde:{" "}
                   <b className="text-primary">
-                    {formatGuarani(props.priceFirst)}
+                    {clpFormat.format(props.priceFirst)}
                   </b>
                 </div>
               ) : (
@@ -305,7 +305,7 @@ const Boleto = (props) => {
                 <div className="d-flex flex-col flex-md-row gap-md-2 text-center">
                   Piso 2 desde:{" "}
                   <b className="text-primary">
-                    {formatGuarani(props.priceSecond)}
+                    {clpFormat.format(props.priceSecond)}
                   </b>
                 </div>
               ) : (

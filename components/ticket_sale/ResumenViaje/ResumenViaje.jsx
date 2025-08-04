@@ -47,19 +47,19 @@ export const ResumenViaje = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  // const clpFormat = new Intl.NumberFormat("es-CL", {
-  //   style: "currency",
-  //   currency: "CLP",
-  // });
+  const clpFormat = new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  });
 
-  const formatGuarani = (value) =>
-    new Intl.NumberFormat("es-PY", {
-      style: "currency",
-      currency: "PYG",
-      currencyDisplay: "symbol",
-    })
-      .format(value)
-      .replace(/Gs\.?|PYG/, "₲");
+  // const formatGuarani = (value) =>
+  //   new Intl.NumberFormat("es-PY", {
+  //     style: "currency",
+  //     currency: "PYG",
+  //     currencyDisplay: "symbol",
+  //   })
+  //     .format(value)
+  //     .replace(/Gs\.?|PYG/, "₲");
 
   const [saldoMonederoVirtual, setSaldoMonederoVirtual] = useState(0);
 
@@ -185,7 +185,7 @@ export const ResumenViaje = (props) => {
 
             datos.valorAsientos = value.asientos.map((a) => ({
               num: a.asiento,
-              valorAsiento: formatGuarani(a.valorAsiento),
+              valorAsiento: clpFormat.format(a.valorAsiento),
             }));
 
             value.asientos.forEach((element) => {
@@ -194,7 +194,7 @@ export const ResumenViaje = (props) => {
             });
 
             idaNombre = `Salida, ${format(fechaIda, "ddd D MMM", "es")}`;
-            datos.total = formatGuarani(datos.total);
+            datos.total = clpFormat.format(datos.total);
             carritoIda.detalle.push(datos);
           });
         }
@@ -245,7 +245,7 @@ export const ResumenViaje = (props) => {
 
             datos.valorAsientos = value.asientos.map((a) => ({
               num: a.asiento,
-              valorAsiento: formatGuarani(a.valorAsiento),
+              valorAsiento: clpFormat.format(a.valorAsiento),
             }));
 
             value.asientos.forEach((element) => {
@@ -253,7 +253,7 @@ export const ResumenViaje = (props) => {
               datos.total += element.valorAsiento;
             });
 
-            datos.total = formatGuarani(datos.total);
+            datos.total = clpFormat.format(datos.total);
             carritoVuelta.detalle.push(datos);
             vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM", "es")}`;
           });
@@ -846,9 +846,9 @@ export const ResumenViaje = (props) => {
           )} */}
           <div className={styles["contanedor-total-pagar"]}>
             {descuentoConvenio ? (
-              <span>Total a pagar: {formatGuarani(totalPagar)} </span>
+              <span>Total a pagar: {clpFormat.format(totalPagar)} </span>
             ) : (
-              <span>Total a pagar: {formatGuarani(totalOriginal)}</span>
+              <span>Total a pagar: {clpFormat.format(totalOriginal)}</span>
             )}
           </div>
           {!soloLectura && (

@@ -601,7 +601,7 @@ export async function generateTicketPDF(
               </div>
               <div class="detail-item">
                 <div class="detail-label">Precio</div>
-                <div class="detail-value">${seat.valorAsiento} Gs.</div>
+                <div class="detail-value">$ ${seat.valorAsiento}</div>
               </div>
             </div>
           </div>
@@ -788,7 +788,7 @@ async function sendTicketsByEmail(options: {
 
     // 5. Configurar opciones del correo
     const mailOptions: Mail.Options = {
-      from: process.env.EMAIL_FROM || "no-reply@tandem.cl",
+      from: `"Boletos Tandem" <${process.env.EMAIL_FROM}>`,
       to: customerEmail,
       subject: emailSubject,
       html: emailHtml,

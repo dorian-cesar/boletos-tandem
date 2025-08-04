@@ -117,6 +117,15 @@ export default function Home(props: HomeProps) {
     currency: "CLP",
   });
 
+  // const formatGuarani = (value) =>
+  //   new Intl.NumberFormat("es-PY", {
+  //     style: "currency",
+  //     currency: "PYG",
+  //     currencyDisplay: "symbol",
+  //   })
+  //     .format(value)
+  //     .replace(/Gs\.?|PYG/, "₲");
+
   const dispatch = useDispatch();
 
   const agregarEventoTagManager = () => {
@@ -171,7 +180,7 @@ export default function Home(props: HomeProps) {
             datos.total += element.valorAsiento;
           });
           idaNombre = `Salida, ${format(fechaIda, "ddd D MMM", "es")}`;
-          datos.totalFormateado = formatGuarani(datos.total);
+          datos.totalFormateado = clpFormat.format(datos.total);
           carritoIda.detalle.push(datos);
         });
       }
@@ -194,7 +203,7 @@ export default function Home(props: HomeProps) {
             datos.cantidadAsientos += 1;
             datos.total += element.valorAsiento;
           });
-          datos.totalFormateado = formatGuarani(datos.total);
+          datos.totalFormateado = clpFormat.format(datos.total);
           carritoVuelta.detalle.push(datos);
           vueltaNombre = `Vuelta, ${format(fechaVuelta, "ddd D MMM", "es")}`;
         });
@@ -232,15 +241,6 @@ export default function Home(props: HomeProps) {
       dispatch(limpiarListaCarrito(null));
     }
   };
-
-  const formatGuarani = (value) =>
-    new Intl.NumberFormat("es-PY", {
-      style: "currency",
-      currency: "PYG",
-      currencyDisplay: "symbol",
-    })
-      .format(value)
-      .replace(/Gs\.?|PYG/, "₲");
 
   // useEffect(() => {
   //   obtenerInformacion();
@@ -542,8 +542,7 @@ export default function Home(props: HomeProps) {
                     <div className="col-12 col-md-5 d-flex flex-row justify-content-center align-items-center gap-3">
                       <strong className="fs-3">Total Pagado:</strong>
                       <span className="fs-3 text-primary fw-bold">
-                        {/* {clpFormat.format(resumen.amount)} */}
-                        {formatGuarani(resumen.amount)}
+                        {clpFormat.format(resumen.amount)}
                       </span>
                     </div>
                   </div>

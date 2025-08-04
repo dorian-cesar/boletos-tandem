@@ -79,19 +79,19 @@ const Parrilla = (props) => {
     setUser(user);
   }, []);
 
-  // const clpFormat = new Intl.NumberFormat("es-CL", {
-  //   style: "currency",
-  //   currency: "CLP",
-  // });
+  const clpFormat = new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  });
 
-  const formatGuarani = (value) =>
-    new Intl.NumberFormat("es-PY", {
-      style: "currency",
-      currency: "PYG",
-      currencyDisplay: "symbol",
-    })
-      .format(value)
-      .replace(/Gs\.?|PYG/, "₲");
+  // const formatGuarani = (value) =>
+  //   new Intl.NumberFormat("es-PY", {
+  //     style: "currency",
+  //     currency: "PYG",
+  //     currencyDisplay: "symbol",
+  //   })
+  //     .format(value)
+  //     .replace(/Gs\.?|PYG/, "₲");
 
   useEffect(() => {
     if (isShowParrilla && !parrilla.length) {
@@ -1131,7 +1131,7 @@ const Parrilla = (props) => {
                                       <br />
                                       <strong>Precio:</strong>{" "}
                                       {ii.valorAsiento
-                                        ? formatGuarani(ii.valorAsiento)
+                                        ? clpFormat.format(ii.valorAsiento)
                                         : "N/A"}
                                     </div>
                                   }
@@ -1219,7 +1219,7 @@ const Parrilla = (props) => {
                                       <br />
                                       <strong>Precio:</strong>{" "}
                                       {ii.valorAsiento
-                                        ? formatGuarani(ii.valorAsiento)
+                                        ? clpFormat.format(ii.valorAsiento)
                                         : "N/A"}
                                     </div>
                                   }
@@ -1310,7 +1310,7 @@ const Parrilla = (props) => {
                       className="btn btn-primary border-0 rounded-3"
                       onClick={handleNextStep}
                     >
-                      Continuar: {formatGuarani(totalPagar)}
+                      Continuar: {clpFormat.format(totalPagar)}
                     </button>
                   </div>
                   <div className={styles["texto-cantidad-asientos"]}>
