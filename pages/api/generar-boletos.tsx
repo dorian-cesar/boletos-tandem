@@ -547,7 +547,7 @@ export async function generateTicketPDF(
   <body>
     <div class="ticket-container">
       <div class="ticket-header">
-        <div class="company-name">Tandem</div>
+        <div class="company-name">Tandem Centinela</div>
         <div class="trip-type">
           Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}
         </div>
@@ -739,7 +739,7 @@ async function sendTicketsByEmail(options: {
 
     const emailHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-        <h1 style="color: #2c3e50;">¡Gracias por viajar con Tandem!</h1>
+        <h1 style="color: #2c3e50;">¡Gracias por viajar con Tandem Centinela!</h1>
         
         <p>Hola ${customerName},</p>
         
@@ -782,13 +782,13 @@ async function sendTicketsByEmail(options: {
         </div>
         
         <p style="margin-top: 30px;">¡Te deseamos un excelente viaje!</p>
-        <p><strong>El equipo de Tandem</strong></p>
+        <p><strong>El equipo de Tandem Centinela</strong></p>
       </div>
     `;
 
     // 5. Configurar opciones del correo
     const mailOptions: Mail.Options = {
-      from: `"Boletos Tandem" <${process.env.EMAIL_FROM}>`,
+      from: `"Boletos Tandem Centinela" <${process.env.EMAIL_FROM}>`,
       to: customerEmail,
       subject: emailSubject,
       html: emailHtml,
@@ -796,7 +796,7 @@ async function sendTicketsByEmail(options: {
         tickets.length
       } boleto(s) de viaje. Por favor presenta estos boletos al abordar el bus junto con tu identificación.\n\nReferencia: ${
         bookingReference || "N/A"
-      }\n\n¡Gracias por viajar con Tandem!`,
+      }\n\n¡Gracias por viajar con Tandem Centinela!`,
       attachments,
     };
 

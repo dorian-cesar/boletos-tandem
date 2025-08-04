@@ -171,23 +171,23 @@ const Boleto = (props) => {
     }
   }
 
-  async function showItinerary() {
-    if (itinerario.length === 0) {
-      try {
-        const { data } = await axios.post("/api/itinerario", {
-          servicio: props.id,
-        });
-        setItinerario(data.object);
-      } catch (error) {
-        toast.error("Error al obtener el itinerario", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-        });
-      }
-    }
-    setIsShowItinerary(!isShowItinerary);
-  }
+  // async function showItinerary() {
+  //   if (itinerario.length === 0) {
+  //     try {
+  //       const { data } = await axios.post("/api/itinerario", {
+  //         servicio: props.id,
+  //       });
+  //       setItinerario(data.object);
+  //     } catch (error) {
+  //       toast.error("Error al obtener el itinerario", {
+  //         position: "bottom-center",
+  //         autoClose: 5000,
+  //         hideProgressBar: false,
+  //       });
+  //     }
+  //   }
+  //   setIsShowItinerary(!isShowItinerary);
+  // }
 
   const handleCloseModal = () => {
     setIsOpened(false);
