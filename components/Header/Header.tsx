@@ -200,7 +200,7 @@ export default function Header({
                   src="../img/icon/logos/logo-tandem2.webp"
                   width={180}
                   height={100}
-                  className="img-fluid p-2"
+                  className="img-fluid p-2 py-3"
                   // style={{ padding: "10px" }}
                 />
               </a>
