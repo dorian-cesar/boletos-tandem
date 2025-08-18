@@ -22,7 +22,7 @@ const VerDatosUsuario = () => {
   return (
     <Layout>
       <Head>
-        <title>Pullman Bus | Mi Perfil</title>
+        <title>Tandem | Mi Perfil</title>
       </Head>
 
       {isLoading ? (

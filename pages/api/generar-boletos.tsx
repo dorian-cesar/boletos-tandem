@@ -654,7 +654,6 @@ export async function generateTicketPDF(
 
         <div class="company-info">
           <div class="company-left">
-            // <div class="company-logo">B</div>
             <span>Boleto generado electrónicamente</span>
           </div>
           <div class="company-right">
@@ -668,6 +667,21 @@ export async function generateTicketPDF(
   </body>
 </html>
   `;
+
+  // logo footer boleto
+  {
+    /* <div class="company-info">
+          <div class="company-left">
+            <div class="company-logo">B</div>
+            <span>Boleto generado electrónicamente</span>
+          </div>
+          <div class="company-right">
+            <span
+              >Sistema de reservas Tandem Centinela © ${new Date().getFullYear()}</span
+            >
+          </div>
+        </div> */
+  }
 
   // Configuración de Puppeteer con Chromium
   const browser = await puppeteer.launch({

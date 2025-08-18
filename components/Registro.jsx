@@ -184,7 +184,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
               <h4 className="titulo-azul">Registrate</h4>
             </div>
             <div className="d-flex justify-content-center text-center">
-              ¡Se parte de Pullman Bus! Ingresa los siguientes datos para crear
+              ¡Se parte de Tandem Centinela! Ingresa los siguientes datos para crear
               tu cuenta
             </div>
             <div className="row mt-2 text-center">

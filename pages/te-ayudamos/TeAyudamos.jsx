@@ -31,7 +31,7 @@ const TeAyudamos = (props) => {
   return (
     <Layout>
       <Head>
-        <title>Pullman Bus | Te Ayudamos</title>
+        <title>Tandem | Te Ayudamos</title>
       </Head>
       {stage == 0 ? (
         <div className="pt-3 pb-5 bg-bus">

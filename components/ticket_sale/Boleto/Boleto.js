@@ -222,7 +222,7 @@ const Boleto = (props) => {
               className="img-fluid p-1"
               width={150}
               height={25}
-              alt="Logo Pullman Bus"
+              alt="Logo Tandem Centinela"
             />
             {props.mascota == "1" ? (
               <img src="img/icon/logos/paw-outline.svg" />
