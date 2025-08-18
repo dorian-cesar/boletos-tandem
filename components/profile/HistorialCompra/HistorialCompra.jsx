@@ -7,7 +7,7 @@ import axios from "axios";
 import { useId } from "react";
 import { decryptData } from "utils/encrypt-data.js";
 import LocalStorageEntities from "entities/LocalStorageEntities";
-import { generateToken } from 'utils/jwt-auth';
+import { generateToken } from "utils/jwt-auth";
 import Popup from "../../Popup/Popup";
 import ModalEntities from "../../../entities/ModalEntities";
 
@@ -156,15 +156,15 @@ const HistorialCompra = () => {
   //   data.fechaNacimiento = fechaNacimiento;
   // }, [fechaNacimiento]);
 
-  function retornarEstado(estado) {
-    if (estado === "NUL") {
-      return "Transacción nula";
-    }
-    if (estado === "ACTI") {
-      return "Transacción activa";
-    }
-    return "Sin descripción";
-  }
+  // function retornarEstado(estado) {
+  //   if (estado === "NUL") {
+  //     return "Transacción nula";
+  //   }
+  //   if (estado === "ACTI") {
+  //     return "Transacción activa";
+  //   }
+  //   return "Sin descripción";
+  // }
 
   const MemoizedComponent = useMemo(() => {
     console.log("historial", historial);
@@ -275,7 +275,6 @@ const HistorialCompra = () => {
   const renderPagination = () => {
     const pages = [];
     const maxVisiblePages = 3;
-
     const startPage = Math.max(
       1,
       currentPage - Math.floor(maxVisiblePages / 2)
@@ -286,35 +285,44 @@ const HistorialCompra = () => {
       pages.push(
         <li
           key={i}
-          className={`page-item ${currentPage === i ? "active" : ""}`}
+          className={`${styles["page-item"]} ${
+            currentPage === i ? styles["active"] : ""
+          }`}
         >
-          <a className="page-link" onClick={() => handlePageChange(i)}>
+          <button
+            onClick={() => handlePageChange(i)}
+            className={styles["page-link"]}
+          >
             {i}
-          </a>
+          </button>
         </li>
       );
     }
 
     if (currentPage > 1) {
       pages.unshift(
-        <li key="previous" className="page-item">
-          <a
-            className="page-link"
-            aria-label="Previous"
+        <li key="previous" className={styles["page-item"]}>
+          <button
             onClick={handlePreviousPage}
+            className={styles["page-link"]}
+            aria-label="Previous"
           >
-            <span aria-hidden="true">&laquo;</span>
-          </a>
+            &laquo;
+          </button>
         </li>
       );
     }
 
     if (currentPage < totalPages) {
       pages.push(
-        <li key="next" className="page-item">
-          <a className="page-link" aria-label="Next" onClick={handleNextPage}>
-            <span aria-hidden="true">&raquo;</span>
-          </a>
+        <li key="next" className={styles["page-item"]}>
+          <button
+            onClick={handleNextPage}
+            className={styles["page-link"]}
+            aria-label="Next"
+          >
+            &raquo;
+          </button>
         </li>
       );
     }
@@ -358,39 +366,44 @@ const HistorialCompra = () => {
       pages.push(
         <li
           key={i}
-          className={`page-item ${currentPageBoleto === i ? "active" : ""}`}
+          className={`${styles["page-item"]} ${
+            currentPageBoleto === i ? styles["active"] : ""
+          }`}
         >
-          <a className="page-link" onClick={() => handlePageChangeBoleto(i)}>
+          <button
+            onClick={() => handlePageChangeBoleto(i)}
+            className={styles["page-link"]}
+          >
             {i}
-          </a>
+          </button>
         </li>
       );
     }
 
     if (currentPageBoleto > 1) {
       pages.unshift(
-        <li key="previous" className="page-item">
-          <a
-            className="page-link"
-            aria-label="Previous"
+        <li key="previous" className={styles["page-item"]}>
+          <button
             onClick={handlePreviousPageBoleto}
+            className={styles["page-link"]}
+            aria-label="Previous"
           >
-            <span aria-hidden="true">&laquo;</span>
-          </a>
+            &laquo;
+          </button>
         </li>
       );
     }
 
     if (currentPageBoleto < totalPagesBoletos) {
       pages.push(
-        <li key="next" className="page-item">
-          <a
-            className="page-link"
-            aria-label="Next"
+        <li key="next" className={styles["page-item"]}>
+          <button
             onClick={handleNextPageBoleto}
+            className={styles["page-link"]}
+            aria-label="Next"
           >
-            <span aria-hidden="true">&raquo;</span>
-          </a>
+            &raquo;
+          </button>
         </li>
       );
     }
@@ -460,10 +473,8 @@ const HistorialCompra = () => {
           </tbody>
         </table>
       </div>
-      <nav aria-label="Page navigation example">
-        <ul className={`pagination ${styles["pagination-css"]}`}>
-          {renderPaginationBoleto()}
-        </ul>
+      <nav aria-label="Page navigation boletos">
+        <ul className={styles["pagination-css"]}>{renderPaginationBoleto()}</ul>
       </nav>
     </div>
   );
@@ -660,13 +671,8 @@ const HistorialCompra = () => {
             </tbody>
           </table>
         </div>
-        <nav
-          className={styles["navigation"]}
-          aria-label="Page navigation example"
-        >
-          <ul className={`pagination ${styles["pagination-css"]}`}>
-            {renderPagination()}
-          </ul>
+        <nav aria-label="Page navigation historial">
+          <ul className={styles["pagination-css"]}>{renderPagination()}</ul>
         </nav>
         {mostrarPopup && (
           <div className={styles["popup-overlay"]}>
