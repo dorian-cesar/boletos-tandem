@@ -25,6 +25,7 @@ export default async (req, res) => {
     let response = await axios.post(config.url_api + `/users/login/`, postData);
     res.status(200).json(response.data);
   } catch (error) {
+    console.log("error", error);
     if (error.response.status === 404 || error.response.status === 401) {
       res.status(400).json({
         status: false,
