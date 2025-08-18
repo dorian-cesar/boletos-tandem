@@ -565,7 +565,7 @@ export async function generateTicketPDF(
   <body>
     <div class="ticket-container">
       <div class="ticket-header">
-        <div class="company-name">Tandem Centinela</div>
+        <div class="company-name">Tandem</div>
         <div class="trip-type">
           Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}
         </div>
@@ -619,7 +619,7 @@ export async function generateTicketPDF(
               </div>
               <div class="detail-item">
                 <div class="detail-label">Precio</div>
-                <div class="detail-value">$${seat.valorAsiento}</div>
+                <div class="detail-value">$ ${seat.valorAsiento}</div>
               </div>
             </div>
           </div>
@@ -654,7 +654,7 @@ export async function generateTicketPDF(
 
         <div class="company-info">
           <div class="company-left">
-            <div class="company-logo">B</div>
+            // <div class="company-logo">B</div>
             <span>Boleto generado electrónicamente</span>
           </div>
           <div class="company-right">

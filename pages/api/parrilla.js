@@ -59,15 +59,15 @@ export default async (req, res) => {
     //   startDate,
     // });
 
+    const serviceResponse = await axios.get(
+      config.url_api +
+        `/services?origin=${origen}&destination=${destino}&date=${startDate}`
+    );
     // const serviceResponse = await axios.get(
     //   config.url_api +
-    //     `/services?origin=${origen}&destination=${destino}&date=${startDate}`
+    //     `/route-blocks-generated/search?from=${origen}&to=${destino}&date=${startDate}`
+    //   // `/route-blocks-generated/search?from=${origen}&to=Rancagua&date=2025-08-20`
     // );
-        const serviceResponse = await axios.get(
-      config.url_api +
-        `/route-blocks-generated/search?from=${origen}&to=${destino}&date=${startDate}`
-        // `/route-blocks-generated/search?from=${origen}&to=Rancagua&date=2025-08-20`
-    );
     console.log(serviceResponse.data);
     res.status(200).json(serviceResponse.data);
   } catch (e) {
@@ -75,5 +75,3 @@ export default async (req, res) => {
     res.status(400).json(e.response.data);
   }
 };
-
-
