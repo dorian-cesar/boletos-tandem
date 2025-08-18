@@ -44,14 +44,7 @@ const Footer = () => (
                                 <li>
                                     <Link href="/politica-de-privacidad" legacyBehavior>
                                         <a href="/politica-de-privacidad">
-                                            Política de Privacidad
-                                        </a>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href="/politica-de-calidad" legacyBehavior>
-                                        <a href="/politica-de-calidad">
-                                            Política de Calidad
+                                            Política de privacidad
                                         </a>
                                     </Link>
                                 </li>
@@ -67,13 +60,13 @@ const Footer = () => (
                     </div>
                     <div className="col-md-3 col-sm-6 pt-4">
                         <div className="d-flex justify-content-center justify-content-sm-center ">
-                            <a className="pe-4" target="_blank" href="https://www.facebook.com/tandemindustrial.cl/">
+                            <a className="pe-4" target="_blank" href="https://www.facebook.com/Pullman.cl/">
                                 <img src="../img/icon/chat/logo-facebook.svg" alt=""/>
                             </a>
-                            <a className="pe-4" target="_blank" href="https://www.instagram.com/tandem.industrial/">
+                            <a className="pe-4" target="_blank" href="https://www.instagram.com/pullmanbus/">
                                 <img src="../img/icon/chat/logo-instagram.svg" alt=""/>
                             </a>
-                            <a className="pe-4" target="_blank" href="https://www.linkedin.com/company/tandem-industrial/">
+                            <a className="pe-4" target="_blank" href="https://www.linkedin.com/company/pullman-bus/">
                                 <img src="../img/icon/chat/logo-linkedin.svg" alt=""/>
                             </a>
                         </div>

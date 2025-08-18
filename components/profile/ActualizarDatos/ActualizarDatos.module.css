@@ -1,81 +1,60 @@
 .menu-central {
-  margin-top: 25px;
-  border-radius: 16px;
-  background: var(--Blanco, #FFF);
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-}
-  
-.bloque {
-  border-radius: 16px;
-  padding: 30px 30px 30px 30px;
-  background-color: #fff;
-}
-
-.title-modify-data{
-  color: #000;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-}
-
-.title-data{
-  margin-top: 30px;
-  color: var(--gris-50, #7F7F7F);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  }
-
-.input-data{
-  width: 100%;
-  height: 40px;
   display: flex;
-  padding: 8px 16px;
   justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 16px;
-  border: 1px solid var(--azul-50, #98B1D9);
-  background: var(--Blanco, #FFF);
-  color: var(--gris-50, #7F7F7F);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  padding: 25px 20px 20px 20px; 
 }
 
-.return{
-  margin-top: 30px;
-  color: var(--naranjo-100, #FF6500);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  text-decoration-line: underline;
+.bloque {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  /* max-width: 900px; */
+  width: 104%;
 }
 
-.button-update{
-  margin-top: 30px;
+.title-modify-data {
   text-align: center;
-  padding-block: 15px;
-  width: 100%;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.title-data {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+  color: #555;
+}
+
+.data-box {
+  background-color: #f9f9f9;
+  /* border: 1px solid #ddd; */
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #333;
+  font-size: 1rem;
   min-height: 40px;
   display: flex;
-  padding: 8px 16px;
-  justify-content: center;
   align-items: center;
-  flex: 1 0 0;
-  border-radius: 16px;
-  background: var(--naranjo-100, #FF6500);
-  color: var(--Blanco, #FFF);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
 }
 
-.button-update:active{
-  background: var(--naranjo-80, #f8ccaf); 
+.return {
+  margin-top: 20px;
+  display: inline-block;
+  background-color: #ff7300;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
+  transition: background 0.2s ease;
 }
+
+.return:hover {
+  background-color: #e26600;
+}
+
+

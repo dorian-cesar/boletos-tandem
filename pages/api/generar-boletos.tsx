@@ -11,6 +11,7 @@ interface TicketData {
   email: string;
   authCode?: string;
   token?: string;
+  tokenBoleto?: string;
   customerName?: string;
   bookingReference?: string;
 }
@@ -52,10 +53,11 @@ export default async (
       email,
       authCode,
       token,
+      tokenBoleto,
       customerName,
       bookingReference,
     }: TicketData = req.body;
-    console.log("Datos recibidos:", { ticketData, email });
+    console.log("Datos recibidos:", { ticketData, email, tokenBoleto });
 
     if (!ticketData || !email) {
       return res.status(400).json({
@@ -70,7 +72,8 @@ export default async (
     const { generatedTickets } = await generateAllTicketsPDF(
       ticketData,
       authCode,
-      token
+      token,
+      tokenBoleto
     );
 
     // 2. Enviar por email
@@ -118,7 +121,8 @@ export default async (
 async function generateAllTicketsPDF(
   ticketData: any,
   authCode?: string,
-  token?: string
+  token?: string,
+  tokenBoleto?: string
 ): Promise<{
   generatedTickets: Array<{
     fileName: string;
@@ -141,7 +145,8 @@ async function generateAllTicketsPDF(
         "ida",
         generatedTickets,
         authCode,
-        token
+        token,
+        tokenBoleto
       );
     }
 
@@ -151,7 +156,8 @@ async function generateAllTicketsPDF(
         "vuelta",
         generatedTickets,
         authCode,
-        token
+        token,
+        tokenBoleto
       );
     }
   }
@@ -165,7 +171,8 @@ async function processTrips(
   tripType: string,
   generatedTickets: any[],
   authCode?: string,
-  token?: string
+  token?: string,
+  tokenBoleto?: string
 ): Promise<void> {
   for (const trip of trips) {
     if (!trip?.asientos?.length) continue;
@@ -176,7 +183,8 @@ async function processTrips(
         seat,
         tripType,
         authCode,
-        token
+        token,
+        tokenBoleto
       );
       generatedTickets.push(ticket);
     }
@@ -188,7 +196,8 @@ export async function generateTicketPDF(
   seat: any,
   tripType: string,
   authCode?: string,
-  token?: string
+  token?: string,
+  tokenBoleto?: string
 ): Promise<{
   fileName: string;
   base64: string;
@@ -212,8 +221,17 @@ export async function generateTicketPDF(
         : trip.seatLayout.tipo_Asiento_piso_2,
     price: seat.valorAsiento,
     authCode: seat.authCode || authCode,
-    token: token,
+    token: token || null,
+    tokenBoleto: tokenBoleto || null,
+    type: tokenBoleto ? "boleto" : "transaction",
   });
+
+  console.log(
+    "Generando PDF para asiento",
+    seat.asiento,
+    "tokenBoleto:",
+    tokenBoleto
+  );
 
   const encoded = Buffer.from(qrData).toString("base64");
   const qrUrl = `https://boletos-com.netlify.app/ver-boleto?data=${encoded}`;
@@ -547,7 +565,7 @@ export async function generateTicketPDF(
   <body>
     <div class="ticket-container">
       <div class="ticket-header">
-        <div class="company-name">Tandem Centinela</div>
+        <div class="company-name">${trip.company || "BusExpress"}</div>
         <div class="trip-type">
           Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}
         </div>
@@ -601,7 +619,7 @@ export async function generateTicketPDF(
               </div>
               <div class="detail-item">
                 <div class="detail-label">Precio</div>
-                <div class="detail-value">$ ${seat.valorAsiento}</div>
+                <div class="detail-value">Gs. ${seat.valorAsiento}</div>
               </div>
             </div>
           </div>
@@ -641,7 +659,7 @@ export async function generateTicketPDF(
           </div>
           <div class="company-right">
             <span
-              >Sistema de reservas Tandem © ${new Date().getFullYear()}</span
+              >Sistema de reservas BusExpress © ${new Date().getFullYear()}</span
             >
           </div>
         </div>
@@ -733,13 +751,13 @@ async function sendTicketsByEmail(options: {
     }));
 
     // 4. Preparar contenido del correo
-    const emailSubject = `Tandem.cl - Tus boletos de viaje ${
+    const emailSubject = `Boletos.com - Tus boletos de viaje ${
       bookingReference ? `(Ref: ${bookingReference})` : ""
     }`;
 
     const emailHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-        <h1 style="color: #2c3e50;">¡Gracias por viajar con Tandem Centinela!</h1>
+        <h1 style="color: #2c3e50;">¡Gracias por viajar con BusExpress!</h1>
         
         <p>Hola ${customerName},</p>
         
@@ -777,18 +795,18 @@ async function sendTicketsByEmail(options: {
         <div style="margin-top: 30px; padding: 15px; background-color: #e9f7fe; border-radius: 5px;">
           <h4 style="margin-top: 0;">¿Necesitas ayuda?</h4>
           <p style="margin-bottom: 0;">
-            Contáctanos en <a href="mailto:soporte@tandem.cl">soporte@tandem.cl</a> o al +56 2 2345 6789
+            Contáctanos en <a href="mailto:soporte@busexpress.com">soporte@busexpress.com</a> o al +56 2 2345 6789
           </p>
         </div>
         
         <p style="margin-top: 30px;">¡Te deseamos un excelente viaje!</p>
-        <p><strong>El equipo de Tandem Centinela</strong></p>
+        <p><strong>El equipo de BusExpress</strong></p>
       </div>
     `;
 
     // 5. Configurar opciones del correo
     const mailOptions: Mail.Options = {
-      from: `"Boletos Tandem Centinela" <${process.env.EMAIL_FROM}>`,
+      from: `"Boletos" <${process.env.EMAIL_FROM}>`,
       to: customerEmail,
       subject: emailSubject,
       html: emailHtml,
@@ -796,7 +814,7 @@ async function sendTicketsByEmail(options: {
         tickets.length
       } boleto(s) de viaje. Por favor presenta estos boletos al abordar el bus junto con tu identificación.\n\nReferencia: ${
         bookingReference || "N/A"
-      }\n\n¡Gracias por viajar con Tandem Centinela!`,
+      }\n\n¡Gracias por viajar con BusExpress!`,
       attachments,
     };
 

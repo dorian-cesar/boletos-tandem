@@ -7,19 +7,22 @@ import axios from "axios";
 import { useId } from "react";
 import { decryptData } from "utils/encrypt-data.js";
 import LocalStorageEntities from "entities/LocalStorageEntities";
+import { generateToken } from 'utils/jwt-auth';
 import Popup from "../../Popup/Popup";
 import ModalEntities from "../../../entities/ModalEntities";
 
 const actualizarFormFields = {
   rut: "",
-  apellidoMaterno: "",
+  // apellidoMaterno: "",
   apellidoPaterno: "",
-  correo: "",
-  correo2: "",
-  fechaNacimiento: "",
+  email: "",
+  // correo: "",
+  // correo2: "",
+  // fechaNacimiento: "",
   nombres: "",
-  tipoDocumento: "R",
-  sexo: "",
+  userId: "",
+  // tipoDocumento: "R",
+  // sexo: "",
 };
 
 const estadoBoleto = {
@@ -36,12 +39,14 @@ const itemsPerPage = 9;
 const itemsPerPageBoleto = 5;
 
 const HistorialCompra = () => {
-  const { formState: data, onInputChange } = useForm(actualizarFormFields);
+  const { formState: userData, onInputChange } = useForm(actualizarFormFields);
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const router = useRouter();
   const { getItem } = useLocalStorage();
   const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingTicket, setLoadingTicket] = useState(null);
   const [historial, setHistorial] = useState([]);
   const [boleto, setBoleto] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,87 +64,193 @@ const HistorialCompra = () => {
   const id = useId();
 
   useEffect(() => {
-    let checkUser = decryptData(LocalStorageEntities.user_auth);
-    if (checkUser == null) router.push("/");
-    setUser(checkUser);
-    setIsLoading(false);
+    if (typeof window === "undefined") return;
+    const checkUser = decryptData(LocalStorageEntities.user_auth);
+
+    if (!checkUser) {
+      router.push("/");
+      return;
+    }
+
+    const loadData = async () => {
+      try {
+        let updatedUser = checkUser;
+
+        const { data } = await axios.post("/api/user/obtener-usuario", {
+          email: checkUser.correo,
+        });
+        updatedUser = { ...updatedUser, id: data.id };
+        setUser(updatedUser);
+
+        // Obtener historial de compras
+        const { data: historialData } = await axios.get(
+          "/api/user/historial-compra",
+          {
+            params: { userId: data.id },
+          }
+        );
+        // const historialFalso = Array.from({ length: 50 }).map((_, i) => ({
+        //   date: `2025-08-${String((i % 28) + 1).padStart(2, "0")}`,
+        //   departureTime: "10:00",
+        //   origin: "Santiago",
+        //   destination: "Valparaíso",
+        //   serviceId: `srv-${i}`,
+        //   tipo_Asiento_piso_1: "Semi Cama",
+        //   tipo_Asiento_piso_2: "Salón Cama",
+        //   company: "Buses Ejemplo",
+        //   seats: {
+        //     firstFloor: [
+        //       [
+        //         {
+        //           number: `A${i}`,
+        //           floor: 1,
+        //           price: 5000 + i * 100,
+        //           paid: i % 2 === 0,
+        //           authCode: `AUTH${i}`,
+        //         },
+        //       ],
+        //     ],
+        //     secondFloor: [],
+        //   },
+        // }));
+        setHistorial(historialData);
+        // setHistorial([...historialData, ...historialFalso]);
+      } catch (error) {
+        console.error("Error en la carga de datos:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
-  useEffect(() => {
-    data.nombres = user?.nombres;
-    data.apellidoPaterno = user?.apellidoPaterno;
-    data.apellidoMaterno = user?.apellidoMaterno;
-    data.genero = user?.genero;
-    data.mail = user?.mail;
-    data.mail2 = user?.mail2;
-    data.rut = user?.rut;
-    if (!!user?.fechaNacimiento) {
-      let fecha = new Date(
-        String(user?.fechaNacimiento).substring(
-          0,
-          String(user?.fechaNacimiento).length - 5
-        )
-      );
-      setFechaNacimiento(fecha);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     console.log("user actualizado:", user);
+  //   }
+  // }, [user]);
 
-  useEffect(() => {
-    data.fechaNacimiento = fechaNacimiento;
-  }, [fechaNacimiento]);
+  // useEffect(() => {
+  //   console.log("userdata:::", user);
+  //   data.nombres = user?.nombres;
+  //   data.apellidoPaterno = user?.apellidoPaterno;
+  //   // data.apellidoMaterno = user?.apellidoMaterno;
+  //   // data.genero = user?.genero;
+  //   // data.mail = user?.mail;
+  //   // data.mail2 = user?.mail2;
+  //   data.mail = user?.correo;
+  //   data.rut = user?.rut;
+  //   // if (!!user?.fechaNacimiento) {
+  //   //   let fecha = new Date(
+  //   //     String(user?.fechaNacimiento).substring(
+  //   //       0,
+  //   //       String(user?.fechaNacimiento).length - 5
+  //   //     )
+  //   //   );
+  //   //   setFechaNacimiento(fecha);
+  //   // }
+  // }, [user]);
 
-  useEffect(() => {
-    if (user) {
-      axios
-        .post("/api/user/historial-compra", {
-          email: user.mail,
-        })
-        .then(({ data }) => {
-          setHistorial(data.object);
-        })
-        .catch((error) => console.log("ERROR:::", error));
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   data.fechaNacimiento = fechaNacimiento;
+  // }, [fechaNacimiento]);
 
-  function retornarEstado(estado){
-    if(estado === 'NUL'){
-        return 'Transacción nula'
+  function retornarEstado(estado) {
+    if (estado === "NUL") {
+      return "Transacción nula";
     }
-    if(estado === 'ACTI'){
-      return 'Transacción activa'
+    if (estado === "ACTI") {
+      return "Transacción activa";
     }
-    return 'Sin descripción'
+    return "Sin descripción";
   }
 
-  const MemoizedComponent = useMemo(
-    function renderHistorial() {
-      if (historial.length === 0) {
-        return <h3>No hay registros</h3>;
-      } else {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const currentItems = historial.slice(startIndex, endIndex);
+  const MemoizedComponent = useMemo(() => {
+    console.log("historial", historial);
+    if (!historial || historial.length === 0) {
+      return <h3>No hay registros</h3>;
+    }
 
-        return currentItems.map((itemHistorial, index) => (
-          <tr key={index}>
-            <td>{itemHistorial.codigo}</td>
-            <td>{retornarEstado(itemHistorial.estado)}</td>
-            <td>{itemHistorial.fechaCompraFormato}</td>
-            <td>{itemHistorial.cantidadBoletos}</td>
-            <td>{clpFormat.format(itemHistorial.monto)}</td>
+    const sortedHistorial = [...historial].sort((a, b) => {
+      const fechaA = new Date(`${a.date}T${a.departureTime || "00:00"}:00`);
+      const fechaB = new Date(`${b.date}T${b.departureTime || "00:00"}:00`);
+      return fechaB - fechaA;
+    });
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentItems = sortedHistorial.slice(startIndex, endIndex);
+
+    return currentItems.flatMap((servicio, indexServicio) => {
+      const allSeats = [
+        ...(servicio.seats.firstFloor?.flat() || []),
+        ...(servicio.seats.secondFloor?.flat() || []),
+      ];
+
+      if (allSeats.length === 0) {
+        return (
+          <tr key={indexServicio}>
+            <td colSpan={6}>No hay boletos en esta transacción</td>
+          </tr>
+        );
+      }
+
+      const seatsByAuth = allSeats.reduce((acc, asiento) => {
+        if (!acc[asiento.authCode]) acc[asiento.authCode] = [];
+        acc[asiento.authCode].push(asiento);
+        return acc;
+      }, {});
+
+      const today = new Date();
+
+      return Object.entries(seatsByAuth).map(([authCode, seats], indexAuth) => {
+        const cantidadBoletos = seats.length;
+        const montoTotal = seats.reduce((sum, a) => sum + (a.price || 0), 0);
+
+        const hayPago = seats.some((a) => a.paid);
+        const fechaViaje = new Date(
+          `${servicio.date}T${servicio.departureTime}:00`
+        );
+        let estadoTransaccion = "NUL";
+
+        if (!hayPago) {
+          estadoTransaccion = "NUL"; // no pagado
+        } else if (fechaViaje >= today) {
+          estadoTransaccion = "ACTI"; // boleto activo
+        } else {
+          estadoTransaccion = "VENC"; // boleto vencido
+        }
+
+        return (
+          <tr key={`${indexServicio}-${indexAuth}`}>
+            <td>{authCode}</td>
+            <td>
+              {estadoTransaccion === "ACTI"
+                ? "Boleto activo"
+                : estadoTransaccion === "NUL"
+                ? "Transacción nula"
+                : "Boleto usado"}
+            </td>
+            <td>{servicio.date}</td>
+            <td>{cantidadBoletos}</td>
+            <td>{clpFormat.format(montoTotal)}</td>
             <td className={styles["boton-descargar"]}>
-              {itemHistorial.estado === 'NUL' ?  ''   :   <img
-                width={24}
-                src="/img/icon/general/search-outline.svg"
-                onClick={()=> abrirPopTransaccion(itemHistorial.codigo)}
-              />   }            
+              {estadoTransaccion === "NUL" || estadoTransaccion === "VENC" ? (
+                ""
+              ) : (
+                <img
+                  width={24}
+                  src="/img/icon/general/search-outline.svg"
+                  onClick={() => abrirPopTransaccion(authCode)}
+                />
+              )}
             </td>
           </tr>
-        ));
-      }
-    },
-    [historial, currentPage]
-  );
+        );
+      });
+    });
+  }, [historial, currentPage]);
 
   const totalPages = Math.ceil(historial.length / itemsPerPage);
 
@@ -238,7 +349,10 @@ const HistorialCompra = () => {
       1,
       currentPageBoleto - Math.floor(maxVisiblePages / 2)
     );
-    const endPage = Math.min(startPage + maxVisiblePages - 1, totalPagesBoletos);
+    const endPage = Math.min(
+      startPage + maxVisiblePages - 1,
+      totalPagesBoletos
+    );
 
     for (let i = startPage; i <= endPage; i++) {
       pages.push(
@@ -284,42 +398,68 @@ const HistorialCompra = () => {
     return pages;
   };
 
-  const boletoDetalle = useMemo(
-    function renderHistorial() {
-      if (boleto.length === 0) {
-        return <h3>No hay registros</h3>;
-      } else {
-        return boleto.map((itemBoleto, index) => (
-          <tr key={index}>
-            <td>{itemBoleto.boleto}</td>
-            <td>{itemBoleto.origen}</td>
-            <td>{itemBoleto.fechaEmbarcacion}</td>
-            <td className={styles["boton-descargar"]}>
-              {itemBoleto.puedeImprimir ? <img
-                src="/img/icon/general/download-outline.svg"
-                onClick={ ()=> descargarBoleto(itemBoleto.boleto)}
-              /> : ""}
-            </td>
-          </tr>
-        ));
-      }
-    },
-    [boleto, currentPageBoleto, mostrarPopup]
-  );
+  const boletoDetalle = useMemo(() => {
+    if (boleto.length === 0) {
+      return <h3>No hay registros</h3>;
+    }
+
+    return boleto.map((itemBoleto, index) => (
+      <tr key={index}>
+        <td>{itemBoleto.boleto}</td>
+        <td>{itemBoleto.origen}</td>
+        <td>{itemBoleto.destino}</td>
+        <td>{itemBoleto.fechaEmbarcacion}</td>
+        <td className={styles["boton-descargar"]}>
+          {itemBoleto.puedeImprimir && (
+            <button
+              disabled={loadingTicket === itemBoleto.authCode}
+              className={styles["btn-descargar"]}
+              onClick={() => descargarBoleto(itemBoleto)}
+              aria-label="Descargar boleto"
+            >
+              {loadingTicket === itemBoleto.authCode ? (
+                <div className={styles.spinner} aria-hidden="true"></div>
+              ) : (
+                <img
+                  width={24}
+                  height={24}
+                  src="/img/icon/general/download-outline.svg"
+                  alt="Descargar"
+                />
+              )}
+            </button>
+          )}
+        </td>
+      </tr>
+    ));
+  }, [boleto, currentPageBoleto, loadingTicket]);
 
   const tablaArmada = (
     <div className={styles["menu-central"]}>
-      <table className={`table ${styles["tabla-informacion"]}`}>
-        <thead>
-          <tr>
-            <th scope="col">Boleto</th>
-            <th scope="col">Origen</th>
-            <th scope="col">Fecha embarque</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>{!isLoading ? boletoDetalle : ""}</tbody>
-      </table>
+      <div className={styles["tabla-responsive"]}>
+        <table className={`table ${styles["tabla-informacion"]}`}>
+          <thead>
+            <tr>
+              <th scope="col">Boleto</th>
+              <th scope="col">Origen</th>
+              <th scope="col">Destino</th>
+              <th scope="col">Fecha embarque</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {isLoading ? (
+              <tr>
+                <td colSpan={5}>
+                  <div className={styles.loader}></div>
+                </td>
+              </tr>
+            ) : (
+              boletoDetalle
+            )}
+          </tbody>
+        </table>
+      </div>
       <nav aria-label="Page navigation example">
         <ul className={`pagination ${styles["pagination-css"]}`}>
           {renderPaginationBoleto()}
@@ -328,75 +468,250 @@ const HistorialCompra = () => {
     </div>
   );
 
-  const abrirPopTransaccion = (transaccion) => {
-    {
-      setTransaccion(transaccion)
-      axios
-        .post("/api/user/historial-compra-boletos", {
-          codigo: transaccion,
-        })
-        .then(({ data }) => {
-          setBoleto(data.object);
-          abrirPopup();
-        })
-        .catch((error) => console.log("ERROR:::", error));
+  const abrirPopTransaccion = (authCode) => {
+    setTransaccion(authCode);
+
+    const seatsParaTransaccion = historial
+      .flatMap((servicio) => [
+        ...(servicio.seats.firstFloor?.flat() || []),
+        ...(servicio.seats.secondFloor?.flat() || []),
+      ])
+      .filter((asiento) => asiento.authCode === authCode);
+
+    const boletos = seatsParaTransaccion.map((asiento) => {
+      const servicio = historial.find((s) =>
+        [
+          ...(s.seats.firstFloor?.flat() || []),
+          ...(s.seats.secondFloor?.flat() || []),
+        ].some((a) => a.authCode === authCode)
+      );
+
+      return {
+        boleto: asiento.number,
+        origen: servicio?.origin,
+        destino: servicio?.destination,
+        fechaEmbarcacion: servicio?.date,
+        puedeImprimir: asiento.paid,
+        authCode: asiento.authCode,
+      };
+    });
+
+    setBoleto(boletos);
+    abrirPopup();
+  };
+
+  // const descargarBoleto = async (boletoBuscar) => {
+  //   let boleto = {
+  //     codigo: transaccion,
+  //     boleto: boletoBuscar,
+  //   };
+  //   try {
+  //     const res = await axios.post("/api/voucher", boleto);
+  //     if (res.request.status) {
+  //       const linkSource = `data:application/pdf;base64,${res.data?.archivo}`;
+  //       const downloadLink = document.createElement("a");
+  //       const fileName = res.data.nombre;
+  //       downloadLink.href = linkSource;
+  //       downloadLink.download = fileName;
+  //       downloadLink.click();
+  //     }
+  //   } catch (e) {}
+  // };
+
+  const descargarBoleto = async (itemBoleto) => {
+    if (!itemBoleto || loadingTicket) return;
+
+    try {
+      setLoadingTicket(itemBoleto.authCode);
+
+      const asientoCompleto = historial
+        .flatMap((servicio) => [
+          ...(servicio.seats.firstFloor?.flat() || []),
+          ...(servicio.seats.secondFloor?.flat() || []),
+        ])
+        .find(
+          (a) =>
+            a.authCode === itemBoleto.authCode && a.number === itemBoleto.boleto
+        );
+
+      if (!asientoCompleto) {
+        console.error("No se encontró el asiento en el historial");
+        setLoadingTicket(null);
+        return;
+      }
+
+      const servicio = historial.find((s) =>
+        [
+          ...(s.seats.firstFloor?.flat() || []),
+          ...(s.seats.secondFloor?.flat() || []),
+        ].some((a) => a._id === asientoCompleto._id)
+      );
+
+      if (!servicio) {
+        console.error("No se encontró el servicio correspondiente al boleto");
+        setLoadingTicket(null);
+        return;
+      }
+
+      const viaje = {
+        origin: servicio.origin,
+        destination: servicio.destination,
+        date: servicio.date,
+        departureTime: servicio.departureTime,
+        arrivalDate: servicio.arrivalDate,
+        arrivalTime: servicio.arrivalTime,
+        terminalOrigin: servicio.terminalOrigin,
+        terminalDestination: servicio.terminalDestination,
+        company: servicio.company,
+        seatLayout: {
+          tipo_Asiento_piso_1: servicio.tipo_Asiento_piso_1,
+          tipo_Asiento_piso_2: servicio.tipo_Asiento_piso_2,
+        },
+        asientos: [
+          {
+            asiento: asientoCompleto.number,
+            floor: asientoCompleto.floor,
+            valorAsiento: asientoCompleto.price,
+            authCode: asientoCompleto.authCode,
+          },
+        ],
+      };
+
+      const ticketData = {
+        [servicio.serviceId]: { ida: [viaje], vuelta: [] },
+      };
+
+      const token = generateToken();
+
+      const body = {
+        ticketData,
+        email: user?.correo,
+        authCode: asientoCompleto.authCode,
+        customerName: user?.nombreCompleto || "Cliente",
+        bookingReference: asientoCompleto.authCode,
+        tokenBoleto: token,
+      };
+
+      const response = await fetch("/api/generar-boletos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      const result = await response.json();
+
+      if (
+        response.ok &&
+        Array.isArray(result.tickets) &&
+        result.tickets.length > 0
+      ) {
+        result.tickets.forEach((ticket) =>
+          downloadTicket(ticket.base64, ticket.fileName)
+        );
+      } else {
+        console.error("Error al generar boleto:", result);
+      }
+    } catch (error) {
+      console.error("Error al descargar el boleto:", error);
+    } finally {
+      setLoadingTicket(null);
     }
   };
 
-  const descargarBoleto = async (boletoBuscar) =>{
-    let boleto = {
-      codigo: transaccion,
-      boleto: boletoBuscar
-    }
-        try {
-        const res = await axios.post("/api/voucher", boleto);
-        if (res.request.status) {
-           const linkSource = `data:application/pdf;base64,${res.data?.archivo}`;
-           const downloadLink = document.createElement("a");
-           const fileName = res.data.nombre;
-           downloadLink.href = linkSource;
-           downloadLink.download = fileName;
-           downloadLink.click();
-        }
-      } catch (e) {}
-
-  }
+  const downloadTicket = (base64, fileName) => {
+    const link = document.createElement("a");
+    link.href = base64;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <>
       <div className={styles["menu-central"]}>
         <h1 className="title-historial">Historial de compras</h1>
         <span>
-          Mantén un registro de todos los viajes realizados. Recuerda que solo
-          podrás descargar tu pasaje mientras esté activo.
+          Registro de todos tus boletos comprados. Recuerda que solo podrás
+          descargar tu pasaje mientras esté activo.
         </span>
-        <div className={ styles["table-responsive-custom"] }>
+        <div className={styles["table-responsive-custom"]}>
           <table className={`table ${styles["tabla-informacion"]}`}>
             <thead>
               <tr>
                 <th scope="col">Código Transacción</th>
-                <th scope="col">Estado Transacción</th>
-                <th scope="col">Fecha Compra</th>
+                <th scope="col">Estado Boleto</th>
+                <th scope="col">Fecha Viaje</th>
                 <th scope="col">Cantidad Boletos</th>
                 <th scope="col">Monto</th>
                 <th scope="col">Ver boletos</th>
               </tr>
             </thead>
-            <tbody>{!isLoading ? MemoizedComponent : ""}</tbody>
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6}>
+                    <div className={styles.loader}></div>
+                  </td>
+                </tr>
+              ) : (
+                MemoizedComponent
+              )}
+            </tbody>
           </table>
         </div>
-        <nav className={ styles["navigation"] } aria-label="Page navigation example">
+        <nav
+          className={styles["navigation"]}
+          aria-label="Page navigation example"
+        >
           <ul className={`pagination ${styles["pagination-css"]}`}>
             {renderPagination()}
           </ul>
         </nav>
         {mostrarPopup && (
-          <Popup
-            modalKey={ModalEntities.detail_ticket}
-            modalClose={cerrarPopup}
-            modalBody={tablaArmada}
-            modalMethods={cerrarPopup}
-          />
+          <div className={styles["popup-overlay"]}>
+            <div
+              className={styles["popup-container"]}
+              key={`popup-${transaccion}-${loadingTicket}`}
+            >
+              <div className={styles["popup-header"]}>
+                <span
+                  className={`${styles["close-icon"]} ${
+                    loadingTicket ? styles["disabled"] : ""
+                  }`}
+                  onClick={() => {
+                    if (!loadingTicket) cerrarPopup();
+                  }}
+                >
+                  &times;
+                </span>
+              </div>
+
+              <div className="col-12">
+                <div className="row justify-content-center">
+                  <div className="col-12 text-center">
+                    <img
+                      src="/img/icon/popup/checkmark-circle-outline.svg"
+                      alt="Checkmark"
+                    />
+                  </div>
+                  <div className="col-12 text-center">
+                    <p className="mb-0 fw-bold">Detalle boletos</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles["popup-content"]}>{tablaArmada}</div>
+
+              <button
+                className={styles["popup-button"]}
+                onClick={cerrarPopup}
+                disabled={!!loadingTicket}
+              >
+                {loadingTicket ? "Generando boleto..." : "Aceptar"}
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </>
