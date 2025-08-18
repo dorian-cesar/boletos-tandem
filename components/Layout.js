@@ -48,10 +48,10 @@ export default function Layout({ children, isBuyStage = false }) {
     <>
       <Head>
         <meta charSet="UTF-8" />
-        <title>Tandem</title>
+        <title>Pullman Bus</title>
         <meta
           name="description"
-          content="Cotiza y compra pasajes de bus, tren, transfer y recarga bip! de la manera más fácil. Más de 200 empresas y todo el transporte terrestre en un solo lugar."
+          content="Empresa de Transporte Pullman Bus S.A San Francisco de Borja 235, Estación Central, Santiago de Chile.  Transporte de Viajes Interurbanos, Viajes Especiales"
         />
         <meta
           name="keywords"
@@ -80,6 +80,13 @@ export default function Layout({ children, isBuyStage = false }) {
         <div className="overlay-content">
           <div className="links-menu">
             <div className="w-100">
+              <Link href="/profile/home" legacyBehavior>
+                <a href="/profile/home" className="cuponeras">
+                  Mi Perfil
+                </a>
+              </Link>
+            </div>
+            <div className="w-100">
               <Link href="/comprar" legacyBehavior>
                 <a href="/comprar" className="compra">
                   Compra tu pasaje
@@ -99,22 +106,22 @@ export default function Layout({ children, isBuyStage = false }) {
                   Confirmación
                 </a>
               </Link>
-            </div>
-            <div className="w-100">
+            </div> */}
+            {/* <div className="w-100">
               <Link href="/cambioBoleto" legacyBehavior>
                 <a className="cambio-boleto">
                   Cambio de boleto
                 </a>
               </Link>
-            </div>
-            <div className="w-100">
+            </div> */}
+            {/* <div className="w-100">
               <Link href="/devolucion" legacyBehavior>
                 <a className="devolucion">
                   Devolución de boleto
                 </a>
               </Link>
-            </div>
-            <div className="w-100">
+            </div> */}
+            {/* <div className="w-100">
               <Link href="/viajesEspeciales" legacyBehavior>
                 <a className="viajes-especiales">
                   Viajes especiales
@@ -146,17 +153,17 @@ export default function Layout({ children, isBuyStage = false }) {
           <div className="contactanos-menu">
             <span>Síguenos :</span>
             <div>
-              <a target="_blank" href="https://www.facebook.com/tandemindustrial.cl/">
-                <img src="img/icon/chat/logo-facebook-color.svg" alt="" />
+              <a target="_blank" href="https://www.facebook.com/Pullman.cl/">
+                <img src="../img/icon/chat/logo-facebook-color.svg" alt="" />
               </a>
-              <a target="_blank" href="https://www.instagram.com/tandem.industrial/">
-                <img src="img/icon/chat/logo-instagram-color.svg" alt="" />
+              <a target="_blank" href="https://www.instagram.com/pullmanbus/">
+                <img src="../img/icon/chat/logo-instagram-color.svg" alt="" />
               </a>
               <a
                 target="_blank"
-                href="https://www.linkedin.com/company/tandem-industrial/"
+                href="https://www.linkedin.com/company/pullman-bus/"
               >
-                <img src="img/icon/chat/logo-linkedin-color.svg" alt="" />
+                <img src="../img/icon/chat/logo-linkedin-color.svg" alt="" />
               </a>
             </div>
           </div>
