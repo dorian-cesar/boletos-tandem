@@ -448,7 +448,7 @@ const HistorialCompra = () => {
   }, [boleto, currentPageBoleto, loadingTicket]);
 
   const tablaArmada = (
-    <div className={styles["menu-central"]}>
+    <div className={`${styles["menu-central"]} mt-0 pt-2`}>
       <div className={styles["tabla-responsive"]}>
         <table className={`table ${styles["tabla-informacion"]}`}>
           <thead>
@@ -473,9 +473,13 @@ const HistorialCompra = () => {
           </tbody>
         </table>
       </div>
-      <nav aria-label="Page navigation boletos">
-        <ul className={styles["pagination-css"]}>{renderPaginationBoleto()}</ul>
-      </nav>
+      {totalPagesBoletos > 1 && (
+        <nav aria-label="Page navigation boletos">
+          <ul className={styles["pagination-css"]}>
+            {renderPaginationBoleto()}
+          </ul>
+        </nav>
+      )}
     </div>
   );
 
@@ -671,9 +675,11 @@ const HistorialCompra = () => {
             </tbody>
           </table>
         </div>
-        <nav aria-label="Page navigation historial">
-          <ul className={styles["pagination-css"]}>{renderPagination()}</ul>
-        </nav>
+        {totalPages > 1 && (
+          <nav aria-label="Page navigation historial">
+            <ul className={styles["pagination-css"]}>{renderPagination()}</ul>
+          </nav>
+        )}
         {mostrarPopup && (
           <div className={styles["popup-overlay"]}>
             <div
