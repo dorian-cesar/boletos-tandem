@@ -10,7 +10,8 @@ const imagenDeRespaldo = {
   key: "banner_01",
   // url: "/",
   // image: "https://pullman.cl/imagenes/fenix/banner/banner-1.jpg",
-  image: "./banner-tandem.webp",
+  // image: "./banner-tandem.webp",
+  image: "./banner-tandem2.jpg",
 };
 
 const DynamicBusquedaServicioComponent = dynamic(
