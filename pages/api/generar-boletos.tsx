@@ -234,7 +234,7 @@ export async function generateTicketPDF(
   );
 
   const encoded = Buffer.from(qrData).toString("base64");
-  const qrUrl = `https://boletos-com.netlify.app/ver-boleto?data=${encoded}`;
+  const qrUrl = `https://boletos-tandem.netlify.app/ver-boleto?data=${encoded}`;
   const qrImage = await QRCode.toDataURL(qrUrl, {
     width: 200,
     margin: 1,
@@ -565,7 +565,7 @@ export async function generateTicketPDF(
   <body>
     <div class="ticket-container">
       <div class="ticket-header">
-        <div class="company-name">${trip.company || "BusExpress"}</div>
+        <div class="company-name">${trip.company || "Tandem Centinela"}</div>
         <div class="trip-type">
           Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}
         </div>
@@ -619,7 +619,7 @@ export async function generateTicketPDF(
               </div>
               <div class="detail-item">
                 <div class="detail-label">Precio</div>
-                <div class="detail-value">Gs. ${seat.valorAsiento}</div>
+                <div class="detail-value">$${seat.valorAsiento}</div>
               </div>
             </div>
           </div>
