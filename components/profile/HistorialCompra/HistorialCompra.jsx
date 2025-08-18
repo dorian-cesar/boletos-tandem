@@ -169,7 +169,7 @@ const HistorialCompra = () => {
   const MemoizedComponent = useMemo(() => {
     console.log("historial", historial);
     if (!historial || historial.length === 0) {
-      return <h3>No hay registros</h3>;
+      return <h4 className="pt-3">No hay registros</h4>;
     }
 
     const sortedHistorial = [...historial].sort((a, b) => {

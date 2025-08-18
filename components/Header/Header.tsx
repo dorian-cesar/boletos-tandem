@@ -219,7 +219,7 @@ export default function Header({
                 />
               ) : (
                 <ul className="nav nav-pills">
-                  <li className="nav-item dropdown">
+                  <li className="nav-item dropdown" style={{ display: "flex" }}>
                     <button
                       className="nav-link dropdown-toggle"
                       data-bs-toggle="dropdown"
@@ -230,6 +230,7 @@ export default function Header({
                         src="../img/icon-user.svg"
                         width={30}
                         className="m-1"
+                        // className={`m-1 ${styles.svgImage} ${styles.svgShadow}`}
                       />
                     </button>
                     <ul className="dropdown-menu">
