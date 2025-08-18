@@ -39,7 +39,7 @@ const Login = (props) => {
   const onLogin = async () => {
     if (login.email == "" || login.password == "") {
       setAlert({
-        msg: "Rellene los campos vacios.",
+        msg: "Rellene los campos vacíos.",
         visible: true,
         type: "text-danger",
       });
