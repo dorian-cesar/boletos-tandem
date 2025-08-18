@@ -153,15 +153,15 @@ export default function Layout({ children, isBuyStage = false }) {
           <div className="contactanos-menu">
             <span>Síguenos :</span>
             <div>
-              <a target="_blank" href="https://www.facebook.com/Pullman.cl/">
+              <a target="_blank" href="https://www.facebook.com/tandemindustrial.cl/">
                 <img src="../img/icon/chat/logo-facebook-color.svg" alt="" />
               </a>
-              <a target="_blank" href="https://www.instagram.com/pullmanbus/">
+              <a target="_blank" href="https://www.instagram.com/tandem.industrial/">
                 <img src="../img/icon/chat/logo-instagram-color.svg" alt="" />
               </a>
               <a
                 target="_blank"
-                href="https://www.linkedin.com/company/pullman-bus/"
+                href="https://www.linkedin.com/company/tandem-industrial/"
               >
                 <img src="../img/icon/chat/logo-linkedin-color.svg" alt="" />
               </a>

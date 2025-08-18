@@ -60,13 +60,13 @@ const Footer = () => (
                     </div>
                     <div className="col-md-3 col-sm-6 pt-4">
                         <div className="d-flex justify-content-center justify-content-sm-center ">
-                            <a className="pe-4" target="_blank" href="https://www.facebook.com/Pullman.cl/">
+                            <a className="pe-4" target="_blank" href="https://www.facebook.com/tandemindustrial.cl/">
                                 <img src="../img/icon/chat/logo-facebook.svg" alt=""/>
                             </a>
-                            <a className="pe-4" target="_blank" href="https://www.instagram.com/pullmanbus/">
+                            <a className="pe-4" target="_blank" href="https://www.instagram.com/tandem.industrial/">
                                 <img src="../img/icon/chat/logo-instagram.svg" alt=""/>
                             </a>
-                            <a className="pe-4" target="_blank" href="https://www.linkedin.com/company/pullman-bus/">
+                            <a className="pe-4" target="_blank" href="https://www.linkedin.com/company/tandem-industrial/">
                                 <img src="../img/icon/chat/logo-linkedin.svg" alt=""/>
                             </a>
                         </div>
