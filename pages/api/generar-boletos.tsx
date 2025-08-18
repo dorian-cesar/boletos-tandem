@@ -565,7 +565,7 @@ export async function generateTicketPDF(
   <body>
     <div class="ticket-container">
       <div class="ticket-header">
-        <div class="company-name">${trip.company || "Tandem Centinela"}</div>
+        <div class="company-name">Tandem Centinela</div>
         <div class="trip-type">
           Boleto de ${tripType === "ida" ? "Ida" : "Vuelta"}
         </div>
@@ -659,7 +659,7 @@ export async function generateTicketPDF(
           </div>
           <div class="company-right">
             <span
-              >Sistema de reservas BusExpress © ${new Date().getFullYear()}</span
+              >Sistema de reservas Tandem Centinela © ${new Date().getFullYear()}</span
             >
           </div>
         </div>
