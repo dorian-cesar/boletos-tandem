@@ -457,7 +457,7 @@ const HistorialCompra = () => {
               <th scope="col">Origen</th>
               <th scope="col">Destino</th>
               <th scope="col">Fecha embarque</th>
-              <th scope="col"></th>
+              <th scope="col">Descargar</th>
             </tr>
           </thead>
           <tbody>
@@ -514,24 +514,6 @@ const HistorialCompra = () => {
     setBoleto(boletos);
     abrirPopup();
   };
-
-  // const descargarBoleto = async (boletoBuscar) => {
-  //   let boleto = {
-  //     codigo: transaccion,
-  //     boleto: boletoBuscar,
-  //   };
-  //   try {
-  //     const res = await axios.post("/api/voucher", boleto);
-  //     if (res.request.status) {
-  //       const linkSource = `data:application/pdf;base64,${res.data?.archivo}`;
-  //       const downloadLink = document.createElement("a");
-  //       const fileName = res.data.nombre;
-  //       downloadLink.href = linkSource;
-  //       downloadLink.download = fileName;
-  //       downloadLink.click();
-  //     }
-  //   } catch (e) {}
-  // };
 
   const descargarBoleto = async (itemBoleto) => {
     if (!itemBoleto || loadingTicket) return;

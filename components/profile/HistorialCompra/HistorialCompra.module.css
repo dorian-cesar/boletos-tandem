@@ -321,3 +321,7 @@
   box-shadow: none;
   transform: none;
 }
+
+.tabla-informacion td:nth-child(5) {
+  text-align: center;
+}
