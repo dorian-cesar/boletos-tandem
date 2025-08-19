@@ -57,6 +57,7 @@ export default async (
       customerName,
       bookingReference,
     }: TicketData = req.body;
+
     console.log("Datos recibidos:", { ticketData, email, tokenBoleto });
 
     if (!ticketData || !email) {
@@ -68,16 +69,36 @@ export default async (
       });
     }
 
+    // Medir tiempo total
+    console.time("Tiempo total generación boletos");
+
     // 1. Generar los boletos en PDF
+    console.time("Generación de boletos");
     const { generatedTickets } = await generateAllTicketsPDF(
       ticketData,
       authCode,
       token,
       tokenBoleto
     );
+    console.timeEnd("Generación de boletos");
 
-    // 2. Enviar por email
-    const emailResult = await sendTicketsByEmail({
+    // 2. Preparar respuesta para el frontend
+    const frontendTickets = generatedTickets.map((ticket) => ({
+      fileName: ticket.fileName,
+      base64: ticket.base64,
+    }));
+
+    res.status(200).json({
+      success: true,
+      message: "Boletos generados correctamente",
+      tickets: frontendTickets,
+      emailSent: "", // aún no enviado
+    });
+
+    console.timeEnd("Tiempo total generación boletos");
+
+    // 3. Enviar email **después** de responder al frontend
+    sendTicketsByEmail({
       customerEmail: email,
       tickets: generatedTickets.map((t) => ({
         fileName: t.fileName,
@@ -88,24 +109,17 @@ export default async (
       })),
       customerName,
       bookingReference,
-    });
-
-    if (!emailResult.success) {
-      throw new Error(emailResult.message);
-    }
-
-    // 3. Preparar respuesta para el frontend
-    const frontendTickets = generatedTickets.map((ticket) => ({
-      fileName: ticket.fileName,
-      base64: ticket.base64,
-    }));
-
-    res.status(200).json({
-      success: true,
-      message: "Boletos generados y enviados correctamente",
-      tickets: frontendTickets,
-      emailSent: email,
-    });
+    })
+      .then((emailResult) => {
+        if (!emailResult.success) {
+          console.error("Error al enviar email:", emailResult.message);
+        } else {
+          console.log("Email enviado correctamente a:", email);
+        }
+      })
+      .catch((err) => {
+        console.error("Error en envío de email:", err);
+      });
   } catch (error) {
     console.error("Error en el endpoint:", error);
     res.status(500).json({
@@ -771,7 +785,7 @@ async function sendTicketsByEmail(options: {
 
     const emailHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-        <h1 style="color: #2c3e50;">¡Gracias por viajar con BusExpress!</h1>
+        <h1 style="color: #2c3e50;">¡Gracias por viajar con Tandem Centinela!</h1>
         
         <p>Hola ${customerName},</p>
         
@@ -814,7 +828,7 @@ async function sendTicketsByEmail(options: {
         </div>
         
         <p style="margin-top: 30px;">¡Te deseamos un excelente viaje!</p>
-        <p><strong>El equipo de BusExpress</strong></p>
+        <p><strong>El equipo de Tandem Centinela</strong></p>
       </div>
     `;
 
@@ -828,7 +842,7 @@ async function sendTicketsByEmail(options: {
         tickets.length
       } boleto(s) de viaje. Por favor presenta estos boletos al abordar el bus junto con tu identificación.\n\nReferencia: ${
         bookingReference || "N/A"
-      }\n\n¡Gracias por viajar con BusExpress!`,
+      }\n\n¡Gracias por viajar con Tandem Centinela!`,
       attachments,
     };
 
