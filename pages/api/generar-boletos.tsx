@@ -69,9 +69,6 @@ export default async (
       });
     }
 
-    // Medir tiempo total
-    console.time("Tiempo total generación boletos");
-
     // 1. Generar los boletos en PDF
     console.time("Generación de boletos");
     const { generatedTickets } = await generateAllTicketsPDF(
@@ -94,8 +91,6 @@ export default async (
       tickets: frontendTickets,
       emailSent: "", // aún no enviado
     });
-
-    console.timeEnd("Tiempo total generación boletos");
 
     // 3. Enviar email **después** de responder al frontend
     sendTicketsByEmail({

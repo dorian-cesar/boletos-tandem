@@ -187,7 +187,7 @@ const HistorialCompra = () => {
             : "Boleto usado"}
         </td>
         <td>{boleto.fecha}</td>
-        <td>{boleto.cantidadBoletos}</td>
+        {/* <td>{boleto.cantidadBoletos}</td> */}
         <td>{clpFormat.format(boleto.montoTotal)}</td>
         <td className={styles["boton-descargar"]}>
           {boleto.estadoTransaccion === "ACTI" && (
@@ -594,7 +594,7 @@ const HistorialCompra = () => {
                 <th scope="col">Código Transacción</th>
                 <th scope="col">Estado Boleto</th>
                 <th scope="col">Fecha Viaje</th>
-                <th scope="col">Cantidad Boletos</th>
+                {/* <th scope="col">Cantidad Boletos</th> */}
                 <th scope="col">Monto</th>
                 <th scope="col">Ver boletos</th>
               </tr>
@@ -602,7 +602,7 @@ const HistorialCompra = () => {
             <tbody>
               {isLoading ? (
                 <tr>
-                  <td colSpan={6}>
+                  <td colSpan={5}>
                     <div className={styles.loader}></div>
                   </td>
                 </tr>
