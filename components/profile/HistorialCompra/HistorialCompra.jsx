@@ -129,7 +129,7 @@ const HistorialCompra = () => {
     if (!historial || historial.length === 0) {
       return (
         <tr>
-          <td colSpan={6}>No hay registros</td>
+          <td colSpan={5}>No hay registros</td>
         </tr>
       );
     }
@@ -171,7 +171,7 @@ const HistorialCompra = () => {
     if (boletosPagina.length === 0) {
       return (
         <tr>
-          <td colSpan={6}>No hay boletos en esta página</td>
+          <td colSpan={5}>No hay boletos en esta página</td>
         </tr>
       );
     }
