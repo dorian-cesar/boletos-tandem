@@ -144,13 +144,25 @@ const BusquedaServicio = (props) => {
     getCiudades();
   }, []);
 
+  // useEffect(() => {
+  //   if (origen) {
+  //     const origenData = ciudades.find((item) => item.origen === origen);
+  //     setDestinos(origenData ? origenData.destinos : []);
+  //   } else {
+  //     setDestinos([]);
+  //   }
+  // }, [origen, ciudades]);
+
   useEffect(() => {
-    if (origen) {
-      const origenData = ciudades.find((item) => item.origen === origen);
-      setDestinos(origenData ? origenData.destinos : []);
-    } else {
+    if (!origen) {
       setDestinos([]);
+      return;
     }
+    const origenData = ciudades.find((item) => item.origen === origen);
+    const destinosOrdenados = origenData?.destinos
+      ? [...origenData.destinos].sort()
+      : [];
+    setDestinos(destinosOrdenados);
   }, [origen, ciudades]);
 
   async function getCiudades() {
@@ -158,8 +170,10 @@ const BusquedaServicio = (props) => {
       const { data } = await axios.get("/api/ciudades");
       setCiudades(data);
 
-      // Extraer orígenes únicos
-      const listaOrigenes = [...new Set(data.map((item) => item.origen))];
+      // Extraer orígenes únicos y ordenarlos alfabéticamente
+      const listaOrigenes = [
+        ...new Set(data.map((item) => item.origen)),
+      ].sort();
       setOrigenes(listaOrigenes);
     } catch (error) {
       console.error(`Error al obtener ciudades: ${error.message}`);
