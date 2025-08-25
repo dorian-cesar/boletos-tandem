@@ -107,7 +107,7 @@ const Registro = ({ onChangeMode, onChangeAlert }) => {
             backendError.details.includes("E11000 duplicate key error");
           const baseMsg = isDuplicateEmail
             ? (onChangeAlert({
-                msg: "El usuario ya está registrado. Ingrese con su correo electrónico y contraseña.",
+                msg: "Usuario ya registrado. Ingrese con su correo electrónico y contraseña.",
                 visible: true,
                 // type: "alert-success",
                 type: "text-success",
