@@ -40,7 +40,7 @@ const ASIENTO_TIPO_MASCOTA = "pet";
 const ASIENTO_TIPO_ASOCIADO = "asociado";
 const ASIENTO_OCUPADO = "hold";
 const ASIENTO_OCUPADO_MASCOTA = "pet-busy";
-const MAXIMO_COMPRA_ASIENTO = 4;
+const MAXIMO_COMPRA_ASIENTO = 1;
 
 const Parrilla = (props) => {
   const buttonRef = useRef();
@@ -624,7 +624,7 @@ const Parrilla = (props) => {
     const cantidadAsientos = asientos.length;
 
     if (cantidadAsientos >= MAXIMO_COMPRA_ASIENTO) {
-      toast.warn(`Máximo ${MAXIMO_COMPRA_ASIENTO} pasajes`, {
+      toast.warn(`Máximo ${MAXIMO_COMPRA_ASIENTO} pasaje con sus credenciales`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
