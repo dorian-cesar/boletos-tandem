@@ -50,6 +50,13 @@ const MediosPago = (props) => {
             key={element.id}
             className={styles["body-pay"]}
             htmlFor={element.id}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "left",
+              padding: "12px",
+              paddingLeft: "20px",
+            }}
           >
             <input
               type="radio"
@@ -61,22 +68,35 @@ const MediosPago = (props) => {
             />
             {element.valor2 === "WBPAY" ? (
               <img
-                src="/img/icon/cuponera/logo-flow.png"
+                src="/img/icon/cuponera/logowebpay-plus.png"
                 style={{
-                  maxWidth: "100px",
-                  width: "100%",
-                  height: "auto",
+                  maxWidth: "100%", // respeta el ancho del contenedor padre
+                  height: "100%", // deja que la altura se ajuste sola
                   objectFit: "contain",
+                  display: "block",
                 }}
+                alt="Webpay Plus"
               />
             ) : (
               <div
                 className={
                   element.valor2 === "CUP" ? styles["text-coupon"] : ""
                 }
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
               >
                 {element?.valor1}
-                <img src="/img/icon/cuponera/ticket-outline.svg" />
+                <img
+                  src="/img/icon/cuponera/ticket-outline.svg"
+                  alt="Ticket"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                  }}
+                />
               </div>
             )}
           </label>

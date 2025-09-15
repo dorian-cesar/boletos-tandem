@@ -532,7 +532,7 @@ export default function Home(props: HomeProps) {
                           //   "generico"
                           // }
                           style={{ width: "80px" }}
-                          src="/img/icon/cuponera/logo-flow.png"
+                          src="/img/icon/cuponera/Logo-webpay.svg"
                           alt={`Icono ${
                             mediosPago[resumen.paymentMethod]?.nombre
                           }`}
