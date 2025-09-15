@@ -79,6 +79,17 @@ export default function Header({
 
   const dispatch = useDispatch();
 
+  const logout = () => {
+    if (typeof window !== "undefined") {
+      // eliminar token y usuario
+      localStorage.removeItem(LocalStorageEntities.user_token);
+      localStorage.removeItem(LocalStorageEntities.user_auth);
+
+      // redirigir y recargar la página
+      window.location.href = "/";
+    }
+  };
+
   function setData() {
     const listaCarrito: any = [];
     Object.entries(data).forEach(([key, value]) => {
@@ -248,7 +259,7 @@ export default function Header({
                         <button
                           type="button"
                           className="dropdown-item"
-                          onClick={(e) => clear()}
+                          onClick={logout} // ahora redirige al home
                         >
                           Cerrar sesión
                         </button>
@@ -292,7 +303,7 @@ export default function Header({
           </div>
         </div>
       </header>
-      <Login cuponera={0}></Login>
+      {/* <Login cuponera={0}></Login> */}
       {isShowModalEndTime && (
         <Popup
           modalKey={ModalEntities.car_live_time_end}
