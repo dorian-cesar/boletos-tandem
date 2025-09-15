@@ -21,10 +21,18 @@ export default async (req, res) => {
     //   startDate,
     // });
 
+    // nueva api
+    // const serviceResponse = await axios.get(
+    //   config.url_api +
+    //     `/route-blocks-generated/search?from=${origen}&to=${destino}&date=${startDate}`
+    // );
+
+    //api antigua
     const serviceResponse = await axios.get(
       config.url_api +
-        `/route-blocks-generated/search?from=${origen}&to=${destino}&date=${startDate}`
+        `/services?origin=${origen}&destination=${destino}&date=${startDate}`
     );
+
     console.log(serviceResponse.data);
     res.status(200).json(serviceResponse.data);
   } catch (e) {

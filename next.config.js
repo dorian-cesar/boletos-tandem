@@ -55,8 +55,8 @@ module.exports = {
   serverRuntimeConfig: {
     site_url: "https://boletos-tandem.netlify.app/",
     service_url: "",
-    // url_api: "https://boletos.dev-wit.com/api",
-    url_api: "https://bcentinela.dev-wit.com/api",
+    url_api: "https://boletos.dev-wit.com/api",
+    // url_api: "https://bcentinela.dev-wit.com/api",
     service_password: process.env.NODE_ENV == "production"?"":"INT0000002",
     clave: process.env.NODE_ENV == "production"?"":"xWL!96JRaWi2lT0jG"
   },
