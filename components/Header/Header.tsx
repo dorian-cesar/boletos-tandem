@@ -241,7 +241,6 @@ export default function Header({
                         src="../img/icon-user.svg"
                         width={30}
                         className="m-1"
-                        // className={`m-1 ${styles.svgImage} ${styles.svgShadow}`}
                       />
                     </button>
                     <ul className="dropdown-menu">
@@ -259,7 +258,7 @@ export default function Header({
                         <button
                           type="button"
                           className="dropdown-item"
-                          onClick={logout} // ahora redirige al home
+                          onClick={logout}
                         >
                           Cerrar sesión
                         </button>
@@ -268,6 +267,18 @@ export default function Header({
                   </li>
                 </ul>
               )}
+
+              <Link href="/contacto" legacyBehavior>
+                <a className="d-flex align-items-center m-3">
+                  <img
+                    src="../img/icon/contacto/headset.svg"
+                    width={30}
+                    className={`${styles.svgImage} ${styles.svgShadow}`}
+                    alt="Contacto"
+                  />
+                </a>
+              </Link>
+
               <a
                 className="d-flex align-items-center"
                 ref={refs.setReference}
