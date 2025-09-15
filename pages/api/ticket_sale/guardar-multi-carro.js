@@ -90,100 +90,152 @@
 
 // export default authMiddleware(handleGuardarMultiCarro);
 
-import doLogin from "../../../utils/oauth-token";
-import getConfig from "next/config";
-import axios from "axios";
-import { WebpayPlus, Environment, Options } from "transbank-sdk";
-import crypto from "crypto";
-import { stringify } from "querystring";
-import CryptoJS from "crypto-js";
-import { isPropertyAccessChain } from "typescript";
-import { authMiddleware } from "../auth-middleware";
+// import doLogin from "../../../utils/oauth-token";
+// import getConfig from "next/config";
+// import axios from "axios";
+// import { WebpayPlus, Environment, Options } from "transbank-sdk";
+// import crypto from "crypto";
+// import { stringify } from "querystring";
+// import CryptoJS from "crypto-js";
+// import { isPropertyAccessChain } from "typescript";
+// import { authMiddleware } from "../auth-middleware";
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
-const config = serverRuntimeConfig;
+// const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+// const config = serverRuntimeConfig;
+
+// async function handleGuardarMultiCarro(req, res) {
+//   try {
+//     // let token = await doLogin();
+//     // console.log("FLOW_API_KEY", process.env.FLOW_API_KEY);
+//     // console.log("FLOW_SECRET_KEY", process.env.FLOW_SECRET_KEY);
+//     // console.log("FLOW_API_URL", process.env.FLOW_API_URL);
+
+//     const { data } = JSON.parse(req.body);
+
+//     const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+//     const decrypted = CryptoJS.AES.decrypt(data, secret);
+//     const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+
+//     // console.log("serviceRequest:", serviceRequest)
+
+//     const apiKey = process.env.FLOW_API_KEY;
+//     // console.log("apiKey", apiKey);
+
+//     const isProd = process.env.NODE_ENV === "production";
+//     const urlReturn = isProd
+//     // ? "https://boletos-com.netlify.app/confirm-transaction"
+//       ? "https://boletos-tandem.netlify.app/api/v2/receive-transaction"
+//       // : `http://localhost:3000/confirm-transaction`;
+//       : `http://localhost:3000/api/v2/receive-transaction`;
+
+//     const params = {
+//       apiKey: apiKey,
+//       commerceOrder: crypto.randomUUID(),
+//       currency: "CLP",
+//       // paymentMethod: 9,
+//       timeout: 1800,
+//       urlConfirmation: "http://sandbox.dev-wit.com/api/paymentConfirmation/", // llamada POST api/endpoint
+//       urlReturn: urlReturn,
+//       email: serviceRequest.datosComprador.email,
+//       subject: "Compra de pasajes de bus",
+//       amount: serviceRequest.montoTotal,
+//     };
+
+//     const secretKey = process.env.FLOW_SECRET_KEY;
+
+//     const keys = Object.keys(params);
+//     keys.sort();
+//     let toSign = "";
+//     for (let i = 0; i < keys.length; i++) {
+//       let key = keys[i];
+//       toSign += key + params[key];
+//     }
+//     const signature = crypto
+//       .createHmac("sha256", secretKey)
+//       .update(toSign)
+//       .digest("hex");
+
+//     const body = {
+//       ...params,
+//       s: signature,
+//     };
+
+//     const encodedBody = stringify(body);
+//     const url = process.env.FLOW_API_URL;
+
+//     try {
+//       const response = await axios.post(`${url}/payment/create`, encodedBody, {
+//         headers: {
+//           "Content-Type": "application/x-www-form-urlencoded",
+//         },
+//       });
+//       console.log(
+//         "checkout url",
+//         `${response.data.url}?token=${response.data.token}`
+//       );
+//       return res.status(200).json(response.data);
+//     } catch (error) {
+//       console.error("Error en llamada a Flow:", error.message);
+//       res.status(500).json({
+//         error: "Error al crear el pago en Flow",
+//         errorMessage: error.message,
+//         bodyReq: body,
+//       });
+//     }
+//   } catch (e) {
+//     console.log(e.message);
+//     res.status(400).json({ error: e.message });
+//   }
+// }
+
+// export default handleGuardarMultiCarro;
+
+import { WebpayPlus, Environment, Options } from "transbank-sdk";
+import CryptoJS from "crypto-js";
 
 async function handleGuardarMultiCarro(req, res) {
   try {
-    // let token = await doLogin();
-    // console.log("FLOW_API_KEY", process.env.FLOW_API_KEY);
-    // console.log("FLOW_SECRET_KEY", process.env.FLOW_SECRET_KEY);
-    // console.log("FLOW_API_URL", process.env.FLOW_API_URL);
-
+    // Recibir datos cifrados
     const { data } = JSON.parse(req.body);
-
     const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
     const decrypted = CryptoJS.AES.decrypt(data, secret);
     const serviceRequest = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 
-    // console.log("serviceRequest:", serviceRequest)
+    console.log("serviceRequest:", serviceRequest);
 
-    const apiKey = process.env.FLOW_API_KEY;
-    // console.log("apiKey", apiKey);
-
+    // URLs de retorno
     const isProd = process.env.NODE_ENV === "production";
-    const urlReturn = isProd
-    // ? "https://boletos-com.netlify.app/confirm-transaction"
+    const returnUrl = isProd
       ? "https://boletos-tandem.netlify.app/api/v2/receive-transaction"
-      // : `http://localhost:3000/confirm-transaction`;
-      : `http://localhost:3000/api/v2/receive-transaction`;
+      : "http://localhost:3000/api/v2/receive-transaction";
 
-    const params = {
-      apiKey: apiKey,
-      commerceOrder: crypto.randomUUID(),
-      currency: "CLP",
-      // paymentMethod: 9,
-      timeout: 1800,
-      urlConfirmation: "http://sandbox.dev-wit.com/api/paymentConfirmation/", // llamada POST api/endpoint
-      urlReturn: urlReturn,
-      email: serviceRequest.datosComprador.email,
-      subject: "Compra de pasajes de bus",
-      amount: serviceRequest.montoTotal,
-    };
+    // Identificadores de transacción
+    const buyOrder = `${Date.now()}${Math.floor(Math.random() * 1000)}`; // max 26 chars
+    const sessionId = serviceRequest.datosComprador.email;
+    const amount = serviceRequest.montoTotal;
 
-    const secretKey = process.env.FLOW_SECRET_KEY;
+    // Inicializar transacción Webpay Plus
+    const tx = new WebpayPlus.Transaction(
+      new Options(
+        process.env.TBK_COMMERCE_CODE,
+        process.env.TBK_API_KEY_SECRET,
+        Environment.Integration // developer
+        // Environment.Production // production
+      )
+    );
 
-    const keys = Object.keys(params);
-    keys.sort();
-    let toSign = "";
-    for (let i = 0; i < keys.length; i++) {
-      let key = keys[i];
-      toSign += key + params[key];
-    }
-    const signature = crypto
-      .createHmac("sha256", secretKey)
-      .update(toSign)
-      .digest("hex");
+    // Crear la transacción en Webpay
+    const response = await tx.create(buyOrder, sessionId, amount, returnUrl);
 
-    const body = {
-      ...params,
-      s: signature,
-    };
+    console.log("checkout url", `${response.url}?token_ws=${response.token}`);
 
-    const encodedBody = stringify(body);
-    const url = process.env.FLOW_API_URL;
-
-    try {
-      const response = await axios.post(`${url}/payment/create`, encodedBody, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
-      console.log(
-        "checkout url",
-        `${response.data.url}?token=${response.data.token}`
-      );
-      return res.status(200).json(response.data);
-    } catch (error) {
-      console.error("Error en llamada a Flow:", error.message);
-      res.status(500).json({
-        error: "Error al crear el pago en Flow",
-        errorMessage: error.message,
-        bodyReq: body,
-      });
-    }
+    return res.status(200).json({
+      url: response.url,
+      token: response.token,
+      buyOrder,
+    });
   } catch (e) {
-    console.log(e.message);
+    console.error("Error Webpay:", e);
     res.status(400).json({ error: e.message });
   }
 }
