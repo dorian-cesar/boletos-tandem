@@ -158,7 +158,7 @@ const StagePago = (props) => {
         {/* <ResumenServicio open={true} nacionalidades={ nacionalidades }/> */}
         <ResumenServicio open={true} />
         <Acordeon title="Datos del comprador" open={true}>
-          <div className="form-check">
+          {/* <div className="form-check">
             <input
               className="form-check-input"
               type="checkbox"
@@ -170,7 +170,7 @@ const StagePago = (props) => {
             <label className="form-check-label" htmlFor="flexCheckDefault">
               Usar los datos del pasajero 1
             </label>
-          </div>
+          </div> */}
           <DatosPasajero asiento={datosComprador} usuario={ usuario }/>
         </Acordeon>
         {/* <Acordeon title="Convenios" open={true}>

@@ -135,9 +135,9 @@ const ResumenServicio = (props) => {
 
   return (
     <>
-      {informacionAgrupada.map((info, index) => {
+      {/* {informacionAgrupada.map((info, index) => {
         return renderInformacionPasajero(info);
-      })}
+      })} */}
     </>
   );
 };
