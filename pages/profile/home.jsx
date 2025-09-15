@@ -6,6 +6,7 @@ import MenuLateral from "../../components/profile/MenuLateral/MenuLateral";
 import RegistroPasajero from "../../components/profile/RegistroPasajero/RegistroPasajero";
 import CambiarPassword from "../../components/profile/CambiarPassword/CambiarPassword";
 import HistorialCompra from "../../components/profile/HistorialCompra/HistorialCompra";
+import AnularCompra from "../../components/profile/AnularCompra/AnularCompra";
 import RegistrarPasajero from "../../components/profile/RegistrarPasajero/RegistrarPasajero";
 import HistorialCompraCuponera from "../../components/profile/HistorialCompraCuponera/HistorialCompraCuponera";
 import { useLocalStorage } from "/hooks/useLocalStorage";
@@ -140,6 +141,7 @@ const Home = () => {
               <CambiarPassword setVista={setVista} />
             )}
             {vista === "historialCompra" && <HistorialCompra />}
+            {vista === "anularCompra" && <AnularCompra />}
             {vista === "confirmacion" && <MenuLateral />}
             {vista === "cambioBoleto" && <MenuLateral />}
             {vista === "devolucionBoleto" && <MenuLateral />}

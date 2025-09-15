@@ -45,6 +45,12 @@ const MenuLateral = (props) => {
       nombreMenu: "Historial de compras",
       classname: "item-texto-lateral",
     },
+    {
+      idMenu: 4,
+      opcionMenu: "anularCompra",
+      nombreMenu: "Anular pasaje",
+      classname: "item-texto-lateral",
+    },
   ];
 
   useEffect(() => {
