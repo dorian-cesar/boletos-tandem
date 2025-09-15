@@ -275,15 +275,15 @@ export const ResumenViaje = (props) => {
     try {
       let validator = isPaymentValid();
 
-      if (!validator.valid) {
-        setIsLoading(false);
-        toast.error(validator.error, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-        });
-        return;
-      }
+      // if (!validator.valid) {
+      //   setIsLoading(false);
+      //   toast.error(validator.error, {
+      //     position: "top-right",
+      //     autoClose: 5000,
+      //     hideProgressBar: false,
+      //   });
+      //   return;
+      // }
 
       validator = newIsValidComprador(datosComprador);
 
