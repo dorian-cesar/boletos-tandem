@@ -199,9 +199,9 @@ export default function MobileSearchBar(props: MobileSearchBarProps) {
               </>
             ) : (
               <img
-                src="img\icon\logos\Logo.svg"
+                src="img\icon\logos\logo-tandem2.webp"
                 className="img-fluid"
-                alt="Logo Pullman Bus"
+                alt="Logo Tandem Centinela"
               />
             )}
           </div>
