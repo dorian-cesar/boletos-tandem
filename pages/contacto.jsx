@@ -10,6 +10,7 @@ export default function ContactoPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     message: "",
   });
 
@@ -85,38 +86,68 @@ export default function ContactoPage() {
               </h4>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
+                  <label htmlFor="name" className="form-label">
+                    Nombre
+                  </label>
                   <input
                     type="text"
                     className="form-control"
                     id="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Nombre"
+                    placeholder="Nombre y apellido"
                     required
                   />
                 </div>
-                <div className="mb-3">
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Correo electrónico"
-                    required
-                  />
+
+                {/* Fila con Email y Teléfono */}
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="email" className="form-label">
+                      Correo electrónico
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      id="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="ejemplo@correo.com"
+                      required
+                    />
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="phone" className="form-label">
+                      Teléfono
+                    </label>
+                    <input
+                      type="tel"
+                      className="form-control"
+                      id="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+56 9 1234 5678"
+                      required
+                    />
+                  </div>
                 </div>
+
                 <div className="mb-3">
+                  <label htmlFor="message" className="form-label">
+                    Mensaje
+                  </label>
                   <textarea
                     className="form-control"
                     id="message"
                     rows={4}
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Mensaje"
+                    placeholder="Escribe tu mensaje..."
                     required
                   />
                 </div>
+
                 <button type="submit" className="btn btn-primary w-100">
                   Enviar
                 </button>
