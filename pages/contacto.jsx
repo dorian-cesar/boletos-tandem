@@ -39,7 +39,7 @@ export default function ContactoPage() {
           style={{ maxHeight: "230px", objectFit: "cover" }}
         />
       </div>
-      <div className="container py-5 mb-4">
+      <div className="container pt-2 pt-md-5 mb-4">
         <div className="row g-0 g-md-5 align-items-center">
           {/* Columna izquierda */}
           <div className="col-md-5 mt-2">
