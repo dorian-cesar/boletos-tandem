@@ -42,7 +42,12 @@ export default function ContactoPage() {
         <div className="row g-5 align-items-center">
           {/* Columna izquierda */}
           <div className="col-md-5 mt-2">
-            <h2 className="mb-3">¿Necesitas ayuda?</h2>
+            <h2
+              className="mb-3"
+              style={{ color: "#2c68de", fontWeight: "bold" }}
+            >
+              ¿Necesitas ayuda?
+            </h2>
             <p className="text-muted mb-4">
               Completa el formulario y nuestro equipo se pondrá en contacto
               contigo lo antes posible.
@@ -71,8 +76,13 @@ export default function ContactoPage() {
 
           {/* Columna derecha (formulario) */}
           <div className="col-md-7 mt-4">
-            <div className="card shadow-sm border-0 p-4">
-              <h4 className="mb-4">Formulario de Contacto</h4>
+            <div className="card shadow-sm border-0 p-4 rounded-4">
+              <h4
+                className="mb-4"
+                style={{ color: "#2860cf", fontWeight: "bold" }}
+              >
+                Formulario de Contacto
+              </h4>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <input
