@@ -36,7 +36,7 @@ export default function ContactoPage() {
           src="/img/icon/contacto/contact-banner.webp"
           alt="Montañas con nieve"
           className="img-fluid w-100"
-          style={{ maxHeight: "280px", objectFit: "cover" }}
+          style={{ maxHeight: "230px", objectFit: "cover" }}
         />
       </div>
       <div className="container py-5 mb-4">
