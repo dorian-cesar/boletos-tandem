@@ -30,6 +30,7 @@ import Popup from "components/Popup/Popup";
 import ModalEntities from "entities/ModalEntities";
 import LocalStorageEntities from "entities/LocalStorageEntities";
 import { decryptData } from "utils/encrypt-data";
+import { BsHeadset } from "react-icons/bs";
 
 export default function Header({
   openNav,
@@ -270,11 +271,10 @@ export default function Header({
 
               <Link href="/contacto" legacyBehavior>
                 <a className="d-flex align-items-center m-md-3">
-                  <img
-                    src="../img/icon/contacto/headset.svg"
-                    width={30}
+                  <BsHeadset
                     className={`${styles.svgImage} ${styles.svgShadow}`}
-                    alt="Contacto"
+                    size={30}
+                    title="Contacto"
                   />
                 </a>
               </Link>

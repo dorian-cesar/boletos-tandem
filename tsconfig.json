@@ -1,9 +1,15 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "paths": {
-      "@components/*": ["components/*"]
+      "@components/*": [
+        "components/*"
+      ]
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -19,6 +25,16 @@
     "baseUrl": ".",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js", "pages/index.js", "store/usuario/compra-slice.js", "store/store.js"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "next.config.js",
+    "pages/index.js",
+    "store/usuario/compra-slice.js",
+    "store/store.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
