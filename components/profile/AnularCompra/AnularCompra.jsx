@@ -90,7 +90,7 @@ const AnularPasajeForm = () => {
             name="email"
             value={formState.email}
             onChange={onInputChange}
-            placeholder="tu@email.com"
+            placeholder="ejemplo@email.com"
             required
             style={{
               width: "100%",

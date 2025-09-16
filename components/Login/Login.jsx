@@ -373,13 +373,12 @@ const Login = ({ onLoginSuccess }) => {
                       alt="Foto login"
                     />
                   </div>
-                  <p className={styles["viajemos-juntos"]}>¡Viajemos juntos!</p>
+                  <p className={styles["viajemos-juntos"]}>Tandem Centinela</p>
                   <p className={styles["ingresa-sesion"]}>
                     Ingresa a tu sesión
                   </p>
                   <p className={styles["parrafo-registro"]}>
-                    Al registrarte o iniciar sesión, estás aceptando nuestros
-                    términos y condiciones de uso.
+                    Inicia sesión para comprar tus boletos y acceder a nuestros servicios
                   </p>
 
                   {alert.visible && (
@@ -434,13 +433,13 @@ const Login = ({ onLoginSuccess }) => {
                   <div className="d-flex justify-content-center mt-2">
                     <button
                       type="button"
-                      className="btn-link btn-modal-link"
+                      className="btn-link btn-modal-link mb-3"
                       onClick={() => changeMode("1")}
                     >
                       ¿Olvidé mi password?
                     </button>
                   </div>
-                  <div className="d-flex justify-content-center mt-2">
+                  {/* <div className="d-flex justify-content-center mt-2">
                     <button
                       type="button"
                       className="btn-link btn-modal-link"
@@ -448,7 +447,7 @@ const Login = ({ onLoginSuccess }) => {
                     >
                       Registrarme
                     </button>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className={styles["buttones"]}>

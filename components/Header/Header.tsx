@@ -216,7 +216,7 @@ export default function Header({
                 />
               </a>
             </div>
-            <div className="col-4 col-sm-2 d-flex justify-content-end">
+            <div className="col-3 col-sm-2 d-flex justify-content-end p-0">
               {user == null ? (
                 <img
                   src={
@@ -232,7 +232,7 @@ export default function Header({
                 <ul className="nav nav-pills">
                   <li className="nav-item dropdown" style={{ display: "flex" }}>
                     <button
-                      className="nav-link dropdown-toggle"
+                      className="nav-link dropdown-toggle p-1 p-md-2"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
@@ -269,7 +269,7 @@ export default function Header({
               )}
 
               <Link href="/contacto" legacyBehavior>
-                <a className="d-flex align-items-center m-3">
+                <a className="d-flex align-items-center m-md-3">
                   <img
                     src="../img/icon/contacto/headset.svg"
                     width={30}

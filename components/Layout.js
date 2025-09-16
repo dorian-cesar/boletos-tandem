@@ -87,8 +87,8 @@ export default function Layout({ children, isBuyStage = false }) {
               </Link>
             </div>
             <div className="w-100">
-              <Link href="/comprar" legacyBehavior>
-                <a href="/comprar" className="compra">
+              <Link href="/" legacyBehavior>
+                <a href="/" className="compra">
                   Compra tu pasaje
                 </a>
               </Link>
