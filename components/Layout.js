@@ -51,7 +51,7 @@ export default function Layout({ children, isBuyStage = false }) {
         <title>Tandem</title>
         <meta
           name="description"
-          content="Empresa de Transporte Pullman Bus S.A San Francisco de Borja 235, Estación Central, Santiago de Chile.  Transporte de Viajes Interurbanos, Viajes Especiales"
+          content="Empresa de Transporte Pullman Bus S.A San Francisco de Borja 235, Estación Central, Santiago de Chile. Transporte de Viajes Interurbanos y Viajes Especiales"
         />
         <meta
           name="keywords"
@@ -114,20 +114,32 @@ export default function Layout({ children, isBuyStage = false }) {
                 </a>
               </Link>
             </div> */}
-            {/* <div className="w-100">
-              <Link href="/devolucion" legacyBehavior>
-                <a className="devolucion">
-                  Devolución de boleto
-                </a>
-              </Link>
-            </div> */}
-            {/* <div className="w-100">
-              <Link href="/viajesEspeciales" legacyBehavior>
-                <a className="viajes-especiales">
-                  Viajes especiales
-                </a>
-              </Link>
-            </div> */}
+            <div className="w-100">
+              <a
+                className="viajes-especiales"
+                onClick={() =>
+                  router.push({
+                    pathname: "/profile/home",
+                    query: { vista: "historialCompra" },
+                  })
+                }
+              >
+                Historial de compras
+              </a>
+            </div>
+            <div className="w-100">
+              <a
+                className="devolucion"
+                onClick={() =>
+                  router.push({
+                    pathname: "/profile/home",
+                    query: { vista: "anularCompra" },
+                  })
+                }
+              >
+                Anular pasaje
+              </a>
+            </div>
             {/* <div className="w-100">
               <a
                 href="https://pullmanempresas.cl/#/sessions/signin?return=%2Fempresa%2Fhome"
@@ -137,8 +149,13 @@ export default function Layout({ children, isBuyStage = false }) {
               </a>
             </div> */}
 
-            <div className="w-100">
+            {/* <div className="w-100">
               <Link href="/teAyudamos" legacyBehavior>
+                <a className="ayuda">Te ayudamos</a>
+              </Link>
+            </div> */}
+            <div className="w-100">
+              <Link href="/contacto" legacyBehavior>
                 <a className="ayuda">Te ayudamos</a>
               </Link>
             </div>
@@ -153,10 +170,16 @@ export default function Layout({ children, isBuyStage = false }) {
           <div className="contactanos-menu">
             <span>Síguenos :</span>
             <div>
-              <a target="_blank" href="https://www.facebook.com/tandemindustrial.cl/">
+              <a
+                target="_blank"
+                href="https://www.facebook.com/tandemindustrial.cl/"
+              >
                 <img src="../img/icon/chat/logo-facebook-color.svg" alt="" />
               </a>
-              <a target="_blank" href="https://www.instagram.com/tandem.industrial/">
+              <a
+                target="_blank"
+                href="https://www.instagram.com/tandem.industrial/"
+              >
                 <img src="../img/icon/chat/logo-instagram-color.svg" alt="" />
               </a>
               <a

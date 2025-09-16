@@ -63,7 +63,8 @@
 
 .header-profile {
   border-radius: 16px 16px 0px 0px;
-  background: var(--azul-100, #3365b4);
+  /* background: var(--azul-100, #3365b4); */
+  background: var(--azul-100, #285dc9);
   min-height: 200px;
   display: flex;
   flex-direction: row;

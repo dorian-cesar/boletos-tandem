@@ -33,15 +33,42 @@ const Home = () => {
     currency: "CLP",
   });
 
+  // useEffect(() => {
+  //   let checkUser = decryptData(LocalStorageEntities.user_auth);
+  //   if (checkUser == null) router.push("/");
+  //   setUser(checkUser);
+  //   setIsLoading(false);
+  //   setVista("miPerfil");
+  //   setNombreVista("Mi Perfil");
+  //   // setBuscarSaldo(!buscarSaldo);
+  // }, []);
+
   useEffect(() => {
     let checkUser = decryptData(LocalStorageEntities.user_auth);
-    if (checkUser == null) router.push("/");
+    if (checkUser == null) {
+      router.push("/");
+      return;
+    }
     setUser(checkUser);
     setIsLoading(false);
-    setVista("miPerfil");
-    setNombreVista("Mi Perfil");
-    // setBuscarSaldo(!buscarSaldo);
-  }, []);
+
+    // si viene query de la URL, usarla
+    if (router.query.vista) {
+      setVista(router.query.vista);
+      if (router.query.vista === "anularCompra") {
+        setNombreVista("Anular pasaje");
+      } else if (router.query.vista === "cambioContraseña") {
+        setNombreVista("Cambiar contraseña");
+      } else if (router.query.vista === "historialCompra") {
+        setNombreVista("Historial de compras");
+      } else {
+        setNombreVista("Mi Perfil");
+      }
+    } else {
+      setVista("miPerfil");
+      setNombreVista("Mi Perfil");
+    }
+  }, [router.query]);
 
   // useEffect(() => {
   //   actualizarSaldoWallet().then();

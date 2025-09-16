@@ -1781,7 +1781,8 @@ th {
 
 footer.psjes {
   padding: 45px 0px;
-  background-color: #3365B4;
+  /* background-color: #3365B4; */
+  background-color: #2860cf;
 }
 
 footer.psjes h3 {
