@@ -274,6 +274,7 @@ export default function Header({
                   <BsHeadset
                     className={`${styles.svgImage} ${styles.svgShadow}`}
                     size={30}
+                    color="#297DE3"
                     title="Contacto"
                   />
                 </a>
