@@ -39,7 +39,7 @@ export default function ContactoPage() {
         />
       </div>
       <div className="container py-5 mb-4">
-        <div className="row g-5 align-items-center">
+        <div className="row g-0 g-md-5 align-items-center">
           {/* Columna izquierda */}
           <div className="col-md-5 mt-2">
             <h2
