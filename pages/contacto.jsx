@@ -82,7 +82,7 @@ export default function ContactoPage() {
                 className="mb-4"
                 style={{ color: "#2860cf", fontWeight: "bold" }}
               >
-                Formulario de Contacto
+                ¡Contáctanos!
               </h4>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
