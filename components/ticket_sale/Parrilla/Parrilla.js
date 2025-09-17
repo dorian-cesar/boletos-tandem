@@ -657,7 +657,7 @@ const Parrilla = (props) => {
     });
 
     if (cantidadServicios >= MAXIMO_COMPRA_ASIENTO) {
-      toast.warn(`Sólo puede elegir ${MAXIMO_COMPRA_ASIENTO} servicios`, {
+      toast.warn(`Sólo puede elegir ${MAXIMO_COMPRA_ASIENTO} bus`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

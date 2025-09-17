@@ -215,29 +215,34 @@ const DatosPasajero = (props) => {
   async function obtenerDatosPasajero() {
     let asientoTemporal = {
       ...informacionAsiento,
-    }
+    };
 
-    if( asientoTemporal['rut'] && asientoTemporal['tipoDocumento'] === 'R' && asientoTemporal['rut'].length >= 11 ||
-      asientoTemporal['rut'] && asientoTemporal['tipoDocumento'] === 'P' && asientoTemporal['rut'].length >= 6
+    if (
+      (asientoTemporal["rut"] &&
+        asientoTemporal["tipoDocumento"] === "R" &&
+        asientoTemporal["rut"].length >= 11) ||
+      (asientoTemporal["rut"] &&
+        asientoTemporal["tipoDocumento"] === "P" &&
+        asientoTemporal["rut"].length >= 6)
     ) {
       try {
-        const response = await axios.post(`/api/obtener-datos-pasajero`,{
-          documento: asientoTemporal['rut'],
-          tipodoc: asientoTemporal['tipoDocumento']
+        const response = await axios.post(`/api/obtener-datos-pasajero`, {
+          documento: asientoTemporal["rut"],
+          tipodoc: asientoTemporal["tipoDocumento"],
         });
 
         setCantidadEquipaje(0);
 
         const { nombres, apellidos, nacionalidad } = response.data;
 
-        asientoTemporal['nombre'] = nombres;
-        asientoTemporal['apellido'] = apellidos;
+        asientoTemporal["nombre"] = nombres;
+        asientoTemporal["apellido"] = apellidos;
         // asientoTemporal['nacionalidad'] = nacionalidad;
-        asientoTemporal['cantidadEquipaje'] = 0;
+        asientoTemporal["cantidadEquipaje"] = 0;
 
         // const nacionalidadEncontrada = returnNationalitiesArray().find(nationality => nationality.value === nacionalidad);
 
-        if( nacionalidadEncontrada ) {
+        if (nacionalidadEncontrada) {
           setNationalitySelected(nacionalidadEncontrada);
         }
 
@@ -249,8 +254,12 @@ const DatosPasajero = (props) => {
         if (servicio) {
           dispatch(agregarInformacionAsiento(infoToDispatch));
 
-          if( asiento.asientoAsociado ) {
-            let asientoMab = { ...servicio.asientos.find((asientoMab) => asientoMab.asiento === asiento.asientoAsociado) };
+          if (asiento.asientoAsociado) {
+            let asientoMab = {
+              ...servicio.asientos.find(
+                (asientoMab) => asientoMab.asiento === asiento.asientoAsociado
+              ),
+            };
 
             asientoMab = {
               ...asientoMab,
@@ -258,19 +267,21 @@ const DatosPasajero = (props) => {
               tipoDocumento: asientoTemporal?.tipoDocumento,
               nombre: asientoTemporal?.nombre,
               apellido: asientoTemporal?.apellido,
-              nacionalidad: asientoTemporal?.nacionalidad
-            }
+              nacionalidad: asientoTemporal?.nacionalidad,
+            };
 
-            dispatch(agregarInformacionAsiento({
-              servicio,
-              asiento: asientoMab
-            }));
+            dispatch(
+              agregarInformacionAsiento({
+                servicio,
+                asiento: asientoMab,
+              })
+            );
           }
         }
 
         setInformacionAsiento(asientoTemporal);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
   }
@@ -299,38 +310,6 @@ const DatosPasajero = (props) => {
         <div className={"row"}>
           {pasajero ? (
             <>
-              {/* <div className={"col-12 col-md-6"}>
-                  <div className={"grupo-campos"}>
-                    <label className={ `${styles["label"]} mb-2` }>Nacionalidad</label>
-                    {
-                      nacionalidades && nacionalidades.length > 0 ? (
-                        <Select
-                          options={ returnNationalitiesArray() }
-                          value={ nationalitySelected }
-                          styles={ customStyles }
-                          className="mt-1"
-                          onChange={(e) => {
-                            setDataComprador({ name: 'nacionalidad', ...e});
-                            setNationalitySelected(e);
-                          }}
-                          instanceId={useId()}
-                          placeholder={ "Ej: Chilena" }
-                          menuPosition="fixed"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          value={asiento["nacionalidad"]}
-                          name="nacionalidad"
-                          placeholder="Ej: Chilena"
-                          className={styles["input"]}
-                          disabled={ usuario }
-                          onChange={(e) => setDataComprador(e.target)}
-                        />
-                      )
-                    }
-                  </div>
-                </div> */}
               <div className={"col-12 col-md-6"}>
                 <div className={"grupo-campos"}>
                   <label className={styles["label"]}>Nombres</label>
@@ -345,6 +324,7 @@ const DatosPasajero = (props) => {
                   />
                 </div>
               </div>
+
               <div className={"col-12 col-md-6"}>
                 <div className={"grupo-campos"}>
                   <label className={styles["label"]}>Apellidos</label>
@@ -359,49 +339,47 @@ const DatosPasajero = (props) => {
                   />
                 </div>
               </div>
-              <div className={"col-12 col-md-6 mt-1"}>
-                <div className="container">
-                  <div className={"row"}>
-                    <div className={"col-4 p-0"}>
-                      <label className={"contenedor"}>
-                        <label className={styles["label"]}>RUT</label>
+
+              {/* 
+                <div className={"col-12 col-md-6"}>
+                  <div className={"grupo-campos"}>
+                    <label className={styles["label"]}>Documento</label>
+                    <div className="d-flex">
+                      <div className="form-check me-3">
                         <input
-                          type="checkbox"
-                          checked={
-                            asiento["tipoDocumento"] === "R" ? true : false
-                          }
-                          value="R"
+                          className="form-check-input"
+                          type="radio"
                           name="tipoDocumento"
-                          disabled={usuario}
+                          value="rut"
+                          checked={asiento.tipoDocumento === "rut"}
                           onChange={(e) => setDataComprador(e.target)}
                         />
-                        <span className="checkmark"></span>
-                      </label>
-                    </div>
-                    <div className={"col-6 p-0"}>
-                      <label className={"contenedor"}>
-                        <label className={styles["label"]}>DNI/Pasaporte</label>
+                        <label className="form-check-label">RUT</label>
+                      </div>
+                      <div className="form-check">
                         <input
-                          type="checkbox"
-                          checked={
-                            asiento["tipoDocumento"] === "P" ? true : false
-                          }
-                          value="P"
+                          className="form-check-input"
+                          type="radio"
                           name="tipoDocumento"
-                          disabled={usuario}
+                          value="dni"
+                          checked={asiento.tipoDocumento === "dni"}
                           onChange={(e) => setDataComprador(e.target)}
                         />
-                        <span className={"checkmark"}></span>
-                      </label>
+                        <label className="form-check-label">DNI/Pasaporte</label>
+                      </div>
                     </div>
                   </div>
                 </div>
+                */}
+
+              <div className={"col-12 col-md-6"}>
                 <div className={"grupo-campos"}>
+                  <label className={styles["label"]}>RUT</label>
                   <input
                     type="text"
                     value={asiento["rut"]}
                     name="rut"
-                    placeholder="Ej: 111111111"
+                    placeholder="Ej: 11.111.111-1"
                     className={`${
                       Array.isArray(asiento.errors) &&
                       asiento.errors.includes("rut")
@@ -431,6 +409,7 @@ const DatosPasajero = (props) => {
                   />
                 </div>
               </div>
+
               <div className={"col-12 col-md-6"}>
                 <div className={"grupo-campos"}>
                   <label className={styles["label"]}>Apellidos</label>
@@ -445,49 +424,47 @@ const DatosPasajero = (props) => {
                   />
                 </div>
               </div>
-              <div className={"col-12 col-md-6"}>
-                <div className="container">
-                  <div className={"row"}>
-                    <div className={"col-4 p-0"}>
-                      <label className={"contenedor"}>
-                        <label className={styles["label"]}>RUT</label>
+
+              {/*
+                <div className={"col-12 col-md-6"}>
+                  <div className={"grupo-campos"}>
+                    <label className={styles["label"]}>Documento</label>
+                    <div className="d-flex">
+                      <div className="form-check me-3">
                         <input
-                          type="checkbox"
-                          checked={
-                            asiento["tipoDocumento"] === "R" ? true : false
-                          }
-                          value="R"
+                          className="form-check-input"
+                          type="radio"
                           name="tipoDocumento"
-                          disabled={usuario}
+                          value="rut"
+                          checked={asiento.tipoDocumento === "rut"}
                           onChange={(e) => setDataComprador(e.target)}
                         />
-                        <span className="checkmark"></span>
-                      </label>
-                    </div>
-                    <div className={"col-6 p-0"}>
-                      <label className={"contenedor"}>
-                        <label className={styles["label"]}>DNI/Pasaporte</label>
+                        <label className="form-check-label">RUT</label>
+                      </div>
+                      <div className="form-check">
                         <input
-                          type="checkbox"
-                          checked={
-                            asiento["tipoDocumento"] === "P" ? true : false
-                          }
-                          value="P"
+                          className="form-check-input"
+                          type="radio"
                           name="tipoDocumento"
-                          disabled={usuario}
+                          value="dni"
+                          checked={asiento.tipoDocumento === "dni"}
                           onChange={(e) => setDataComprador(e.target)}
                         />
-                        <span className={"checkmark"}></span>
-                      </label>
+                        <label className="form-check-label">DNI/Pasaporte</label>
+                      </div>
                     </div>
                   </div>
                 </div>
+                */}
+
+              <div className={"col-12 col-md-6"}>
                 <div className={"grupo-campos"}>
+                  <label className={styles["label"]}>RUT</label>
                   <input
                     type="text"
                     value={asiento["rut"]}
                     name="rut"
-                    placeholder="Ej: 111111111"
+                    placeholder="Ej: 11.111.111-1"
                     className={`${
                       Array.isArray(asiento.errors) &&
                       asiento.errors.includes("rut")
@@ -499,16 +476,10 @@ const DatosPasajero = (props) => {
                   />
                 </div>
               </div>
+
               <div className={"col-12 col-md-6"}>
-                <div className={"row"}>
-                  <div className={"col"}>
-                    <label className={styles["container-text"]}>
-                      <label className={styles["label"]}>E-mail</label>
-                    </label>
-                  </div>
-                  <div className={"col"}></div>
-                </div>
                 <div className={"grupo-campos"}>
+                  <label className={styles["label"]}>E-mail</label>
                   <input
                     type="email"
                     value={asiento["email"]}
@@ -522,6 +493,7 @@ const DatosPasajero = (props) => {
               </div>
             </>
           )}
+
           {/* {
             pasajero == true && (
               <div className="col-12 col-md-12">
