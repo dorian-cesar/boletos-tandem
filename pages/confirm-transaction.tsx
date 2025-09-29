@@ -135,6 +135,9 @@ import Image from "next/image";
 import { generateToken } from "utils/jwt-auth";
 import JWT from "jsonwebtoken";
 import { useSelector } from "react-redux";
+import getConfig from "next/config";
+const { serverRuntimeConfig } = getConfig();
+const config = serverRuntimeConfig;
 
 const SECRET = "xWL!96JRaWi2lT0jG";
 
@@ -385,7 +388,7 @@ export default function ConfrimTransaction() {
               if (!seatNumber) continue;
 
               const confirmRes = await fetch(
-                `https://boletos.dev-wit.com/api/seats/${serviceId}/confirm`,
+                config.url_api + `/seats/${serviceId}/confirm`,
                 {
                   method: "POST",
                   headers: {
