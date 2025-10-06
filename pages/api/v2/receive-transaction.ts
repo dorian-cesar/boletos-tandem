@@ -35,12 +35,6 @@
 
 import { WebpayPlus, Environment, Options } from "transbank-sdk";
 
-export const config = {
-  api: {
-    bodyParser: false, // no necesario para GET, pero no molesta
-  },
-};
-
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({ message: "Method Not Allowed" });
@@ -51,7 +45,7 @@ export default async function handler(req, res) {
 
     if (!token) {
       console.error("No se recibió token_ws de Transbank");
-      return res.status(400).send("Error: No se recibió token_ws");
+      return res.writeHead(302, { Location: "/confirm-transaction" }).end();
     }
 
     // Crear instancia de WebpayPlus
@@ -77,7 +71,7 @@ export default async function handler(req, res) {
           <meta http-equiv="refresh" content="0; url=${redirectUrl}" />
         </head>
         <body>
-          Procesando pago...
+          Cargando...
         </body>
       </html>
     `);

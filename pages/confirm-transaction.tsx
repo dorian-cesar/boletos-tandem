@@ -452,10 +452,8 @@ import { useRouter } from "next/router";
 import JWT from "jsonwebtoken";
 import { useSelector } from "react-redux";
 import { generateToken } from "utils/jwt-auth";
-import getConfig from "next/config";
 
-const { serverRuntimeConfig } = getConfig();
-const config = serverRuntimeConfig;
+const URL_API = process.env.NEXT_PUBLIC_URL_API;
 
 const SECRET = "xWL!96JRaWi2lT0jG";
 
@@ -477,10 +475,10 @@ export default function ConfirmTransaction() {
     const processTransaction = async () => {
       const params = new URLSearchParams(window.location.search);
       const status = params.get("status");
-      const buyOrder = params.get("buy_order");
+      const buyOrder = params.get("buyOrder");
       const amount = params.get("amount");
 
-      if (!status) {
+      if (!status || !buyOrder) {
         router.push("/error-transaccion");
         return;
       }
@@ -503,7 +501,7 @@ export default function ConfirmTransaction() {
 
             try {
               const confirmRes = await fetch(
-                `${config.url_api}/seats/${serviceId}/confirm`,
+                `${URL_API}/seats/${serviceId}/confirm`,
                 {
                   method: "POST",
                   headers: {
@@ -513,7 +511,7 @@ export default function ConfirmTransaction() {
                   body: JSON.stringify({
                     seatNumber,
                     authCode: buyOrder,
-                    userId: buyerInfo?.id || buyerInfo?.email || "anon",
+                    userId: buyerInfo?.id, // enviar id de mongodb del usuario
                   }),
                 }
               );

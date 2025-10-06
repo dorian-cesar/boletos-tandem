@@ -316,7 +316,7 @@ export default function Home(props: HomeProps) {
   }, [buyOrder]);
 
   const generarBoletos = async () => {
-    const token = localStorage.getItem("tokenTemp");
+    const token = localStorage.getItem("tokenTBK");
     try {
       console.log("Enviando boletos...");
       if (
