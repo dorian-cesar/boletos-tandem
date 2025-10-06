@@ -227,7 +227,7 @@ async function handleGuardarMultiCarro(req, res) {
     // Crear la transacción en Webpay
     const response = await tx.create(buyOrder, sessionId, amount, returnUrl);
 
-    console.log("checkout url", `${response.url}?token_ws=${response.token}`);
+    console.log("checkout url", `${response.url}?token=${response.token}`);
 
     return res.status(200).json({
       url: response.url,

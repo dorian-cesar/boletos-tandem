@@ -127,268 +127,383 @@
 //   };
 // }, sessionOptions);
 
+// flujo antiguo
+// import Footer from "components/Footer";
+// import Layout from "components/Layout";
+// import { useEffect, useState } from "react";
+// import { useRouter } from "next/router";
+// import Image from "next/image";
+// import { generateToken } from "utils/jwt-auth";
+// import JWT from "jsonwebtoken";
+// import { useSelector } from "react-redux";
+// import getConfig from "next/config";
+// const { serverRuntimeConfig } = getConfig();
+// const config = serverRuntimeConfig;
+
+// const SECRET = "xWL!96JRaWi2lT0jG";
+
+// export default function ConfrimTransaction() {
+//   const router = useRouter();
+//   const [carroCompras, setCarroCompras] = useState([]);
+//   const [hasPushed, setHasPushed] = useState(false);
+
+//   const selector =
+//     useSelector((state: any) => state.compra?.listaCarrito) || [];
+
+//   useEffect(() => {
+//     let keys = 0;
+
+//     if (selector) {
+//       keys = Object.keys(selector).length;
+//     }
+
+//     if (keys > 0) {
+//       const token = JWT.sign(selector, SECRET);
+//       sessionStorage.setItem("transactionBasketInfo", token);
+//       setCarroCompras(selector);
+//     } else {
+//       setCarroCompras([]);
+//     }
+//   }, []);
+
+// useEffect(() => {
+//   const runCheck = async () => {
+//     const token = localStorage.getItem("tokenTemp");
+//     const flowOrder = localStorage.getItem("flowOrder");
+
+//     if (!token) {
+//       if (router.pathname !== "/error-transaccion") {
+//         router.push("/error-transaccion");
+//       }
+//       return;
+//     }
+
+//     try {
+//       const response = await fetch("/api/v2/confirm-transaction", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ token, flowOrder }),
+//       });
+
+//       const data = await response.json();
+
+//       switch (data.status) {
+//         case 1:
+//           setTimeout(runCheck, 3000);
+//           break;
+
+//         case 2:
+//           try {
+//             const rawPurchaseInfo = localStorage.getItem("purchase_info");
+//             const rawBuyerInfo = localStorage.getItem("buyer_info");
+//             const buyerInfo = rawBuyerInfo ? JSON.parse(rawBuyerInfo) : null;
+//             const purchaseInfo = rawPurchaseInfo
+//               ? JSON.parse(rawPurchaseInfo)
+//               : [];
+
+//             const firstName = buyerInfo?.nombre?.trim() || "";
+//             const lastName = buyerInfo?.apellido?.trim() || "";
+//             const userName = `${firstName} ${lastName}`.trim() || "Invitado";
+//             const userEmail = buyerInfo?.email || null;
+//             const tokenAPI = generateToken();
+
+//             if (
+//               !Array.isArray(purchaseInfo) ||
+//               purchaseInfo.length === 0 ||
+//               !userEmail ||
+//               !flowOrder
+//             ) {
+//               console.warn("Faltan datos para confirmar asientos");
+//               if (router.pathname !== "/error-transaccion") {
+//                 router.push("/error-transaccion");
+//               }
+//               return;
+//             }
+
+//             // Registra usuario invitado
+//             let userId = null;
+//             try {
+//               const userRes = await fetch("https://boletos.dev-wit.com/api/users/register-guest", {
+//                 method: "POST",
+//                 headers: {
+//                   "Content-Type": "application/json",
+//                 },
+//                 body: JSON.stringify({
+//                   name: userName,
+//                   email: userEmail,
+//                 }),
+//               });
+
+//               if (!userRes.ok) {
+//                 const errorText = await userRes.text();
+//                 console.error(
+//                   "Error al registrar usuario invitado:",
+//                   errorText
+//                 );
+//                 if (router.pathname !== "/error-transaccion") {
+//                   router.push("/error-transaccion");
+//                 }
+//                 return;
+//               }
+
+//               const userData = await userRes.json();
+//               userId = userData?.user_id;
+//               console.log("Usuario registrado:", userData);
+
+//               if (!userId) {
+//                 console.error("No se obtuvo el ID del usuario creado");
+//                 if (router.pathname !== "/error-transaccion") {
+//                   router.push("/error-transaccion");
+//                 }
+//                 return;
+//               }
+
+//               console.log("Usuario registrado con éxito, ID:", userId);
+//             } catch (err) {
+//               console.error("Error durante el registro de usuario:", err);
+//               if (router.pathname !== "/error-transaccion") {
+//                 router.push("/error-transaccion");
+//               }
+//               return;
+//             }
+
+//             // Confirmar asientos
+//             for (const servicio of purchaseInfo) {
+//               const serviceId = servicio?.id;
+//               const asientos = servicio?.asientos || [];
+
+//               if (!serviceId || asientos.length === 0) {
+//                 console.warn("Servicio inválido o sin asientos:", servicio);
+//                 if (router.pathname !== "/error-transaccion") {
+//                   router.push("/error-transaccion");
+//                 }
+//                 return;
+//               }
+
+//               for (const asiento of asientos) {
+//                 const seatNumber = asiento?.asiento;
+//                 if (!seatNumber) continue;
+
+//                 const confirmRes = await fetch(
+//                   `https://boletos.dev-wit.com/api/seats/${serviceId}/confirm`,
+//                   {
+//                     method: "POST",
+//                     headers: {
+//                       "Content-Type": "application/json",
+//                       Authorization: `Bearer ${tokenAPI}`,
+//                     },
+//                     body: JSON.stringify({
+//                       seatNumber,
+//                       authCode: flowOrder,
+//                       userId,
+//                     }),
+//                   }
+//                 );
+
+//                 if (!confirmRes.ok) {
+//                   const errorText = await confirmRes.text();
+//                   console.error(
+//                     `Error al confirmar asiento ${seatNumber} del servicio ${serviceId}:`,
+//                     errorText
+//                   );
+//                   if (router.pathname !== "/error-transaccion") {
+//                     router.push("/error-transaccion");
+//                   }
+//                   return;
+//                 } else {
+//                   console.log(`Asiento ${seatNumber} confirmado`);
+//                 }
+//               }
+//             }
+
+//             // Éxito total
+//             if (router.pathname !== "/respuesta-transaccion-v2") {
+//               router.push("/respuesta-transaccion-v2");
+//             }
+//           } catch (error) {
+//             console.error("Error confirmando asientos:", error);
+//             if (router.pathname !== "/error-transaccion") {
+//               router.push("/error-transaccion");
+//             }
+//           }
+//           break;
+
+//         case 3:
+//         case 4:
+//         default:
+//           if (router.pathname !== "/error-transaccion") {
+//             router.push("/error-transaccion");
+//           }
+//           break;
+//       }
+//     } catch (error) {
+//       console.error("Error al verificar estado del pago:", error);
+//       if (router.pathname !== "/error-transaccion") {
+//         router.push("/error-transaccion");
+//       }
+//     }
+//   };
+
+//   if (router.isReady) {
+//     runCheck();
+//   }
+// }, [router.isReady]);
+
+// transbank
+//   useEffect(() => {
+//     const checkTransaction = async () => {
+//       const urlParams = new URLSearchParams(window.location.search);
+//       const token_ws = urlParams.get("token_ws");
+
+//       if (!token_ws) {
+//         router.push("/error-transaccion");
+//         return;
+//       }
+
+//       try {
+//         // Llamamos a nuestro backend para confirmar la transacción
+//         const response = await fetch("/api/v2/receive-transaction", {
+//           method: "POST",
+//           headers: { "Content-Type": "application/json" },
+//           body: JSON.stringify({ token_ws }),
+//         });
+
+//         const data = await response.json();
+
+//         if (data.status === "AUTHORIZED" || data.status === "APPROVED") {
+//           // Confirmar asientos usando purchase_info del localStorage
+//           const rawPurchaseInfo = localStorage.getItem("purchase_info");
+//           const rawBuyerInfo = localStorage.getItem("buyer_info");
+//           const purchaseInfo = rawPurchaseInfo
+//             ? JSON.parse(rawPurchaseInfo)
+//             : [];
+//           const buyerInfo = rawBuyerInfo ? JSON.parse(rawBuyerInfo) : null;
+
+//           const tokenAPI = generateToken();
+
+//           for (const servicio of purchaseInfo) {
+//             const serviceId = servicio?.id;
+//             const asientos = servicio?.asientos || [];
+
+//             for (const asiento of asientos) {
+//               const seatNumber = asiento?.asiento;
+//               if (!seatNumber) continue;
+
+//               const confirmRes = await fetch(
+//                 config.url_api + `/seats/${serviceId}/confirm`,
+//                 {
+//                   method: "POST",
+//                   headers: {
+//                     "Content-Type": "application/json",
+//                     Authorization: `Bearer ${tokenAPI}`,
+//                   },
+//                   body: JSON.stringify({
+//                     seatNumber,
+//                     authCode: data.buyOrder, // usamos buyOrder de Webpay
+//                     // userId: buyerInfo?.id, // si tienes userId del comprador
+//                     userId: data.session_id,
+//                   }),
+//                 }
+//               );
+
+//               if (!confirmRes.ok) {
+//                 console.error(
+//                   `Error al confirmar asiento ${seatNumber} del servicio ${serviceId}`
+//                 );
+//               } else {
+//                 console.log(`Asiento ${seatNumber} confirmado`);
+//               }
+//             }
+//           }
+
+//           router.push("/respuesta-transaccion-v2");
+//         } else {
+//           router.push("/error-transaccion");
+//         }
+//       } catch (error) {
+//         console.error("Error confirmando la transacción:", error);
+//         router.push("/error-transaccion");
+//       }
+//     };
+
+//     if (router.isReady) checkTransaction();
+//   }, [router.isReady]);
+
+//   return (
+//     <Layout>
+//       <div
+//         className="container d-flex flex-column align-items-center justify-content-center"
+//         style={{ minHeight: "75vh" }}
+//       >
+//         <img src="/img/loading.gif" width={300} height={300} alt="Loading" />
+//         <h5 className="text-center">
+//           Estamos completando su transacción, por favor espere.
+//         </h5>
+//       </div>
+//       <Footer />
+//     </Layout>
+//   );
+// }
+
 import Footer from "components/Footer";
 import Layout from "components/Layout";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
-import { generateToken } from "utils/jwt-auth";
 import JWT from "jsonwebtoken";
 import { useSelector } from "react-redux";
+import { generateToken } from "utils/jwt-auth";
 import getConfig from "next/config";
+
 const { serverRuntimeConfig } = getConfig();
 const config = serverRuntimeConfig;
 
 const SECRET = "xWL!96JRaWi2lT0jG";
 
-export default function ConfrimTransaction() {
+export default function ConfirmTransaction() {
   const router = useRouter();
   const [carroCompras, setCarroCompras] = useState([]);
-  const [hasPushed, setHasPushed] = useState(false);
-
   const selector =
     useSelector((state: any) => state.compra?.listaCarrito) || [];
 
   useEffect(() => {
-    let keys = 0;
-
-    if (selector) {
-      keys = Object.keys(selector).length;
-    }
-
-    if (keys > 0) {
+    if (selector && Object.keys(selector).length > 0) {
       const token = JWT.sign(selector, SECRET);
       sessionStorage.setItem("transactionBasketInfo", token);
       setCarroCompras(selector);
-    } else {
-      setCarroCompras([]);
     }
-  }, []);
-
-  // useEffect(() => {
-  //   const runCheck = async () => {
-  //     const token = localStorage.getItem("tokenTemp");
-  //     const flowOrder = localStorage.getItem("flowOrder");
-
-  //     if (!token) {
-  //       if (router.pathname !== "/error-transaccion") {
-  //         router.push("/error-transaccion");
-  //       }
-  //       return;
-  //     }
-
-  //     try {
-  //       const response = await fetch("/api/v2/confirm-transaction", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({ token, flowOrder }),
-  //       });
-
-  //       const data = await response.json();
-
-  //       switch (data.status) {
-  //         case 1:
-  //           setTimeout(runCheck, 3000);
-  //           break;
-
-  //         case 2:
-  //           try {
-  //             const rawPurchaseInfo = localStorage.getItem("purchase_info");
-  //             const rawBuyerInfo = localStorage.getItem("buyer_info");
-  //             const buyerInfo = rawBuyerInfo ? JSON.parse(rawBuyerInfo) : null;
-  //             const purchaseInfo = rawPurchaseInfo
-  //               ? JSON.parse(rawPurchaseInfo)
-  //               : [];
-
-  //             const firstName = buyerInfo?.nombre?.trim() || "";
-  //             const lastName = buyerInfo?.apellido?.trim() || "";
-  //             const userName = `${firstName} ${lastName}`.trim() || "Invitado";
-  //             const userEmail = buyerInfo?.email || null;
-  //             const tokenAPI = generateToken();
-
-  //             if (
-  //               !Array.isArray(purchaseInfo) ||
-  //               purchaseInfo.length === 0 ||
-  //               !userEmail ||
-  //               !flowOrder
-  //             ) {
-  //               console.warn("Faltan datos para confirmar asientos");
-  //               if (router.pathname !== "/error-transaccion") {
-  //                 router.push("/error-transaccion");
-  //               }
-  //               return;
-  //             }
-
-  //             // Registra usuario invitado
-  //             let userId = null;
-  //             try {
-  //               const userRes = await fetch("https://boletos.dev-wit.com/api/users/register-guest", {
-  //                 method: "POST",
-  //                 headers: {
-  //                   "Content-Type": "application/json",
-  //                 },
-  //                 body: JSON.stringify({
-  //                   name: userName,
-  //                   email: userEmail,
-  //                 }),
-  //               });
-
-  //               if (!userRes.ok) {
-  //                 const errorText = await userRes.text();
-  //                 console.error(
-  //                   "Error al registrar usuario invitado:",
-  //                   errorText
-  //                 );
-  //                 if (router.pathname !== "/error-transaccion") {
-  //                   router.push("/error-transaccion");
-  //                 }
-  //                 return;
-  //               }
-
-  //               const userData = await userRes.json();
-  //               userId = userData?.user_id;
-  //               console.log("Usuario registrado:", userData);
-
-  //               if (!userId) {
-  //                 console.error("No se obtuvo el ID del usuario creado");
-  //                 if (router.pathname !== "/error-transaccion") {
-  //                   router.push("/error-transaccion");
-  //                 }
-  //                 return;
-  //               }
-
-  //               console.log("Usuario registrado con éxito, ID:", userId);
-  //             } catch (err) {
-  //               console.error("Error durante el registro de usuario:", err);
-  //               if (router.pathname !== "/error-transaccion") {
-  //                 router.push("/error-transaccion");
-  //               }
-  //               return;
-  //             }
-
-  //             // Confirmar asientos
-  //             for (const servicio of purchaseInfo) {
-  //               const serviceId = servicio?.id;
-  //               const asientos = servicio?.asientos || [];
-
-  //               if (!serviceId || asientos.length === 0) {
-  //                 console.warn("Servicio inválido o sin asientos:", servicio);
-  //                 if (router.pathname !== "/error-transaccion") {
-  //                   router.push("/error-transaccion");
-  //                 }
-  //                 return;
-  //               }
-
-  //               for (const asiento of asientos) {
-  //                 const seatNumber = asiento?.asiento;
-  //                 if (!seatNumber) continue;
-
-  //                 const confirmRes = await fetch(
-  //                   `https://boletos.dev-wit.com/api/seats/${serviceId}/confirm`,
-  //                   {
-  //                     method: "POST",
-  //                     headers: {
-  //                       "Content-Type": "application/json",
-  //                       Authorization: `Bearer ${tokenAPI}`,
-  //                     },
-  //                     body: JSON.stringify({
-  //                       seatNumber,
-  //                       authCode: flowOrder,
-  //                       userId,
-  //                     }),
-  //                   }
-  //                 );
-
-  //                 if (!confirmRes.ok) {
-  //                   const errorText = await confirmRes.text();
-  //                   console.error(
-  //                     `Error al confirmar asiento ${seatNumber} del servicio ${serviceId}:`,
-  //                     errorText
-  //                   );
-  //                   if (router.pathname !== "/error-transaccion") {
-  //                     router.push("/error-transaccion");
-  //                   }
-  //                   return;
-  //                 } else {
-  //                   console.log(`Asiento ${seatNumber} confirmado`);
-  //                 }
-  //               }
-  //             }
-
-  //             // Éxito total
-  //             if (router.pathname !== "/respuesta-transaccion-v2") {
-  //               router.push("/respuesta-transaccion-v2");
-  //             }
-  //           } catch (error) {
-  //             console.error("Error confirmando asientos:", error);
-  //             if (router.pathname !== "/error-transaccion") {
-  //               router.push("/error-transaccion");
-  //             }
-  //           }
-  //           break;
-
-  //         case 3:
-  //         case 4:
-  //         default:
-  //           if (router.pathname !== "/error-transaccion") {
-  //             router.push("/error-transaccion");
-  //           }
-  //           break;
-  //       }
-  //     } catch (error) {
-  //       console.error("Error al verificar estado del pago:", error);
-  //       if (router.pathname !== "/error-transaccion") {
-  //         router.push("/error-transaccion");
-  //       }
-  //     }
-  //   };
-
-  //   if (router.isReady) {
-  //     runCheck();
-  //   }
-  // }, [router.isReady]);
+  }, [selector]);
 
   useEffect(() => {
-    const checkTransaction = async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token_ws = urlParams.get("token_ws");
+    const processTransaction = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const status = params.get("status");
+      const buyOrder = params.get("buy_order");
+      const amount = params.get("amount");
 
-      if (!token_ws) {
+      if (!status) {
         router.push("/error-transaccion");
         return;
       }
 
-      try {
-        // Llamamos a nuestro backend para confirmar la transacción
-        const response = await fetch("/api/v2/receive-transaction", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token_ws }),
-        });
+      if (status === "AUTHORIZED" || status === "APPROVED") {
+        // Confirmar los asientos
+        const rawPurchaseInfo = localStorage.getItem("purchase_info");
+        const rawBuyerInfo = localStorage.getItem("buyer_info");
+        const purchaseInfo = rawPurchaseInfo ? JSON.parse(rawPurchaseInfo) : [];
+        const buyerInfo = rawBuyerInfo ? JSON.parse(rawBuyerInfo) : null;
+        const tokenAPI = generateToken();
 
-        const data = await response.json();
+        for (const servicio of purchaseInfo) {
+          const serviceId = servicio?.id;
+          const asientos = servicio?.asientos || [];
 
-        if (data.status === "AUTHORIZED" || data.status === "APPROVED") {
-          // Confirmar asientos usando purchase_info del localStorage
-          const rawPurchaseInfo = localStorage.getItem("purchase_info");
-          const rawBuyerInfo = localStorage.getItem("buyer_info");
-          const purchaseInfo = rawPurchaseInfo
-            ? JSON.parse(rawPurchaseInfo)
-            : [];
-          const buyerInfo = rawBuyerInfo ? JSON.parse(rawBuyerInfo) : null;
+          for (const asiento of asientos) {
+            const seatNumber = asiento?.asiento;
+            if (!seatNumber) continue;
 
-          const tokenAPI = generateToken();
-
-          for (const servicio of purchaseInfo) {
-            const serviceId = servicio?.id;
-            const asientos = servicio?.asientos || [];
-
-            for (const asiento of asientos) {
-              const seatNumber = asiento?.asiento;
-              if (!seatNumber) continue;
-
+            try {
               const confirmRes = await fetch(
-                config.url_api + `/seats/${serviceId}/confirm`,
+                `${config.url_api}/seats/${serviceId}/confirm`,
                 {
                   method: "POST",
                   headers: {
@@ -397,9 +512,8 @@ export default function ConfrimTransaction() {
                   },
                   body: JSON.stringify({
                     seatNumber,
-                    authCode: data.buyOrder, // usamos buyOrder de Webpay
-                    // userId: buyerInfo?.id, // si tienes userId del comprador
-                    userId: data.session_id,
+                    authCode: buyOrder,
+                    userId: buyerInfo?.id || buyerInfo?.email || "anon",
                   }),
                 }
               );
@@ -411,20 +525,19 @@ export default function ConfrimTransaction() {
               } else {
                 console.log(`Asiento ${seatNumber} confirmado`);
               }
+            } catch (e) {
+              console.error("Error al confirmar asiento:", e);
             }
           }
-
-          router.push("/respuesta-transaccion-v2");
-        } else {
-          router.push("/error-transaccion");
         }
-      } catch (error) {
-        console.error("Error confirmando la transacción:", error);
+
+        router.push("/respuesta-transaccion-v2");
+      } else {
         router.push("/error-transaccion");
       }
     };
 
-    if (router.isReady) checkTransaction();
+    if (router.isReady) processTransaction();
   }, [router.isReady]);
 
   return (

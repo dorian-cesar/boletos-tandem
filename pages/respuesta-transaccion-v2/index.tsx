@@ -43,17 +43,29 @@ export default function Home(props: HomeProps) {
   const [passagers, setPassagers] = useState({});
   const [generatedTickets, setGeneratedTickets] = useState([]);
   const [buyerInfo, setbuyerInfo] = useState<any>({});
-  const [flowOrder, setflowOrder] = useState<any>({});
+  // const [flowOrder, setflowOrder] = useState<any>({});
+  const [buyOrder, setBuyOrder] = useState<any>({});
 
   const router = useRouter();
 
+  // useEffect(() => {
+  //   try {
+  //     const data = localStorage.getItem("flowOrder");
+  //     const flowOrder = JSON.parse(data);
+  //     if (data && flowOrder) {
+  //       setflowOrder(flowOrder);
+  //       console.log("flowOrder", flowOrder);
+  //     }
+  //   } catch (error) {}
+  // }, []);
+
   useEffect(() => {
     try {
-      const data = localStorage.getItem("flowOrder");
-      const flowOrder = JSON.parse(data);
-      if (data && flowOrder) {
-        setflowOrder(flowOrder);
-        console.log("flowOrder", flowOrder);
+      const data = localStorage.getItem("buyOrder");
+      const buyOrder = JSON.parse(data);
+      if (data && buyOrder) {
+        setBuyOrder(buyOrder);
+        console.log("buyOrder", buyOrder);
       }
     } catch (error) {}
   }, []);
@@ -227,7 +239,7 @@ export default function Home(props: HomeProps) {
       const tickets = carro.asientos;
 
       const transactionInfo = {
-        transaction: flowOrder,
+        transaction: buyOrder,
         detail: carro_temp,
         paymentMethod: paymentMethod,
         amount,
@@ -301,7 +313,7 @@ export default function Home(props: HomeProps) {
     try {
       generarBoletos();
     } catch (error) {}
-  }, [flowOrder]);
+  }, [buyOrder]);
 
   const generarBoletos = async () => {
     const token = localStorage.getItem("tokenTemp");
@@ -323,7 +335,7 @@ export default function Home(props: HomeProps) {
         body: JSON.stringify({
           ticketData: carroCompras,
           email: buyerInfo.email,
-          authCode: flowOrder,
+          authCode: buyOrder,
           token: token,
         }),
       });
@@ -331,7 +343,7 @@ export default function Home(props: HomeProps) {
       console.log("Body para generar boletos:", {
         ticketData: carroCompras,
         email: buyerInfo.email,
-        authCode: flowOrder,
+        authCode: buyOrder,
         token: token,
       });
 
@@ -531,7 +543,7 @@ export default function Home(props: HomeProps) {
                           //   mediosPago[resumen.paymentMethod]?.imagen ||
                           //   "generico"
                           // }
-                          style={{ width: "80px" }}
+                          style={{ width: "120px", paddingTop: "5px" }}
                           src="/img/icon/cuponera/Logo-webpay.svg"
                           alt={`Icono ${
                             mediosPago[resumen.paymentMethod]?.nombre

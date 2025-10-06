@@ -576,6 +576,18 @@ export const ResumenViaje = (props) => {
 
         const data = await response.json();
 
+        // if (Boolean(data.error)) {
+        //   toast.error("Error al completar la transacción", {
+        //     position: "bottom-center",
+        //     autoClose: 5000,
+        //     hideProgressBar: false,
+        //   });
+        //   return;
+        // } else {
+        //   localStorage.setItem("tokenTemp", data.token);
+        //   localStorage.setItem("flowOrder", data.flowOrder);
+        // }
+
         if (Boolean(data.error)) {
           toast.error("Error al completar la transacción", {
             position: "bottom-center",
@@ -584,8 +596,8 @@ export const ResumenViaje = (props) => {
           });
           return;
         } else {
-          localStorage.setItem("tokenTemp", data.token);
-          localStorage.setItem("flowOrder", data.flowOrder);
+          localStorage.setItem("tokenTBK", data.token);
+          localStorage.setItem("buyOrder", data.buyOrder);
         }
 
         setPayment({
