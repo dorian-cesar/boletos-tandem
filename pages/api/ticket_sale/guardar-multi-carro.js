@@ -209,6 +209,11 @@ async function handleGuardarMultiCarro(req, res) {
       ? "https://boletos-tandem.netlify.app/api/v2/receive-transaction"
       : "http://localhost:3000/api/v2/receive-transaction";
 
+    // const isProd = process.env.NODE_ENV === "production";
+    // const returnUrl = isProd
+    //   ? "https://boletos-tandem.netlify.app/api/v2/confirm-transaction"
+    //   : "http://localhost:3000/api/v2/confirm-transaction";
+
     // Identificadores de transacción
     const buyOrder = `${Date.now()}${Math.floor(Math.random() * 1000)}`; // max 26 chars
     const sessionId = serviceRequest.datosComprador.email;

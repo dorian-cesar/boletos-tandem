@@ -452,9 +452,9 @@ import { useRouter } from "next/router";
 import JWT from "jsonwebtoken";
 import { useSelector } from "react-redux";
 import { generateToken } from "utils/jwt-auth";
+import CryptoJS from "crypto-js";
 
 const URL_API = process.env.NEXT_PUBLIC_URL_API;
-
 const SECRET = "xWL!96JRaWi2lT0jG";
 
 export default function ConfirmTransaction() {
@@ -463,6 +463,7 @@ export default function ConfirmTransaction() {
   const selector =
     useSelector((state: any) => state.compra?.listaCarrito) || [];
 
+  // Guardar carrito en sessionStorage
   useEffect(() => {
     if (selector && Object.keys(selector).length > 0) {
       const token = JWT.sign(selector, SECRET);
@@ -471,71 +472,88 @@ export default function ConfirmTransaction() {
     }
   }, [selector]);
 
+  // Procesar transacción
   useEffect(() => {
+    if (!router.isReady) return;
+
     const processTransaction = async () => {
       const params = new URLSearchParams(window.location.search);
-      const status = params.get("status");
-      const buyOrder = params.get("buyOrder");
-      const amount = params.get("amount");
+      const encryptedData = params.get("data");
 
-      if (!status || !buyOrder) {
+      if (!encryptedData) {
         router.push("/error-transaccion");
         return;
       }
 
-      if (status === "AUTHORIZED" || status === "APPROVED") {
-        // Confirmar los asientos
-        const rawPurchaseInfo = localStorage.getItem("purchase_info");
-        const rawBuyerInfo = localStorage.getItem("buyer_info");
-        const purchaseInfo = rawPurchaseInfo ? JSON.parse(rawPurchaseInfo) : [];
-        const buyerInfo = rawBuyerInfo ? JSON.parse(rawBuyerInfo) : null;
-        const tokenAPI = generateToken();
+      try {
+        const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+        const decrypted = CryptoJS.AES.decrypt(encryptedData, secret);
+        const serviceRequest = JSON.parse(
+          decrypted.toString(CryptoJS.enc.Utf8)
+        );
 
-        for (const servicio of purchaseInfo) {
-          const serviceId = servicio?.id;
-          const asientos = servicio?.asientos || [];
+        console.log("serviceRequest:", serviceRequest);
 
-          for (const asiento of asientos) {
-            const seatNumber = asiento?.asiento;
-            if (!seatNumber) continue;
+        const { status, buyOrder } = serviceRequest;
 
-            try {
-              const confirmRes = await fetch(
-                `${URL_API}/seats/${serviceId}/confirm`,
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${tokenAPI}`,
-                  },
-                  body: JSON.stringify({
-                    seatNumber,
-                    authCode: buyOrder,
-                    userId: buyerInfo?.id, // enviar id de mongodb del usuario
-                  }),
-                }
-              );
+        if (status === "AUTHORIZED" || status === "APPROVED") {
+          const rawPurchaseInfo = localStorage.getItem("purchase_info");
+          const rawBuyerInfo = localStorage.getItem("buyer_info");
+          const purchaseInfo = rawPurchaseInfo
+            ? JSON.parse(rawPurchaseInfo)
+            : [];
+          const buyerInfo = rawBuyerInfo ? JSON.parse(rawBuyerInfo) : null;
+          const tokenAPI = generateToken();
 
-              if (!confirmRes.ok) {
-                console.error(
-                  `Error al confirmar asiento ${seatNumber} del servicio ${serviceId}`
+          for (const servicio of purchaseInfo) {
+            const serviceId = servicio?.id;
+            const asientos = servicio?.asientos || [];
+
+            for (const asiento of asientos) {
+              const seatNumber = asiento?.asiento;
+              if (!seatNumber) continue;
+
+              try {
+                const confirmRes = await fetch(
+                  `${URL_API}/seats/${serviceId}/confirm`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${tokenAPI}`,
+                    },
+                    body: JSON.stringify({
+                      seatNumber,
+                      authCode: buyOrder,
+                      userId: buyerInfo?.id,
+                    }),
+                  }
                 );
-              } else {
-                console.log(`Asiento ${seatNumber} confirmado`);
+
+                if (!confirmRes.ok) {
+                  console.error(
+                    `Error al confirmar asiento ${seatNumber} del servicio ${serviceId}`
+                  );
+                } else {
+                  console.log(`Asiento ${seatNumber} confirmado`);
+                }
+              } catch (e) {
+                console.error("Error al confirmar asiento:", e);
               }
-            } catch (e) {
-              console.error("Error al confirmar asiento:", e);
             }
           }
-        }
 
-        router.push("/respuesta-transaccion-v2");
-      } else {
+          router.push("/respuesta-transaccion-v2");
+        } else {
+          router.push("/error-transaccion");
+        }
+      } catch (error) {
+        console.error("Error procesando transacción:", error);
         router.push("/error-transaccion");
       }
     };
 
-    if (router.isReady) processTransaction();
+    processTransaction();
   }, [router.isReady]);
 
   return (
@@ -553,3 +571,124 @@ export default function ConfirmTransaction() {
     </Layout>
   );
 }
+
+// import Footer from "components/Footer";
+// import Layout from "components/Layout";
+// import { useEffect, useState } from "react";
+// import { useRouter } from "next/router";
+// import JWT from "jsonwebtoken";
+// import { useSelector } from "react-redux";
+// import { generateToken } from "utils/jwt-auth";
+
+// const URL_API = process.env.NEXT_PUBLIC_URL_API;
+// const SECRET = "xWL!96JRaWi2lT0jG";
+
+// export default function ConfirmTransaction() {
+//   const router = useRouter();
+//   const [carroCompras, setCarroCompras] = useState([]);
+//   const selector =
+//     useSelector((state: any) => state.compra?.listaCarrito) || [];
+
+//   useEffect(() => {
+//     if (selector && Object.keys(selector).length > 0) {
+//       const token = JWT.sign(selector, SECRET);
+//       sessionStorage.setItem("transactionBasketInfo", token);
+//       setCarroCompras(selector);
+//     }
+//   }, [selector]);
+
+//   useEffect(() => {
+//     const processTransaction = async () => {
+//       const params = new URLSearchParams(window.location.search);
+//       const token_ws = params.get("token_ws");
+
+//       if (!token_ws) {
+//         router.push("/error-transaccion");
+//         return;
+//       }
+
+//       try {
+//         const response = await fetch("/api/v2/receive-transaction", {
+//           method: "POST",
+//           headers: { "Content-Type": "application/json" },
+//           body: JSON.stringify({ token_ws }),
+//         });
+
+//         const data = await response.json();
+//         console.log("Respuesta receive-transaction:", data);
+
+//         if (data.status === "AUTHORIZED" || data.status === "APPROVED") {
+//           const rawPurchaseInfo = localStorage.getItem("purchase_info");
+//           const rawBuyerInfo = localStorage.getItem("buyer_info");
+//           const purchaseInfo = rawPurchaseInfo
+//             ? JSON.parse(rawPurchaseInfo)
+//             : [];
+//           const buyerInfo = rawBuyerInfo ? JSON.parse(rawBuyerInfo) : null;
+//           const tokenAPI = generateToken();
+
+//           for (const servicio of purchaseInfo) {
+//             const serviceId = servicio?.id;
+//             const asientos = servicio?.asientos || [];
+
+//             for (const asiento of asientos) {
+//               const seatNumber = asiento?.asiento;
+//               if (!seatNumber) continue;
+
+//               try {
+//                 const confirmRes = await fetch(
+//                   `${URL_API}/seats/${serviceId}/confirm`,
+//                   {
+//                     method: "POST",
+//                     headers: {
+//                       "Content-Type": "application/json",
+//                       Authorization: `Bearer ${tokenAPI}`,
+//                     },
+//                     body: JSON.stringify({
+//                       seatNumber,
+//                       authCode: data.buy_order,
+//                       userId: buyerInfo?.id, // id MongoDB
+//                     }),
+//                   }
+//                 );
+
+//                 if (!confirmRes.ok) {
+//                   console.error(
+//                     `Error al confirmar asiento ${seatNumber} del servicio ${serviceId}`
+//                   );
+//                 } else {
+//                   console.log(`Asiento ${seatNumber} confirmado`);
+//                 }
+//               } catch (err) {
+//                 console.error("Error al confirmar asiento:", err);
+//               }
+//             }
+//           }
+
+//           router.push("/respuesta-transaccion-v2");
+//         } else {
+//           router.push("/error-transaccion");
+//         }
+//       } catch (error) {
+//         console.error("Error al recibir transacción:", error);
+//         router.push("/error-transaccion");
+//       }
+//     };
+
+//     if (router.isReady) processTransaction();
+//   }, [router.isReady]);
+
+//   return (
+//     <Layout>
+//       <div
+//         className="container d-flex flex-column align-items-center justify-content-center"
+//         style={{ minHeight: "75vh" }}
+//       >
+//         <img src="/img/loading.gif" width={300} height={300} alt="Loading" />
+//         <h5 className="text-center">
+//           Estamos completando su transacción, por favor espere.
+//         </h5>
+//       </div>
+//       <Footer />
+//     </Layout>
+//   );
+// }

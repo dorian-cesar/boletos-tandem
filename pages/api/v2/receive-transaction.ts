@@ -34,6 +34,7 @@
 // }
 
 import { WebpayPlus, Environment, Options } from "transbank-sdk";
+import CryptoJS from "crypto-js";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -61,8 +62,22 @@ export default async function handler(req, res) {
     const response = await tx.commit(token);
     console.log("Webpay commit response:", response);
 
-    // Redirigir al usuario a la página de confirmación con los datos
-    const redirectUrl = `/confirm-transaction?status=${response.status}&amount=${response.amount}&buyOrder=${response.buy_order}`;
+    // --- ENCRIPTAR DATA ---
+    const secret = process.env.NEXT_PUBLIC_SECRET_ENCRYPT_DATA;
+    const dataToEncrypt = {
+      status: response.status,
+      amount: response.amount,
+      buyOrder: response.buy_order,
+    };
+    const encryptedData = CryptoJS.AES.encrypt(
+      JSON.stringify(dataToEncrypt),
+      secret
+    ).toString();
+
+    // Redirigir al usuario con el query param encriptado
+    const redirectUrl = `/confirm-transaction?data=${encodeURIComponent(
+      encryptedData
+    )}`;
 
     res.setHeader("Content-Type", "text/html");
     res.status(200).send(`
@@ -71,7 +86,7 @@ export default async function handler(req, res) {
           <meta http-equiv="refresh" content="0; url=${redirectUrl}" />
         </head>
         <body>
-          Cargando...
+          Redirigiendo...
         </body>
       </html>
     `);
@@ -80,3 +95,54 @@ export default async function handler(req, res) {
     res.status(500).send("Error interno al procesar el pago");
   }
 }
+
+// import { WebpayPlus, Environment, Options } from "transbank-sdk";
+
+// export default async function handler(req, res) {
+//   if (req.method !== "POST") {
+//     return res.status(405).json({ message: "Method Not Allowed" });
+//   }
+
+//   try {
+//     const { token_ws } = req.body;
+
+//     if (!token_ws) {
+//       console.error("No se recibió token_ws");
+//       return res.status(400).json({ message: "Token no recibido" });
+//     }
+
+//     // Crear instancia de WebpayPlus
+//     const tx = new WebpayPlus.Transaction(
+//       new Options(
+//         process.env.TBK_COMMERCE_CODE,
+//         process.env.TBK_API_KEY_SECRET,
+//         process.env.NODE_ENV === "production"
+//           ? Environment.Production
+//           : Environment.Integration
+//       )
+//     );
+
+//     // Confirmar la transacción con Transbank
+//     const response = await tx.commit(token_ws);
+//     console.log("Webpay commit response:", response);
+
+//     // Retornar el resultado al frontend
+//     return res.status(200).json({
+//       status: response.status,
+//       buy_order: response.buy_order,
+//       amount: response.amount,
+//       authorization_code: response.authorization_code,
+//       payment_type_code: response.payment_type_code,
+//       response_code: response.response_code,
+//       card_detail: response.card_detail,
+//       accounting_date: response.accounting_date,
+//       transaction_date: response.transaction_date,
+//     });
+//   } catch (error) {
+//     console.error("Error al confirmar transacción Webpay:", error);
+//     return res.status(500).json({
+//       message: "Error interno al procesar el pago",
+//       error: error.message,
+//     });
+//   }
+// }
