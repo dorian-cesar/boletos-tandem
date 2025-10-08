@@ -224,8 +224,8 @@ async function handleGuardarMultiCarro(req, res) {
       new Options(
         process.env.TBK_COMMERCE_CODE,
         process.env.TBK_API_KEY_SECRET,
-        Environment.Integration // developer
-        // Environment.Production // production
+        // Environment.Integration // developer
+        Environment.Production // production
       )
     );
 

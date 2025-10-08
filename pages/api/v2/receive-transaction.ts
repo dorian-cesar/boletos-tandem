@@ -57,7 +57,8 @@ export default async function handler(req, res) {
       new Options(
         process.env.TBK_COMMERCE_CODE,
         process.env.TBK_API_KEY_SECRET,
-        Environment.Integration // o Environment.Production
+        // Environment.Integration // develop
+        Environment.Production
       )
     );
 
