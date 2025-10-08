@@ -43,9 +43,12 @@ export default async function handler(req, res) {
 
   try {
     const token = req.query.token_ws;
+    console.log("token res:", token);
+    const data = req.query;
 
     if (!token) {
       console.error("No se recibió token_ws de Transbank");
+      console.log("data res:", data);
       return res.writeHead(302, { Location: "/confirm-transaction" }).end();
     }
 
