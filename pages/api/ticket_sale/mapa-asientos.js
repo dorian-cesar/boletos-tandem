@@ -53,8 +53,7 @@ export default async (req, res) => {
               asiento: number,
               estado: status,
               // valorAsiento: price + 5000, // Se suma 5000 al valor del asiento para simular
-              // valorAsiento: price,
-              valorAsiento: 50,
+              valorAsiento: price,
             }))
             .reverse()
         );
